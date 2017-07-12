@@ -1,0 +1,22 @@
+console.log('models/user.js');
+
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
+mongoose.Promise = global.Promise;
+
+
+var userSchema = new Schema({
+	first_name: {type: String, required: true, minlength: 4},
+	last_name: {type: String, required: true, minlength: 4},
+	phone: {type: String, required: true},
+	email: {type: String},
+	password: {type: String, required: true, minlength: 8},
+	// leave mailing address out as this would be entered through the payment API?  Foundation wants users to enter info only once
+	cc_token: String,
+	_packages: [{type: Schema.Types.ObjectId, ref: 'Package'}],
+	admin: Boolean
+})
+
+
+
+module.exports = 	mongoose.model('User', userSchema);

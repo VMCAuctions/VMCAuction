@@ -13,6 +13,10 @@ app.use(express.static(path.join(__dirname, "./client")));
 // app.set('views', path.join(__dirname, './views'));
 
 
+// require the mongoose configuration file which does the rest for us
+//////  REMEMBER TO GO TO "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" /////////
+require('./server/config/mongoose.js');
+
 var routes_setter = require('./server/config/routes.js');
 routes_setter(app);
 
