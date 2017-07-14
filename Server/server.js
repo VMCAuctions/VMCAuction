@@ -2,22 +2,29 @@
 var express = require("express");
 var app = express();
 
+var React = require('../client/frontend/node_modules/react');  
+// var jsx = require('node-jsx');
+// jsx.intall();
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended:true}));
 
 
 var path = require("path");
-// static content 
-app.use(express.static(path.join(__dirname, "./client")));
 
+
+// static content 
+
+app.use(express.static(path.join(__dirname, "../client/frontend/public")));
+// app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
 
 
 // require the mongoose configuration file which does the rest for us
 //////  REMEMBER TO GO TO "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" /////////
-require('./server/config/mongoose.js');
+require('./config/mongoose.js');
 
-var routes_setter = require('./server/config/routes.js');
+var routes_setter = require('./config/routes.js');
 routes_setter(app);
 
 
