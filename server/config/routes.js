@@ -36,8 +36,7 @@ module.exports = function(app) {
 	app.post('/packages', function(req,res){
 		packages.create(req, res)});
 	// get the page for a specific package
-	app.get('/packages/:id', function(req,res){
-		packages.show(req, res)});
+	app.get('/packages/:id', packages.show);
 
 
 

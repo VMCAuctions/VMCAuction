@@ -20,7 +20,7 @@ class Catalog extends Component{
         })
     }
     render(){
-        let itemsList = this.state.listOfItems.map((item,index) =>{
+        let itemsList = this.state.listOfItems.map((item,index) => {
             return(
                 <tr key={index}>
                     <td>{item.itemNumber}</td>
