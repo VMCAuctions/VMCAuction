@@ -26,7 +26,7 @@ class ItemEntryAdmin extends Component{
         e.preventDefault();
         Axios({
             method: "post",
-            url:"",
+            url:"/items",
             data:{itemName: this.state.itemName, donor: this.state.donor, category: this.state.category,
                   fairMarketValue: this.state.fairMarketValue, itemDescription: this.state.itemDescription,
                 itemRestriction: this.state.itemRestriction},

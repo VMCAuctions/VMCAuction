@@ -19,6 +19,8 @@ module.exports = function(app) {
 	// post the new item form and create that new item
 	app.post('/items', function(req,res){
   		items.create(req, res)});
+	app.get('/items/:id', function(req,res){
+		items.show(req, res)});
 
 
 

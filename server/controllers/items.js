@@ -19,7 +19,7 @@ function ItemsController(){
 	    	if(err) {
 	      		console.log('something went wrong from database');
 	    	}
-	    	else { // else console.log that we did well and then redirect to the root route
+	    	else { 
 	      		console.log('successfully loaded items!');
 	      		console.log(items); 
 	      		// test screen for items index
@@ -34,6 +34,7 @@ function ItemsController(){
 	
 	
 	this.new = function(req,res){
+		// this would bring up the new item form screen
 		console.log('ItemsController new');
 	};
 
@@ -57,13 +58,27 @@ function ItemsController(){
       		// name:  description:  category:  donor:  restrictions:  value:  photo:  _package: 
 
 	      if(err){
-	        console.log('item create-err')
+	        console.log('item create-err');
 	      }
 	      else{
 	        res.json(result);
 	      }
 	    });
 	};
+
+
+	this.show = function(req,res){
+		console.log('ItemsController show');
+		// this gets the single item screen (if we want it)
+		Item.findById(req.params.id, function(err, result){
+			if(err){
+	        console.log('item show-err');
+	      }
+	      else{
+	        res.json(result);
+	      }
+	    });
+	}
   
 }
 module.exports = new ItemsController(); 
