@@ -15,15 +15,17 @@ class ItemEntryAdmin extends Component{
         }
     }
 
+//callback function for capturing user input changes
     handleChange = (e) => {
         this.setState({
-            [e.target.name] : e.target.value
+            [e.target.name] : e.target.value,
         })   
         console.log(e.target.value);     
-    }
+    }    
 
+//post data to the database on form submit
     formSubmit = (e) =>{
-        e.preventDefault();
+        e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
             url:"/items",
@@ -44,29 +46,34 @@ class ItemEntryAdmin extends Component{
             <div className='item-entry-admin-container row'>
                 <label><h2>Item Info</h2> </label>
                 <div className='item-info'>
-                    <form onSubmit={this.formSubmit}>
-                        {/*Item Number: <input type='number' name='itemNumber' required/><br/><br/>*/}
-                         <input className='form-control input-lg' type='text' name='itemName'  placeholder='Item Name' onChange={this.handleChange} required/><br/><br/>
-                         <input className='form-control input-lg' type='text' name='donor' placeholder='Donor' onChange={this.handleChange}/><br/><br/>
-                         <select className="form-control input-lg"> 
-                            <option>Category</option>
+                    <form  onSubmit={this.formSubmit}>
+                        {/*decided to auto-generate item number on form submission*/}
+                        {/*Item Number: <input type='number' name='itemNumber' required/><br/><br/>*/}                           
+                         <input className='form-control input-lg' type='text' name='itemName' 
+                                placeholder='Item Name' onChange={this.handleChange} value={this.state.itemName} required/><br/><br/>
+                         <input className='form-control input-lg' type='text' name='donor' 
+                                placeholder='Donor' onChange={this.handleChange} value={this.state.donor}/><br/><br/>
+                         <select name='category' value={this.state.category} onChange={this.handleChange} className="form-control input-lg" required> 
+                            <option value=''>Category</option>
                             <option value='travel'>Travel</option>
                             <option value='art'>Art</option>
                             <option value='wine'>Wine</option>
                             <option value='food'>Food</option>
                             <option value='toys'>Toys</option>
-                        </select><br/><br/>
-                        {/*<input type='number' name='marketvalue' placeholder='Market Value' required/><br/><br/>*/}
+                        </select><br/><br/>    
                         <div className="form-group">
-                            <label className="sr-only" >Amount (in dollars)</label>
+                            {/*<label className="sr-only" >Amount (in dollars)</label>*/}
                             <div className="input-group">
                                 <div className="input-group-addon">$</div>
-                                    <input type="number" className="form-control" id="exampleInputAmount" placeholder="Fair Market Value" onChange={this.handleChange}/>
+                                    <input type="number" name='fairMarketValue' className="form-control" placeholder="Fair Market Value" 
+                                            value={this.state.fairMarketValue} onChange={this.handleChange} />
                                 <div className="input-group-addon">.00</div>
                             </div>
-                        </div>
-                        <textarea className="form-control" rows='5' placeholder='Item Description' onChange={this.handleChange}></textarea><br/><br/>
-                        <textarea className="form-control" rows='4' placeholder='Item Restrcition' onChange={this.handleChange}></textarea><br/><br/>
+                        </div> <br/>
+                        <textarea name='itemDescription' className="form-control" rows='5' 
+                                  placeholder='Item Description' value={this.state.itemDescription} onChange={this.handleChange}></textarea><br/><br/>
+                        <textarea name='itemRestriction' className="form-control" rows='4' 
+                                  placeholder='Item Restrcition' value={this.state.itemRestriction} onChange={this.handleChange}></textarea><br/><br/>
                         <input type='submit' className='btn btn-primary' value='Add' />
                     </form>
                 </div>

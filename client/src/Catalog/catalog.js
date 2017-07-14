@@ -20,14 +20,15 @@ class Catalog extends Component{
         })
     }
     render(){
-        let itemsList = this.state.listOfItems.map((item,index) => {
+        let itemsList = this.state.listOfItems.map((item,index) =>{
             return(
                 <tr key={index}>
-                    <td>{item.itemNumber}</td>
-                    <td>{item.itemName}</td>
-                    <td>{item.itemfairMarketValue}</td>
-                    <td>{item.itemDescription}</td>
-                    <td>{item.itemRestriction}</td>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.value}</td>
+                    <td>{item.description}</td>
+                    <td>{item.restrictions}</td>
+                    <td>{item._package}</td>
                 </tr>
             )
         })
