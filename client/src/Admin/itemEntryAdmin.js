@@ -78,7 +78,7 @@ class ItemEntryAdmin extends Component{
                             </div>
                         </div> <br/>
                         <textarea name='itemDescription' className="form-control" rows='5' 
-                                  placeholder='Item Description' value={this.state.itemDescription} onChange={this.handleChange}></textarea><br/><br/>
+                                  placeholder='Item Description' value={this.state.itemDescription} onChange={this.handleChange} required></textarea><br/><br/>
                         <textarea name='itemRestriction' className="form-control" rows='4' 
                                   placeholder='Item Restrcition' value={this.state.itemRestriction} onChange={this.handleChange}></textarea><br/><br/>
                         <input type='submit' className='btn btn-primary' value='Add' />

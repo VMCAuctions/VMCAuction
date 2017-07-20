@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import './App.css';
-import  ItemEntryAdmin from './Admin/itemEntryAdmin.js';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Home from "./Welcome/home.js";
+import Menu from './NavBar/menu.js';
+import ItemEntryAdmin from './Admin/itemEntryAdmin.js';
 import Catalog from './Catalog/catalog.js';
 import Package from './Package/package.js';
 
 class App extends Component {
   render() {
     return (
-      // <ItemEntryAdmin />
-      // <Catalog />
-      <Package />
+      <BrowserRouter>
+        <div className="App">
+          <Menu />
+          <Route exact path='/' component={Home}/>
+          <Route path='/items/new' component={ItemEntryAdmin}/>
+          <Route path='/items' component={Catalog}/>
+          <Route path='/packages/new' component={Package}/> 
+          {/*<Route path='/login' component={Login}/>  
+          <Route path='/dashboard/:userId' component={Dashboard}/>   */}
+
+        </div>
+      </BrowserRouter>
     );
   }
 }

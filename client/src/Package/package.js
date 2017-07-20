@@ -32,17 +32,17 @@ class Package extends Component{
     onPackageFormSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
-        // Axios({
-        //     method: 'post',
-        //     url:'./packages',
-        //     data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
-        //           category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
-        //         selectedItems:this.state.selectedItems  }
-        // }).then((response) =>{
-        //     console.log(response)
-        // }).catch((err)=>{
-        //     console.log("Incomplete form submission" + err)
-        // })
+        Axios({
+            method: 'post',
+            url:'/packages',
+            data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
+                  category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
+                selectedItems:this.state.selectedItems  }
+        }).then((response) =>{
+            console.log(response)
+        }).catch((err)=>{
+            console.log("Incomplete form submission" + err)
+        })
     }
 
     capturingGroupedItems = (arr, value) =>{

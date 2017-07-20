@@ -57,7 +57,7 @@ function ItemsController(){
       		
 
 	      if(err){
-	        console.log('item create-err');
+	        console.log(err);
 	      }
 	      else{
 	        res.json(result);

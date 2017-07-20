@@ -34,7 +34,6 @@ class DisplayItems extends Component{
             totalValue:  parseInt(e.target.value)
         })
         console.log(this.state.groupedItems, this.state.totalValue)
-        
         //invoking parent(package.js) callback with two arguments    
         this.props.capturingGroupedItems(this.state.groupedItems, this.state.totalValue)
        

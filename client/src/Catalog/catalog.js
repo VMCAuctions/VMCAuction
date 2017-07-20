@@ -15,6 +15,7 @@ class Catalog extends Component{
             this.setState({
                 listOfItems: result.data
             })
+            console.log(this.state.listOfItems)
         }).catch((err) =>{
             console.log(err);
         })

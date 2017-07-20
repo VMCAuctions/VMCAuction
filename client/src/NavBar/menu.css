@@ -1,0 +1,9 @@
+#myNav li{
+    text-decoration: none;
+    display: inline-block;
+    /*background-color: lightblue;*/
+    color: lightpink;
+    font-size: 30px;
+    padding:5px;
+    margin: 5px;
+}
