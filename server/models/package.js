@@ -11,7 +11,8 @@ var packageSchema = new Schema({
  _items: [{type: Schema.Types.ObjectId, ref: 'Item', required: true}],
  description: {type: String, maxlength: 250},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
- restrictions: {type: String, maxlength: 250},  // maybe prepopulate field with for item in package._items { item.restrictions }
+ 
+ _category: {type: Schema.Types.ObjectId, ref: 'Category'},
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
  
 

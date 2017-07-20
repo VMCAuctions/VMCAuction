@@ -9,7 +9,7 @@ class Catalog extends Component{
     }
 
     componentDidMount(){
-        Axios.get(" ")
+        Axios.get("/items")
         .then((result) =>{
             console.log(result);
             this.setState({

@@ -2,12 +2,12 @@
 var express = require("express");
 var app = express();
 
-var React = require('../client/frontend/node_modules/react');  
+var React = require('../client/node_modules/react');  
 // var jsx = require('node-jsx');
 // jsx.intall();
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended:true}));
+app.use(bodyParser.json());
 
 
 var path = require("path");

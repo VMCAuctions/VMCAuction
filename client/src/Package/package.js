@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './package.css';
-import Catalog from './Catalog/catalog.js';
+import Catalog from '../Catalog/catalog.js';
 
 class Package extends Component{
     constructor(props){

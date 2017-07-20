@@ -1,16 +1,16 @@
 console.log('items.js');
 
-var mongoose = require('mongoose');
-var Item = require('../models/item.js');
+var mongoose = require('mongoose'),
+	Item = require('../models/item.js'),
+	Category = require('../models/category.js');
 
 
+ // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query, 
+ // the error parameter will contain an error document, and result will be null. 
+ // If the query is successful, the error parameter will be null, and the result will be populated with the results of the query.
 
 function ItemsController(){
-	this.greet = function(req,res){
-		// this is our 'hello world' screen
-		console.log('Hello, Valley Med');
-		res.send('Puttin on the Ritz');
-	};
+	
 
 	this.index = function(req,res){
 		console.log('ItemsController index');
@@ -54,8 +54,7 @@ function ItemsController(){
       //           itemDescription: '',
       //           itemRestriction:
 
-      		// from schema /////////
-      		// name:  description:  category:  donor:  restrictions:  value:  photo:  _package: 
+      		
 
 	      if(err){
 	        console.log('item create-err');
@@ -79,6 +78,36 @@ function ItemsController(){
 	      }
 	    });
 	}
+
+
+	this.update = function(req,res){
+		console.log('ItemsController update');
+		Item.findById(req.params.id, function (err, item) {  
+    		
+		    if (err) {
+		        res.status(500).send(err);
+		    } 
+		    else {
+		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
+		        // If that attribute isn't in the request body, default back to whatever it was before.
+		        item.name = req.body.itemName || item.name;
+		        item.description = req.body.itemDescription || item.description;
+		        item.donor = req.body.donor || item.donor;
+		        item.restrictions = req.body.itemRestriction || item.restrictions;
+		        item.value = req.body.fairMarketValue || item.value;
+		        item._category = req.body.category || item._category;
+
+
+	            
+		        item.save(function (err, item) {
+		            if (err) {
+		                res.status(500).send(err)
+		            }
+		            res.send(item);
+		        });
+		    }
+		});
+	}  // end of this.update();
   
 }
 module.exports = new ItemsController(); 
