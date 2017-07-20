@@ -1,9 +1,16 @@
-.package-info, #package-container{
+.package-info, .displaySelectedItems{
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
 }
-
+.groupingItems{
+    vertical-align: bottom;
+}
+#package-container{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+}
 .item-select{
     border: 1px solid gray;
     padding: 3px;

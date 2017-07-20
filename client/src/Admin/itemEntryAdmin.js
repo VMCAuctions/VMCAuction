@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import "./itemEntryAdmin.css";
 import Axios from 'axios';
+import Select from './select.js'
+import TestModal from "../Modal/testModal.js";
 
 class ItemEntryAdmin extends Component{
     constructor(props){
@@ -18,13 +20,13 @@ class ItemEntryAdmin extends Component{
 //callback function for capturing user input changes
     handleChange = (e) => {
         this.setState({
-            [e.target.name] : e.target.value,
-        })   
+            [e.target.name] : e.target.value
+        })  
         console.log(e.target.value);     
     }    
 
-//post data to the database on form submit
-    formSubmit = (e) =>{
+//posting data to the database on form submission
+    formSubmit = (e) =>{             
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
@@ -32,12 +34,12 @@ class ItemEntryAdmin extends Component{
             data:{itemName: this.state.itemName, donor: this.state.donor, category: this.state.category,
                   fairMarketValue: this.state.fairMarketValue, itemDescription: this.state.itemDescription,
                 itemRestriction: this.state.itemRestriction},
-                headers: {Authorization: localStorage.getItem("jw-token")}
+                // headers: {Authorization: localStorage.getItem("jw-token")}
         }).then((response) => {
-            console.log(response.data);
-            localStorage.setItem("jw-token", response.data.token);
+            console.log(response);
+            // localStorage.setItem("jw-token", response.data.token);
         }).catch((err) =>{
-            console.log("Incomplete Form", err.response.data);
+            console.log("Incomplete Form");
         })
     }
     
@@ -53,14 +55,19 @@ class ItemEntryAdmin extends Component{
                                 placeholder='Item Name' onChange={this.handleChange} value={this.state.itemName} required/><br/><br/>
                          <input className='form-control input-lg' type='text' name='donor' 
                                 placeholder='Donor' onChange={this.handleChange} value={this.state.donor}/><br/><br/>
-                         <select name='category' value={this.state.category} onChange={this.handleChange} className="form-control input-lg" required> 
+                         {/*<select name='category' value={this.state.category} onChange={this.handleChange} className="form-control input-lg" required> 
                             <option value=''>Category</option>
                             <option value='travel'>Travel</option>
                             <option value='art'>Art</option>
                             <option value='wine'>Wine</option>
                             <option value='food'>Food</option>
-                            <option value='toys'>Toys</option>
-                        </select><br/><br/>    
+                            <option value='toys'>Electronics</option>
+                        </select><br/>   */}
+                        
+                         <Select name='category' value={this.state.category} handleChange={this.handleChange}/><br/>
+
+                            <TestModal /><br/><br/>
+                        
                         <div className="form-group">
                             {/*<label className="sr-only" >Amount (in dollars)</label>*/}
                             <div className="input-group">

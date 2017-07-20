@@ -2,12 +2,12 @@
 var express = require("express");
 var app = express();
 
-var React = require('../client/frontend/node_modules/react');  
+var React = require('../client/node_modules/react');  
 // var jsx = require('node-jsx');
 // jsx.intall();
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended:true}));
+app.use(bodyParser.json());
 
 
 var path = require("path");
@@ -15,7 +15,7 @@ var path = require("path");
 
 // static content 
 
-app.use(express.static(path.join(__dirname, "../client/frontend/public")));
+app.use(express.static(path.join(__dirname, "../client/public")));
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
 
