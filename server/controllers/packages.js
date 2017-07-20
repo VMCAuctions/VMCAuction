@@ -40,8 +40,8 @@ function PackagesController(){
 
     	
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
-	    Package.create({name: req.body.packageName, _items: req.body.items, description: req.body.packageDescription,
-	    	value: req.body.fairMarketValue, bid_increment: req.body.increments, _category: req.body.category},  
+	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
+	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category},  
 	    	function(err, package){
   
 
