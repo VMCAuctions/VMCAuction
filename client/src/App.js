@@ -7,9 +7,9 @@ import Package from './Package/package.js';
 class App extends Component {
   render() {
     return (
-      <ItemEntryAdmin />
+      // <ItemEntryAdmin />
       // <Catalog />
-      // <Package />
+      <Package />
     );
   }
 }

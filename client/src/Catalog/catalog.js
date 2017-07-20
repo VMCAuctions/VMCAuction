@@ -19,16 +19,16 @@ class Catalog extends Component{
             console.log(err);
         })
     }
-    render(){
+    render(){       
         let itemsList = this.state.listOfItems.map((item,index) =>{
             return(
                 <tr key={index}>
-                    <td>{item.id}</td>
+                    <td>{item._id}</td>
                     <td>{item.name}</td>
+                    <td>{item._package}</td>
                     <td>{item.value}</td>
                     <td>{item.description}</td>
                     <td>{item.restrictions}</td>
-                    <td>{item._package}</td>
                 </tr>
             )
         })
@@ -39,10 +39,10 @@ class Catalog extends Component{
                         <tr>
                             <th>Item Number</th>
                             <th>Item Name</th>
+                            <th>Package</th>
                             <th>Fair Market Value</th>
                             <th>Item Description</th>
-                            <th>Item Restriction</th>
-                            <th>Package</th>
+                            <th>Item Restriction</th>                            
                         </tr>
                     </thead>
                     <tbody>
