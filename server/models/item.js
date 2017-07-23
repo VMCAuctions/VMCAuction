@@ -22,7 +22,7 @@ var itemSchema = new Schema({
 
 
 
-itemSchema.plugin(autoIncrement.plugin, {model: 'Item', field: 'itemId', startAt: 100});
+itemSchema.plugin(autoIncrement.plugin, {model: 'Item', field: 'itemId', startAt: 1000});
 module.exports = mongoose.model('Item', itemSchema);
 
 // mongoose.model('Item', itemSchema);
