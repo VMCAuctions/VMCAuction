@@ -51,14 +51,25 @@ class Package extends Component{
     //Package form submit callback
     onPackageFormSubmit = (e) => {
         e.preventDefault();
+        console.log(this.state)
         Axios({
             method: 'post',
             url:'/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }
-        }).then((response) =>{
-            console.log(response)
+            }).then((response) =>{
+            console.log(response);
+            this.setState({
+                packageName: '',
+                packageDescription: '',
+                category:'',
+                openingBid: '',
+                increments:'',
+                selectedItems: [],
+                totalItems: 0,
+                totalValue: 0
+            })
         }).catch((err)=>{
             console.log("Incomplete form submission" + err)
         })
@@ -84,8 +95,8 @@ class Package extends Component{
     }
 
     render(){
-        let items = this.state.selectedItems.map((item) =>{
-            return <li>{item}</li>
+        let items = this.state.selectedItems.map((item,index) =>{
+            return <li key={index}>{item}</li>
         })
 
         return(

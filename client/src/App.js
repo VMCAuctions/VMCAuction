@@ -18,7 +18,7 @@ class App extends Component {
           <Route path='/items/new' component={ItemEntryAdmin}/>
           <Route path='/items' component={Catalog}/>
           <Route path='/packages/new' component={Package}/> 
-          <Route path='/packages' component={PackageCatalog}/>
+          <Route path='/package' component={PackageCatalog}/>
           {/*<Route path='/login' component={Login}/>  
           <Route path='/dashboard/:userId' component={Dashboard}/>   */}
 

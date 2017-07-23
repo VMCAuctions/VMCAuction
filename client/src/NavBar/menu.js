@@ -21,7 +21,7 @@ class Menu extends React.Component{
                         <Link to='/items'>Catalog</Link>
                     </li>
                     <li>
-                        <Link to='/packages'>Packages/Bids</Link>
+                        <Link to='/package'>Packages/Bids</Link>
                     </li>
                     {/*<li>
                         <Link to='/login'>Login</Link>

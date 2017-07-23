@@ -57,7 +57,7 @@ class DisplayItems extends Component{
         let items = this.state.itemsList.map((item,index) =>{
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' id={index} value={item.value} name={item.name}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' id={index} value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>

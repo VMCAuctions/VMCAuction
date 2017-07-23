@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from './modal.js';
-import Axios from 'axios';
+// import Axios from 'axios';
 
 class TestModal extends Component {
    constructor(props) {
@@ -21,6 +21,9 @@ class TestModal extends Component {
   addingCategory = () =>{
     console.log("adding new category",this.state.newCategoryValue )
     this.props.addingCategory(this.state.newCategoryValue)
+    this.setState({
+      newCategoryValue: ''
+    })
   }
 
   render() {

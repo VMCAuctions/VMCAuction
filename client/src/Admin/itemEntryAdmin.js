@@ -52,6 +52,14 @@ class ItemEntryAdmin extends Component{
                 // headers: {Authorization: localStorage.getItem("jw-token")}
         }).then((response) => {
             console.log(response);
+            this.setState({
+                itemName: '',
+                donor: '',
+                category:'',
+                fairMarketValue:'',
+                itemDescription: '',
+                 itemRestriction: ''
+            })
             // localStorage.setItem("jw-token", response.data.token);
         }).catch((err) =>{
             console.log("Incomplete Form", err);
