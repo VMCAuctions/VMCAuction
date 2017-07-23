@@ -8,11 +8,11 @@ mongoose.Promise = global.Promise;
 
 var packageSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
- _items: [{type: Schema.Types.ObjectId, ref: 'Item', required: true}],
+ _items: [{type: Schema.Types.ObjectId, ref: 'Item'}],
  description: {type: String, maxlength: 250},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
- 
- _category: {type: Schema.Types.ObjectId, ref: 'Category'},
+ _category: String,
+//  _category: {type: Schema.Types.ObjectId, ref: 'Category'},
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
  
 

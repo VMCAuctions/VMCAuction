@@ -3,6 +3,7 @@ console.log('routes.js');
 var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
+var categories = require('../controllers/categories.js')
 
 module.exports = function(app) {
 

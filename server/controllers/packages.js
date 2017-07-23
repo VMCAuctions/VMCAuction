@@ -47,6 +47,7 @@ function PackagesController(){
 
 		      if(err){
 		        console.log('package create-err');
+				console.log(err);
 		      }
 		      else{
 		      	// currently setting package._bids[0] to be the opening bid with no user associated with it
@@ -55,16 +56,20 @@ function PackagesController(){
 		        		console.log('bid create-err');
 		      		}
 		      		else{
-		        		return bid;
+		        		package._bids.push(bid.id);
 		      		}
 		    	}); // end of Bid.create()
 		    	
-		    	package._bids.push(bid.id);
+		    	
 
 
 		    	// update the items in this package to reflect item._package = this package we're creating
 		    	for(id in package._items){
-		    		Item.update({_id: id}, { $set: { _package: package.id}}, callback);
+		    		Item.update({_id: id}, { $set: { _package: package.id}}, function(err,result){
+						if(err){
+							console.log(err);
+						}
+					});
 		    		// example from mongoose.js docs
 		    		//Tank.update({ _id: id }, { $set: { size: 'large' }}, callback);
 		    	}

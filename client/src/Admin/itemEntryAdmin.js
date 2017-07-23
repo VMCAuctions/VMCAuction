@@ -17,17 +17,32 @@ class ItemEntryAdmin extends Component{
         }
     }
 
-//callback function for capturing user input changes
+    //callback function for capturing user input changes
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
         })  
         console.log(e.target.value);     
-    }    
-
+    }   
+    
+    
+    addingCategory = (value) =>{
+        console.log('adding category from admin item entry page')
+        Axios({
+            method: "post",
+            url: "/categories",
+            data: { category: value},
+        }).then((response)=>{
+            console.log(response);
+        }).catch((err)=>{
+            console.log(err);
+        })
+        
+    }
+    
 //posting data to the database on form submission
     formSubmit = (e) =>{             
-        e.preventDefault(); // prevent default form submission behaviour
+        e.preventDefault(); // prevent default form submission behaviour        
         Axios({
             method: "post",
             url:"/items",
@@ -39,7 +54,7 @@ class ItemEntryAdmin extends Component{
             console.log(response);
             // localStorage.setItem("jw-token", response.data.token);
         }).catch((err) =>{
-            console.log("Incomplete Form");
+            console.log("Incomplete Form", err);
         })
     }
     
@@ -49,24 +64,17 @@ class ItemEntryAdmin extends Component{
                 <label><h2>Item Info</h2> </label>
                 <div className='item-info'>
                     <form  onSubmit={this.formSubmit}>
-                        {/*decided to auto-generate item number on form submission*/}
-                        {/*Item Number: <input type='number' name='itemNumber' required/><br/><br/>*/}                           
+
                          <input className='form-control input-lg' type='text' name='itemName' 
                                 placeholder='Item Name' onChange={this.handleChange} value={this.state.itemName} required/><br/><br/>
                          <input className='form-control input-lg' type='text' name='donor' 
                                 placeholder='Donor' onChange={this.handleChange} value={this.state.donor}/><br/><br/>
-                         {/*<select name='category' value={this.state.category} onChange={this.handleChange} className="form-control input-lg" required> 
-                            <option value=''>Category</option>
-                            <option value='travel'>Travel</option>
-                            <option value='art'>Art</option>
-                            <option value='wine'>Wine</option>
-                            <option value='food'>Food</option>
-                            <option value='toys'>Electronics</option>
-                        </select><br/>   */}
-                        
-                         <Select name='category' value={this.state.category} handleChange={this.handleChange}/><br/>
+                         
+                        {/*Select component renders the dropdown for category selection*/}
+                         <Select name='category' handleChange={this.handleChange}/><br/>
 
-                            <TestModal /><br/><br/>
+                        {/*TestModal component renders the popup modal for adding new category option to the dropdown*/}
+                        <TestModal addingCategory={this.addingCategory}/><br/><br/>
                         
                         <div className="form-group">
                             {/*<label className="sr-only" >Amount (in dollars)</label>*/}

@@ -40,14 +40,27 @@ function CategoriesController(){
 		
     
 	    console.log(req.body);
-	    Category.create({name: req.body.categoryName},  function(err, result){
+	    Category.create({name: req.body.category},  function(err, result){
       		
 
 	      if(err){
 	        console.log('category create-err');
 	      }
 	      else{
-	        res.json(result);
+	       	Category.find({}, function(err, categories) {
+    		// This is the method that finds all of the categories from the database
+	    		if(err) {
+	      		console.log('failed to load categories');
+	    		}
+	    		else { 
+	      		console.log('successfully loaded categories!');
+	      		console.log(categories); 
+	      		// test screen for categories index
+	      		// res.send('categories Index Page'); // successful        
+	        	
+	        	res.json(categories);
+	        }
+        })  
 	      }
 	    });
 	};
@@ -56,4 +69,4 @@ function CategoriesController(){
 	
   
 }
-module.exports = new categoriesController(); 
+module.exports = new CategoriesController(); 

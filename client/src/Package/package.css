@@ -1,10 +1,13 @@
-.package-info, .displaySelectedItems{
+.package-info{
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
+    width: 300px;
 }
-.groupingItems{
-    vertical-align: bottom;
+.displaySelectedItems{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
 }
 #package-container{
     border: 1px solid gray;

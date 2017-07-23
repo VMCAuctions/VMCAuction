@@ -8,9 +8,9 @@ class Menu extends React.Component{
         return(
             <div className='navbar navbar-inverse bg-inverse'>
                 <ul id='myNav'>
-                    {/*<li>
+                    <li>
                         <Link to='/'>Home</Link>
-                    </li>*/}
+                    </li>
                     <li>
                         <Link to='/items/new'>Items</Link>
                     </li>
@@ -19,6 +19,9 @@ class Menu extends React.Component{
                     </li>
                     <li>
                         <Link to='/items'>Catalog</Link>
+                    </li>
+                    <li>
+                        <Link to='/packages'>Packages/Bids</Link>
                     </li>
                     {/*<li>
                         <Link to='/login'>Login</Link>

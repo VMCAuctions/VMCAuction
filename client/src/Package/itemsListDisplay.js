@@ -7,7 +7,9 @@ class DisplayItems extends Component{
         this.state = {
             itemsList : [],
             groupedItems: [],
-            totalValue: 0
+            selectedItems: props.selectedItems, 
+            totalValue: props.totalValue,
+            totalItems: props.totalItems
         }
     }
 
@@ -22,20 +24,32 @@ class DisplayItems extends Component{
             console.log(err);
         })
     }
-
-    rowSelect= (e) =>{
-        // console.log(this)
-        // console.log(this.state.groupedItems)
-        
-        this.state.groupedItems.push(e.target.name);
-        console.log(e.target.checked)
+    
+    componentWillReceiveProps(props){
         this.setState({
-            groupedItems: this.state.groupedItems,
-            totalValue:  parseInt(e.target.value)
+            selectedItems: this.state.selectedItems,
+            totalValue: this.state.totalValue, 
+            totalItems: this.state.totalItems
         })
-        console.log(this.state.groupedItems, this.state.totalValue)
+    } 
+    rowSelect= (e) =>{
+        console.log(e.target.checked, this)
+        if(e.target.checked){
+            this.state.groupedItems.push(e.target.name);
+            this.props.capturingGroupedItems(e.target.name, parseInt(e.target.value), e.target.checked, e.target.id)
+        }else{
+            console.log("removing element")
+            this.state.groupedItems.splice(parseInt(e.target.id), 1)
+            this.props.removeGroupedItems(parseInt(e.target.value), parseInt(e.target.id))
+        }
+        // console.log(e.target.checked)
+        // this.setState({
+        //     groupedItems: this.state.groupedItems,
+        //     totalValue:  parseInt(e.target.value)
+        // })
+        console.log(this.state.selectedItems, this.state.totalValue, e.target.id)
         //invoking parent(package.js) callback with two arguments    
-        this.props.capturingGroupedItems(this.state.groupedItems, this.state.totalValue)
+        
        
     }
 
@@ -43,7 +57,7 @@ class DisplayItems extends Component{
         let items = this.state.itemsList.map((item,index) =>{
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' value={item.value} name={item.name}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' id={index} value={item.value} name={item.name}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>
