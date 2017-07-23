@@ -1,7 +1,8 @@
 console.log('models/item.js');
 
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+    autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
 
@@ -21,6 +22,7 @@ var itemSchema = new Schema({
 
 
 
+itemSchema.plugin(autoIncrement.plugin, {model: 'Item', field: 'itemId', startAt: 100});
 module.exports = mongoose.model('Item', itemSchema);
 
 // mongoose.model('Item', itemSchema);

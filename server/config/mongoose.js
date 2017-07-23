@@ -20,11 +20,17 @@ var mongoose      = require('mongoose'),
 /*
 *  database information
 */
-    dbURI         = 'mongodb://localhost/POTR_DEV';  
+    dbURI         = 'mongodb://localhost/POTR_DEV' || '127.0.0.1:27017',
+
+    // require auto-increment for simple, readable ID's
+    autoIncrement = require('mongoose-auto-increment');  
 /*
 * Connect to the database
 */
-mongoose.connect( dbURI );
+var connection = mongoose.connect( dbURI );
+
+// initialize auto-increment
+autoIncrement.initialize(connection);
 /*
 *  CONNECTION EVENTS
 *  When successfully connected
