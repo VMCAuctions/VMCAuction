@@ -32,9 +32,9 @@ class Package extends Component{
         //Get request for category dropdown list
         Axios.get("/categories")
         .then((response)=>{
-            console.log(response);
+            console.log(response.data);
             this.setState({
-                categoryList: response
+                categoryList: response.data
             })
         }).catch((err)=>{
             console.log("categoryList failed", err)
@@ -42,11 +42,20 @@ class Package extends Component{
     } 
     addingCategory = (value) =>{
         console.log('adding category from admin item entry page')
-        this.state.categoryList.push(value)
-        this.setState({
-            categoryList: this.state.categoryList
+        Axios({
+            method: "post",
+            url: "/categories",
+            data: { category: value},
+        }).then((response)=>{
+            console.log(response);
+        }).catch((err)=>{
+            console.log(err);
         })
-        console.log(this.state.categoryList);
+        // this.state.categoryList.push(value)
+        // this.setState({
+        //     categoryList: this.state.categoryList
+        // })
+        // console.log(this.state.categoryList);
     }
     //Package form submit callback
     onPackageFormSubmit = (e) => {
