@@ -18,7 +18,7 @@ var path = require("path");
 app.use(express.static(path.join(__dirname, "../client/public")));
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
-app.set('views', path.join(__dirname, '../html'));
+app.set('views', path.join(__dirname, '../wireframe'));
 app.set('view engine', 'ejs');
 
 
