@@ -9,7 +9,8 @@ mongoose.Promise = global.Promise;
 var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4, maxlength: 250},
- _category: {type: Schema.Types.ObjectId, ref: 'Category'},	
+ _category: String,
+ //_category: {type: Schema.Types.ObjectId, ref: 'Category'},	
  donor: {type: String, default: 'anonymous'},
  restrictions: {type: String, maxlength: 250},
  value: Number,
@@ -22,7 +23,7 @@ var itemSchema = new Schema({
 
 
 
-itemSchema.plugin(autoIncrement.plugin, {model: 'Item', field: 'itemId', startAt: 1000});
+itemSchema.plugin(autoIncrement.plugin, {model: 'Item', startAt: 1000});
 module.exports = mongoose.model('Item', itemSchema);
 
 // mongoose.model('Item', itemSchema);

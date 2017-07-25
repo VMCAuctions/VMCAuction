@@ -12,8 +12,8 @@ var packageSchema = new Schema({
  _items: [{type: Schema.Types.ObjectId, ref: 'Item'}],
  description: {type: String, maxlength: 250},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
-//  _category: String,
- _category: {type: Schema.Types.ObjectId, ref: 'Category'},
+  _category: String,
+// _category: {type: Schema.Types.ObjectId, ref: 'Category'},
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
  
 
@@ -27,6 +27,6 @@ var packageSchema = new Schema({
 
 
 
-packageSchema.plugin(autoIncrement.plugin, {model: 'Package', field: 'packageId', startAt: 100});
+packageSchema.plugin(autoIncrement.plugin, {model: 'Package', startAt: 100});
 
 module.exports = mongoose.model('Package', packageSchema);

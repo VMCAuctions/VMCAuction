@@ -24,7 +24,7 @@ class Catalog extends Component{
         let itemsList = this.state.listOfItems.map((item,index) =>{
             return(
                 <tr key={index}>
-                    <td>{item.itemId}</td>
+                    <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item._package}</td>
                     <td>{item.value}</td>
