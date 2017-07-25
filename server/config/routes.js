@@ -89,6 +89,26 @@ module.exports = function(app) {
 	app.put('/users/:id', function(req,res){
 		users.update(req,res)});
 	
+
+	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
+	// This was added just for a mock run through with the Foundation ////////
+	/*<a href="/items/bidder">Items</a> |
+    <a href="/packages/bidder">Packages</a> |
+    <a href="/bids/bidder">Bids</a> |
+    <a href="/profile/bidder">Profile</a> |
+    <a href="/cart/bidder">Cart</a>*/
+
+    app.get('/item/bidder', function(req,res){res.render('items')});
+
+    app.get('/package/bidder', function(req,res){res.render('packagesBidder')});
+
+    app.get('/bid/bidder', function(req,res){res.render('bidderPackages')});
+
+    app.get('/profile/bidder', function(req,res){res.render('user')});
+
+    app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
   
 }  // end of module.exports
 

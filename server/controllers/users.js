@@ -15,7 +15,7 @@ function UsersController(){
 	// root route get('/')
 	this.welcome = function(req,res){
 		console.log('UsersController welcome');
-	}
+	};
 	// get all bidders and their packages won, audit page
 	this.index = function(req,res){
 		console.log('UsersController index');
