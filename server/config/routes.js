@@ -33,7 +33,7 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
-	// get the index page of all packages //
+	// get the index page of all packages 
 	app.get('/packages', function(req,res){
 		packages.index(req,res)});
 	// get the new package form
@@ -78,9 +78,12 @@ module.exports = function(app) {
 	// get the new user registration form
 	app.get('/users/new', function(req,res){
 		users.new(req,res)});
-	// post the new user form and create that new user
+	// post the new user form and create that new user (Registration)
 	app.post('/users', function(req,res){
 		users.create(req,res)});
+	// post the user login form  (LOGIN)
+	app.post('/users/:id/login', function(req,res){
+		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/users/:id', function(req,res){
 		console.log(req.param.id);

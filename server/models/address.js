@@ -6,9 +6,8 @@ mongoose.Promise = global.Promise;
 
 
 var addressSchema = new Schema({
-	number: String,
-	apartment: String,
 	street: String,
+	apartment: String,
 	city: String,
 	state: String,
 	zip: String

@@ -22,7 +22,7 @@ function ItemsController(){
 	    	}
 	    	else { 
 	      		console.log('successfully loaded items!');
-	      		console.log(items); 
+	      		
 	      		// test screen for items index
 	      		// res.send('Items Index Page'); // successful        
 	        	
@@ -45,7 +45,7 @@ function ItemsController(){
     
 	    console.log(req.body);
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
-	      category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
+	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
 	      value: req.body.fairMarketValue},  function(err, result){
 	    	// from front end ///////////
 	    	//	   itemName: '',
@@ -59,6 +59,7 @@ function ItemsController(){
 
 	      if(err){
 	        console.log('Item.create error');
+	        console.log(err);
 	        res.status(500).send('Failed to Create Item');
 	      }
 	      else{
