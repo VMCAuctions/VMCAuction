@@ -86,7 +86,7 @@ module.exports = function(app) {
 		console.log(req.param.id);
 		users.show(req,res)});
 	// update a specific user (profile/info)
-	app.put('/users/:id', function(req,res){
+	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
 	
 
@@ -97,7 +97,6 @@ module.exports = function(app) {
     <a href="/bids/bidder">Bids</a> |
     <a href="/profile/bidder">Profile</a> |
     <a href="/cart/bidder">Cart</a>*/
-
     app.get('/item/bidder', function(req,res){res.render('items')});
 
     app.get('/package/bidder', function(req,res){res.render('packagesBidder')});
@@ -107,7 +106,7 @@ module.exports = function(app) {
     app.get('/profile/bidder', function(req,res){res.render('user')});
 
     app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
-
+    /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
   
 }  // end of module.exports

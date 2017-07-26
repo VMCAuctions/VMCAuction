@@ -15,7 +15,8 @@ function PackagesController(){
 		Package.find({}, function(err, packages) {
     		// This is the method that finds all of the packages from the database
 	    	if(err) {
-	      		console.log('something went wrong from database');
+	      		console.log('Package Index Error');
+	      		res.status(500).send('Failed to Load Packages');
 	    	}
 	    	else { 
 	      		console.log('successfully loaded packages!');
@@ -47,13 +48,13 @@ function PackagesController(){
 
 		      if(err){
 		        console.log('package create-err');
-				console.log(err);
+				res.status(500).send('Failed to Create Package');
 		      }
 		      else{
 		      	// currently setting package._bids[0] to be the opening bid with no user associated with it
 	    		Bid.create({amount: req.body.openingBid, _package: package.id}, function(err, bid){
 	    			if(err){
-		        		console.log('bid create-err');
+		        		console.log('Bid.create err in Package.create');
 		      		}
 		      		else{
 		        		package._bids.push(bid.id);
@@ -67,11 +68,10 @@ function PackagesController(){
 		    	for(id in package._items){
 		    		Item.update({_id: id}, { $set: { _package: package.id}}, function(err,result){
 						if(err){
-							console.log(err);
+							console.log('Item update in Package.create Err');
 						}
 					});
-		    		// example from mongoose.js docs
-		    		//Tank.update({ _id: id }, { $set: { size: 'large' }}, callback);
+		    		
 		    	}
 		    	res.json(package);
 			  }
