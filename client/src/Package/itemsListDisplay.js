@@ -6,10 +6,7 @@ class DisplayItems extends Component{
         super(props);
         this.state = {
             itemsList : [],
-            groupedItems: [],
-            selectedItems: props.selectedItems, 
-            totalValue: props.totalValue,
-            totalItems: props.totalItems
+            selectedItems: props.selectedItems
         }
     }
 
@@ -25,39 +22,28 @@ class DisplayItems extends Component{
         })
     }
     
-    componentWillReceiveProps(props){
-        this.setState({
-            selectedItems: this.state.selectedItems,
-            totalValue: this.state.totalValue, 
-            totalItems: this.state.totalItems
-        })
-    } 
+    // componentWillReceiveProps(props){
+    //     this.setState({
+    //         selectedItems: this.state.selectedItems,
+    //     })
+    // } 
     rowSelect= (e) =>{
         console.log(e.target.checked, this)
+        //if e.target.checked is true, invoke capturingGroupedItems function 
+        //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
-            this.state.groupedItems.push(e.target.name);
-            this.props.capturingGroupedItems(e.target.name, parseInt(e.target.value), e.target.checked, e.target.id)
-        }else{
-            console.log("removing element")
-            this.state.groupedItems.splice(parseInt(e.target.id), 1)
-            this.props.removeGroupedItems(parseInt(e.target.value), parseInt(e.target.id))
-        }
-        // console.log(e.target.checked)
-        // this.setState({
-        //     groupedItems: this.state.groupedItems,
-        //     totalValue:  parseInt(e.target.value)
-        // })
-        console.log(this.state.selectedItems, this.state.totalValue, e.target.id)
-        //invoking parent(package.js) callback with two arguments    
-        
-       
-    }
+            this.props.capturingGroupedItems(e.target.name, parseInt(e.target.value))
+        }else{ 
+            this.props.removeGroupedItems(parseInt(e.target.value), e.target.name)
+        }       
+   }
 
     render(){
+        //maping the array of objects into table data
         let items = this.state.itemsList.map((item,index) =>{
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' id={index} value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>

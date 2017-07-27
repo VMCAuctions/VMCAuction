@@ -13,23 +13,24 @@ class PackageCatalog extends Component{
             this.setState({
                 listOfPackages: result.data
             })
-            console.log(this.state.listOfPackages)
         }).catch((err) =>{
             console.log(err);
         })
     }
     render(){
         let packageList = this.state.listOfPackages.map((packages,index) =>{
+                console.log(packages._bids);
             return(
                 <tr key={index}>
-                    <td>{packages.itemId}</td>
+                    <td>{packages._id}</td>
                     <td>{packages.name}</td>
                     <td>{packages._category}</td>
                     <td>{packages.value}</td>
                     <td>{packages.description}</td>
                     <td>{packages.bid_increment}</td>
                     <td>{packages._bids[0]}</td>
-                    <td>{packages._items}</td>
+                    <td>{packages._items.map((item,index)=>{
+                        return <li key={index} >{item}</li>})}</td>
                 </tr>
             )
         })

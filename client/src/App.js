@@ -15,7 +15,7 @@ class App extends Component {
         <div className="App">
           <Menu />
           <Route exact path='/' component={Home}/>
-          <Route path='/items/new' component={ItemEntryAdmin}/>
+          <Route path='/item/new' component={ItemEntryAdmin}/>
           <Route path='/items' component={Catalog}/>
           <Route path='/packages/new' component={Package}/> 
           <Route path='/package' component={PackageCatalog}/>
