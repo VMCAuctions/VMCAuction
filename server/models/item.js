@@ -16,7 +16,7 @@ var itemSchema = new Schema({
  value: Number,
  
  photo: {type: String},
- _package: {type: Schema.Types.ObjectId, ref: 'Package'}
+ _package: {type: Number, ref: 'Package'}
 }, { timestamps: true });
 
 
