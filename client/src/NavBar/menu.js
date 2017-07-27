@@ -35,8 +35,8 @@ class Menu extends React.Component{
                             </li>
                         </ul>  
                         <ul className="nav navbar-nav navbar-right">
-                            <li><Link to='/login'><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
-                            <li><Link to='/register'><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
+                            <li><Link to='/register'><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
+                            <li><Link to='/login'><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
                         </ul>                  
                     </div>
                 </div>
