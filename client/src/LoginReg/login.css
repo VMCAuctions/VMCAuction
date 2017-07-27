@@ -1,0 +1,25 @@
+#userName{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+} 
+#password{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+}
+#submit{
+    width: 100px
+    }
+ 
+#firstName{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+}
+
+.btn{
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+}
