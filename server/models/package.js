@@ -12,13 +12,10 @@ var packageSchema = new Schema({
  _items: [{type: Number, ref: 'Item'}],
  description: {type: String, maxlength: 250},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
-<<<<<<< Updated upstream
+// <<<<<<< Updated upstream
   _category: String,
 // _category: {type: Schema.Types.ObjectId, ref: 'Category'},
-=======
- _category: String,
-//  _category: {type: Schema.Types.ObjectId, ref: 'Category'},
->>>>>>> Stashed changes
+// >>>>>>> Stashed changes
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
  
 
