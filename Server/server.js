@@ -14,11 +14,17 @@ var path = require("path");
 
 
 // static content 
-
 app.use(express.static(path.join(__dirname, "../client/public")));
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
 
+
+///////////////////////////////////////////////////////////////////////////////////
+//////// THIS PORTION IS TEMPORARY - IT IS JUST HERE TO RUN THE HTML MOCKUPS OF THE  
+//////// UNINTEGRATED BIDDER SCREENS FOR OUR PRESENTATION TO THE CLIENT ON 7/28/17
+app.set('views', path.join(__dirname, '../wireframe'));
+app.set('view engine', 'ejs');
+//////////////////////////////////////////////////////////////////////////////////
 
 // require the mongoose configuration file which does the rest for us
 //////  REMEMBER TO GO TO "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" /////////

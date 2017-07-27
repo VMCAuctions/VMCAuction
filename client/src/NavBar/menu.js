@@ -6,25 +6,37 @@ import "./menu.css";
 class Menu extends React.Component{
     render(){
         return(
-            <div className='navbar navbar-inverse bg-inverse'>
-                <ul id='myNav'>
-                    {/*<li>
-                        <Link to='/'>Home</Link>
-                    </li>*/}
-                    <li>
-                        <Link to='/items/new'>Items</Link>
-                    </li>
-                    <li>
-                        <Link to='/packages/new'>Package</Link>
-                    </li>
-                    <li>
-                        <Link to='/items'>Catalog</Link>
-                    </li>
-                    {/*<li>
-                        <Link to='/login'>Login</Link>
-                    </li>*/}
-                </ul>
-            </div>
+            <nav className="navbar navbar-inverse">
+                <div className="container-fluid">
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>                      
+                        </button>
+                        <a className="navbar-brand" href="#">VMC POTR</a>
+                    </div>
+                    <div className="collapse navbar-collapse" id="myNavbar">
+                        <ul className="nav navbar-nav">
+                            <li>
+                                <Link to='/'>Home</Link>
+                            </li>
+                            <li>
+                                <Link to='/item/new'>Items</Link>
+                            </li>
+                            <li>
+                                <Link to='/items'>Catalog</Link>
+                            </li>
+                            <li>
+                                <Link to='/packages/new'>Package</Link>
+                            </li>
+                            <li>
+                                <Link to='/package'>Packages/Bids</Link>
+                            </li>
+                        </ul>                    
+                    </div>
+                </div>
+          </nav>
         )
     }
 }

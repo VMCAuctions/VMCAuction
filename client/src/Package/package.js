@@ -12,6 +12,7 @@ class Package extends Component{
             packageName: '',
             packageDescription: '',
             category:'',
+            categoryList:[],
             openingBid: '',
             increments:'',
             selectedItems: [],
@@ -25,38 +26,90 @@ class Package extends Component{
         this.setState({
         [e.target.name] : e.target.value
         })
-        // console.log(e.target.value);
     }
 
-    //Package form submit callback
+    componentDidMount(){
+        //Get request for category dropdown list
+        Axios.get("/categories")
+        .then((response)=>{
+            console.log(response.data);
+            this.setState({
+                categoryList: response.data
+            })
+        }).catch((err)=>{
+            console.log("categoryList failed", err)
+        })
+    } 
+    //function for adding a new category to the dropdown
+    addingCategory = (value) =>{
+        Axios({
+            method: "post",
+            url: "/categories",
+            data: { category: value},
+        }).then((response)=>{
+            console.log(response);
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+    //Package form submit function
     onPackageFormSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // prevents the default form behaviour
         console.log(this.state)
         Axios({
             method: 'post',
             url:'/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
-                selectedItems:this.state.selectedItems  }
-        }).then((response) =>{
-            console.log(response)
+                selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }
+            }).then((response) =>{
+            console.log(response);
+            this.setState({
+                packageName: '', 
+                packageDescription: '',
+                category:'',
+                openingBid: '',
+                increments:'',
+                selectedItems: [],
+                totalItems: 0,
+                totalValue: 0
+            })
         }).catch((err)=>{
             console.log("Incomplete form submission" + err)
         })
     }
-
-    capturingGroupedItems = (arr, value) =>{
-        console.log(arr,value);
+    //selecte items from the list and updating the display fields(totalItems and totalValue)
+    capturingGroupedItems = (item, value) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
+        console.log(item,value);
+        let itemSelect = this.state.selectedItems;
+        itemSelect.push(item);
         this.setState({
-            selectedItems: arr,
+            selectedItems: itemSelect,
             totalItems: this.state.selectedItems.length,
             totalValue:  this.state.totalValue + value
-        })        
+        })       
+    }
+     //unSelecte items from the list and updating the display fields(totalItems and totalValue)
+    removeGroupedItems = (value, item) => {
+        console.log(value, item, this.state.selectedItems);
+        let itemUnselect = this.state.selectedItems;
+        let id;
+        for(var i=0; i<itemUnselect.length;i++){
+            if(item == itemUnselect[i]){
+                id = i;
+            }
+        }
+        itemUnselect.splice(id,1)
+        this.setState({
+            selectedItems: itemUnselect,
+            totalItems: this.state.selectedItems.length,
+            totalValue: this.state.totalValue - value
+        })
     }
 
     render(){
-        let items = this.state.selectedItems.map((item) =>{
-            return <li>{item}</li>
+        let items = this.state.selectedItems.map((item,index) =>{
+            return <li key={index}>{item}</li>
         })
 
         return(
@@ -65,15 +118,16 @@ class Package extends Component{
                     <div className='package-info form-group'>
                         <h3>Package Info</h3>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
-                        <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5' value={this.state.packageDescription} onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
+                        <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
                         
-                        <Select name='category' value={this.state.category} handleChange={this.onPackageChange}/><br/>
-                        <TestModal /><br/><br/>
+                        <Select categoryList={this.state.categoryList} name='category' 
+                                 value={this.state.category} handleChange={this.onPackageChange}/><br/>
+                        <TestModal addingCategory={this.addingCategory}/><br/><br/>
 
                         <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} placeholder='Opening Bid' required/><br/><br/>
                         <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
-                        <input className="form-control"  value={this.state.totalValue} placeholder="Total Market value" readonly /><br/><br/>
-                        <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readonly /><br/><br/>
+                        <input className="form-control"  value={this.state.totalValue} placeholder="Total Market value" readOnly /><br/><br/>
+                        <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>
                     <div className="form-group groupingItems">
@@ -81,7 +135,10 @@ class Package extends Component{
                             <h3>Grouping items</h3>
                             <div className='.table-responsive'>
                                 <table className='table'>
-                                    <DisplayItems capturingGroupedItems={this.capturingGroupedItems}/>
+                                    <DisplayItems 
+                                        selectedItems={this.state.selectedItems}
+                                        capturingGroupedItems={this.capturingGroupedItems} 
+                                        removeGroupedItems={this.removeGroupedItems}/>
                                 </table>
                             </div>                    
                         </div>                                  

@@ -3,6 +3,7 @@ console.log('routes.js');
 var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
+var categories = require('../controllers/categories.js')
 
 module.exports = function(app) {
 
@@ -32,7 +33,7 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
-	// get the index page of all packages //
+	// get the index page of all packages 
 	app.get('/packages', function(req,res){
 		packages.index(req,res)});
 	// get the new package form
@@ -77,17 +78,39 @@ module.exports = function(app) {
 	// get the new user registration form
 	app.get('/users/new', function(req,res){
 		users.new(req,res)});
-	// post the new user form and create that new user
+	// post the new user form and create that new user (Registration)
 	app.post('/users', function(req,res){
 		users.create(req,res)});
+	// post the user login form  (LOGIN)
+	app.post('/users/:id/login', function(req,res){
+		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/users/:id', function(req,res){
 		console.log(req.param.id);
 		users.show(req,res)});
 	// update a specific user (profile/info)
-	app.put('/users/:id', function(req,res){
+	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
 	
+
+	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
+	// This was added just for a mock run through with the Foundation ////////
+	/*<a href="/items/bidder">Items</a> |
+    <a href="/packages/bidder">Packages</a> |
+    <a href="/bids/bidder">Bids</a> |
+    <a href="/profile/bidder">Profile</a> |
+    <a href="/cart/bidder">Cart</a>*/
+    app.get('/item/bidder', function(req,res){res.render('items')});
+
+    app.get('/package/bidder', function(req,res){res.render('packagesBidder')});
+
+    app.get('/bid/bidder', function(req,res){res.render('bidderPackages')});
+
+    app.get('/profile/bidder', function(req,res){res.render('user')});
+
+    app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
+    /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
   
 }  // end of module.exports
 

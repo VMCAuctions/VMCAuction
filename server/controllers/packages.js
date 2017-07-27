@@ -15,7 +15,8 @@ function PackagesController(){
 		Package.find({}, function(err, packages) {
     		// This is the method that finds all of the packages from the database
 	    	if(err) {
-	      		console.log('something went wrong from database');
+	      		console.log('Package Index Error');
+	      		res.status(500).send('Failed to Load Packages');
 	    	}
 	    	else { 
 	      		console.log('successfully loaded packages!');
@@ -47,35 +48,52 @@ function PackagesController(){
 
 		      if(err){
 		        console.log('package create-err');
+				res.status(500).send('Failed to Create Package');
 		      }
 		      else{
-		      	// currently setting package._bids[0] to be the opening bid with no user associated with it
-	    		Bid.create({amount: req.body.openingBid, _package: package.id}, function(err, bid){
-	    			if(err){
-		        		console.log('bid create-err');
+		      	console.log(package);
+		       	// currently setting package._bids[0] to be the opening bid with no user associated with it
+	     		Bid.create({amount: req.body.openingBid, _package: package._id}, function(err, bid){
+	     			if(err){
+	     				console.log(err);
+		        		console.log('Bid.create err in Package.create');
 		      		}
 		      		else{
-		        		return bid;
+			    //   			
+		      			
+		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,raw){
+		        			if(err){
+		        				console.log('_bids $push error'+err);
+		        			}
+		        			else{
+		        				console.log('_bids $push success'+raw);
+		        			}
+		        		}); // end of Package.update inside Bid.create
 		      		}
 		    	}); // end of Bid.create()
 		    	
-		    	package._bids.push(bid.id);
+		    	
 
 
-		    	// update the items in this package to reflect item._package = this package we're creating
-		    	for(id in package._items){
-		    		Item.update({_id: id}, { $set: { _package: package.id}}, callback);
-		    		// example from mongoose.js docs
-		    		//Tank.update({ _id: id }, { $set: { size: 'large' }}, callback);
+		    	// update the items in this package to reflect item._package == this package._id we're creating
+		    	
+		    	for(var i=0; i<package._items.length; i++){
+		    		
+		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id}}, function(err,result){
+						if(err){
+							console.log('Item update in Package.create Err');
+						}
+					});
+		    		
 		    	}
 		    	res.json(package);
 			  }
 			}
-		);
+		); // end of Package.create
 
 	    	    
 	    
-	};  // end of .create
+	};  // end of this.create
 
 
 

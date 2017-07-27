@@ -17,11 +17,12 @@ function ItemsController(){
 		Item.find({}, function(err, items) {
     		// This is the method that finds all of the items from the database
 	    	if(err) {
-	      		console.log('something went wrong from database');
+	      		console.log('Item.index error');
+	      		res.status(500).send('Failed to Load Items');
 	    	}
 	    	else { 
 	      		console.log('successfully loaded items!');
-	      		console.log(items); 
+	      		
 	      		// test screen for items index
 	      		// res.send('Items Index Page'); // successful        
 	        	
@@ -44,7 +45,7 @@ function ItemsController(){
     
 	    console.log(req.body);
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
-	      category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
+	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
 	      value: req.body.fairMarketValue},  function(err, result){
 	    	// from front end ///////////
 	    	//	   itemName: '',
@@ -57,7 +58,9 @@ function ItemsController(){
       		
 
 	      if(err){
+	        console.log('Item.create error');
 	        console.log(err);
+	        res.status(500).send('Failed to Create Item');
 	      }
 	      else{
 	        res.json(result);
@@ -85,7 +88,7 @@ function ItemsController(){
 		Item.findById(req.params.id, function (err, item) {  
     		
 		    if (err) {
-		        res.status(500).send(err);
+		        res.status(500).send('Failed to Update Item');
 		    } 
 		    else {
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
@@ -101,7 +104,7 @@ function ItemsController(){
 	            
 		        item.save(function (err, item) {
 		            if (err) {
-		                res.status(500).send(err)
+		                res.status(500).send('Failed to Save Item update')
 		            }
 		            res.send(item);
 		        });

@@ -1,38 +1,40 @@
 import React, { Component } from 'react';
-// import Axios from './axios';
+import Axios from 'axios';
 
 class Select extends Component{
     constructor(props){
         super(props);
-        this.state = { selectoptions:['Category','Electronics','Food','Wine','Travel','Getaway'] }
+        this.state = { 
+            selectoptions: []
+        }
     }
 
-    // componentDidMount(){
-    //     Axios.get("")
-    //     .then((response) => {
-    //         console.log(rsponse);
-    //         this.setState({
-    //             selectOptions: response.data
-    //         })
-    //     }).catch((err) =>{
-    //         console.log(err);
-    //     })
-    // }
+    componentDidMount(){
+        //Get request for category dropdown list
+        // console.log("Select.js componentDidMount")
+        Axios.get("/categories")
+        .then((response)=>{
+            // console.log(response.data);
+            this.setState({
+                selectoptions: response.data
+            })
+        }).catch((err)=>{
+            console.log("categoryList failed", err)
+        })
+    } 
 
     handleChange = (e) => {
-        this.props.handleChange(e); //invoke the parent callback for handling the changes
+        this.props.handleChange(e); //invoke the parent(itemEntryAdmin.js) callback for handling the changes
     }
 
     render(){
         //maping the array with option tags
-        let dropdownOptions = this.state.selectoptions.map((itemValue) => {
-            return <option value={itemValue}>{itemValue}</option>
+        let dropdownOptions = this.state.selectoptions.map((itemValue,index) => {
+            return <option key={index} value={itemValue.name} >{itemValue.name}</option>
         })
-        // console.log(this.props.value);
-        // console.log(this.props.name);
         return(
             <div>
-                <select className='form-control input-lg' value={this.props.value} onChange={this.handleChange} name={this.props.name} >
+                <select className='form-control input-lg' onChange={this.handleChange} name={this.props.name} >
                     {dropdownOptions}
                 </select>
             </div>
