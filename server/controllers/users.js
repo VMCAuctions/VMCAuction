@@ -64,8 +64,16 @@ function UsersController(){
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
 		console.log('UsersController show');
+        User.findById(req.params.id, function(err, result){
+            if(err){
+                console.log('user show-err');
+            }else{
+                req.json(result);
+            }
+        });
 	};
-	this.update = function(req,res){
+	//are we allowing users to be able to edit / update their information
+    this.update = function(req,res){
 		console.log('UsersController update');
 	}
 
