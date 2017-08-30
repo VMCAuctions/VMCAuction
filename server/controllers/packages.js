@@ -41,8 +41,9 @@ function PackagesController(){
 
     	
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
+        /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
 	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category},  
+	    	value: req.body.totalValue, bid_increment: req.body.increments, _bids: req.body.openingBid, _category: req.body.category},  
 	    	function(err, package){
   
 
