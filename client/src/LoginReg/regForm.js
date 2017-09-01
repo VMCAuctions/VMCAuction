@@ -22,9 +22,6 @@ class RegForm extends React.Component{
             cnfmPassword:''
         };
     }
-    handleClick = (e) => {
-
-    }
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
