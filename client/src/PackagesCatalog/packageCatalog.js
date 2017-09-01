@@ -58,18 +58,27 @@ class PackageCatalog extends Component{
     handleChange(e){
         this.setState({selectValue:e.target.value});
         e.preventDefault();
-        Axios({
-            method: "post",
-            url: "/get_selected_packages",
-            data: { category: e.target.value}
-        }).then((result) =>{
-            console.log("filtered these pacakges through the database", result)
+
+        if(e.target.value === "All Categories"){
+            console.log("loading all categories")
             this.setState({
-                listOfPackages: result.data
+                listOfPackages: this.state.allPackages
             })
-        }).catch((err) =>{
-            console.log("there was an error making it to the server..")
-        })
+        }else{
+            Axios({
+                method: "post",
+                url: "/get_selected_packages",
+                data: { category: e.target.value}
+            }).then((result) =>{
+                console.log("filtered these pacakges through the database", result)
+                this.setState({
+                    listOfPackages: result.data
+                })
+            }).catch((err) =>{
+                console.log("there was an error making it to the server..")
+            })
+        }
+        
     }
 
     //this function deals with the user locating packages, this function is run after every new letter
@@ -151,7 +160,7 @@ class PackageCatalog extends Component{
                         <form>
                             <h3>Search By Category</h3>
                             <select onChange={this.handleChange} value={this.state.selectValue} >
-                                <option value=""></option>
+                                <option value="All Categories">All Categories</option>
                                 {categories}
                             </select>
                         </form>
