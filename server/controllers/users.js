@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 	Address = require('../models/address.js'),
 	Package = require('../models/package.js');
 
- // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query, 
- // the error parameter will contain an error document, and result will be null. 
+ // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query,
+ // the error parameter will contain an error document, and result will be null.
  // If the query is successful, the error parameter will be null, and the result will be populated with the results of the query.
 
 function UsersController(){
@@ -28,13 +28,13 @@ function UsersController(){
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.create = function(req,res){
 		console.log('UsersController create');
-		User.create({userName: req.body.userName, firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phone,
-			email: req.body.email, _address: req.body.address, password: req.body.password},  function(err, result){
-	    	
+		User.create({userName: req.body.userName, firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phoneNumber,
+			email: req.body.email, streetAddress: req.body.streetAddress, city: req.body.city, states: req.body.states, zip: req.body.zip, password: req.body.password},  function(err, result){
+
 
 	      if(err){
 	        console.log('User.create error');
-	        
+
 	        res.status(500).send('Failed to Create User');
 	      }
 	      else{
@@ -77,6 +77,6 @@ function UsersController(){
 		console.log('UsersController update');
 	}
 
-  
+
 }
-module.exports = new UsersController(); 
+module.exports = new UsersController();

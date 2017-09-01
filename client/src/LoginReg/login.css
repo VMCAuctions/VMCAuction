@@ -1,18 +1,8 @@
-#userName{
-    border: 1px solid gray;
-    padding: 5px;
-    margin: 5px;
-} 
-#password{
-    border: 1px solid gray;
-    padding: 5px;
-    margin: 5px;
-}
 #submit{
     width: 100px
     }
- 
-#firstName{
+
+.inputField{
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
