@@ -30,6 +30,13 @@ class RegForm extends React.Component{
     }
     formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
+
+        //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
+        if (this.state.password != this.state.cnfmPassword) {
+          console.log("passwords don't match!")
+          return;
+        }
+
         Axios({
             method: "post",
             url: "/users",
@@ -44,7 +51,6 @@ class RegForm extends React.Component{
                   email:this.state.email,
                   userName: this.state.userName,
                   password: this.state.password,
-                  confmPassowrd:this.state.cnfmPassword
                    },
 
         }).then((response) => {

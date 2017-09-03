@@ -28,36 +28,79 @@ function UsersController(){
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.create = function(req,res){
 		console.log('UsersController create');
-		User.create({userName: req.body.userName, firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phoneNumber,
-			email: req.body.email, streetAddress: req.body.streetAddress, city: req.body.city, states: req.body.states, zip: req.body.zip, password: req.body.password},  function(err, result){
 
-
-	      if(err){
-	        console.log('User.create error');
-
-	        res.status(500).send('Failed to Create User');
-	      }
-	      else{
-	        res.json(result);
-	      }
-	    });
+		User.findOne({userName: req.body.userName}, function(err, user) {
+			if(err){
+				console.log("error while determining unique username");
+				console.log(err)
+			}
+			else if(user){
+				console.log("username already used");
+			}
+			else{
+				bcrypt.hash(req.body.password, null, null, function(err, hash) {
+						if(err){
+							console.log("Password hash error");
+							console.log(err)
+						}
+						else{
+							hashedPassword = hash;
+							User.create({
+								userName: req.body.userName,
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
+								phone: req.body.phoneNumber,
+								email: req.body.email,
+								streetAddress: req.body.streetAddress,
+								city: req.body.city,
+								states: req.body.states,
+								zip: req.body.zip,
+								password: hash,
+							},
+							function(err, result){
+									if(err){
+										console.log('User.create error');
+										console.log(err)
+										res.status(500).send('Failed to Create User');
+									}
+									else{
+										res.json(result);
+									}
+							});
+						}
+				});
+			}
+		})
 	};
 
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.login = function(req,res){
 		console.log('UsersController login');
-		User.find({userName: req.body.userName}, function(err, user){
+		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
 				console.log('User.login error');
 				res.status(500).send('User not Found');
 			}
 			else{
-				if(user.password == req.body.password){
-					res.json(user);
-				}
-				else{
-					res.status(401).send('Password Validation Failed');
-				}
+				//Comparing inputted password to hashed password in db
+				bcrypt.compare(req.body.password, user.password, function(err, match) {
+					if(err){
+						console.log(err)
+					}
+					else if(match){
+						console.log("passwords match!")
+						res.json(user)
+					}
+					else{
+						console.log("password don't match")
+						// res.json(user);
+						// console.log("incorrect password")
+						// console.log(bcrypt.compareSync(req.body.password, user.password))
+						// console.log(typeof(req.body.password))
+						// console.log(typeof(user.password.length))
+						// res.status(401).send('Password Validation Failed');
+					}
+				})
 			}
 		})
 	}
