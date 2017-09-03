@@ -44,6 +44,36 @@ function UsersController(){
 							console.log(err)
 						}
 						else{
+							//The below function checks every parameter of req.body against the value in the first index of each array, using the zero index of each array as a specifier.  If the length is less than that, it uses the second index to help generate an error message and pushes it to output.
+							function registrationValidation() {
+								const validationArray = [
+									["firstName", 2, "first name"],
+                  ["lastName", 2, "last name"],
+                  ["streetAddress", 2, "street address"],
+                  ["city", 2, "city"],
+                  ["states", 2, "state"],
+                  ["zip", 5, "zip code"],
+                  ["phoneNumber", 7, "phone number"],
+                  ["email", 3, "email address"],
+                  ["userName", 8, "user name"],
+                  ["password", 8, "password"]
+								];
+								let output = [];
+								for(let i = 0; i < validationArray.length; i++) {
+									if (req.body[validationArray[i][0]].length < validationArray[i][1]) {
+										output.push("Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.")
+									}
+								}
+								return output
+							}
+							const validation = registrationValidation()
+
+							if(validation){
+								res.json(validation)
+								return;
+							}
+
+							//Else, validation is ok, so hash the password and add to the database
 							hashedPassword = hash;
 							User.create({
 								userName: req.body.userName,
