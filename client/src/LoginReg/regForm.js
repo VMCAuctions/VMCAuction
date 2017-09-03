@@ -55,19 +55,22 @@ class RegForm extends React.Component{
 
         }).then((response) => {
             console.log(response);
-            this.setState({
-                    firstName:'',
-                    lastName:'',
-                    streetAddress:'',
-                    city:'',
-                    states:'',
-                    zip:'',
-                    phoneNumber:'',
-                    email:'',
-                    userName:'',
-                    password:'',
-                    cnfmPassword:''
-        })
+            if(response.data.validated) {
+              this.setState({
+                      firstName:'',
+                      lastName:'',
+                      streetAddress:'',
+                      city:'',
+                      states:'',
+                      zip:'',
+                      phoneNumber:'',
+                      email:'',
+                      userName:'',
+                      password:'',
+                      cnfmPassword:''
+              })
+            };
+            alert(response.data.value);
 
 
         }).catch((err) =>{

@@ -58,18 +58,18 @@ function UsersController(){
                   ["userName", 8, "user name"],
                   ["password", 8, "password"]
 								];
-								let output = [];
+								let output = "";
 								for(let i = 0; i < validationArray.length; i++) {
 									if (req.body[validationArray[i][0]].length < validationArray[i][1]) {
-										output.push("Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.")
+										output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
 									}
 								}
 								return output
 							}
 							const validation = registrationValidation()
 
-							if(validation){
-								res.json(validation)
+							if(validation.length > 0){
+								res.json({validated: false, value: validation})
 								return;
 							}
 
@@ -94,7 +94,8 @@ function UsersController(){
 										res.status(500).send('Failed to Create User');
 									}
 									else{
-										res.json(result);
+										res.json({validated: true, value: "User created successfully!"});
+										return;
 									}
 							});
 						}
