@@ -110,28 +110,28 @@ function UsersController(){
 		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
 				console.log('User.login error');
-				res.status(500).send('User not Found');
+				res.status(500).send('Error upon searching database for username');
 			}
-			else{
+			else if(user){
 				//Comparing inputted password to hashed password in db
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
 					if(err){
-						console.log(err)
+						console.log("bcrypt compare error")
+						res.status(500).send("Error upon searching database for password");
 					}
 					else if(match){
 						console.log("passwords match!")
-						res.json(user)
+						res.json({search: true, message: "User logged in successfully!"})
 					}
 					else{
 						console.log("password don't match")
-						// res.json(user);
-						// console.log("incorrect password")
-						// console.log(bcrypt.compareSync(req.body.password, user.password))
-						// console.log(typeof(req.body.password))
-						// console.log(typeof(user.password.length))
-						// res.status(401).send('Password Validation Failed');
+						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
 					}
 				})
+			}
+			else{
+				console.log("User not in database")
+				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
 			}
 		})
 	}
