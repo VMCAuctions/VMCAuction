@@ -91,42 +91,49 @@ class PackageCatalog extends Component{
         //converted all the input letter to lower case
         let input_letters = e.target.value.toLowerCase();
 
-        //first checking if there are items at all
-        if(this.state.listOfItems.length != 0){
+        //when the user deletes everything in the input it will display all packages again
+        if(e.target.value == ""){
+            this.setState({listOfPackages: this.state.allPackages})
+        }else{
 
-            //iterating through the list of items pulled from the DB
-            for(var i = 0; i < this.state.listOfItems.length; i++){
-                //converting each string to lowercase to match the input
-                let words = this.state.listOfItems[i].name.toLowerCase()
-                //checking if the input matches any of the words in the item name
-                //if there is a match add it to the array of selected items
-                if(words.indexOf(input_letters) >= 0){
-                    selected_items.push(this.state.listOfItems[i])
-                }
-            }
-        }
-        console.log("the selected items are: ", selected_items)
+            //first checking if there are items at all
+            if(this.state.listOfItems.length != 0){
 
-        //now that these selected items are the ones the user is looking for
-        //the packages must be found that coresponds to them
-        let selected_packages = [];
-        
-        //iterate through each item and check it to all the packages one at a time
-        for(var i = 0; i < selected_items.length; i++){
-            for(var j = 0; j < this.state.allPackages.length; j++){
-
-                //if the selected item's packed if matches one of the package id's
-                //AND if it has not already been added to the array, push it to the selected packages array
-                if(selected_items[i]._package == this.state.allPackages[j]._id){
-                    if(selected_packages.includes(this.state.allPackages[j]) === false){
-                        selected_packages.push(this.state.allPackages[j]);
+                //iterating through the list of items pulled from the DB
+                for(var i = 0; i < this.state.listOfItems.length; i++){
+                    //converting each string to lowercase to match the input
+                    let words = this.state.listOfItems[i].name.toLowerCase()
+                    //checking if the input matches any of the words in the item name
+                    //if there is a match add it to the array of selected items
+                    if(words.indexOf(input_letters) >= 0){
+                        selected_items.push(this.state.listOfItems[i])
                     }
                 }
             }
+            console.log("the selected items are: ", selected_items)
+
+            //now that these selected items are the ones the user is looking for
+            //the packages must be found that coresponds to them
+            let selected_packages = [];
+            
+            //iterate through each item and check it to all the packages one at a time
+            for(var i = 0; i < selected_items.length; i++){
+                for(var j = 0; j < this.state.allPackages.length; j++){
+
+                    //if the selected item's packed if matches one of the package id's
+                    //AND if it has not already been added to the array, push it to the selected packages array
+                    if(selected_items[i]._package == this.state.allPackages[j]._id){
+                        if(selected_packages.includes(this.state.allPackages[j]) === false){
+                            selected_packages.push(this.state.allPackages[j]);
+                        }
+                    }
+                }
+            }
+            console.log("the selected packages are: ",selected_packages);
+            //repopulate the list of packages that will be rendered to the screen
+            this.setState({listOfPackages: selected_packages})
         }
-        console.log("the selected packages are: ",selected_packages);
-        //repopulate the list of packages that will be rendered to the screen
-        this.setState({listOfPackages: selected_packages})
+
     }
 
     render(){
