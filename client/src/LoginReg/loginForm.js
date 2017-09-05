@@ -5,7 +5,7 @@ import {Route, Link} from 'react-router-dom';
 import RegForm from "./regForm.js";
 
 class LoginForm extends React.Component{
-   
+
     constructor(props){
         super(props)
         this.state = {
@@ -17,29 +17,33 @@ class LoginForm extends React.Component{
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
-        })  
-        console.log(e.target.value);     
-    }    
-    formSubmit = (e) =>{             
+        })
+        console.log(e.target.value);
+    }
+    formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/users/:id/login",   
+            url:"/users/:id/login",
             data:{userName: this.state.userName,
                   password: this.state.password     },
                 // headers: {Authorization: localStorage.getItem("jw-token")}
         }).then((response) => {
-            if(response.data.code==200){
+            if(response.data.search){
+
+                //!!!
+                //Do something here to browser so it knows you're logged in
+                //!!!
+
                 console.log("Login successful!");
-                this.setState({
-                    userName:'',
-                    password:''
-                })
-                // localStorage.setItem("jw-token", response.data.token);
+                // Sean's code: localStorage.setItem("jw-token", response.data.token);
             }
-            else{
-                console.log(response);
-            }
+            this.setState({
+                userName:'',
+                password:''
+            })
+            alert(response.data.message)
+            console.log(response);
         }).catch((err) =>{
             console.log(err);
         })
@@ -60,17 +64,17 @@ class LoginForm extends React.Component{
                     <br></br>
                     <input type='submit' id='submit' value='Submit' className='btn btn-primary form-control' />
                     <p>Not registered yet? Register now!</p>
-            
+
                 </form>
                     <p><Link to='/register'>Register</Link></p>
-                               
+
                 </div>
-             
-           
+
+
          )
-                       
-         
-    }        
-    
+
+
+    }
+
 }
 export default LoginForm;

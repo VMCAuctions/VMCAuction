@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 	Address = require('../models/address.js'),
 	Package = require('../models/package.js');
 
- // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query, 
- // the error parameter will contain an error document, and result will be null. 
+ // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query,
+ // the error parameter will contain an error document, and result will be null.
  // If the query is successful, the error parameter will be null, and the result will be populated with the results of the query.
 
 function UsersController(){
@@ -28,36 +28,111 @@ function UsersController(){
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.create = function(req,res){
 		console.log('UsersController create');
-		User.create({userName: req.body.userName, firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phone,
-			email: req.body.email, _address: req.body.address, password: req.body.password},  function(err, result){
-	    	
 
-	      if(err){
-	        console.log('User.create error');
-	        
-	        res.status(500).send('Failed to Create User');
-	      }
-	      else{
-	        res.json(result);
-	      }
-	    });
+		User.findOne({userName: req.body.userName}, function(err, user) {
+			if(err){
+				console.log("error while determining unique username");
+				console.log(err)
+			}
+			else if(user){
+				console.log("username already used");
+				res.json({validated: false, value: "That username has already been used. Please pick a unique username."})
+			}
+			else{
+				bcrypt.hash(req.body.password, null, null, function(err, hash) {
+						if(err){
+							console.log("Password hash error");
+							console.log(err)
+						}
+						else{
+							//The below function checks every parameter of req.body against the value in the first index of each array, using the zero index of each array as a specifier.  If the length is less than that, it uses the second index to help generate an error message and pushes it to output.
+							function registrationValidation() {
+								const validationArray = [
+									["firstName", 2, "first name"],
+                  ["lastName", 2, "last name"],
+                  ["streetAddress", 2, "street address"],
+                  ["city", 2, "city"],
+                  ["states", 2, "state"],
+                  ["zip", 5, "zip code"],
+                  ["phoneNumber", 10, "phone number"],
+                  ["email", 5, "email address"],
+                  ["userName", 6, "user name"],
+                  ["password", 6, "password"]
+								];
+								let output = "";
+								for(let i = 0; i < validationArray.length; i++) {
+									if (req.body[validationArray[i][0]].length < validationArray[i][1]) {
+										output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
+									}
+								}
+								return output
+							}
+							const validation = registrationValidation()
+
+							if(validation.length > 0){
+								res.json({validated: false, value: validation})
+								return;
+							}
+
+							//Else, validation is ok, so hash the password and add to the database
+							hashedPassword = hash;
+							User.create({
+								userName: req.body.userName,
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
+								phone: req.body.phoneNumber,
+								email: req.body.email,
+								streetAddress: req.body.streetAddress,
+								city: req.body.city,
+								states: req.body.states,
+								zip: req.body.zip,
+								password: hash,
+							},
+							function(err, result){
+									if(err){
+										console.log('User.create error');
+										console.log(err)
+										res.status(500).send('Failed to Create User');
+									}
+									else{
+										res.json({validated: true, value: "User created successfully!"});
+										return;
+									}
+							});
+						}
+				});
+			}
+		})
 	};
 
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.login = function(req,res){
 		console.log('UsersController login');
-		User.find({userName: req.body.userName}, function(err, user){
+		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
 				console.log('User.login error');
-				res.status(500).send('User not Found');
+				res.status(500).send('Error upon searching database for username');
+			}
+			else if(user){
+				//Comparing inputted password to hashed password in db
+				bcrypt.compare(req.body.password, user.password, function(err, match) {
+					if(err){
+						console.log("bcrypt compare error")
+						res.status(500).send("Error upon searching database for password");
+					}
+					else if(match){
+						console.log("passwords match!")
+						res.json({search: true, message: "User logged in successfully!"})
+					}
+					else{
+						console.log("password don't match")
+						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
+					}
+				})
 			}
 			else{
-				if(user.password == req.body.password){
-					res.json(user);
-				}
-				else{
-					res.status(401).send('Password Validation Failed');
-				}
+				console.log("User not in database")
+				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
 			}
 		})
 	}
@@ -77,6 +152,6 @@ function UsersController(){
 		console.log('UsersController update');
 	}
 
-  
+
 }
-module.exports = new UsersController(); 
+module.exports = new UsersController();

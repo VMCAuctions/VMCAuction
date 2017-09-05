@@ -11,7 +11,10 @@ class RegForm extends React.Component{
         this.state={
             firstName:'',
             lastName:'',
-            address:'',
+            streetAddress:'',
+            city:'',
+            states:'',
+            zip:'',
             phoneNumber:'',
             email:'',
             userName:'',
@@ -19,71 +22,89 @@ class RegForm extends React.Component{
             cnfmPassword:''
         };
     }
-    handleClick = (e) => {
-        
-    }
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
-        })  
-        console.log(e.target.value);     
-    }    
-    formSubmit = (e) =>{             
+        })
+        console.log(e.target.value);
+    }
+    formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
+
+        //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
+        if (this.state.password != this.state.cnfmPassword) {
+          console.log("passwords don't match!")
+          return;
+        }
+
         Axios({
             method: "post",
-            url: "/users",  
+            url: "/users",
             data: {
                   firstName: this.state.firstName,
                   lastName:this.state.lastName,
-                  address:this.state.address,
+                  streetAddress:this.state.streetAddress,
+                  city:this.state.city,
+                  states:this.state.states,
+                  zip:this.state.zip,
                   phoneNumber:this.state.phoneNumber,
                   email:this.state.email,
                   userName: this.state.userName,
                   password: this.state.password,
-                  confmPassowrd:this.state.cnfmPassword
                    },
-                
+
         }).then((response) => {
-            console.log(response); 
-            this.setState({
-                    firstName:'',
-                    lastName:'',
-                    address:'',
-                    phoneNumber:'',
-                    email:'',
-                    userName:'',
-                    password:'',
-                    cnfmPassword:''
-        })
-           
+            console.log(response);
+            if(response.data.validated) {
+              this.setState({
+                      firstName:'',
+                      lastName:'',
+                      streetAddress:'',
+                      city:'',
+                      states:'',
+                      zip:'',
+                      phoneNumber:'',
+                      email:'',
+                      userName:'',
+                      password:'',
+                      cnfmPassword:''
+              })
+            };
+            alert(response.data.value);
+
 
         }).catch((err) =>{
             console.log(err);
         })
     }
-      
+
     render(){
         return(
             <div>
                 <h1> Register</h1>
                 <form onSubmit={this.formSubmit} >
                     <br></br>
-                    <input type='text' id='firstName' name='firstName' placeholder='First Name' onChange={this.handleChange} value={this.state.firstName} required/>
+                    <input type='text' id='firstName' className='inputField' name='firstName' placeholder='First Name' onChange={this.handleChange} value={this.state.firstName} required/>
                     <br></br>
-                    <input type='text' id='lastName' name='lastName' placeholder='Last Name'onChange={this.handleChange} value={this.state.lastName} required/>
+                    <input type='text' id='lastName' className='inputField' name='lastName' placeholder='Last Name'onChange={this.handleChange} value={this.state.lastName} required/>
                     <br></br>
-                    <textarea name='address' id='address' placeholder='Address'onChange={this.handleChange} value={this.state.address}  />
+                    <input type='text' id='streetAddress' className='inputField' name='streetAddress' placeholder='Street Address' onChange={this.handleChange} value={this.state.streetAddress} required/>
                     <br></br>
-                    <input type='text' id='phoneNumber' name='phoneNumber'placeholder='Phone Number'onChange={this.handleChange} value={this.state.phoneNumber} />
+                    <input type='text' id='city' className='inputField' name='city' placeholder='City' onChange={this.handleChange} value={this.state.city} required/>
                     <br></br>
-                    <input type='text' id='email' name='email' placeholder='Email ID'onChange={this.handleChange} value={this.state.email} required/>
+                    <input type='text' id='states' className='inputField' name='states' placeholder='State' onChange={this.handleChange} value={this.state.states} required/>
                     <br></br>
-                    <input type='text' id='userName' name='userName' placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
+                    <input type='text' id='zip' className='inputField' name='zip' placeholder='Zip Code' onChange={this.handleChange} value={this.state.zip} required/>
                     <br></br>
-                    <input type='password' id='password' name='password' placeholder='Password'onChange={this.handleChange} value={this.state.password} required/>
+                    <input type='text' id='phoneNumber' className='inputField' name='phoneNumber'placeholder='Phone Number'onChange={this.handleChange} value={this.state.phoneNumber} />
                     <br></br>
-                    <input type='password' id='cnfmPassword' name='cnfmPassword' placeholder='Confirm Password'onChange={this.handleChange} value={this.state.cnfmPassword} required/>
+                    <input type='text' id='email' className='inputField' name='email' placeholder='Email Address'onChange={this.handleChange} value={this.state.email} required/>
+                    <br></br>
+                    <input type='text' id='userName' className='inputField' name='userName' placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
+                    <br></br>
+                    <input type='password' id='password' className='inputField' name='password' placeholder='Password'onChange={this.handleChange} value={this.state.password} required/>
+                    <br></br>
+                    <input type='password' id='cnfmPassword' className='inputField' name='cnfmPassword' placeholder='Confirm Password'onChange={this.handleChange} value={this.state.cnfmPassword} required/>
                     <br></br>
                     <input type='submit' id='submit' value='Submit' className='btn btn-primary form-control' />
                     <p>Already registered? Go to Login! </p>
@@ -91,11 +112,11 @@ class RegForm extends React.Component{
 
                 </form>
                     <p><Link to='/'>Login</Link></p>
-                   
-            </div>    
+
+            </div>
         )
     }
 
 }
 
-export default RegForm; 
+export default RegForm;
