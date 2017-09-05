@@ -36,6 +36,7 @@ function UsersController(){
 			}
 			else if(user){
 				console.log("username already used");
+				res.json({validated: false, value: "That username has already been used. Please pick a unique username."})
 			}
 			else{
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
@@ -53,10 +54,10 @@ function UsersController(){
                   ["city", 2, "city"],
                   ["states", 2, "state"],
                   ["zip", 5, "zip code"],
-                  ["phoneNumber", 7, "phone number"],
-                  ["email", 3, "email address"],
-                  ["userName", 8, "user name"],
-                  ["password", 8, "password"]
+                  ["phoneNumber", 10, "phone number"],
+                  ["email", 5, "email address"],
+                  ["userName", 6, "user name"],
+                  ["password", 6, "password"]
 								];
 								let output = "";
 								for(let i = 0; i < validationArray.length; i++) {
