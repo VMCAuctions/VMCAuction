@@ -157,6 +157,17 @@ function PackagesController(){
 		});
 	}  // end of this.update();
 
+	this.get_selected = function(req, res){
+		console.log("I am in the package.js and this is the req body", req.body)
+		Package.find({_category:req.body.category}, function(err, result){
+			if(err){
+				console.log("There was an error grabbing the selected packages")
+			}else{
+				return res.json(result)
+			}
+		})
+	}
+
   
 }
 

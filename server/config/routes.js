@@ -48,6 +48,11 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/packages/:id', function(req,res){
 		packages.update(req,res)});
+	//filtering the packages according to the categories
+	app.post('/get_selected_packages', function(req, res){
+		packages.get_selected(req,res)
+	});
+
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down 
