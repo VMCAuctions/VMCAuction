@@ -29,6 +29,7 @@ class Catalog extends Component{
                     <td>{item._package}</td>
                     <td>{item.value}</td>
                     <td>{item.description}</td>
+                    <td>{item.donor}</td>
                     <td>{item.restrictions}</td>
                 </tr>
             )
@@ -43,6 +44,7 @@ class Catalog extends Component{
                             <th>Package</th>
                             <th>Fair Market Value</th>
                             <th>Item Description</th>
+                            <th>Donor</th>
                             <th>Item Restriction</th>                            
                         </tr>
                     </thead>
