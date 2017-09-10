@@ -16,6 +16,7 @@ class PackageCatalog extends Component{
 
         this.handleChange = this.handleChange.bind(this);
         this.handleNewLetter = this.handleNewLetter.bind(this);
+        this.deletePackage = this.deletePackage.bind(this);
     }
      componentDidMount(){
          //when the component loads set the value initially to all categories
@@ -173,11 +174,32 @@ class PackageCatalog extends Component{
 
     }
 
+
+    deletePackage(e){
+        e.persist();
+        console.log("you clicked the button and this is the ID", e.target.id);
+        
+        Axios({
+            method: "post",
+            url: "/remove_package",
+            data: { package_id: e.target.id}
+        }).then((result) =>{
+            console.log("Was able to remove a package from the list", result)
+            
+            //reloading the page after an item is removed so it will have all the updated changes
+            window.location.reload();
+            
+        }).catch((err) =>{
+            console.log("there was an error making it to the server..")
+        })
+    }
+
     render(){
         let packageList = this.state.listOfPackages.map((packages,index) =>{
                 // console.log(packages._bids);
             return(
                 <tr key={index}>
+                    <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
                     <td>{packages._id}</td>
                     <td>{packages.name}</td>
                     <td>{packages._category}</td>
@@ -221,6 +243,7 @@ class PackageCatalog extends Component{
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Package Number</th>
                                 <th>Package Name</th>
                                 <th>Category </th>

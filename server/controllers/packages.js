@@ -166,6 +166,18 @@ function PackagesController(){
 				return res.json(result)
 			}
 		})
+	},
+
+	//removing a package from the DB
+
+	this.remove_package = function(req, res){
+		Package.remove({_id: req.body.package_id}, function(err, result){
+			if(err){
+				console.log("there was an error removing one of packages")
+			}else{
+				return res.json(result);
+			}
+		})
 	}
 
   
