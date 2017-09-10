@@ -29,14 +29,14 @@ function UsersController(){
 	this.create = function(req,res){
 		console.log('UsersController create');
 
-		User.findOne({userName: req.body.userName}, function(err, user) {
+		User.findOne({userName: req.body.userName}, function(err, duplicate) {
 			if(err){
 				console.log("error while determining unique username");
 				console.log(err)
 			}
-			else if(user){
+			else if(duplicate){
 				console.log("username already used");
-				res.json({validated: false, value: "That username has already been used. Please pick a unique username."})
+				res.json({validated: false, message: "That username has already been used. Please pick a unique username."})
 			}
 			else{
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
@@ -70,7 +70,7 @@ function UsersController(){
 							const validation = registrationValidation()
 
 							if(validation.length > 0){
-								res.json({validated: false, value: validation})
+								res.json({validated: false, message: validation})
 								return;
 							}
 
@@ -88,14 +88,14 @@ function UsersController(){
 								zip: req.body.zip,
 								password: hash,
 							},
-							function(err, result){
+							function(err, user){
 									if(err){
 										console.log('User.create error');
 										console.log(err)
 										res.status(500).send('Failed to Create User');
 									}
 									else{
-										res.json({validated: true, value: "User created successfully!"});
+										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
 										return;
 									}
 							});
@@ -122,7 +122,7 @@ function UsersController(){
 					}
 					else if(match){
 						console.log("passwords match!")
-						res.json({search: true, message: "User logged in successfully!"})
+						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
 						console.log("password don't match")

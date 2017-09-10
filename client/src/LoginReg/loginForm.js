@@ -3,6 +3,7 @@ import './login.css';
 import Axios from 'axios';
 import {Route, Link} from 'react-router-dom';
 import RegForm from "./regForm.js";
+import Cookies from 'universal-cookie';
 
 class LoginForm extends React.Component{
 
@@ -31,11 +32,8 @@ class LoginForm extends React.Component{
         }).then((response) => {
             if(response.data.search){
 
-                //!!!
-                //Do something here to browser so it knows you're logged in
-                //!!!
-
-                console.log("Login successful!");
+                const cookies = new Cookies();
+                cookies.set('userName', response.data.user.userName, { path: '/' });
                 // Sean's code: localStorage.setItem("jw-token", response.data.token);
             }
             this.setState({
@@ -43,7 +41,6 @@ class LoginForm extends React.Component{
                 password:''
             })
             alert(response.data.message)
-            console.log(response);
         }).catch((err) =>{
             console.log(err);
         })

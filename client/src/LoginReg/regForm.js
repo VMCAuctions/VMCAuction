@@ -3,6 +3,7 @@ import './register.css';
 import Axios from 'axios';
 import {Route, Link} from 'react-router-dom';
 import LoginForm from './loginForm.js';
+import Cookies from 'universal-cookie';
 
 
 class RegForm extends React.Component{
@@ -33,7 +34,6 @@ class RegForm extends React.Component{
 
         //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
         if (this.state.password != this.state.cnfmPassword) {
-          console.log("passwords don't match!")
           return;
         }
 
@@ -69,8 +69,10 @@ class RegForm extends React.Component{
                       password:'',
                       cnfmPassword:''
               })
+              const cookies = new Cookies();
+              cookies.set('userName', response.data.user.userName, { path: '/' });
             };
-            alert(response.data.value);
+            alert(response.data.message);
 
 
         }).catch((err) =>{
