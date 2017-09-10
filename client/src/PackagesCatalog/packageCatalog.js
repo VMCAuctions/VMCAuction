@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './packageCatalog.css';
+import ReactDOM from 'react-dom'
 
 class PackageCatalog extends Component{
     constructor(props){
@@ -10,14 +11,16 @@ class PackageCatalog extends Component{
             selectValue: '',
             categories: [],
             listOfItems: [],
-            allPackages: []
-            
+            allPackages: [],
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleNewLetter = this.handleNewLetter.bind(this);
     }
      componentDidMount(){
+         //when the component loads set the value initially to all categories
+        this.setState({selectValue:"All Categories"})
+
          //loading all the packages
         Axios.get("/packages")
         .then((result) =>{
@@ -30,6 +33,8 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 }
             })
+            //sorting the packages by value..
+            result.data.sort(function(a,b){return b.value - a.value})
             //setting the state of the categories and the list of packages 
             this.setState({
                 listOfPackages: result.data,
@@ -71,6 +76,8 @@ class PackageCatalog extends Component{
                 data: { category: e.target.value}
             }).then((result) =>{
                 console.log("filtered these pacakges through the database", result)
+                //sorting the packages accoring to package value
+                result.data.sort(function(a,b){return b.value - a.value})
                 this.setState({
                     listOfPackages: result.data
                 })
@@ -78,6 +85,9 @@ class PackageCatalog extends Component{
                 console.log("there was an error making it to the server..")
             })
         }
+
+        //reset the tyed search bar to an empty string when the category option is clicked
+        ReactDOM.findDOMNode(this.refs.search_bar).value = "";
         
     }
 
@@ -92,8 +102,9 @@ class PackageCatalog extends Component{
         let input_letters = e.target.value.toLowerCase();
 
         //when the user deletes everything in the input it will display all packages again
-        if(e.target.value == ""){
+        if(e.target.value == "" && this.state.selectValue == "All Categories"){
             this.setState({listOfPackages: this.state.allPackages})
+            
         }else{
 
             //first checking if there are items at all
@@ -102,10 +113,14 @@ class PackageCatalog extends Component{
                 //iterating through the list of items pulled from the DB
                 for(var i = 0; i < this.state.listOfItems.length; i++){
                     //converting each string to lowercase to match the input
-                    let words = this.state.listOfItems[i].name.toLowerCase()
+                    //we have to check the items name, description, and donor name
+                    let name = this.state.listOfItems[i].name.toLowerCase()
+                    let donor = this.state.listOfItems[i].donor.toLowerCase();
+                    let description = this.state.listOfItems[i].description.toLowerCase();
+
                     //checking if the input matches any of the words in the item name
                     //if there is a match add it to the array of selected items
-                    if(words.indexOf(input_letters) >= 0){
+                    if(name.indexOf(input_letters) >= 0 || donor.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
                         selected_items.push(this.state.listOfItems[i])
                     }
                 }
@@ -115,22 +130,44 @@ class PackageCatalog extends Component{
             //now that these selected items are the ones the user is looking for
             //the packages must be found that coresponds to them
             let selected_packages = [];
+
+            //the user may also be searching for the package name so we have to add the selected package titles too
+            // searching the packages in the DB if they match the key words too.
+            for(var i = 0; i < this.state.allPackages.length; i++){
+                
+                let name = this.state.allPackages[i].name.toLowerCase();
+                let description = this.state.allPackages[i].description.toLowerCase();
+                let category = this.state.allPackages[i]._category
+
+                if(name.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
+                    if(category == this.state.selectValue || this.state.selectValue == "All Categories"){
+                        selected_packages.push(this.state.allPackages[i])
+                    }
+                }
+            }
             
             //iterate through each item and check it to all the packages one at a time
             for(var i = 0; i < selected_items.length; i++){
                 for(var j = 0; j < this.state.allPackages.length; j++){
 
-                    //if the selected item's packed if matches one of the package id's
+                    //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
                     if(selected_items[i]._package == this.state.allPackages[j]._id){
                         if(selected_packages.includes(this.state.allPackages[j]) === false){
-                            selected_packages.push(this.state.allPackages[j]);
+                            if(this.state.allPackages[j].category == this.state.selectValue || this.state.selectValue == "All Categories"){
+                                selected_packages.push(this.state.allPackages[j]);
+                            }
                         }
                     }
                 }
             }
-            console.log("the selected packages are: ",selected_packages);
+
+            console.log("the selected packages based on the drop down restrictions: ",selected_packages);
+
             //repopulate the list of packages that will be rendered to the screen
+            //sort the packages according to package value
+            selected_packages.sort(function(a,b){return b.value - a.value})
+            
             this.setState({listOfPackages: selected_packages})
         }
 
@@ -167,15 +204,15 @@ class PackageCatalog extends Component{
                         <form>
                             <h3>Search By Category</h3>
                             <select onChange={this.handleChange} value={this.state.selectValue} >
-                                <option value="All Categories">All Categories</option>
-                                {categories}
+                            <option value="All Categories">All Categories</option>
+                                {categories}  
                             </select>
                         </form>
                     </div>
 
                     <div className="search-block">
                         <h3>Key Word Search</h3>
-                        <input type='text'  onChange={this.handleNewLetter} />
+                        <input type='text'  onChange={this.handleNewLetter} ref="search_bar"/>
                     </div>
                 </div> {/* end of search-bar */}
                 <br/>
