@@ -56,7 +56,7 @@ function UsersController(){
                   ["zip", 5, "zip code"],
                   ["phoneNumber", 10, "phone number"],
                   ["email", 5, "email address"],
-                  ["userName", 6, "user name"],
+                  ["userName", 5, "user name"],
                   ["password", 6, "password"]
 								];
 								let output = "";
@@ -76,6 +76,7 @@ function UsersController(){
 
 							//Else, validation is ok, so hash the password and add to the database
 							hashedPassword = hash;
+							var adminStatus = (req.body.userName == "admin");
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -87,6 +88,7 @@ function UsersController(){
 								states: req.body.states,
 								zip: req.body.zip,
 								password: hash,
+								admin: adminStatus
 							},
 							function(err, user){
 									if(err){
@@ -139,13 +141,21 @@ function UsersController(){
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
 		console.log('UsersController show');
-        User.findById(req.params.id, function(err, result){
-            if(err){
-                console.log('user show-err');
-            }else{
-                req.json(result);
-            }
-        });
+        // User.findById(req.params.id, function(err, result){
+        //     if(err){
+        //         console.log('user show-err');
+        //     }else{
+        //         req.json(result);
+        //     }
+        // });
+		User.findOne({userName: req.params.userName}, function(err, user){
+			if(err){
+				console.log(err)
+			}
+			else{
+				res.json(user)
+			}
+		}
 	};
 	//are we allowing users to be able to edit / update their information
     this.update = function(req,res){

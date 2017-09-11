@@ -19,7 +19,7 @@ var userSchema = new Schema({
 	// leave mailing address out as this would be entered through the payment API?  Foundation wants users to enter info only once
 	cc_token: String,
 	_bids: [{type: Schema.Types.ObjectId, ref: 'Bid'}],
-	admin: {type: Boolean, default: false}
+	admin: {type: Boolean}
 })
 
 
