@@ -46,7 +46,7 @@ function ItemsController(){
 	    console.log(req.body);
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
 	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
-	      value: req.body.fairMarketValue},  function(err, result){
+	      value: req.body.fairMarketValue, packaged: false},  function(err, result){
 	    	// from front end ///////////
 	    	//	   itemName: '',
       //           donor: '',

@@ -38,6 +38,7 @@ function PackagesController(){
 	this.create = function(req,res){
 		// this handles the form post that creates a new package
 		console.log('PackagesController create');
+		
 
     	
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
@@ -80,7 +81,7 @@ function PackagesController(){
 		    	
 		    	for(var i=0; i<package._items.length; i++){
 		    		
-		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id}}, function(err,result){
+		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
 						if(err){
 							console.log('Item update in Package.create Err');
 						}
@@ -166,8 +167,40 @@ function PackagesController(){
 				return res.json(result)
 			}
 		})
+	},
+
+	//removing a package from the DB
+	this.remove_package = function(req, res){
+		console.log("@@@@@@@@@@@@@@ ", req.body)
+
+		Package.findOne({_id: req.body.package_id}, function(err, result){
+			if(err){
+				console.log(err)
+			}else{
+				console.log("%%%%%%%%%%% ", result)
+				for(var i = 0; i < result._items.length; i++){
+					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
+						if(err){
+							console.log("there was an error in the code...")
+						}else{
+							console.log("!!!!!!!!!!!!!!!", result)
+						}
+					})
+				}
+				Package.remove({_id: req.body.package_id}, function(err, result){
+					if(err){
+						console.log("there was an error removing one of packages")
+					}else{
+						return res.json(result);
+					}
+				})
+			}
+
+		})
+		
 	}
 
+	// Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}
   
 }
 

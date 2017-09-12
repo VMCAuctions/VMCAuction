@@ -74,13 +74,14 @@ class Package extends Component{
                 totalItems: 0,
                 totalValue: 0
             })
+            //reloading the page after the form has been submitted to show the remaining items that have not been added to a package
+            window.location.reload();
         }).catch((err)=>{
             console.log("Incomplete form submission" + err)
         })
     }
     //selecte items from the list and updating the display fields(totalItems and totalValue)
     capturingGroupedItems = (item, value) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
-        console.log(item,value);
         let itemSelect = this.state.selectedItems;
         itemSelect.push(item);
         this.setState({

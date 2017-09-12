@@ -13,13 +13,20 @@ class DisplayItems extends Component{
     componentDidMount(){
         Axios.get("/items")
         .then((result) =>{
-            console.log(result);
+            console.log("#############", result);
+            let unpackaged_items = [];
+            for(var i = 0; i < result.data.length; i++){
+                if(result.data[i].packaged == false){
+                    unpackaged_items.push(result.data[i])
+                }
+            }
             this.setState({
-                itemsList: result.data
+                itemsList: unpackaged_items
             })
         }).catch((err) =>{
             console.log(err);
         })
+
     }
     
     // componentWillReceiveProps(props){
@@ -33,6 +40,7 @@ class DisplayItems extends Component{
         //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
             this.props.capturingGroupedItems(e.target.name, parseInt(e.target.value))
+
         }else{ 
             this.props.removeGroupedItems(parseInt(e.target.value), e.target.name)
         }       

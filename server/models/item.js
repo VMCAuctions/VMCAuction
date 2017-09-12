@@ -14,6 +14,7 @@ var itemSchema = new Schema({
  donor: {type: String, default: 'anonymous'},
  restrictions: {type: String, maxlength: 250},
  value: Number,
+ packaged: Boolean,
  
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}

@@ -52,6 +52,10 @@ module.exports = function(app) {
 	app.post('/get_selected_packages', function(req, res){
 		packages.get_selected(req,res)
 	});
+	//removing a package from the DB
+	app.post('/remove_package', function(req, res){
+		packages.remove_package(req, res)
+	})
 
 
 	// CATEGORIES //
