@@ -76,7 +76,7 @@ class ItemEntryAdmin extends Component{
                          <input className='form-control input-lg' type='text' name='itemName' 
                                 placeholder='Item Name' onChange={this.handleChange} value={this.state.itemName} required/><br/><br/>
                          <input className='form-control input-lg' type='text' name='donor' 
-                                placeholder='Donor' onChange={this.handleChange} value={this.state.donor}/><br/><br/>
+                                placeholder='Donor' onChange={this.handleChange} value={this.state.donor} required/><br/><br/>
                          
                         {/*Select component renders the dropdown for category selection*/}
                          <Select name='category' handleChange={this.handleChange}/><br/>
@@ -89,7 +89,7 @@ class ItemEntryAdmin extends Component{
                             <div className="input-group">
                                 <div className="input-group-addon">$</div>
                                     <input type="number" name='fairMarketValue' className="form-control" placeholder="Fair Market Value" 
-                                            value={this.state.fairMarketValue} onChange={this.handleChange} />
+                                            value={this.state.fairMarketValue} onChange={this.handleChange} required />
                                 <div className="input-group-addon">.00</div>
                             </div>
                         </div> <br/>
