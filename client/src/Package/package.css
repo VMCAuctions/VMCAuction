@@ -2,12 +2,15 @@
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
+    text-align: center;
     /*width: 300px;*/
 }
 .displaySelectedItems{
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
+    height: 177px;
+    overflow: scroll;
 }
 #package-container{
     /*border: 1px solid gray;*/
@@ -18,4 +21,8 @@
     border: 1px solid gray;
     padding: 3px;
     margin: 5px;
+}
+.itemsList{
+    overflow: scroll;
+    height: 400px;
 }
