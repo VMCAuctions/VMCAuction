@@ -155,7 +155,7 @@ function UsersController(){
 			else{
 				res.json(user)
 			}
-		}
+		})
 	};
 	//are we allowing users to be able to edit / update their information
     this.update = function(req,res){
