@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './packageCatalog.css';
+import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom'
 
 class PackageCatalog extends Component{
@@ -209,6 +210,7 @@ class PackageCatalog extends Component{
                     <td>{packages._bids[0]}</td>
                     <td>{packages._items.map((item,index)=>{
                         return <li key={index} >{item}</li>})}</td>
+                    <td><Link to={`/packageDetails/${index}`}>Show</Link></td>
                 </tr>
             )
         })
@@ -251,7 +253,8 @@ class PackageCatalog extends Component{
                                 <th>Item Description</th>
                                 <th>Increments</th> 
                                 <th>Starting Bid</th>   
-                                <th>Items in Package</th>                        
+                                <th>Items in Package</th>    
+                                <th>Details</th>                    
                             </tr>
                         </thead>
                         <tbody>

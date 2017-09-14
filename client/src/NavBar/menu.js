@@ -33,6 +33,9 @@ class Menu extends React.Component{
                             <li>
                                 <Link to='/package'>Packages/Bids</Link>
                             </li>
+                            <li>
+                                <Link to='/packageDetails/packageInfo'> </Link>
+                            </li>
                         </ul>  
                         <ul className="nav navbar-nav navbar-right">
                             <li><Link to='/register'><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
