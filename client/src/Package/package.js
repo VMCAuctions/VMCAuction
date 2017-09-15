@@ -96,7 +96,7 @@ class Package extends Component{
         let itemUnselect = this.state.selectedItems;
         let id;
         for(var i=0; i<itemUnselect.length;i++){
-            if(item == itemUnselect[i]){
+            if(item === itemUnselect[i]){
                 id = i;
             }
         }

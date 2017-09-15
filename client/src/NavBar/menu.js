@@ -34,7 +34,7 @@ class Menu extends React.Component{
                                 <Link to='/package'>Packages/Bids</Link>
                             </li>
                             <li>
-                                <Link to='/packageDetails/packageInfo'> </Link>
+                                <Link to='/packageDetails/packageId'> </Link>
                             </li>
                         </ul>  
                         <ul className="nav navbar-nav navbar-right">

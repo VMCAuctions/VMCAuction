@@ -23,7 +23,7 @@ class App extends Component {
           <Route path='/package' component={PackageCatalog}/>
           <Route path='/login' component={LoginForm}/>  
           <Route path='/register' component={RegForm}/>   
-          <Route path='/packageDetails/:packageInfo' component={PackageDetails}/>
+          <Route path='/packageDetails/:packageId' component={PackageDetails}/>
         </div>
       </BrowserRouter>
     );

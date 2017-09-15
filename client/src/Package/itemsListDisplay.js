@@ -16,7 +16,7 @@ class DisplayItems extends Component{
             console.log("#############", result);
             let unpackaged_items = [];
             for(var i = 0; i < result.data.length; i++){
-                if(result.data[i].packaged == false){
+                if(result.data[i].packaged === false){
                     unpackaged_items.push(result.data[i])
                 }
             }
@@ -39,10 +39,10 @@ class DisplayItems extends Component{
         //if e.target.checked is true, invoke capturingGroupedItems function 
         //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
-            this.props.capturingGroupedItems(e.target.name, parseInt(e.target.value))
+            this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
 
         }else{ 
-            this.props.removeGroupedItems(parseInt(e.target.value), e.target.name)
+            this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
         }       
    }
 

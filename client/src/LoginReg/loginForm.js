@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import './login.css';
 import Axios from 'axios';
-import {Route, Link} from 'react-router-dom';
-import RegForm from "./regForm.js";
+import {Link} from 'react-router-dom';
 
-class LoginForm extends React.Component{
+class LoginForm extends Component{
 
     constructor(props){
         super(props)
@@ -48,10 +47,7 @@ class LoginForm extends React.Component{
             console.log(err);
         })
     }
-    register= () => {
-        console.log("register function");
-        <RegForm />
-    }
+    
     render(){
          return(
              <div>
