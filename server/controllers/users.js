@@ -97,6 +97,8 @@ function UsersController(){
 										res.status(500).send('Failed to Create User');
 									}
 									else{
+										req.session.put("userName", user.userName)
+										req.session.put("admin", user.admin)
 										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
 										return;
 									}
@@ -109,6 +111,7 @@ function UsersController(){
 
 	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
 	this.login = function(req,res){
+
 		console.log('UsersController login');
 		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
@@ -123,7 +126,8 @@ function UsersController(){
 						res.status(500).send("Error upon searching database for password");
 					}
 					else if(match){
-						console.log("passwords match!")
+						req.session.put("userName", user.userName)
+						req.session.put("admin", user.admin)
 						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
@@ -162,6 +166,21 @@ function UsersController(){
 		console.log('UsersController update');
 	}
 
+	this.loggedin = function(req,res){
+		console.log('reached loggedin function in server')
+		var login_check = false;
+		if (req.session.get("userName") != undefined){
+			login_check = true;
+			console.log('/'.repeat(80));
+		}
+		res.json({login_check: login_check})
+	}
 
+	this.logout = function(req,res){
+		console.log("reached logout function on backend")
+		console.log("before flush,", req.session.get("userName"))
+		req.session.flush();
+		console.log("after flush,", req.session.get("userName"))
+	}
 }
 module.exports = new UsersController();

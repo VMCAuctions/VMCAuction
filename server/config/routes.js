@@ -11,7 +11,6 @@ module.exports = function(app) {
 	app.get('/', function(req,res){
 		users.welcome(req,res)});
 
-
 	// ITEMS //
 	// get the index page of all items
 	app.get('/items', function(req,res){
@@ -33,13 +32,13 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
-	// get the index page of all packages 
+	// get the index page of all packages
 	app.get('/packages', function(req,res){
 		packages.index(req,res)});
 	// get the new package form
 	app.get('/packages/new', function(req,res){
 		packages.new(req,res)});
-	// post the new package form and create the new package 
+	// post the new package form and create the new package
 	app.post('/packages', function(req,res){
 		packages.create(req,res)});
 	// get the page for a specific package
@@ -55,13 +54,13 @@ module.exports = function(app) {
 
 
 	// CATEGORIES //
-	// get all categories to populate the (updateable) category drop-down 
+	// get all categories to populate the (updateable) category drop-down
 	app.get('/categories', function(req,res){
 		categories.index(req,res)});
 	// post a new category
 	app.post('/categories', function(req,res){
 		categories.create(req,res)});
-	
+
 
 
 
@@ -86,6 +85,17 @@ module.exports = function(app) {
 	// post the new user form and create that new user (Registration)
 	app.post('/users', function(req,res){
 		users.create(req,res)});
+
+	// checks if a user is logged in
+	app.get('/users/loggedin', function(req,res){
+		console.log("reached /users/loggedin in routes")
+		users.loggedin(req,res)});
+
+	// logout a specific user
+	app.get('/users/logout', function(req,res){
+		console.log("reached /users/logout in routes")
+		users.logout(req,res)});
+
 	// post the user login form  (LOGIN)
 	app.post('/users/:id/login', function(req,res){
 		users.login(req,res)});
@@ -96,7 +106,6 @@ module.exports = function(app) {
 	// update a specific user (profile/info)
 	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
-	
 
 	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
 	// This was added just for a mock run through with the Foundation ////////
@@ -116,8 +125,5 @@ module.exports = function(app) {
     app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
     /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
 }  // end of module.exports
-
-
-
