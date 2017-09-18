@@ -1,0 +1,16 @@
+.imgNtitle, .bidDetails{
+    display: inline-block;
+    /*border: 1px solid darkslateblue;*/
+}
+.img-thumbnail{
+    width: 200px;
+    height: 200px;
+    border: 1px solid gray;
+}
+.packageName, .bidDetails, .packageDescription{
+    text-align: left;
+    /*border: 1px solid deeppink;*/
+}
+/*.row, .container-fluid{
+    border: 1px solid green;
+}*/
