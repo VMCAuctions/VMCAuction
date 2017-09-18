@@ -55,6 +55,7 @@ class DisplayItems extends Component{
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>
+                    <td>{item.donor}</td>
                     <td>{item.description}</td>
                     <td>{item.restrictions}</td>
                 </tr>
@@ -69,6 +70,7 @@ class DisplayItems extends Component{
                             <th>Item Number</th>
                             <th>Item Name</th>                            
                             <th>Fair Market Value</th>
+                            <th>Donor</th>
                             <th>Item Description</th>
                             <th>Item Restriction</th>                            
                         </tr>
