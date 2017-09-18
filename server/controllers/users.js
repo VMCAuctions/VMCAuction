@@ -35,7 +35,6 @@ function UsersController(){
 				console.log(err)
 			}
 			else if(duplicate){
-				console.log("username already used");
 				res.json({validated: false, message: "That username has already been used. Please pick a unique username."})
 			}
 			else{
@@ -100,6 +99,7 @@ function UsersController(){
 										req.session.put("userName", user.userName)
 										req.session.put("admin", user.admin)
 										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
+										res.json();
 										return;
 									}
 							});
@@ -131,13 +131,11 @@ function UsersController(){
 						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
-						console.log("password don't match")
 						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
 					}
 				})
 			}
 			else{
-				console.log("User not in database")
 				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
 			}
 		})
@@ -171,7 +169,6 @@ function UsersController(){
 		var login_check = false;
 		if (req.session.get("userName") != undefined){
 			login_check = true;
-			console.log('/'.repeat(80));
 		}
 		res.json({login_check: login_check})
 	}
@@ -181,6 +178,14 @@ function UsersController(){
 		console.log("before flush,", req.session.get("userName"))
 		req.session.flush();
 		console.log("after flush,", req.session.get("userName"))
+		req.session.save(function(err, result){
+			if(err){
+				console.log(err)
+			}
+			else{
+				res.json()
+			}
+		})
 	}
 }
 module.exports = new UsersController();

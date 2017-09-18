@@ -19,7 +19,8 @@ class Menu extends React.Component{
           data: {}
 
       }).then((response) => {
-          console.log("logout function returned from database")
+          console.log("logout function returned from database");
+          this.loggedin()
 
       }).catch((err) =>{
           console.log(err);
@@ -35,21 +36,30 @@ class Menu extends React.Component{
       }).then((response) => {
           console.log("/".repeat(80))
           console.log("loggedin function returned from database")
-          console.log(response.data.login_check)
-          console.log()
-          this.setState({
+          console.log("before this.setState,response.data.login_check is", response.data.login_check)
+          console.log("before this.setState, this.state.loggedin is", this.state.loggedin)
+
+          if (response.data.login_check !== this.state.loggedin){
+            this.setState({
             loggedin: response.data.login_check
-          })
-          console.log(this.state.loggedIn)
+            })
+          }
+          console.log("after this.setState,response.data.login_check is", response.data.login_check)
+          console.log("after this.setState, this.state.loggedin is", this.state.loggedin)
 
       }).catch((err) =>{
           console.log(err);
       })
     }
-    render(){
+    componentWillMount(){
         this.loggedin();
+    }
+    componentWillUpdate(){
+        this.loggedin();
+    }
+    render(){
         var htmlLogCode = "";
-        if (this.state.loggedIn == true){
+        if (this.state.loggedin === true){
           htmlLogCode =
           <div><li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
           </div>
