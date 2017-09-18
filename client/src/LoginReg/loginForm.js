@@ -3,7 +3,6 @@ import './login.css';
 import Axios from 'axios';
 import {Route, Link} from 'react-router-dom';
 import RegForm from "./regForm.js";
-
 class LoginForm extends React.Component{
 
     constructor(props){
@@ -29,21 +28,15 @@ class LoginForm extends React.Component{
                   password: this.state.password     },
                 // headers: {Authorization: localStorage.getItem("jw-token")}
         }).then((response) => {
+            console.log("Login promise invoked!")
             if(response.data.search){
-
-                //!!!
-                //Do something here to browser so it knows you're logged in
-                //!!!
-
-                console.log("Login successful!");
-                // Sean's code: localStorage.setItem("jw-token", response.data.token);
+                window.location.href ="/package"
             }
             this.setState({
                 userName:'',
                 password:''
             })
             alert(response.data.message)
-            console.log(response);
         }).catch((err) =>{
             console.log(err);
         })

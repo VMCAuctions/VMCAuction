@@ -1,8 +1,16 @@
 
 var express = require("express");
 var app = express();
+var NodeSession = require('node-session');
+var nodeSession = new NodeSession({secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL'})
 
-var React = require('../client/node_modules/react');  
+function session(req, res, next){
+  nodeSession.startSession(req, res, next);
+}
+
+app.use(session)
+
+var React = require('../client/node_modules/react');
 // var jsx = require('node-jsx');
 // jsx.intall();
 
@@ -13,14 +21,14 @@ app.use(bodyParser.json());
 var path = require("path");
 
 
-// static content 
+// static content
 app.use(express.static(path.join(__dirname, "../client/public")));
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
 
 
 ///////////////////////////////////////////////////////////////////////////////////
-//////// THIS PORTION IS TEMPORARY - IT IS JUST HERE TO RUN THE HTML MOCKUPS OF THE  
+//////// THIS PORTION IS TEMPORARY - IT IS JUST HERE TO RUN THE HTML MOCKUPS OF THE
 //////// UNINTEGRATED BIDDER SCREENS FOR OUR PRESENTATION TO THE CLIENT ON 7/28/17
 app.set('views', path.join(__dirname, '../wireframe'));
 app.set('view engine', 'ejs');
