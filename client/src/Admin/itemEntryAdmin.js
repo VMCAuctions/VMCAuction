@@ -10,12 +10,14 @@ class ItemEntryAdmin extends Component{
         this.state = {
                 itemName: '',
                 donor: '',
-                category: '',
+                category: [],
                 fairMarketValue: '',
                 itemDescription: '',
                 itemRestriction: ''
         }
+       
     }
+
 
     //callback function for capturing user input changes
     handleChange = (e) => {
@@ -27,12 +29,14 @@ class ItemEntryAdmin extends Component{
     
     
     addingCategory = (value) =>{
+
+        console.log('adding category from admin item entry page');
         Axios({
             method: "post",
             url: "/categories",
             data: { category: value},
         }).then((response)=>{
-            console.log(response);
+            
         }).catch((err)=>{
             console.log(err);
         })

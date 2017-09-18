@@ -40,6 +40,20 @@ class Package extends Component{
             console.log("categoryList failed", err)
         })
     } 
+
+
+    componentDidUpdate(){
+        Axios.get("/categories")
+        .then((response)=>{
+            // console.log(response.data);
+            this.setState({
+                categoryList: response.data
+            })
+        }).catch((err)=>{
+            console.log("categoryList failed", err)
+        })
+    }
+    
     //function for adding a new category to the dropdown
     addingCategory = (value) =>{
         Axios({
