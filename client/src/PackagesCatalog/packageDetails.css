@@ -1,3 +1,8 @@
+.bidContainer{
+    margin: auto;
+    background-color: lightblue;
+    height: 550px;
+}
 .imgNtitle, .bidDetails{
     display: inline-block;
     /*border: 1px solid darkslateblue;*/
@@ -11,6 +16,11 @@
     text-align: left;
     /*border: 1px solid deeppink;*/
 }
-/*.row, .container-fluid{
-    border: 1px solid green;
-}*/
+.bidSection{
+    background-color: cadetblue;
+    padding: 5px;
+    width: 300px;
+}
+.bidInput{
+    background-color: burlywood;
+}   

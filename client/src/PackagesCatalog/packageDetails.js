@@ -7,7 +7,8 @@ class PackageDetails extends Component{
         super(props);
         this.state = {
             packageId: this.props.match.params.packageId,
-            listOfPackages: ''
+            listOfPackages: '',
+            place_bid: ''
         }
     }
 
@@ -21,6 +22,10 @@ class PackageDetails extends Component{
         }).catch((err) =>{
             console.log(err);
         })
+    }
+
+    placeBidSubmit = () =>{
+        alert("Yay!!! You are the top bidder.");
     }
 
     render(){
@@ -76,13 +81,13 @@ class PackageDetails extends Component{
         let current_bid = starting_bid[starting_bid.length-1];
 
         //Place bid
-        let place_bid = current_bid + bid_increment;
+        this.state.place_bid = current_bid + bid_increment;
 
 
         //conditional rendering
         if(this.state.listOfPackages){
         return(
-            <div className='container-fluid'>
+            <div className='container-fluid bidContainer'>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
                         <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
@@ -91,19 +96,19 @@ class PackageDetails extends Component{
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
                         <h4>Starting Bid: {starting_bid[0]}</h4>
-                        <h4>Current Bid:{current_bid}</h4>
-                        <input type='text' name='' value={place_bid} readOnly />
-                        <input className='btn-primary' type='submit'  value='Place Bid!!'/>
-                        {/*<h4>Place Bid: {place_bid}</h4>
-                        <button>Place Bid</button>*/}
+                        <div className='bidSection'>
+                            <h4>Current Bid:{current_bid}</h4>
+                            <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
+                            <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/> 
+                            <br/>
+                        </div> 
+                        <div className='packageDescription'>
+                            <br/><h4>Description: </h4>
+                            <p>{packageDescription}</p>
+                            <h5>Items in package: {itemsInPackage}</h5>
+                        </div>                
                     </div>
                 </div>
-                <div className='packageDescription'>
-                        <br/><h4>Description: {packageDescription}</h4>
-                        <h4>Items in package: {itemsInPackage}</h4>
-                        {/*<div className=''>
-                        </div>*/}
-                </div>                
             </div>
         )}
         else{
