@@ -187,5 +187,16 @@ function UsersController(){
 			}
 		})
 	}
+
+	this.who_is_logged_in = function(req, res){
+		console.log("checking who is logged in")
+		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"));
+		
+		if(req.session.get("userName") == 'administrator'){
+			res.json({admin: true})
+		}else{
+			res.json({admin: false})
+		}
+	}
 }
 module.exports = new UsersController();

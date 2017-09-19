@@ -13,6 +13,7 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
+            admin: Boolean,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -57,6 +58,19 @@ class PackageCatalog extends Component{
             })
             console.log(this.state.listOfItems)
         }).catch((err) =>{
+            console.log(err);
+        })
+
+        //loading user information:
+        //if the user's name is administrator then they have admin access
+        Axios.get("/which_user_is_logged_in")
+        .then((result) =>{
+            console.log("if true they are admin, if false they are not: ", result.data.admin);
+            this.setState({
+                admin: result.data.admin
+            })
+        })
+        .catch((err) =>{
             console.log(err);
         })
     }
@@ -154,10 +168,11 @@ class PackageCatalog extends Component{
 
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
-                    if(selected_items[m]._package === this.state.allPackages[n]._id){
-                        if(selected_packages.includes(this.state.allPackages[n]) === false){
-                            if(this.state.allPackages[n].category === this.state.selectValue || this.state.selectValue === "All Categories"){
-                                selected_packages.push(this.state.allPackages[n]);
+
+                    if(selected_items[i]._package == this.state.allPackages[j]._id){
+                        if(selected_packages.includes(this.state.allPackages[j]) === false){
+                            if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
+                                selected_packages.push(this.state.allPackages[j]);
                             }
                         }
                     }
@@ -179,6 +194,9 @@ class PackageCatalog extends Component{
     deletePackage(e){
         e.persist();
         console.log("you clicked the button and this is the ID", e.target.id);
+        console.log(e.target.value)
+        let deleted_package = this.state.listOfPackages.splice(e.target.value, 1)
+        this.setState({listOfPackages:this.state.listOfPackages})
         
         Axios({
             method: "post",
@@ -187,9 +205,6 @@ class PackageCatalog extends Component{
         }).then((result) =>{
             console.log("Was able to remove a package from the list", result)
             
-            //reloading the page after an item is removed so it will have all the updated changes
-            window.location.reload();
-            
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
         })
@@ -197,10 +212,17 @@ class PackageCatalog extends Component{
 
     render(){
         let packageList = this.state.listOfPackages.map((packages,index) =>{
+
+            let del_button;
+            if(this.state.admin === true){
+                del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
+            }else{
+                del_button = <td></td>
+            }
                 // console.log(packages._bids);
             return(
                 <tr key={index}>
-                    <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
+                    {del_button}
                     <td>{packages._id}</td>
                     <td>{packages.name}</td>
                     <td>{packages._category}</td>
