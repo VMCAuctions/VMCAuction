@@ -97,6 +97,7 @@ class Menu extends React.Component{
                             <li>
                                 <Link to='/package'>Packages/Bids</Link>
                             </li>
+
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             {htmlLogCode}
