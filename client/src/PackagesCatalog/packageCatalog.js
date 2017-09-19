@@ -169,7 +169,7 @@ class PackageCatalog extends Component{
                     //AND if it has not already been added to the array, push it to the selected packages array
                     if(selected_items[i]._package == this.state.allPackages[j]._id){
                         if(selected_packages.includes(this.state.allPackages[j]) === false){
-                            if(this.state.allPackages[j].category == this.state.selectValue || this.state.selectValue == "All Categories"){
+                            if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
                                 selected_packages.push(this.state.allPackages[j]);
                             }
                         }
@@ -192,6 +192,9 @@ class PackageCatalog extends Component{
     deletePackage(e){
         e.persist();
         console.log("you clicked the button and this is the ID", e.target.id);
+        console.log(e.target.value)
+        let deleted_package = this.state.listOfPackages.splice(e.target.value, 1)
+        this.setState({listOfPackages:this.state.listOfPackages})
         
         Axios({
             method: "post",
@@ -199,9 +202,6 @@ class PackageCatalog extends Component{
             data: { package_id: e.target.id}
         }).then((result) =>{
             console.log("Was able to remove a package from the list", result)
-            
-            //reloading the page after an item is removed so it will have all the updated changes
-            window.location.reload();
             
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
@@ -213,7 +213,7 @@ class PackageCatalog extends Component{
 
             let del_button;
             if(this.state.admin === true){
-                del_button = <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
+                del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
             }else{
                 del_button = <td></td>
             }

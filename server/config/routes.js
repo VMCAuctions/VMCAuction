@@ -27,6 +27,9 @@ module.exports = function(app) {
 	// update a single item
 	app.post('/items/:id', function(req,res){
 		items.update(req,res)});
+	//deleting an item
+	app.post('/remove_item', function(req, res){
+		items.remove_item(req, res)});
 
 
 
