@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './packageCatalog.css';
+import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom'
 
 class PackageCatalog extends Component{
@@ -117,13 +118,13 @@ class PackageCatalog extends Component{
         let input_letters = e.target.value.toLowerCase();
 
         //when the user deletes everything in the input it will display all packages again
-        if(e.target.value == "" && this.state.selectValue == "All Categories"){
+        if(e.target.value === "" && this.state.selectValue === "All Categories"){
             this.setState({listOfPackages: this.state.allPackages})
             
         }else{
 
             //first checking if there are items at all
-            if(this.state.listOfItems.length != 0){
+            if(this.state.listOfItems.length !== 0){
 
                 //iterating through the list of items pulled from the DB
                 for(var i = 0; i < this.state.listOfItems.length; i++){
@@ -148,25 +149,26 @@ class PackageCatalog extends Component{
 
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
-            for(var i = 0; i < this.state.allPackages.length; i++){
+            for(var j = 0; j < this.state.allPackages.length; j++){
                 
-                let name = this.state.allPackages[i].name.toLowerCase();
-                let description = this.state.allPackages[i].description.toLowerCase();
-                let category = this.state.allPackages[i]._category
+                let name = this.state.allPackages[j].name.toLowerCase();
+                let description = this.state.allPackages[j].description.toLowerCase();
+                let category = this.state.allPackages[j]._category
 
                 if(name.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
-                    if(category == this.state.selectValue || this.state.selectValue == "All Categories"){
-                        selected_packages.push(this.state.allPackages[i])
+                    if(category === this.state.selectValue || this.state.selectValue === "All Categories"){
+                        selected_packages.push(this.state.allPackages[j])
                     }
                 }
             }
             
             //iterate through each item and check it to all the packages one at a time
-            for(var i = 0; i < selected_items.length; i++){
-                for(var j = 0; j < this.state.allPackages.length; j++){
+            for(var m = 0; m < selected_items.length; m++){
+                for(var n = 0; n < this.state.allPackages.length; n++){
 
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
+
                     if(selected_items[i]._package == this.state.allPackages[j]._id){
                         if(selected_packages.includes(this.state.allPackages[j]) === false){
                             if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
@@ -230,12 +232,13 @@ class PackageCatalog extends Component{
                     <td>{packages._bids[0]}</td>
                     <td>{packages._items.map((item,index)=>{
                         return <li key={index} >{item}</li>})}</td>
+                    <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
             )
         })
-        let categories = this.state.categories.map((category) =>{
+        let categories = this.state.categories.map((category,index) =>{
             return(
-                <option value={category}>{category}</option>
+                <option key={index} value={category}>{category}</option>
             )
         })
 
@@ -272,7 +275,8 @@ class PackageCatalog extends Component{
                                 <th>Item Description</th>
                                 <th>Increments</th> 
                                 <th>Starting Bid</th>   
-                                <th>Items in Package</th>                        
+                                <th>Items in Package</th>    
+                                <th>Details</th>                    
                             </tr>
                         </thead>
                         <tbody>
