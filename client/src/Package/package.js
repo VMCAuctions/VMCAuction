@@ -114,9 +114,9 @@ class Package extends Component{
         })
 
         return(
-            <div id='package-container'>
+            <div id='package-container' className='container-fluid'>
                 <form className='form-inline' onSubmit={this.onPackageFormSubmit}>
-                    <div className='package-info form-group'>
+                    <div className='package-info form-group col-sm-2'>
                         <h3>Package Info</h3>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
@@ -131,10 +131,10 @@ class Package extends Component{
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>
-                    <div className="form-group groupingItems">
+                    <div className="form-group groupingItems col-sm-9">
                         <div className='item-select form'>
                             <h3>Grouping items</h3>
-                            <div className='.table-responsive'>
+                            <div className='.table-responsive itemsList'>
                                 <table className='table'>
                                     <DisplayItems 
                                         selectedItems={this.state.selectedItems}

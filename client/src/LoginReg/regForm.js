@@ -31,8 +31,10 @@ class RegForm extends React.Component{
         e.preventDefault(); // prevent default form submission behaviour
 
         //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
-        if (this.state.password !== this.state.cnfmPassword) {
-          console.log("passwords don't match!")
+
+        if (this.state.password != this.state.cnfmPassword) {
+          alert("Passwords do not match. Please try again.")
+
           return;
         }
 
@@ -68,8 +70,11 @@ class RegForm extends React.Component{
                       password:'',
                       cnfmPassword:''
               })
+
+              window.location.href ="/package"
+
             };
-            alert(response.data.value);
+            alert(response.data.message);
 
 
         }).catch((err) =>{
