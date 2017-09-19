@@ -12,6 +12,7 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
+            admin: Boolean,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,6 +57,19 @@ class PackageCatalog extends Component{
             })
             console.log(this.state.listOfItems)
         }).catch((err) =>{
+            console.log(err);
+        })
+
+        //loading user information:
+        //if the user's name is administrator then they have admin access
+        Axios.get("/which_user_is_logged_in")
+        .then((result) =>{
+            console.log("if true they are admin, if false they are not: ", result.data.admin);
+            this.setState({
+                admin: result.data.admin
+            })
+        })
+        .catch((err) =>{
             console.log(err);
         })
     }
@@ -196,10 +210,17 @@ class PackageCatalog extends Component{
 
     render(){
         let packageList = this.state.listOfPackages.map((packages,index) =>{
+
+            let del_button;
+            if(this.state.admin === true){
+                del_button = <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
+            }else{
+                del_button = <td></td>
+            }
                 // console.log(packages._bids);
             return(
                 <tr key={index}>
-                    <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
+                    {del_button}
                     <td>{packages._id}</td>
                     <td>{packages.name}</td>
                     <td>{packages._category}</td>

@@ -110,6 +110,10 @@ module.exports = function(app) {
 	// update a specific user (profile/info)
 	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
+	
+	//check who is logged in
+	app.get('/which_user_is_logged_in', function(req, res){
+		users.who_is_logged_in(req, res)});
 
 	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
 	// This was added just for a mock run through with the Foundation ////////
