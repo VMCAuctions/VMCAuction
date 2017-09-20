@@ -46,7 +46,7 @@ class Select extends Component{
         })
         return(
             <div>
-                <select className='form-control input-lg' onChange={this.handleChange} name={this.props.name} >
+                <select className='form-control' onChange={this.handleChange} name={this.props.name} >
                     {dropdownOptions}
                 </select>
             </div>
