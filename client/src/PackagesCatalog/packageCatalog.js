@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './packageCatalog.css';
+import {Link} from 'react-router-dom';
 import ReactDOM from 'react-dom'
 
 class PackageCatalog extends Component{
@@ -12,6 +13,7 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
+            admin: Boolean,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -34,8 +36,8 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 }
             })
-            //sorting the packages by value..
-            result.data.sort(function(a,b){return b.value - a.value})
+            //sorting the packages by highest bid..
+            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             //setting the state of the categories and the list of packages 
             this.setState({
                 listOfPackages: result.data,
@@ -58,6 +60,19 @@ class PackageCatalog extends Component{
         }).catch((err) =>{
             console.log(err);
         })
+
+        //loading user information:
+        //if the user's name is administrator then they have admin access
+        Axios.get("/which_user_is_logged_in")
+        .then((result) =>{
+            console.log("if true they are admin, if false they are not: ", result.data.admin);
+            this.setState({
+                admin: result.data.admin
+            })
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
     }
 
     //when the option is changed it will update the packages on display
@@ -77,8 +92,8 @@ class PackageCatalog extends Component{
                 data: { category: e.target.value}
             }).then((result) =>{
                 console.log("filtered these pacakges through the database", result)
-                //sorting the packages accoring to package value
-                result.data.sort(function(a,b){return b.value - a.value})
+                //sorting the packages accoring to the highest bid
+                result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
                 this.setState({
                     listOfPackages: result.data
                 })
@@ -103,13 +118,13 @@ class PackageCatalog extends Component{
         let input_letters = e.target.value.toLowerCase();
 
         //when the user deletes everything in the input it will display all packages again
-        if(e.target.value == "" && this.state.selectValue == "All Categories"){
+        if(e.target.value === "" && this.state.selectValue === "All Categories"){
             this.setState({listOfPackages: this.state.allPackages})
             
         }else{
 
             //first checking if there are items at all
-            if(this.state.listOfItems.length != 0){
+            if(this.state.listOfItems.length !== 0){
 
                 //iterating through the list of items pulled from the DB
                 for(var i = 0; i < this.state.listOfItems.length; i++){
@@ -134,15 +149,15 @@ class PackageCatalog extends Component{
 
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
-            for(var i = 0; i < this.state.allPackages.length; i++){
+            for(var j = 0; j < this.state.allPackages.length; j++){
                 
-                let name = this.state.allPackages[i].name.toLowerCase();
-                let description = this.state.allPackages[i].description.toLowerCase();
-                let category = this.state.allPackages[i]._category
+                let name = this.state.allPackages[j].name.toLowerCase();
+                let description = this.state.allPackages[j].description.toLowerCase();
+                let category = this.state.allPackages[j]._category
 
                 if(name.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
-                    if(category == this.state.selectValue || this.state.selectValue == "All Categories"){
-                        selected_packages.push(this.state.allPackages[i])
+                    if(category === this.state.selectValue || this.state.selectValue === "All Categories"){
+                        selected_packages.push(this.state.allPackages[j])
                     }
                 }
             }
@@ -150,12 +165,13 @@ class PackageCatalog extends Component{
             //iterate through each item and check it to all the packages one at a time
             for(var i = 0; i < selected_items.length; i++){
                 for(var j = 0; j < this.state.allPackages.length; j++){
-
+                    
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
-                    if(selected_items[i]._package == this.state.allPackages[j]._id){
+
+                    if(selected_items[i]._package == this.state.allPackages[j]._id ){
                         if(selected_packages.includes(this.state.allPackages[j]) === false){
-                            if(this.state.allPackages[j].category == this.state.selectValue || this.state.selectValue == "All Categories"){
+                            if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
                                 selected_packages.push(this.state.allPackages[j]);
                             }
                         }
@@ -166,8 +182,8 @@ class PackageCatalog extends Component{
             console.log("the selected packages based on the drop down restrictions: ",selected_packages);
 
             //repopulate the list of packages that will be rendered to the screen
-            //sort the packages according to package value
-            selected_packages.sort(function(a,b){return b.value - a.value})
+            //sort the packages according to highest bid
+            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             
             this.setState({listOfPackages: selected_packages})
         }
@@ -178,6 +194,9 @@ class PackageCatalog extends Component{
     deletePackage(e){
         e.persist();
         console.log("you clicked the button and this is the ID", e.target.id);
+        console.log(e.target.value)
+        let deleted_package = this.state.listOfPackages.splice(e.target.value, 1)
+        this.setState({listOfPackages:this.state.listOfPackages})
         
         Axios({
             method: "post",
@@ -186,20 +205,24 @@ class PackageCatalog extends Component{
         }).then((result) =>{
             console.log("Was able to remove a package from the list", result)
             
-            //reloading the page after an item is removed so it will have all the updated changes
-            window.location.reload();
-            
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
         })
     }
 
     render(){
+        let del_button_header = "";
+
         let packageList = this.state.listOfPackages.map((packages,index) =>{
+            let del_button = "";
+            if(this.state.admin === true){
+                del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
+                del_button_header = <th></th>
+            }
                 // console.log(packages._bids);
             return(
                 <tr key={index}>
-                    <td><button onClick={this.deletePackage} id={packages._id}>Delete</button></td>
+                    {del_button}
                     <td>{packages._id}</td>
                     <td>{packages.name}</td>
                     <td>{packages._category}</td>
@@ -209,12 +232,13 @@ class PackageCatalog extends Component{
                     <td>{packages._bids[0]}</td>
                     <td>{packages._items.map((item,index)=>{
                         return <li key={index} >{item}</li>})}</td>
+                    <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
             )
         })
-        let categories = this.state.categories.map((category) =>{
+        let categories = this.state.categories.map((category,index) =>{
             return(
-                <option value={category}>{category}</option>
+                <option key={index} value={category}>{category}</option>
             )
         })
 
@@ -243,7 +267,7 @@ class PackageCatalog extends Component{
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
-                                <th></th>
+                                {del_button_header}
                                 <th>Package Number</th>
                                 <th>Package Name</th>
                                 <th>Category </th>
@@ -251,7 +275,8 @@ class PackageCatalog extends Component{
                                 <th>Item Description</th>
                                 <th>Increments</th> 
                                 <th>Starting Bid</th>   
-                                <th>Items in Package</th>                        
+                                <th>Items in Package</th>    
+                                <th>Details</th>                    
                             </tr>
                         </thead>
                         <tbody>

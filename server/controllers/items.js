@@ -110,7 +110,17 @@ function ItemsController(){
 		        });
 		    }
 		});
-	}  // end of this.update();
+	},  // end of this.update();
+
+
+	//removing an item
+	this.remove_item = function(req, res){
+		console.log(req.body.item_id)
+		Item.remove({_id: req.body.item_id}, function(err, result){
+			if(err){console.log(err)}
+			else{res.json(result)}
+		})
+	}
   
 }
 module.exports = new ItemsController(); 

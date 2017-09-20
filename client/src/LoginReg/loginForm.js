@@ -5,6 +5,7 @@ import {Route, Link} from 'react-router-dom';
 import RegForm from "./regForm.js";
 class LoginForm extends React.Component{
 
+
     constructor(props){
         super(props)
         this.state = {
@@ -41,10 +42,7 @@ class LoginForm extends React.Component{
             console.log(err);
         })
     }
-    register= () => {
-        console.log("register function");
-        <RegForm />
-    }
+    
     render(){
          return(
             <div className='container row'>  

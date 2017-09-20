@@ -167,10 +167,18 @@ function UsersController(){
 	this.loggedin = function(req,res){
 		console.log('reached loggedin function in server')
 		var login_check = false;
+		var admin;
+
 		if (req.session.get("userName") != undefined){
 			login_check = true;
 		}
-		res.json({login_check: login_check})
+
+		if(req.session.get("admin") == true){
+			admin = true;
+		}else{
+			admin = false;
+		}
+		res.json({login_check: login_check, admin: admin})
 	}
 
 	this.logout = function(req,res){
@@ -186,6 +194,17 @@ function UsersController(){
 				res.json()
 			}
 		})
+	}
+
+	this.who_is_logged_in = function(req, res){
+		console.log("checking who is logged in")
+		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"), "the admin status is: ", req.session.get("admin"));
+		
+		if(req.session.get("admin") == true){
+			res.json({admin: true})
+		}else{
+			res.json({admin: false})
+		}
 	}
 }
 module.exports = new UsersController();
