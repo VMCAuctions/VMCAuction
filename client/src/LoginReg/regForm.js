@@ -16,6 +16,7 @@ class RegForm extends React.Component{
             zip:'',
             phoneNumber:'',
             email:'',
+            creditCard:'',
             userName:'',
             password:'',
             cnfmPassword:''
@@ -50,6 +51,7 @@ class RegForm extends React.Component{
                   zip:this.state.zip,
                   phoneNumber:this.state.phoneNumber,
                   email:this.state.email,
+                  creditCard:this.state.creditCard,
                   userName: this.state.userName,
                   password: this.state.password,
                    },
@@ -66,6 +68,7 @@ class RegForm extends React.Component{
                       zip:'',
                       phoneNumber:'',
                       email:'',
+                      creditCard:'',
                       userName:'',
                       password:'',
                       cnfmPassword:''
@@ -88,6 +91,7 @@ class RegForm extends React.Component{
                 <label><h2> Register</h2></label>
                 <div className='registration-form'>
                 <form onSubmit={this.formSubmit} >
+
           
                     <div className="form-group row">
                       <label for="firstName" className="col-sm-2 col-form-label">First Name</label>
@@ -151,6 +155,12 @@ class RegForm extends React.Component{
                         placeholder='Email Address' onChange={this.handleChange} value={this.state.email} required/>
                       </div>
                     </div>
+                    <div className='form-group row">
+                      <label for="credCard" className="col-sm-2 col-form-label">Credit Card</label>
+                      <div className="col-sm-10"?
+                      <input type='text' id='creditCard' className='form-control name='creditCard' placeholder='Credit Card' onChange={this.handleChange} value={this.state.creditCard} required/>
+                      </div>
+                    </div>
                     <div className="form-group row">
                       <label for="userName" className="col-sm-2 col-form-label">User Name</label>
                       <div className="col-sm-10">
@@ -175,6 +185,8 @@ class RegForm extends React.Component{
                     <div className="form-group row">
                      <input type='submit' id='submit' value='Submit' className='btn btn-primary ' />
                     </div>
+
+
                     <p>Already registered? Go to Login! </p>
 
 
