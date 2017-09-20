@@ -173,7 +173,7 @@ function UsersController(){
 			login_check = true;
 		}
 
-		if(req.session.get("admin") === true){
+		if(req.session.get("admin") == true){
 			admin = true;
 		}else{
 			admin = false;
@@ -200,7 +200,7 @@ function UsersController(){
 		console.log("checking who is logged in")
 		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"), "the admin status is: ", req.session.get("admin"));
 		
-		if(req.session.get("admin") === true){
+		if(req.session.get("admin") == true){
 			res.json({admin: true})
 		}else{
 			res.json({admin: false})
