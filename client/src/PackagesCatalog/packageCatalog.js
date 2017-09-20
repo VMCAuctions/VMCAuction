@@ -36,8 +36,8 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 }
             })
-            //sorting the packages by value..
-            result.data.sort(function(a,b){return b.value - a.value})
+            //sorting the packages by highest bid..
+            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             //setting the state of the categories and the list of packages 
             this.setState({
                 listOfPackages: result.data,
@@ -92,8 +92,8 @@ class PackageCatalog extends Component{
                 data: { category: e.target.value}
             }).then((result) =>{
                 console.log("filtered these pacakges through the database", result)
-                //sorting the packages accoring to package value
-                result.data.sort(function(a,b){return b.value - a.value})
+                //sorting the packages accoring to the highest bid
+                result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
                 this.setState({
                     listOfPackages: result.data
                 })
@@ -163,13 +163,13 @@ class PackageCatalog extends Component{
             }
             
             //iterate through each item and check it to all the packages one at a time
-            for(var m = 0; m < selected_items.length; m++){
-                for(var n = 0; n < this.state.allPackages.length; n++){
-
+            for(var i = 0; i < selected_items.length; i++){
+                for(var j = 0; j < this.state.allPackages.length; j++){
+                    
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
 
-                    if(selected_items[i]._package == this.state.allPackages[j]._id){
+                    if(selected_items[i]._package == this.state.allPackages[j]._id ){
                         if(selected_packages.includes(this.state.allPackages[j]) === false){
                             if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
                                 selected_packages.push(this.state.allPackages[j]);
@@ -182,8 +182,8 @@ class PackageCatalog extends Component{
             console.log("the selected packages based on the drop down restrictions: ",selected_packages);
 
             //repopulate the list of packages that will be rendered to the screen
-            //sort the packages according to package value
-            selected_packages.sort(function(a,b){return b.value - a.value})
+            //sort the packages according to highest bid
+            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             
             this.setState({listOfPackages: selected_packages})
         }
@@ -211,13 +211,13 @@ class PackageCatalog extends Component{
     }
 
     render(){
-        let packageList = this.state.listOfPackages.map((packages,index) =>{
+        let del_button_header = "";
 
-            let del_button;
+        let packageList = this.state.listOfPackages.map((packages,index) =>{
+            let del_button = "";
             if(this.state.admin === true){
                 del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
-            }else{
-                del_button = <td></td>
+                del_button_header = <th></th>
             }
                 // console.log(packages._bids);
             return(
@@ -267,7 +267,7 @@ class PackageCatalog extends Component{
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
-                                <th></th>
+                                {del_button_header}
                                 <th>Package Number</th>
                                 <th>Package Name</th>
                                 <th>Category </th>
