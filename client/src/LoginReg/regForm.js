@@ -155,10 +155,11 @@ class RegForm extends React.Component{
                         placeholder='Email Address' onChange={this.handleChange} value={this.state.email} required/>
                       </div>
                     </div>
-                    <div className='form-group row">
-                      <label for="credCard" className="col-sm-2 col-form-label">Credit Card</label>
-                      <div className="col-sm-10"?
-                      <input type='text' id='creditCard' className='form-control name='creditCard' placeholder='Credit Card' onChange={this.handleChange} value={this.state.creditCard} required/>
+                     <div className="form-group row">
+                      <label for="creditCard" className="col-sm-2 col-form-label">Credit Card</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='creditCard' className='form-control' name='creditCard' 
+                        placeholder='Credit Card' onChange={this.handleChange} value={this.state.creditCard} required/>
                       </div>
                     </div>
                     <div className="form-group row">
