@@ -16,6 +16,7 @@ class RegForm extends React.Component{
             zip:'',
             phoneNumber:'',
             email:'',
+            creditCard:'',
             userName:'',
             password:'',
             cnfmPassword:''
@@ -50,6 +51,7 @@ class RegForm extends React.Component{
                   zip:this.state.zip,
                   phoneNumber:this.state.phoneNumber,
                   email:this.state.email,
+                  creditCard:this.state.creditCard,
                   userName: this.state.userName,
                   password: this.state.password,
                    },
@@ -66,6 +68,7 @@ class RegForm extends React.Component{
                       zip:'',
                       phoneNumber:'',
                       email:'',
+                      creditCard:'',
                       userName:'',
                       password:'',
                       cnfmPassword:''
@@ -103,6 +106,8 @@ class RegForm extends React.Component{
                     <input type='text' id='phoneNumber' className='inputField' name='phoneNumber'placeholder='Phone Number'onChange={this.handleChange} value={this.state.phoneNumber} />
                     <br></br>
                     <input type='text' id='email' className='inputField' name='email' placeholder='Email Address'onChange={this.handleChange} value={this.state.email} required/>
+                    <br></br>
+                    <input type='text' id='creditCard' className='inputField' name='creditCard' placeholder='Credit Card' onChange={this.handleChange} value={this.state.creditCard} required/>
                     <br></br>
                     <input type='text' id='userName' className='inputField' name='userName' placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
                     <br></br>

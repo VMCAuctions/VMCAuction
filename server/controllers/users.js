@@ -55,6 +55,7 @@ function UsersController(){
                   ["zip", 5, "zip code"],
                   ["phoneNumber", 10, "phone number"],
                   ["email", 5, "email address"],
+									["creditCard", 15, "credit card"],
                   ["userName", 5, "user name"],
                   ["password", 6, "password"]
 								];
@@ -82,6 +83,7 @@ function UsersController(){
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
 								email: req.body.email,
+								creditCard: req.body.creditCard,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,

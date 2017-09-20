@@ -19,7 +19,7 @@ class App extends Component {
           <Route exact path='/' component={Home}/>
           <Route path='/item/new' component={ItemEntryAdmin}/>
           <Route path='/items' component={Catalog}/>
-          <Route path='/packages/new' component={Package}/> 
+          <Route path='/packages/new' component={Package}/>
           <Route path='/package' component={PackageCatalog}/>
           <Route path='/login' component={LoginForm}/>  
           <Route path='/register' component={RegForm}/>   
