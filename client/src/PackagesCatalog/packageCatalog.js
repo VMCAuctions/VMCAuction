@@ -221,6 +221,19 @@ class PackageCatalog extends Component{
             }
                 // console.log(packages._bids);
             return(
+                
+                    <div className="card package_card w-75">
+                        <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
+                        <div className="card-block">
+                        <h4 className="card-title text-uppercase">{packages.name}</h4>
+                        <p class="card-text">Category: {packages._category}</p>
+                        <p class="card-text">STARTING BID: {packages._bids[0]}</p>
+                        <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
+                        <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
+                        </div>
+                    </div>      
+            )
+            /*return(
                 <tr key={index}>
                     {del_button}
                     <td>{packages._id}</td>
@@ -234,7 +247,7 @@ class PackageCatalog extends Component{
                         return <li key={index} >{item}</li>})}</td>
                     <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
-            )
+            )*/
         })
         let categories = this.state.categories.map((category,index) =>{
             return(
@@ -262,8 +275,7 @@ class PackageCatalog extends Component{
                     </div>
                 </div> {/* end of search-bar */}
                 <br/>
-
-                <div className='table-responsive table-container'>
+                {/*<div className='table-responsive table-container'>
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
@@ -283,7 +295,12 @@ class PackageCatalog extends Component{
                             {packageList}                        
                         </tbody>
                     </table>
+                </div>*/}
+
+                <div className='card-deck'>
+                    {packageList}
                 </div>
+                
             </div>
         )
     }
