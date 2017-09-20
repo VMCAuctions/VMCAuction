@@ -83,39 +83,103 @@ class RegForm extends React.Component{
 
     render(){
         return(
-            <div>
-                <h1> Register</h1>
+            <div className='container row'>
+                <label><h2> Register</h2></label>
+                <div className='registration-form'>
                 <form onSubmit={this.formSubmit} >
-                    <br></br>
-                    <input type='text' id='firstName' className='inputField' name='firstName' placeholder='First Name' onChange={this.handleChange} value={this.state.firstName} required/>
-                    <br></br>
-                    <input type='text' id='lastName' className='inputField' name='lastName' placeholder='Last Name'onChange={this.handleChange} value={this.state.lastName} required/>
-                    <br></br>
-                    <input type='text' id='streetAddress' className='inputField' name='streetAddress' placeholder='Street Address' onChange={this.handleChange} value={this.state.streetAddress} required/>
-                    <br></br>
-                    <input type='text' id='city' className='inputField' name='city' placeholder='City' onChange={this.handleChange} value={this.state.city} required/>
-                    <br></br>
-                    <input type='text' id='states' className='inputField' name='states' placeholder='State' onChange={this.handleChange} value={this.state.states} required/>
-                    <br></br>
-                    <input type='text' id='zip' className='inputField' name='zip' placeholder='Zip Code' onChange={this.handleChange} value={this.state.zip} required/>
-                    <br></br>
-                    <input type='text' id='phoneNumber' className='inputField' name='phoneNumber'placeholder='Phone Number'onChange={this.handleChange} value={this.state.phoneNumber} />
-                    <br></br>
-                    <input type='text' id='email' className='inputField' name='email' placeholder='Email Address'onChange={this.handleChange} value={this.state.email} required/>
-                    <br></br>
-                    <input type='text' id='userName' className='inputField' name='userName' placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
-                    <br></br>
-                    <input type='password' id='password' className='inputField' name='password' placeholder='Password'onChange={this.handleChange} value={this.state.password} required/>
-                    <br></br>
-                    <input type='password' id='cnfmPassword' className='inputField' name='cnfmPassword' placeholder='Confirm Password'onChange={this.handleChange} value={this.state.cnfmPassword} required/>
-                    <br></br>
-                    <input type='submit' id='submit' value='Submit' className='btn btn-primary form-control' />
+          
+                    <div className="form-group row">
+                      <label for="firstName" className="col-sm-2 col-form-label">First Name</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='firstName' className='form-control' name='firstName' 
+                        placeholder='First Name' onChange={this.handleChange} value={this.state.firstName} required/>
+                      </div>
+                    </div>          
+                    
+                    <div className="form-group row">
+                      <label for="lastName" className="col-sm-2 col-form-label">Last Name</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='lastName' className='form-control' name='lastName' 
+                        placeholder='Last Name' onChange={this.handleChange} value={this.state.lastName} required/>
+                      </div>
+                    </div>                            
+                    
+                    <div className="form-group row">
+                            <label for="streetAddress" className="col-sm-2 col-form-label">Street Address</label>
+                            <div className="col-sm-10">
+                              <input type='text' id='streetAddress' className='form-control' name='streetAddress' 
+                              placeholder='Street Address' onChange={this.handleChange} value={this.state.streetAddress} required/>
+                            </div>
+                    </div>     
+                    
+                    <div className="form-group row">
+                            <label for="city" className="col-sm-2 col-form-label">City</label>
+                            <div className="col-sm-10">
+                              <input type='text' id='city' className='form-control' name='city' 
+                              placeholder='City' onChange={this.handleChange} value={this.state.city} required/>
+                            </div>
+                    </div>    
+                    
+                    <div className="form-group row">
+                            <label for="states" className="col-sm-2 col-form-label">State</label>
+                            <div className="col-sm-10">
+                              <input type='text' id='states' className='form-control' name='states' 
+                              placeholder='State' onChange={this.handleChange} value={this.state.states} required/>
+                            </div>
+                    </div>
+                   
+                    <div className="form-group row">
+                      <label for="zip" className="col-sm-2 col-form-label">Zip Code</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='zip' className='form-control' name='zip' 
+                        placeholder='Zip Code' onChange={this.handleChange} value={this.state.zip} required/>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label for="phoneNumber" className="col-sm-2 col-form-label">Phone Number</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='phoneNumber' className='form-control' name='phoneNumber'
+                        placeholder='Phone Number' onChange={this.handleChange} value={this.state.phoneNumber} />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label for="email" className="col-sm-2 col-form-label">Email Address</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='email' className='form-control' name='email' 
+                        placeholder='Email Address' onChange={this.handleChange} value={this.state.email} required/>
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label for="userName" className="col-sm-2 col-form-label">User Name</label>
+                      <div className="col-sm-10">
+                        <input type='text' id='userName' className='form-control' name='userName' 
+                        placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label for="password" className="col-sm-2 col-form-label">Password</label>
+                      <div className="col-sm-10">
+                        <input type='password' id='password' className='form-control' name='password' 
+                        placeholder='Password' onChange={this.handleChange} value={this.state.password} required/>
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label for="cnfmPassword" className="col-sm-2 col-form-label">Confirm Password</label>
+                      <div className="col-sm-10">
+                        <input type='password' id='cnfmPassword' className='form-control' name='cnfmPassword' 
+                        placeholder='Confirm Password' onChange={this.handleChange} value={this.state.cnfmPassword} required/>
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                     <input type='submit' id='submit' value='Submit' className='btn btn-primary ' />
+                    </div>
                     <p>Already registered? Go to Login! </p>
 
 
-                </form>
-                    <p><Link to='/'>Login</Link></p>
-
+                    </form>
+                       <p><Link to='/'>Login</Link></p>
+                </div>
             </div>
         )
     }

@@ -130,18 +130,24 @@ class Package extends Component{
         return(
             <div id='package-container' className='container-fluid'>
                 <form className='form-inline' onSubmit={this.onPackageFormSubmit}>
-                    <div className='package-info form-group col-sm-2'>
+                    <div className='package-info form-group col-sm-2' >
                         <h3>Package Info</h3>
+                        <label for="packageName" className="col-sm-2 col-form-label">Package Name</label>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
+                        <label for="packageDescription" className="col-sm-2 col-form-label">Package Description</label>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
-                        
-                        <Select categoryList={this.state.categoryList} name='category' 
-                                 value={this.state.category} handleChange={this.onPackageChange}/><br/>
+                        <label for="category" className="col-sm-2 col-form-label"> Category</label><br/>
+                        <Select categoryList={this.state.categoryList} name='category' className='form-control'
+                                 value={this.state.category} handleChange={this.onPackageChange} required/><br/>
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
 
+                        <label for="openingBid" className="col-sm-2 col-form-label">Opening Bid</label>
                         <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} placeholder='Opening Bid' required/><br/><br/>
+                        <label for="increments" className="col-sm-2 col-form-label">Increments</label>
                         <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
-                        <input className="form-control"  value={this.state.totalValue} placeholder="Total Market value" readOnly /><br/><br/>
+                        <label for="totalValue" className="col-sm-2 col-form-label">Total Market value</label>
+                        <input className="form-control"  value={this.state.totalValue} placeholder="Total Items" readOnly /><br/><br/>
+                        <label for="totalItems" className="col-sm-2 col-form-label">Total Items</label>
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>

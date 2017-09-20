@@ -38,7 +38,7 @@ class TestModal extends Component {
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <h1>Add New Category</h1>
 
-          <input type='text' name='newCategoryValue' value={this.state.newCategoryValue} onChange={this.handleChange}/><br/><br/>
+          <input type='text' name='newCategoryValue' value={this.state.newCategoryValue} onChange={this.handleChange} /><br/><br/>
           <button onClick={this.addingCategory}>Create New Category</button>
 
           <button onClick={() => this.closeModal()}>Close</button>

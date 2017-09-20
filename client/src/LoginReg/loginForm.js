@@ -47,21 +47,34 @@ class LoginForm extends React.Component{
     }
     render(){
          return(
-             <div>
-                <h1>Login </h1>
-                <form onSubmit={this.formSubmit} >
-                    <br></br>
-                    <input type='text' id='userName' name='userName' placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required  />
-                    <br></br>
-                    <input type='password' id='password' name='password' placeholder='Password'onChange={this.handleChange} value={this.state.password} required />
-                    <br></br>
-                    <input type='submit' id='submit' value='Submit' className='btn btn-primary form-control' />
-                    <p>Not registered yet? Register now!</p>
+            <div className='container row'>  
+                <label><h1>Login</h1> </label>
+                <div className='login-form '>
+                    <form onSubmit={this.formSubmit} >
+                        <div className="form-group row" >
+                            <label for="userName" className="col-sm-2 col-form-label">User Name</label>
+                            <div className="col-sm-10">
+                                <input className='form-control' type='text' id='userName' name='userName' 
+                                        placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required  />
+                            </div>
+                        </div>
+                       
+                        <div className="form-group row">
+                            <label for="password" className="col-sm-2 col-form-label">Password</label>
+                            <div className="col-sm-10">
+                                <input className='form-control' type='password' id='password' name='password'
+                                        placeholder='Password' onChange={this.handleChange} value={this.state.password} required />
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <input type='submit' id='submit' value='Submit' className='btn btn-primary ' />
+                        </div>
+                        <p>Not registered yet? Register now!</p>
 
-                </form>
-                    <p><Link to='/register'>Register</Link></p>
-
+                    </form>
+                        <p><Link to='/register'>Register</Link></p>
                 </div>
+            </div>
 
 
          )
@@ -71,3 +84,4 @@ class LoginForm extends React.Component{
 
 }
 export default LoginForm;
+

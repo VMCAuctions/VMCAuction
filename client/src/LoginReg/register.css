@@ -1,4 +1,13 @@
-#submit{
+.registration-form{
+    padding: 10px;
+    margin: 5px;   
+}
+
+.btn{
+    font-size: 20px;
+}
+
+/*#submit{
     width: 100px
     }
  
@@ -41,4 +50,4 @@
     border: 1px solid gray;
     padding: 5px;
     margin: 5px;
-}
+}*/
