@@ -5,7 +5,12 @@ import Axios from 'axios';
 class Catalog extends Component{
     constructor(props){
         super(props);
-        this.state = {listOfItems: []}
+        this.state = {
+            listOfItems: [],
+            admin: Boolean
+        }
+
+        this.deleteItem = this.deleteItem.bind(this);
     }
 
     componentDidMount(){
@@ -19,11 +24,51 @@ class Catalog extends Component{
         }).catch((err) =>{
             console.log(err);
         })
+
+        //loading user information:
+        //if the user's name is administrator then they have admin access
+        Axios.get("/which_user_is_logged_in")
+        .then((result) =>{
+            console.log("if true they are admin, if false they are not: ", result.data.admin);
+            this.setState({
+                admin: result.data.admin
+            })
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
     }
-    render(){       
+
+    deleteItem(e){
+        this.state.listOfItems.splice(e.target.value, 1)
+        this.setState({listOfItems:this.state.listOfItems})
+        Axios({
+            method: "post",
+            url: "/remove_item",
+            data: { item_id: e.target.id}
+        }).then((result) =>{
+            console.log("Was able to remove a item from the list", result)                     
+        }).catch((err) =>{
+            console.log("there was an error making it to the server..")
+        })
+    }
+
+    render(){
+        let delete_button_header = "";       
         let itemsList = this.state.listOfItems.map((item,index) =>{
+            let delete_button = "";
+            // only shoing a delete button if they have admin access
+            //only deleting items that are not packaged
+            if(this.state.admin == true){
+                if(item.packaged == false){
+                    delete_button = <td><button onClick={this.deleteItem} id={item._id} value={index}> Delete</button></td>
+                    delete_button_header = <th></th>
+                }
+            }
+
             return(
                 <tr key={index}>
+                    {delete_button}
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item._package}</td>
@@ -39,6 +84,7 @@ class Catalog extends Component{
                 <table className='table table-striped table-bordered'>
                     <thead>
                         <tr>
+                            {delete_button_header}
                             <th>Item Number</th>
                             <th>Item Name</th>
                             <th>Package</th>

@@ -1,8 +1,7 @@
 import React from 'react';
 import './register.css';
 import Axios from 'axios';
-import {Route, Link} from 'react-router-dom';
-import LoginForm from './loginForm.js';
+import {Link} from 'react-router-dom';
 
 
 class RegForm extends React.Component{
@@ -33,8 +32,10 @@ class RegForm extends React.Component{
         e.preventDefault(); // prevent default form submission behaviour
 
         //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
+
         if (this.state.password != this.state.cnfmPassword) {
           alert("Passwords do not match. Please try again.")
+
           return;
         }
 

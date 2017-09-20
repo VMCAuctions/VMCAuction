@@ -9,7 +9,7 @@ import Package from './Package/package.js';
 import PackageCatalog from './PackagesCatalog/packageCatalog.js';
 import LoginForm from './LoginReg/loginForm.js';
 import RegForm from './LoginReg/regForm.js';
-
+import PackageDetails from './PackagesCatalog/packageDetails.js';
 class App extends Component {
   render() {
     return (
@@ -21,9 +21,9 @@ class App extends Component {
           <Route path='/items' component={Catalog}/>
           <Route path='/packages/new' component={Package}/>
           <Route path='/package' component={PackageCatalog}/>
-          <Route path='/login' component={LoginForm}/>
-          <Route path='/register' component={RegForm}/>
-
+          <Route path='/login' component={LoginForm}/>  
+          <Route path='/register' component={RegForm}/>   
+          <Route path='/packageDetails/:packageId' component={PackageDetails}/>
         </div>
       </BrowserRouter>
     );

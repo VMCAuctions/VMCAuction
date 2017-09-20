@@ -1,6 +1,6 @@
 .nav li{
-    display: inline-block;
-    font-size: 25px;
+     display: block;
+    font-size: 20px;
     color: blue;
     padding:5px;
     margin: 5px;
