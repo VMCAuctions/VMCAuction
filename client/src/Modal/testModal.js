@@ -11,6 +11,8 @@ class TestModal extends Component {
     }
 } 
 
+
+
   handleChange = (e) =>{
     console.log(e.target.value)
     this.setState({
@@ -30,10 +32,13 @@ class TestModal extends Component {
     return (
       <div>
         <button onClick={() => this.openModal()}>Add New Category</button>
+        
+      {/*<button onClick={() => this.props.onChildClicked()} />*/}
+      
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <h1>Add New Category</h1>
 
-          <input type='text' name='newCategoryValue' value={this.state.newCategoryValue} onChange={this.handleChange}/><br/><br/>
+          <input type='text' name='newCategoryValue' value={this.state.newCategoryValue} onChange={this.handleChange} /><br/><br/>
           <button onClick={this.addingCategory}>Create New Category</button>
 
           <button onClick={() => this.closeModal()}>Close</button>

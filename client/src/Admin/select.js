@@ -23,6 +23,18 @@ class Select extends Component{
         })
     } 
 
+    componentDidUpdate(){
+        Axios.get("/categories")
+        .then((response)=>{
+            // console.log(response.data);
+            this.setState({
+                selectoptions: response.data
+            })
+        }).catch((err)=>{
+            console.log("categoryList failed", err)
+        })
+    }
+
     handleChange = (e) => {
         this.props.handleChange(e); //invoke the parent(itemEntryAdmin.js) callback for handling the changes
     }
@@ -34,7 +46,7 @@ class Select extends Component{
         })
         return(
             <div>
-                <select className='form-control input-lg' onChange={this.handleChange} name={this.props.name} >
+                <select className='form-control' onChange={this.handleChange} name={this.props.name} >
                     {dropdownOptions}
                 </select>
             </div>
