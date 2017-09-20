@@ -36,8 +36,8 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 }
             })
-            //sorting the packages by value..
-            result.data.sort(function(a,b){return b.value - a.value})
+            //sorting the packages by highest bid..
+            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             //setting the state of the categories and the list of packages 
             this.setState({
                 listOfPackages: result.data,
@@ -92,8 +92,8 @@ class PackageCatalog extends Component{
                 data: { category: e.target.value}
             }).then((result) =>{
                 console.log("filtered these pacakges through the database", result)
-                //sorting the packages accoring to package value
-                result.data.sort(function(a,b){return b.value - a.value})
+                //sorting the packages accoring to the highest bid
+                result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
                 this.setState({
                     listOfPackages: result.data
                 })
@@ -182,8 +182,8 @@ class PackageCatalog extends Component{
             console.log("the selected packages based on the drop down restrictions: ",selected_packages);
 
             //repopulate the list of packages that will be rendered to the screen
-            //sort the packages according to package value
-            selected_packages.sort(function(a,b){return b.value - a.value})
+            //sort the packages according to highest bid
+            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             
             this.setState({listOfPackages: selected_packages})
         }
