@@ -20,10 +20,8 @@ class ItemEntryAdmin extends Component{
     }
 
     componentDidMount(){
-        console.log("componentDidMount")
         Axios.get("/categories")
         .then((response)=>{
-            console.log(response.data);
             this.setState({
                 selectOptions: response.data
             })
