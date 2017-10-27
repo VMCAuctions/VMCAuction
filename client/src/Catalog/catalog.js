@@ -9,8 +9,6 @@ class Catalog extends Component{
             listOfItems: [],
             admin: Boolean
         }
-
-        this.deleteItem = this.deleteItem.bind(this);
     }
 
     componentDidMount(){
@@ -37,7 +35,7 @@ class Catalog extends Component{
         })
     }
 
-    deleteItem(e){
+    deleteItem = (e) => {
         this.state.listOfItems.splice(e.target.value, 1)
         this.setState({listOfItems:this.state.listOfItems})
         Axios({
@@ -52,15 +50,16 @@ class Catalog extends Component{
     }
 
     render(){
-        let delete_button_header = "";       
+        let delete_button_header;       
         let itemsList = this.state.listOfItems.map((item,index) =>{
-            let delete_button = "";
+            let delete_button ;
             // only shoing a delete button if they have admin access
             //only deleting items that are not packaged
             if(this.state.admin === true){
+                delete_button = <td>In Package</td>
                 if(item.packaged === false){
                     delete_button = <td><button onClick={this.deleteItem} id={item._id} value={index}> Delete</button></td>
-                    delete_button_header = <th></th>
+                    delete_button_header = <th>Actions</th>
                 }
             }
 

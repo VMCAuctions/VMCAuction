@@ -15,11 +15,8 @@ class PackageCatalog extends Component{
             allPackages: [],
             admin: Boolean,
         }
-
-        // this.handleChange = this.handleChange.bind(this);
-        // this.handleNewLetter = this.handleNewLetter.bind(this);
-        // this.deletePackage = this.deletePackage.bind(this);
     }
+
      componentDidMount(){
          //when the component loads set the value initially to all categories
         this.setState({
@@ -58,8 +55,7 @@ class PackageCatalog extends Component{
             console.log(err);
         })
 
-        //loading user information:
-        //if the user's name is administrator then they have admin access
+        //loading user information:        //if the user's name is administrator then they have admin access
         Axios.get("/which_user_is_logged_in")
         .then((result) =>{
             this.setState({
@@ -75,7 +71,6 @@ class PackageCatalog extends Component{
     handleChange = (e) =>{
         this.setState({selectValue:e.target.value});
         e.preventDefault();
-
         if(e.target.value === "All Categories"){
             this.setState({
                 listOfPackages: this.state.allPackages
@@ -95,16 +90,13 @@ class PackageCatalog extends Component{
                 console.log("there was an error making it to the server..")
             })
         }
-
         //reset the typed search bar to an empty string when the category option is clicked
-        ReactDOM.findDOMNode(this.refs.search_bar).value = "";
-        
+        ReactDOM.findDOMNode(this.refs.search_bar).value = "";        
     }
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
-        //the letter they typed in//
-        //if there is a match with the item name add it to this array
+        //the letter they typed in, if there is a match with the item name add it to this array
         let selected_items = [];
         //converted all the input letter to lower case
         let input_letters = e.target.value.toLowerCase();
@@ -117,7 +109,6 @@ class PackageCatalog extends Component{
         }else{
             //first checking if there are items at all
             if(this.state.listOfItems.length !== 0){
-
                 //iterating through the list of items pulled from the DB
                 for(var i = 0; i < this.state.listOfItems.length; i++){
                     //converting each string to lowercase to match the input
@@ -125,7 +116,6 @@ class PackageCatalog extends Component{
                     let name = this.state.listOfItems[i].name.toLowerCase()
                     let donor = this.state.listOfItems[i].donor.toLowerCase();
                     let description = this.state.listOfItems[i].description.toLowerCase();
-
                     //checking if the input matches any of the words in the item name
                     //if there is a match add it to the array of selected items
                     if(name.indexOf(input_letters) >= 0 || donor.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
@@ -140,8 +130,7 @@ class PackageCatalog extends Component{
 
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
-            for(var j = 0; j < this.state.allPackages.length; j++){
-                
+            for(var j = 0; j < this.state.allPackages.length; j++){                
                 let name = this.state.allPackages[j].name.toLowerCase();
                 let description = this.state.allPackages[j].description.toLowerCase();
                 let category = this.state.allPackages[j]._category
@@ -159,7 +148,6 @@ class PackageCatalog extends Component{
                     
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
-
                     if(selected_items[m]._package === this.state.allPackages[n]._id ){
                         if(selected_packages.includes(this.state.allPackages[n]) === false){
                             if(this.state.allPackages[n]._category === this.state.selectValue || this.state.selectValue === "All Categories"){
@@ -204,7 +192,7 @@ class PackageCatalog extends Component{
             let del_button = "";
             if(this.state.admin === true){
                 del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
-                del_button_header = <th> </th>
+                del_button_header = <th>Actions</th>
             }
             return(
                 <tr key={index}>
@@ -229,8 +217,7 @@ class PackageCatalog extends Component{
         })
 
         return(
-            <div>
-                
+            <div>               
                 <div className="seach-bar">
                     <div className="form-block">
                         <form>
@@ -241,7 +228,6 @@ class PackageCatalog extends Component{
                             </select>
                         </form>
                     </div>
-
                     <div className="search-block">
                         <h3>Key Word Search</h3>
                         <input type='text'  onChange={this.handleNewLetter} ref="search_bar"/>
