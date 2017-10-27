@@ -13,7 +13,6 @@ class DisplayItems extends Component{
     componentDidMount(){
         Axios.get("/items")
         .then((result) =>{
-            console.log("#############", result);
             let unpackaged_items = [];
             for(var i = 0; i < result.data.length; i++){
                 if(result.data[i].packaged === false){
@@ -29,18 +28,9 @@ class DisplayItems extends Component{
 
     }
     
-    // componentWillReceiveProps(props){
-    //     this.setState({
-    //         selectedItems: this.state.selectedItems,
-    //     })
-    // } 
     rowSelect= (e) =>{
-        console.log(e.target.checked, this)
-        //if e.target.checked is true, invoke capturingGroupedItems function 
-        //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
             this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
-
         }else{ 
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
         }       

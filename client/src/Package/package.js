@@ -24,7 +24,7 @@ class Package extends Component{
     //Input fields event handler
     onPackageChange = (e) => {
         this.setState({
-        [e.target.name] : e.target.value
+            [e.target.name] : e.target.value
         })
     }
 
@@ -32,7 +32,6 @@ class Package extends Component{
         //Get request for category dropdown list
         Axios.get("/categories")
         .then((response)=>{
-            console.log(response.data);
             this.setState({
                 categoryList: response.data
             })
@@ -45,7 +44,6 @@ class Package extends Component{
     componentDidUpdate(){
         Axios.get("/categories")
         .then((response)=>{
-            // console.log(response.data);
             this.setState({
                 categoryList: response.data
             })
@@ -69,7 +67,6 @@ class Package extends Component{
     //Package form submit function
     onPackageFormSubmit = (e) => {
         e.preventDefault(); // prevents the default form behaviour
-        console.log(this.state)
         Axios({
             method: 'post',
             url:'/packages',
@@ -77,7 +74,6 @@ class Package extends Component{
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }
             }).then((response) =>{
-            console.log(response);
             this.setState({
                 packageName: '', 
                 packageDescription: '',
@@ -94,6 +90,7 @@ class Package extends Component{
             console.log("Incomplete form submission" + err)
         })
     }
+
     //selecte items from the list and updating the display fields(totalItems and totalValue)
     capturingGroupedItems = (item, value) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
         let itemSelect = this.state.selectedItems;
@@ -106,7 +103,6 @@ class Package extends Component{
     }
      //unSelecte items from the list and updating the display fields(totalItems and totalValue)
     removeGroupedItems = (value, item) => {
-        console.log(value, item, this.state.selectedItems);
         let itemUnselect = this.state.selectedItems;
         let id;
         for(var i=0; i<itemUnselect.length;i++){
@@ -155,12 +151,10 @@ class Package extends Component{
                         <div className='item-select form'>
                             <h3>Grouping items</h3>
                             <div className='.table-responsive itemsList'>
-                                <table className='table'>
                                     <DisplayItems 
                                         selectedItems={this.state.selectedItems}
                                         capturingGroupedItems={this.capturingGroupedItems} 
                                         removeGroupedItems={this.removeGroupedItems}/>
-                                </table>
                             </div>                    
                         </div>                                  
                         <div className="form displaySelectedItems">

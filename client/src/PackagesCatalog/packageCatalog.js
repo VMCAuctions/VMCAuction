@@ -16,19 +16,19 @@ class PackageCatalog extends Component{
             admin: Boolean,
         }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleNewLetter = this.handleNewLetter.bind(this);
-        this.deletePackage = this.deletePackage.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
+        // this.handleNewLetter = this.handleNewLetter.bind(this);
+        // this.deletePackage = this.deletePackage.bind(this);
     }
      componentDidMount(){
          //when the component loads set the value initially to all categories
-        this.setState({selectValue:"All Categories"})
+        this.setState({
+            selectValue:"All Categories"
+        })
 
          //loading all the packages
         Axios.get("/packages")
         .then((result) =>{
-            console.log("this is the result", result);
-
             //adding to the categories drop down menu, not including duplicates//
             let categories_list = [];
             result.data.map((categories) =>{
@@ -43,8 +43,7 @@ class PackageCatalog extends Component{
                 listOfPackages: result.data,
                 categories: categories_list,
                 allPackages: result.data
-            })
-            
+            })            
         }).catch((err) =>{
             console.log(err);
         })
@@ -52,11 +51,9 @@ class PackageCatalog extends Component{
         //loading all the items to search.
         Axios.get("/items")
         .then((result) =>{
-            // console.log(result);
             this.setState({
                 listOfItems: result.data
             })
-            console.log(this.state.listOfItems)
         }).catch((err) =>{
             console.log(err);
         })
@@ -65,7 +62,6 @@ class PackageCatalog extends Component{
         //if the user's name is administrator then they have admin access
         Axios.get("/which_user_is_logged_in")
         .then((result) =>{
-            console.log("if true they are admin, if false they are not: ", result.data.admin);
             this.setState({
                 admin: result.data.admin
             })
@@ -76,12 +72,11 @@ class PackageCatalog extends Component{
     }
 
     //when the option is changed it will update the packages on display
-    handleChange(e){
+    handleChange = (e) =>{
         this.setState({selectValue:e.target.value});
         e.preventDefault();
 
         if(e.target.value === "All Categories"){
-            console.log("loading all categories")
             this.setState({
                 listOfPackages: this.state.allPackages
             })
@@ -91,8 +86,7 @@ class PackageCatalog extends Component{
                 url: "/get_selected_packages",
                 data: { category: e.target.value}
             }).then((result) =>{
-                console.log("filtered these pacakges through the database", result)
-                //sorting the packages accoring to the highest bid
+                //sorting the packages according to the highest bid
                 result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
                 this.setState({
                     listOfPackages: result.data
@@ -102,16 +96,14 @@ class PackageCatalog extends Component{
             })
         }
 
-        //reset the tyed search bar to an empty string when the category option is clicked
+        //reset the typed search bar to an empty string when the category option is clicked
         ReactDOM.findDOMNode(this.refs.search_bar).value = "";
         
     }
 
     //this function deals with the user locating packages, this function is run after every new letter
-    handleNewLetter(e){
+    handleNewLetter = (e) => {
         //the letter they typed in//
-        console.log(e.target.value);
-
         //if there is a match with the item name add it to this array
         let selected_items = [];
         //converted all the input letter to lower case
@@ -119,10 +111,10 @@ class PackageCatalog extends Component{
 
         //when the user deletes everything in the input it will display all packages again
         if(e.target.value === "" && this.state.selectValue === "All Categories"){
-            this.setState({listOfPackages: this.state.allPackages})
-            
+            this.setState({
+                listOfPackages: this.state.allPackages
+            })            
         }else{
-
             //first checking if there are items at all
             if(this.state.listOfItems.length !== 0){
 
@@ -141,7 +133,6 @@ class PackageCatalog extends Component{
                     }
                 }
             }
-            console.log("the selected items are: ", selected_items)
 
             //now that these selected items are the ones the user is looking for
             //the packages must be found that coresponds to them
@@ -163,47 +154,43 @@ class PackageCatalog extends Component{
             }
             
             //iterate through each item and check it to all the packages one at a time
-            for(var i = 0; i < selected_items.length; i++){
-                for(var j = 0; j < this.state.allPackages.length; j++){
+            for(var m = 0; m < selected_items.length; m++){
+                for(var n = 0; n < this.state.allPackages.length; n++){
                     
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
 
-                    if(selected_items[i]._package == this.state.allPackages[j]._id ){
-                        if(selected_packages.includes(this.state.allPackages[j]) === false){
-                            if(this.state.allPackages[j]._category == this.state.selectValue || this.state.selectValue == "All Categories"){
-                                selected_packages.push(this.state.allPackages[j]);
+                    if(selected_items[m]._package === this.state.allPackages[n]._id ){
+                        if(selected_packages.includes(this.state.allPackages[n]) === false){
+                            if(this.state.allPackages[n]._category === this.state.selectValue || this.state.selectValue === "All Categories"){
+                                selected_packages.push(this.state.allPackages[n]);
                             }
                         }
                     }
                 }
             }
 
-            console.log("the selected packages based on the drop down restrictions: ",selected_packages);
-
             //repopulate the list of packages that will be rendered to the screen
             //sort the packages according to highest bid
             selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             
-            this.setState({listOfPackages: selected_packages})
+            this.setState({
+                listOfPackages: selected_packages
+            })
         }
-
     }
 
-
-    deletePackage(e){
+    deletePackage = (e) => {
         e.persist();
-        console.log("you clicked the button and this is the ID", e.target.id);
-        console.log(e.target.value)
-        let deleted_package = this.state.listOfPackages.splice(e.target.value, 1)
-        this.setState({listOfPackages:this.state.listOfPackages})
+        this.setState({
+            listOfPackages: this.state.listOfPackages
+        })
         
         Axios({
             method: "post",
             url: "/remove_package",
             data: { package_id: e.target.id}
         }).then((result) =>{
-            console.log("Was able to remove a package from the list", result)
             
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
@@ -217,9 +204,8 @@ class PackageCatalog extends Component{
             let del_button = "";
             if(this.state.admin === true){
                 del_button = <td><button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button></td>
-                del_button_header = <th></th>
+                del_button_header = <th> </th>
             }
-                // console.log(packages._bids);
             return(
                 <tr key={index}>
                     {del_button}

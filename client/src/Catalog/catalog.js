@@ -16,11 +16,9 @@ class Catalog extends Component{
     componentDidMount(){
         Axios.get("/items")
         .then((result) =>{
-            console.log(result);
             this.setState({
                 listOfItems: result.data
             })
-            console.log(this.state.listOfItems)
         }).catch((err) =>{
             console.log(err);
         })
@@ -59,8 +57,8 @@ class Catalog extends Component{
             let delete_button = "";
             // only shoing a delete button if they have admin access
             //only deleting items that are not packaged
-            if(this.state.admin == true){
-                if(item.packaged == false){
+            if(this.state.admin === true){
+                if(item.packaged === false){
                     delete_button = <td><button onClick={this.deleteItem} id={item._id} value={index}> Delete</button></td>
                     delete_button_header = <th></th>
                 }
