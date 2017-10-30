@@ -63,7 +63,7 @@ class Menu extends React.Component{
     }
     render(){
         var htmlLogCode = "";
-        if (this.state.loggedin == true){
+        if (this.state.loggedin === true){
           htmlLogCode =
           <div><li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
           </div>
