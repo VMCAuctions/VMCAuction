@@ -40,7 +40,7 @@ class Menu extends React.Component{
           console.log("before this.setState,response.data.login_check is", response.data.login_check)
           console.log("before this.setState, this.state.loggedin is", this.state.loggedin)
           
-          if (response.data.login_check != this.state.loggedin){
+          if (response.data.login_check !== this.state.loggedin){
             this.setState({
             loggedin: response.data.login_check,
             admin : response.data.admin
@@ -75,12 +75,12 @@ class Menu extends React.Component{
         }
 
         var htmlAdminItems = "";
-        if(this.state.admin == true){
+        if(this.state.admin === true){
             htmlAdminItems = <li><Link to='/item/new'>Items</Link></li>
         }
 
         var htmlAdminPackage = "";
-        if(this.state.admin == true){
+        if(this.state.admin === true){
             htmlAdminPackage = <li><Link to='/packages/new'>Package</Link></li>
         }
         return(
