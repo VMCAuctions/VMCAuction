@@ -17,7 +17,10 @@ var userSchema = new Schema({
 	zip: {type: String, required: true},
 	password: {type: String, required: true},
 	// leave mailing address out as this would be entered through the payment API?  Foundation wants users to enter info only once
-	creditCard: String, // originally cc token
+	creditCard: {type: String, required: true}, // originally cc token
+	ccMonth: {type: String, required: true},
+	ccYear: {type: String, required: true},
+	cvv: {type: String, required: true},
 	_bids: [{type: Schema.Types.ObjectId, ref: 'Bid'}],
 	admin: {type: Boolean}
 })

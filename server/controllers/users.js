@@ -55,7 +55,10 @@ function UsersController(){
                   ["zip", 5, "zip code"],
                   ["phoneNumber", 10, "phone number"],
                   ["email", 5, "email address"],
-									["creditCard", 15, "credit card"],
+									["creditCard", 15, "credit card number"],
+									["ccMonth", 2, "credit card expiration month"],
+									["ccYear", 2, "credit card expiration year"],
+									["cvv", 3, "credit card security code"],
                   ["userName", 5, "user name"],
                   ["password", 6, "password"]
 								];
@@ -84,6 +87,9 @@ function UsersController(){
 								phone: req.body.phoneNumber,
 								email: req.body.email,
 								creditCard: req.body.creditCard,
+								ccMonth: req.body.ccMonth,
+								ccYear: req.body.ccYear,
+								cvv: req.body.cvv,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -201,7 +207,7 @@ function UsersController(){
 	this.who_is_logged_in = function(req, res){
 		console.log("checking who is logged in")
 		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"), "the admin status is: ", req.session.get("admin"));
-		
+
 		if(req.session.get("admin") == true){
 			res.json({admin: true})
 		}else{
