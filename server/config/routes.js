@@ -1,5 +1,3 @@
-console.log('routes.js');
-
 var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
@@ -95,12 +93,10 @@ module.exports = function(app) {
 
 	// checks if a user is logged in
 	app.get('/users/loggedin', function(req,res){
-		console.log("reached /users/loggedin in routes")
 		users.loggedin(req,res)});
 
 	// logout a specific user
 	app.get('/users/logout', function(req,res){
-		console.log("reached /users/logout in routes")
 		users.logout(req,res)});
 
 	// post the user login form  (LOGIN)
@@ -108,7 +104,6 @@ module.exports = function(app) {
 		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/users/:id', function(req,res){
-		console.log(req.param.id);
 		users.show(req,res)});
 	// update a specific user (profile/info)
 	app.post('/users/:id', function(req,res){

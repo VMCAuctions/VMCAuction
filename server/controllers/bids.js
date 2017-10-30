@@ -1,6 +1,3 @@
-console.log('bids.js');
-
-
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
@@ -16,13 +13,9 @@ function BidsController(){
 		Bid.find({}, function(err, bids) {
     		// This is the method that finds all of the bids from the database
 	    	if(err) {
-	      		console.log('something went wrong from database');
+	      		console.log(err);
 	    	}
-	    	else { 
-	      		console.log('successfully loaded bids!');
-	      		console.log(bids); 
-	      		        
-	        	
+	    	else {	      		        
 	        	res.json(bids);
 	        }
         })  // ends Bid.find
@@ -40,12 +33,11 @@ function BidsController(){
 		console.log('BidsController create');
 		
     
-	    console.log(req.body);
 	    Bid.create({amount: req.body.amount, _user: req.body.user, _package: req.body.package},  function(err, result){
 	    	 
 
 	      if(err){
-	        console.log('bid create-err');
+	        console.log(err);
 	      }
 	      else{
 	        res.json(result);
@@ -59,7 +51,7 @@ function BidsController(){
 		// this gets the single bid screen (if we want it and if not handled independently by React)
 		Bid.findById(req.params.id, function(err, result){
 			if(err){
-	        console.log('bid show-err');
+	        console.log(err);
 	      }
 	      else{
 	        res.json(result);
