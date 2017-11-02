@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import './packageDetails.css';
+import {Link} from 'react-router-dom';
 
 class PackageDetails extends Component{
     constructor(props){
@@ -95,7 +96,8 @@ class PackageDetails extends Component{
                             <br/><h4>Description: </h4>
                             <p>{packageDescription}</p>
                             <h5>Items in package: {itemsInPackage}</h5>
-                        </div>                
+                        </div>   
+                        <Link to='/package'><h5>Back to All Packages</h5></Link>             
                     </div>
                 </div>
             </div>
