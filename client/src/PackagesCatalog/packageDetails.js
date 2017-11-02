@@ -73,7 +73,7 @@ class PackageDetails extends Component{
         //listing the items in the package
         let itemsInPackage = packageItems.map((item, index)=>{
             return(
-                <li key={index}>{item}</li>
+                <li key={index}>{item.name}</li>
             )
         })
         //current_bid

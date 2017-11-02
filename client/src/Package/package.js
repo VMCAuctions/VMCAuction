@@ -70,7 +70,8 @@ class Package extends Component{
     onPackageFormSubmit = (e) => {
         e.preventDefault(); // prevents the default form behaviour
         console.log("Reached onFormSubmit function")
-        console.log(this.state.category)
+        // console.log(this.state.category)
+        console.log(this.state.selectedItems)
         Axios({
             method: 'post',
             url:'/packages',
@@ -125,7 +126,7 @@ class Package extends Component{
 
     render(){
         let items = this.state.selectedItems.map((item,index) =>{
-            return <li key={index}>{item}</li>
+            return <li key={index}>{item.name}</li>
         })
 
         return(

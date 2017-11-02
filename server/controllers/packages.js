@@ -33,7 +33,7 @@ function PackagesController(){
 	  //       }
     //     })  // ends Package.find
 
-		Package.find({}).populate("_bids").exec(function(err, packages) {
+		Package.find({}).populate("_bids").populate("_items").exec(function(err, packages) {
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');

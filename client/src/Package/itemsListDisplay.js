@@ -28,22 +28,22 @@ class DisplayItems extends Component{
         })
 
     }
-    
+
     // componentWillReceiveProps(props){
     //     this.setState({
     //         selectedItems: this.state.selectedItems,
     //     })
-    // } 
+    // }
     rowSelect= (e) =>{
         console.log(e.target.checked, this)
-        //if e.target.checked is true, invoke capturingGroupedItems function 
+        //if e.target.checked is true, invoke capturingGroupedItems function
         //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
             this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
 
-        }else{ 
+        }else{
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
-        }       
+        }
    }
 
     render(){
@@ -68,15 +68,15 @@ class DisplayItems extends Component{
                         <tr>
                             <th>Select</th>
                             <th>Item Number</th>
-                            <th>Item Name</th>                            
+                            <th>Item Name</th>
                             <th>Fair Market Value</th>
                             <th>Donor</th>
                             <th>Item Description</th>
-                            <th>Item Restriction</th>                            
+                            <th>Item Restriction</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {items}                        
+                        {items}
                     </tbody>
                 </table>
             </div>

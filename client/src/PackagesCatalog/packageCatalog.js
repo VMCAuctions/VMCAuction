@@ -229,9 +229,9 @@ class PackageCatalog extends Component{
                     <td>{packages.value}</td>
                     <td>{packages.description}</td>
                     <td>{packages.bid_increment}</td>
-                    <td>{packages._bids[0].amount}</td> 
+                    <td>{packages._bids[0].amount}</td>
                     <td>{packages._items.map((item,index)=>{
-                        return <li key={index} >{item}</li>})}</td>
+                        return <li key={index} >{item.name}</li>})}</td>
                     <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
             )
