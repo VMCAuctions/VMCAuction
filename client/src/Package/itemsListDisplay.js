@@ -35,10 +35,11 @@ class DisplayItems extends Component{
     //     })
     // }
     rowSelect= (e) =>{
-        console.log(e.target.checked, this)
         //if e.target.checked is true, invoke capturingGroupedItems function
         //else invoke removeGroupedItems function flowing from parent component(package.js)
         if(e.target.checked){
+          console.log("e.target is:")
+            console.log(e.target)
             this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
 
         }else{
@@ -51,7 +52,7 @@ class DisplayItems extends Component{
         let items = this.state.itemsList.map((item,index) =>{
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' value={item._id} name={item.name}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>
