@@ -26,6 +26,7 @@ class Package extends Component{
         this.setState({
             [e.target.name] : e.target.value
         })
+
     }
 
     componentDidMount(){
@@ -41,6 +42,7 @@ class Package extends Component{
     } 
 
 
+
     componentDidUpdate(){
         Axios.get("/categories")
         .then((response)=>{
@@ -52,6 +54,7 @@ class Package extends Component{
         })
     }
     
+
     //function for adding a new category to the dropdown
     addingCategory = (value) =>{
         Axios({
@@ -59,7 +62,9 @@ class Package extends Component{
             url: "/categories",
             data: { category: value},
         }).then((response)=>{
-            console.log(response);
+            this.setState({
+                categoryList: response.data
+            })
         }).catch((err)=>{
             console.log(err);
         })
@@ -135,6 +140,7 @@ class Package extends Component{
                         <label className="col-sm-2 col-form-label"> Category</label><br/>
                         <Select categoryList={this.state.categoryList} name='category' className='form-control'
                                  value={this.state.category} handleChange={this.onPackageChange} required/><br/>
+
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
                         <label className="col-sm-2 col-form-label">Opening Bid</label>
                         <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} min='0' placeholder='Opening Bid' required/><br/><br/>

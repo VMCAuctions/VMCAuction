@@ -1,5 +1,3 @@
-console.log('items.js');
-
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Category = require('../models/category.js');
@@ -17,15 +15,10 @@ function ItemsController(){
 		Item.find({}, function(err, items) {
     		// This is the method that finds all of the items from the database
 	    	if(err) {
-	      		console.log('Item.index error');
-	      		res.status(500).send('Failed to Load Items');
+	      		console.log(err);
+	      		//res.status(500).send('Failed to Load Items');
 	    	}
 	    	else { 
-	      		console.log('successfully loaded items!');
-	      		
-	      		// test screen for items index
-	      		// res.send('Items Index Page'); // successful        
-	        	
 	        	res.json(items);
 	        }
         })  // ends Item.find
@@ -43,7 +36,6 @@ function ItemsController(){
 		console.log('ItemsController create');
 		
     
-	    console.log(req.body);
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
 	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction, 
 	      value: req.body.fairMarketValue, packaged: false},  function(err, result){
@@ -58,9 +50,8 @@ function ItemsController(){
       		
 
 	      if(err){
-	        console.log('Item.create error');
 	        console.log(err);
-	        res.status(500).send('Failed to Create Item');
+	        //res.status(500).send('Failed to Create Item');
 	      }
 	      else{
 	        res.json(result);
@@ -74,7 +65,7 @@ function ItemsController(){
 		// this gets the single item screen (if we want it)
 		Item.findById(req.params.id, function(err, result){
 			if(err){
-	        console.log('item show-err');
+	        console.log(err);
 	      }
 	      else{
 	        res.json(result);
@@ -88,7 +79,8 @@ function ItemsController(){
 		Item.findById(req.params.id, function (err, item) {  
     		
 		    if (err) {
-		        res.status(500).send('Failed to Update Item');
+                console.log(err);
+		        //res.status(500).send('Failed to Update Item');
 		    } 
 		    else {
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
@@ -104,9 +96,12 @@ function ItemsController(){
 	            
 		        item.save(function (err, item) {
 		            if (err) {
-		                res.status(500).send('Failed to Save Item update')
+                        console.log(err)
+		                //res.status(500).send('Failed to Save Item update')
 		            }
-		            res.send(item);
+                    else{
+		              res.send(item);
+                    }
 		        });
 		    }
 		});
@@ -115,7 +110,6 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		console.log(req.body.item_id)
 		Item.remove({_id: req.body.item_id}, function(err, result){
 			if(err){console.log(err)}
 			else{res.json(result)}
