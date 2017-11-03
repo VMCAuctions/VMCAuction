@@ -88,8 +88,8 @@ function UsersController(){
 										console.log(err)										
 									}
 									else{
-										req.session.put("userName", user.userName)
-										req.session.put("admin", user.admin)
+										req.session.userName = user.userName
+										req.session.admin = user.admin
 										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
 										res.json();
 										return;
@@ -116,8 +116,8 @@ function UsersController(){
 						console.log(err)
 					}
 					else if(match){
-						req.session.put("userName", user.userName)
-						req.session.put("admin", user.admin)
+						req.session.userName = user.userName
+						req.session.admin = user.admin
 						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
@@ -159,11 +159,11 @@ function UsersController(){
 		var login_check = false;
 		var admin;
 
-		if (req.session.get("userName") != undefined){
+		if (req.session.userName != undefined){
 			login_check = true;
 		}
 
-		if(req.session.get("admin") == true){
+		if(req.session.admin == true){
 			admin = true;
 		}else{
 			admin = false;
@@ -172,7 +172,8 @@ function UsersController(){
 	}
 
 	this.logout = function(req,res){
-		req.session.flush();
+		req.session.destroy();
+
 		req.session.save(function(err, result){
 			if(err){
 				console.log(err)
@@ -183,10 +184,8 @@ function UsersController(){
 		})
 	}
 
-	this.who_is_logged_in = function(req, res){
-		req.session.get("admin"));
-		
-		if(req.session.get("admin") == true){
+	this.who_is_logged_in = function(req, res){		
+		if(req.session.admin == true){
 			res.json({admin: true})
 		}else{
 			res.json({admin: false})
