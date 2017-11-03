@@ -98,8 +98,8 @@ function UsersController(){
 										res.status(500).send('Failed to Create User');
 									}
 									else{
-										req.session.put("userName", user.userName)
-										req.session.put("admin", user.admin)
+										req.session.userName = user.userName
+										req.session.admin = user.admin
 										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
 										res.json();
 										return;
@@ -128,8 +128,8 @@ function UsersController(){
 						res.status(500).send("Error upon searching database for password");
 					}
 					else if(match){
-						req.session.put("userName", user.userName)
-						req.session.put("admin", user.admin)
+						req.session.userName = user.userName
+						req.session.admin = user.admin
 						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
@@ -171,11 +171,11 @@ function UsersController(){
 		var login_check = false;
 		var admin;
 
-		if (req.session.get("userName") != undefined){
+		if (req.session.userName != undefined){
 			login_check = true;
 		}
 
-		if(req.session.get("admin") == true){
+		if(req.session.admin == true){
 			admin = true;
 		}else{
 			admin = false;
@@ -185,9 +185,9 @@ function UsersController(){
 
 	this.logout = function(req,res){
 		console.log("reached logout function on backend")
-		console.log("before flush,", req.session.get("userName"))
-		req.session.flush();
-		console.log("after flush,", req.session.get("userName"))
+		console.log("before flush,", req.session.userName)
+		req.session.destroy();
+		console.log("after flush,", req.session.userName)
 		req.session.save(function(err, result){
 			if(err){
 				console.log(err)
@@ -200,9 +200,9 @@ function UsersController(){
 
 	this.who_is_logged_in = function(req, res){
 		console.log("checking who is logged in")
-		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"), "the admin status is: ", req.session.get("admin"));
-		
-		if(req.session.get("admin") == true){
+		console.log("this is who is logged in>>>>>>> ", req.session.userName, "the admin status is: ", req.session.admin);
+
+		if(req.session.admin == true){
 			res.json({admin: true})
 		}else{
 			res.json({admin: false})
