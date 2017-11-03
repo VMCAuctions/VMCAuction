@@ -136,11 +136,10 @@ class Package extends Component{
                         <Select categoryList={this.state.categoryList} name='category' className='form-control'
                                  value={this.state.category} handleChange={this.onPackageChange} required/><br/>
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
-
                         <label className="col-sm-2 col-form-label">Opening Bid</label>
-                        <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} placeholder='Opening Bid' required/><br/><br/>
+                        <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} min='0' placeholder='Opening Bid' required/><br/><br/>
                         <label className="col-sm-2 col-form-label">Increments</label>
-                        <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
+                        <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' min='0' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
                         <label className="col-sm-2 col-form-label">Total Market value</label>
                         <input className="form-control"  value={this.state.totalValue} placeholder="Total Items" readOnly /><br/><br/>
                         <label className="col-sm-2 col-form-label">Total Items</label>

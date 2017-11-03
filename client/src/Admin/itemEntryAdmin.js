@@ -99,7 +99,7 @@ class ItemEntryAdmin extends Component{
                             <div className="col-sm-10 input-group">                                  
                                 <div className="input-group-addon">$</div>
                                     <input type="number" name='fairMarketValue' id="fairMarketValue" className="form-control" placeholder="Fair Market Value" 
-                                            value={this.state.fairMarketValue} onChange={this.handleChange} />
+                                            value={this.state.fairMarketValue} onChange={this.handleChange} min='0' required />
                                 <div className="input-group-addon">.00</div>                               
                             </div><br/>
                          </div>
