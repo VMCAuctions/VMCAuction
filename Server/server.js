@@ -1,14 +1,14 @@
 
 var express = require("express");
 var app = express();
-var NodeSession = require('node-session');
-var nodeSession = new NodeSession({secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL'})
+var session = require('express-session')
 
-function session(req, res, next){
-  nodeSession.startSession(req, res, next);
-}
-
-app.use(session)
+app.use(session({
+  secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL',
+  resave: true,
+  saveUninitialized: true,
+  rolling: true //resters session timeout everytime the user interacts with the site
+}));
 
 var React = require('../client/node_modules/react');
 // var jsx = require('node-jsx');
