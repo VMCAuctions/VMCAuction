@@ -1,5 +1,3 @@
-console.log('packages.js');
-
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
@@ -15,14 +13,10 @@ function PackagesController(){
 		Package.find({}, function(err, packages) {
     		// This is the method that finds all of the packages from the database
 	    	if(err) {
-	      		console.log('Package Index Error');
-	      		res.status(500).send('Failed to Load Packages');
+	      		console.log(err);
+	      		//res.status(500).send('Failed to Load Packages');
 	    	}
 	    	else { 
-	      		console.log('successfully loaded packages!');
-	      		console.log(packages); 
-	      		        
-	        	
 	        	res.json(packages);
 	        }
         })  // ends Package.find
@@ -49,26 +43,24 @@ function PackagesController(){
   
 
 		      if(err){
-		        console.log('package create-err');
-				res.status(500).send('Failed to Create Package');
+		        console.log(err);
+				
 		      }
 		      else{
-		      	console.log(package);
 		       	// currently setting package._bids[0] to be the opening bid with no user associated with it
 	     		Bid.create({amount: req.body.openingBid, _package: package._id}, function(err, bid){
 	     			if(err){
 	     				console.log(err);
-		        		console.log('Bid.create err in Package.create');
 		      		}
 		      		else{
 			    //   			
 		      			
-		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,raw){
+		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,result){
 		        			if(err){
-		        				console.log('_bids $push error'+err);
+		        				console.log(err);
 		        			}
 		        			else{
-		        				console.log('_bids $push success'+raw);
+		        				console.log(result);
 		        			}
 		        		}); // end of Package.update inside Bid.create
 		      		}
@@ -83,12 +75,14 @@ function PackagesController(){
 		    		
 		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
 						if(err){
-							console.log('Item update in Package.create Err');
+							console.log(err);
 						}
+                        else{
+                          res.json(package);
+                        }
 					});
 		    		
 		    	}
-		    	res.json(package);
 			  }
 			}
 		); // end of Package.create
@@ -118,7 +112,8 @@ function PackagesController(){
 		Package.findById(req.params.id, function (err, package) {  
     		
 		    if (err) {
-		        res.status(500).send(err);
+                console.log(err)
+		        //res.status(500).send(err);
 		    } 
 		    else {
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
@@ -143,7 +138,8 @@ function PackagesController(){
 		        // Save the updated document back to the database
 		        package.save(function (err, package) {
 		            if (err) {
-		                res.status(500).send(err)
+                        console.log(err)
+		                //res.status(500).send(err)
 		            }
 		            else{
 		            	// update the items in this package
@@ -159,39 +155,33 @@ function PackagesController(){
 	}  // end of this.update();
 
 	this.get_selected = function(req, res){
-		console.log("I am in the package.js and this is the req body", req.body)
 		Package.find({_category:req.body.category}, function(err, result){
 			if(err){
-				console.log("There was an error grabbing the selected packages")
+				console.log(err)
 			}else{
-				return res.json(result)
+				res.json(result)
 			}
 		})
 	},
 
 	//removing a package from the DB
 	this.remove_package = function(req, res){
-		console.log("@@@@@@@@@@@@@@ ", req.body)
-
 		Package.findOne({_id: req.body.package_id}, function(err, result){
 			if(err){
 				console.log(err)
 			}else{
-				console.log("%%%%%%%%%%% ", result)
 				for(var i = 0; i < result._items.length; i++){
 					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
 						if(err){
-							console.log("there was an error in the code...")
-						}else{
-							console.log("!!!!!!!!!!!!!!!", result)
+							console.log(err)
 						}
-					})
+					});
 				}
 				Package.remove({_id: req.body.package_id}, function(err, result){
 					if(err){
-						console.log("there was an error removing one of packages")
+						console.log(err)
 					}else{
-						return res.json(result);
+						res.json(result);
 					}
 				})
 			}
