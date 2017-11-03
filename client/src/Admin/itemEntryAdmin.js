@@ -13,7 +13,8 @@ class ItemEntryAdmin extends Component{
                 category: [],
                 fairMarketValue: '',
                 itemDescription: '',
-                itemRestriction: ''
+                itemRestriction: '',
+                selectOptions: []
         }
        
     }
@@ -26,12 +27,15 @@ class ItemEntryAdmin extends Component{
     }   
     
     addingCategory = (value) =>{
+
         Axios({
             method: "post",
             url: "/categories",
             data: { category: value},
         }).then((response)=>{
-            
+            this.setState({
+                selectOptions: response.data
+            })
         }).catch((err)=>{
             console.log(err);
         })        
@@ -84,7 +88,7 @@ class ItemEntryAdmin extends Component{
                          <div className="form-group row">
                             <label className="col-sm-2 col-form-label">Category</label>
                             <div className="col-sm-10">                                  
-                                <Select name='category' handleChange={this.handleChange} /><br/>
+                                <Select name='category' handleChange={this.handleChange} selectOptions={this.state.selectOptions}/><br/>
                             </div>
                          </div>
                         {/*TestModal component renders the modal for adding new category option to the dropdown*/}
