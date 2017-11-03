@@ -13,11 +13,22 @@ class ItemEntryAdmin extends Component{
                 category: [],
                 fairMarketValue: '',
                 itemDescription: '',
-                itemRestriction: ''
+                itemRestriction: '',
+                selectOptions: []
         }
        
     }
 
+    componentDidMount(){
+        Axios.get("/categories")
+        .then((response)=>{
+            this.setState({
+                selectOptions: response.data
+            })
+        }).catch((err)=>{
+            console.log("categoryList failed", err)
+        })
+    }
 
     //callback function for capturing user input changes
     handleChange = (e) => {
@@ -27,16 +38,18 @@ class ItemEntryAdmin extends Component{
         console.log(e.target.value);     
     }   
     
-    
-    addingCategory = (value) =>{
 
+    addingCategory = (value) =>{
+        
         console.log('adding category from admin item entry page');
         Axios({
             method: "post",
             url: "/categories",
             data: { category: value},
         }).then((response)=>{
-            
+            this.setState({
+                selectOptions: response.data
+            })
         }).catch((err)=>{
             console.log(err);
         })
@@ -91,7 +104,7 @@ class ItemEntryAdmin extends Component{
                          <div className="form-group row">
                             <label for="category" className="col-sm-2 col-form-label">Category</label>
                             <div className="col-sm-10">                                  
-                                <Select name='category' handleChange={this.handleChange} /><br/>
+                                <Select name='category' handleChange={this.handleChange} selectOptions={this.state.selectOptions}/><br/>
                             </div>
                          </div>
                         {/*TestModal component renders the modal for adding new category option to the dropdown*/}
