@@ -108,7 +108,7 @@ module.exports = function(app) {
 	// update a specific user (profile/info)
 	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
-	
+
 	//check who is logged in
 	app.get('/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
@@ -131,5 +131,10 @@ module.exports = function(app) {
     app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
     /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
+		app.get('/*', function(req,res){
+			res.redirect('/')
+		});
 
 }  // end of module.exports
