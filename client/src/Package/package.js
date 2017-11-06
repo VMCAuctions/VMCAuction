@@ -69,9 +69,6 @@ class Package extends Component{
     //Package form submit function
     onPackageFormSubmit = (e) => {
         e.preventDefault(); // prevents the default form behaviour
-        console.log("Reached onFormSubmit function")
-        // console.log(this.state.category)
-        console.log(this.state.selectedItems)
         Axios({
             method: 'post',
             url:'/packages',
