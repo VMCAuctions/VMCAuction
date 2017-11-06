@@ -10,6 +10,7 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
+
 		Package.find({}).populate("_bids").populate("_items").exec(function(err, packages) {
 				// This is the method that finds all of the packages from the database
 				if(err) {
@@ -20,6 +21,7 @@ function PackagesController(){
 						res.json(packages);
 					}
 				})  // ends Package.find
+
 	};
 
 
@@ -52,14 +54,14 @@ function PackagesController(){
 	     				console.log(err);
 		      		}
 		      		else{
-			    //
-
-		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,raw){
+		
+		      			
+		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,result){
 		        			if(err){
-		        				console.log('_bids $push error'+err);
+		        				console.log(err);
 		        			}
 		        			else{
-		        				console.log('_bids $push success'+raw);
+		        				console.log(result);
 		        			}
 		        		}); // end of Package.update inside Bid.create
 		      		}
@@ -74,12 +76,14 @@ function PackagesController(){
 
 		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
 						if(err){
-							console.log('Item update in Package.create Err');
+							console.log(err);
 						}
+                        else{
+                          res.json(package);
+                        }
 					});
 
 		    	}
-		    	res.json(package);
 			  }
 			}
 		); // end of Package.create
@@ -111,6 +115,7 @@ function PackagesController(){
 		    if (err) {
 		        res.status(500).send(err);
 		    }
+
 		    else {
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
@@ -134,7 +139,8 @@ function PackagesController(){
 		        // Save the updated document back to the database
 		        package.save(function (err, package) {
 		            if (err) {
-		                res.status(500).send(err)
+                        console.log(err)
+		                //res.status(500).send(err)
 		            }
 		            else{
 		            	// update the items in this package
@@ -154,7 +160,7 @@ function PackagesController(){
 			if(err){
 				console.log(err)
 			}else{
-				return res.json(result)
+				res.json(result)
 			}
 		})
 	},
@@ -168,17 +174,15 @@ function PackagesController(){
 				for(var i = 0; i < result._items.length; i++){
 					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
 						if(err){
-							console.log("there was an error in the code...")
-						}else{
-							console.log("!!!!!!!!!!!!!!!", result)
+							console.log(err)
 						}
-					})
+					});
 				}
 				Package.remove({_id: req.body.package_id}, function(err, result){
 					if(err){
-						console.log("there was an error removing one of packages")
+						console.log(err)
 					}else{
-						return res.json(result);
+						res.json(result);
 					}
 				})
 			}
