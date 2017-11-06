@@ -1,5 +1,3 @@
-console.log('packages.js');
-
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
@@ -12,27 +10,6 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
-		// Package.find({}, function(err, packages) {
-    // 		// This is the method that finds all of the packages from the database
-	  //   	if(err) {
-	  //     		console.log('Package Index Error');
-	  //     		res.status(500).send('Failed to Load Packages');
-	  //   	}
-	  //   	else {
-	  //     		console.log('successfully loaded packages!');
-	  //     		// console.log(packages);
-		//
-		// 				var newPackagesArray = [];
-		// 				for (var i = 0; i < packages.length; i++){
-		// 					newPackagesArray.push(packages[i].populate("bids"))
-		// 					// packages[i].populate("bids")
-		// 				}
-		// 				console.log("Brandon")
-		// 				console.log(newPackagesArray)
-	  //       	res.json(packages);
-	  //       }
-    //     })  // ends Package.find
-
 		Package.find({}).populate("_bids").populate("_items").exec(function(err, packages) {
 				// This is the method that finds all of the packages from the database
 				if(err) {
@@ -66,30 +43,22 @@ function PackagesController(){
 
 
 		      if(err){
-						console.log("check 1")
-		        console.log('package create-err');
-				res.status(500).send('Failed to Create Package');
+		        console.log(err);
 		      }
 		      else{
-						console.log("check 2")
-		      	console.log(package);
 		       	// currently setting package._bids[0] to be the opening bid with no user associated with it
 	     		Bid.create({amount: req.body.openingBid, _package: package._id}, function(err, bid){
 	     			if(err){
-							console.log("check 3")
 	     				console.log(err);
-		        		console.log('Bid.create err in Package.create');
 		      		}
 		      		else{
 			    //
 
 		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,raw){
 		        			if(err){
-										console.log("check 4")
 		        				console.log('_bids $push error'+err);
 		        			}
 		        			else{
-										console.log("check 5")
 		        				console.log('_bids $push success'+raw);
 		        			}
 		        		}); // end of Package.update inside Bid.create
@@ -181,10 +150,9 @@ function PackagesController(){
 	}  // end of this.update();
 
 	this.get_selected = function(req, res){
-		console.log("I am in the package.js and this is the req body", req.body)
 		Package.find({_category:req.body.category}, function(err, result){
 			if(err){
-				console.log("There was an error grabbing the selected packages")
+				console.log(err)
 			}else{
 				return res.json(result)
 			}
@@ -193,13 +161,10 @@ function PackagesController(){
 
 	//removing a package from the DB
 	this.remove_package = function(req, res){
-		console.log("@@@@@@@@@@@@@@ ", req.body)
-
 		Package.findOne({_id: req.body.package_id}, function(err, result){
 			if(err){
 				console.log(err)
 			}else{
-				console.log("%%%%%%%%%%% ", result)
 				for(var i = 0; i < result._items.length; i++){
 					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
 						if(err){
