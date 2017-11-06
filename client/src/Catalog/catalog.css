@@ -2,7 +2,9 @@
     margin: 5px;
     padding: 5px;
 }
-
+button{
+    margin: 1px;
+}
 th {
     text-align: left;
 }

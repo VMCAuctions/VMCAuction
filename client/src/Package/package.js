@@ -42,19 +42,6 @@ class Package extends Component{
     } 
 
 
-
-    componentDidUpdate(){
-        Axios.get("/categories")
-        .then((response)=>{
-            this.setState({
-                categoryList: response.data
-            })
-        }).catch((err)=>{
-            console.log("categoryList failed", err)
-        })
-    }
-    
-
     //function for adding a new category to the dropdown
     addingCategory = (value) =>{
         Axios({
@@ -138,7 +125,7 @@ class Package extends Component{
                         <label className="col-sm-2 col-form-label">Package Description</label>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
                         <label className="col-sm-2 col-form-label"> Category</label><br/>
-                        <Select categoryList={this.state.categoryList} name='category' className='form-control'
+                        <Select selectOptions={this.state.categoryList} name='category' className='form-control'
                                  value={this.state.category} handleChange={this.onPackageChange} required/><br/>
 
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>

@@ -86,7 +86,7 @@ class RegForm extends React.Component{
 
     render(){
         return(
-            <div className='container row'>
+            <div className='well container'>
                 <label><h2> Register</h2></label>
                 <div className='registration-form'>
                 <form onSubmit={this.formSubmit} >          
