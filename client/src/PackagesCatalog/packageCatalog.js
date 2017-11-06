@@ -38,13 +38,13 @@ class PackageCatalog extends Component{
             })
             //sorting the packages by highest bid..
             result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
-            //setting the state of the categories and the list of packages 
+            //setting the state of the categories and the list of packages
             this.setState({
                 listOfPackages: result.data,
                 categories: categories_list,
                 allPackages: result.data
             })
-            
+
         }).catch((err) =>{
             console.log(err);
         })
@@ -104,7 +104,7 @@ class PackageCatalog extends Component{
 
         //reset the tyed search bar to an empty string when the category option is clicked
         ReactDOM.findDOMNode(this.refs.search_bar).value = "";
-        
+
     }
 
     //this function deals with the user locating packages, this function is run after every new letter
@@ -120,7 +120,7 @@ class PackageCatalog extends Component{
         //when the user deletes everything in the input it will display all packages again
         if(e.target.value === "" && this.state.selectValue === "All Categories"){
             this.setState({listOfPackages: this.state.allPackages})
-            
+
         }else{
 
             //first checking if there are items at all
@@ -150,7 +150,7 @@ class PackageCatalog extends Component{
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
             for(var j = 0; j < this.state.allPackages.length; j++){
-                
+
                 let name = this.state.allPackages[j].name.toLowerCase();
                 let description = this.state.allPackages[j].description.toLowerCase();
                 let category = this.state.allPackages[j]._category
@@ -161,11 +161,11 @@ class PackageCatalog extends Component{
                     }
                 }
             }
-            
+
             //iterate through each item and check it to all the packages one at a time
             for(var i = 0; i < selected_items.length; i++){
                 for(var j = 0; j < this.state.allPackages.length; j++){
-                    
+
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
 
@@ -184,7 +184,7 @@ class PackageCatalog extends Component{
             //repopulate the list of packages that will be rendered to the screen
             //sort the packages according to highest bid
             selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
-            
+
             this.setState({listOfPackages: selected_packages})
         }
 
@@ -197,14 +197,14 @@ class PackageCatalog extends Component{
         console.log(e.target.value)
         let deleted_package = this.state.listOfPackages.splice(e.target.value, 1)
         this.setState({listOfPackages:this.state.listOfPackages})
-        
+
         Axios({
             method: "post",
             url: "/remove_package",
             data: { package_id: e.target.id}
         }).then((result) =>{
             console.log("Was able to remove a package from the list", result)
-            
+
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
         })
@@ -229,9 +229,9 @@ class PackageCatalog extends Component{
                     <td>{packages.value}</td>
                     <td>{packages.description}</td>
                     <td>{packages.bid_increment}</td>
-                    <td>{packages._bids[0]}</td>
+                    <td>{packages._bids[0].amount}</td>
                     <td>{packages._items.map((item,index)=>{
-                        return <li key={index} >{item}</li>})}</td>
+                        return <li key={index} >{item.name}</li>})}</td>
                     <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
             )
@@ -244,14 +244,14 @@ class PackageCatalog extends Component{
 
         return(
             <div>
-                
+
                 <div className="seach-bar">
                     <div className="form-block">
                         <form>
                             <h3>Search By Category</h3>
                             <select onChange={this.handleChange} value={this.state.selectValue} >
                             <option value="All Categories">All Categories</option>
-                                {categories}  
+                                {categories}
                             </select>
                         </form>
                     </div>
@@ -273,14 +273,14 @@ class PackageCatalog extends Component{
                                 <th>Category </th>
                                 <th>Package Value</th>
                                 <th>Item Description</th>
-                                <th>Increments</th> 
-                                <th>Starting Bid</th>   
-                                <th>Items in Package</th>    
-                                <th>Details</th>                    
+                                <th>Increments</th>
+                                <th>Starting Bid</th>
+                                <th>Items in Package</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {packageList}                        
+                            {packageList}
                         </tbody>
                     </table>
                 </div>

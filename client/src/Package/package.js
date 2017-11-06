@@ -39,7 +39,7 @@ class Package extends Component{
         }).catch((err)=>{
             console.log("categoryList failed", err)
         })
-    } 
+    }
 
 
     //function for adding a new category to the dropdown
@@ -59,7 +59,6 @@ class Package extends Component{
     //Package form submit function
     onPackageFormSubmit = (e) => {
         e.preventDefault(); // prevents the default form behaviour
-        console.log(this.state)
         Axios({
             method: 'post',
             url:'/packages',
@@ -69,7 +68,7 @@ class Package extends Component{
             }).then((response) =>{
             console.log(response);
             this.setState({
-                packageName: '', 
+                packageName: '',
                 packageDescription: '',
                 category:'',
                 openingBid: '',
@@ -92,7 +91,7 @@ class Package extends Component{
             selectedItems: itemSelect,
             totalItems: this.state.selectedItems.length,
             totalValue:  this.state.totalValue + value
-        })       
+        })
     }
      //unSelecte items from the list and updating the display fields(totalItems and totalValue)
     removeGroupedItems = (value, item) => {
@@ -146,13 +145,13 @@ class Package extends Component{
                             <h3>Grouping items</h3>
                             <div className='.table-responsive itemsList'>
                                 <table className='table'>
-                                    <DisplayItems 
+                                    <DisplayItems
                                         selectedItems={this.state.selectedItems}
-                                        capturingGroupedItems={this.capturingGroupedItems} 
+                                        capturingGroupedItems={this.capturingGroupedItems}
                                         removeGroupedItems={this.removeGroupedItems}/>
                                 </table>
-                            </div>                    
-                        </div>                                  
+                            </div>
+                        </div>
                         <div className="form displaySelectedItems">
                             <h3>This package has {this.state.selectedItems.length} items</h3>
                             {items}
