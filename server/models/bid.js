@@ -7,13 +7,13 @@ mongoose.Promise = global.Promise;
 
 
 var bidSchema = new Schema({
- 
- amount: {type: Number, required: true}, 
+
+ amount: {type: Number, required: true},
  _user: {type: Schema.Types.ObjectId, ref: 'User'},
  _package: {type: Number, ref: 'Package'}
 
- 
- 
+
+
 }, { timestamps: true });
 
 

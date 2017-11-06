@@ -29,7 +29,7 @@ class PackageDetails extends Component{
     }
 
     render(){
-        // trying to find the index of the (show)package from the array 
+        // trying to find the index of the (show)package from the array
         let packageIndex = '';
         for(var i=0; i < this.state.listOfPackages.length; i++){
             let eachPackage = this.state.listOfPackages[i];
@@ -38,15 +38,14 @@ class PackageDetails extends Component{
             if(id === parseInt((this.state.packageId),10)){
                 packageIndex = i;
             }
-            // console.log("packageIndex--", packageIndex);            
+            // console.log("packageIndex--", packageIndex);
         }
-        
+
         //traversing the target package(which is JSON object)
         let packagedata = this.state.listOfPackages[packageIndex];
-        console.log(packagedata);
         let x = [];
-        let packageName = '', packageDescription='', packageValue = '',packageItems=[], starting_bid='', bid_increment='';
-        
+        let packageName = '', packageDescription='', packageValue = '',packageItems=[], starting_bid="", bid_increment='';
+
         for(var key in packagedata){
             console.log(key, packagedata[key]);
             x.push(packagedata[key]);
@@ -74,13 +73,15 @@ class PackageDetails extends Component{
         //listing the items in the package
         let itemsInPackage = packageItems.map((item, index)=>{
             return(
-                <li key={index}>{item}</li>
+                <li key={index}>{item.name}</li>
             )
         })
         //current_bid
         let current_bid = starting_bid[starting_bid.length-1];
 
         //Place bid
+
+        //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
         this.state.place_bid = current_bid + bid_increment;
 
 
@@ -95,18 +96,18 @@ class PackageDetails extends Component{
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
-                        <h4>Starting Bid: {starting_bid[0]}</h4>
+                        <h4>Starting Bid: {starting_bid[0].amount}</h4>
                         <div className='bidSection'>
-                            <h4>Current Bid:{current_bid}</h4>
+                            <h4>Current Bid:{current_bid.amount}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
-                            <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/> 
+                            <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>
-                        </div> 
+                        </div>
                         <div className='packageDescription'>
                             <br/><h4>Description: </h4>
                             <p>{packageDescription}</p>
                             <h5>Items in package: {itemsInPackage}</h5>
-                        </div>                
+                        </div>
                     </div>
                 </div>
             </div>
