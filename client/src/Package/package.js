@@ -25,14 +25,14 @@ class Package extends Component{
     onPackageChange = (e) => {
         this.setState({
         [e.target.name] : e.target.value
-        })
+    })
+    console.log(e.target.value);
     }
 
     componentDidMount(){
         //Get request for category dropdown list
         Axios.get("/categories")
         .then((response)=>{
-            console.log(response.data);
             this.setState({
                 categoryList: response.data
             })
@@ -41,18 +41,6 @@ class Package extends Component{
         })
     }
 
-
-    componentDidUpdate(){
-        Axios.get("/categories")
-        .then((response)=>{
-            // console.log(response.data);
-            this.setState({
-                categoryList: response.data
-            })
-        }).catch((err)=>{
-            console.log("categoryList failed", err)
-        })
-    }
 
     //function for adding a new category to the dropdown
     addingCategory = (value) =>{
@@ -61,7 +49,9 @@ class Package extends Component{
             url: "/categories",
             data: { category: value},
         }).then((response)=>{
-            console.log(response);
+            this.setState({
+                categoryList: response.data
+            })
         }).catch((err)=>{
             console.log(err);
         })
@@ -136,8 +126,8 @@ class Package extends Component{
                         <label for="packageDescription" className="col-sm-2 col-form-label">Package Description</label>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
                         <label for="category" className="col-sm-2 col-form-label"> Category</label><br/>
-                        <Select categoryList={this.state.categoryList} name='category' className='form-control'
-                                 value={this.state.category} handleChange={this.onPackageChange} required/><br/>
+                        <Select name='category' className='form-control' 
+                                handleChange={this.onPackageChange} selectOptions={this.state.categoryList} required/><br/>
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
 
                         <label for="openingBid" className="col-sm-2 col-form-label">Opening Bid</label>

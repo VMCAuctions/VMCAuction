@@ -1,5 +1,3 @@
-console.log('users.js');
-
 var bcrypt = require('bcrypt-nodejs');
 
 var mongoose = require('mongoose'),
@@ -12,10 +10,6 @@ var mongoose = require('mongoose'),
  // If the query is successful, the error parameter will be null, and the result will be populated with the results of the query.
 
 function UsersController(){
-	// root route get('/')
-	this.welcome = function(req,res){
-		console.log('UsersController welcome');
-	};
 	// get all bidders and their packages won, audit page
 	this.index = function(req,res){
 		console.log('UsersController index');
@@ -31,7 +25,6 @@ function UsersController(){
 
 		User.findOne({userName: req.body.userName}, function(err, duplicate) {
 			if(err){
-				console.log("error while determining unique username");
 				console.log(err)
 			}
 			else if(duplicate){
@@ -40,7 +33,6 @@ function UsersController(){
 			else{
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
-							console.log("Password hash error");
 							console.log(err)
 						}
 						else{
@@ -93,13 +85,11 @@ function UsersController(){
 							},
 							function(err, user){
 									if(err){
-										console.log('User.create error');
-										console.log(err)
-										res.status(500).send('Failed to Create User');
+										console.log(err)										
 									}
 									else{
-										req.session.put("userName", user.userName)
-										req.session.put("admin", user.admin)
+										req.session.userName = user.userName
+										req.session.admin = user.admin
 										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
 										res.json();
 										return;
@@ -117,19 +107,17 @@ function UsersController(){
 		console.log('UsersController login');
 		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
-				console.log('User.login error');
-				res.status(500).send('Error upon searching database for username');
+				console.log(err);
 			}
 			else if(user){
 				//Comparing inputted password to hashed password in db
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
 					if(err){
-						console.log("bcrypt compare error")
-						res.status(500).send("Error upon searching database for password");
+						console.log(err)
 					}
 					else if(match){
-						req.session.put("userName", user.userName)
-						req.session.put("admin", user.admin)
+						req.session.userName = user.userName
+						req.session.admin = user.admin
 						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
 					}
 					else{
@@ -171,11 +159,11 @@ function UsersController(){
 		var login_check = false;
 		var admin;
 
-		if (req.session.get("userName") != undefined){
+		if (req.session.userName != undefined){
 			login_check = true;
 		}
 
-		if(req.session.get("admin") == true){
+		if(req.session.admin == true){
 			admin = true;
 		}else{
 			admin = false;
@@ -184,25 +172,20 @@ function UsersController(){
 	}
 
 	this.logout = function(req,res){
-		console.log("reached logout function on backend")
-		console.log("before flush,", req.session.get("userName"))
-		req.session.flush();
-		console.log("after flush,", req.session.get("userName"))
+		req.session.destroy();
+
 		req.session.save(function(err, result){
 			if(err){
 				console.log(err)
 			}
 			else{
-				res.json()
+				res.json("Logout Successful")
 			}
 		})
 	}
 
-	this.who_is_logged_in = function(req, res){
-		console.log("checking who is logged in")
-		console.log("this is who is logged in>>>>>>> ", req.session.get("userName"), "the admin status is: ", req.session.get("admin"));
-		
-		if(req.session.get("admin") == true){
+	this.who_is_logged_in = function(req, res){		
+		if(req.session.admin == true){
 			res.json({admin: true})
 		}else{
 			res.json({admin: false})

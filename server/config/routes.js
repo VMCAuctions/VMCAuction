@@ -1,5 +1,3 @@
-console.log('routes.js');
-
 var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
@@ -95,12 +93,10 @@ module.exports = function(app) {
 
 	// checks if a user is logged in
 	app.get('/users/loggedin', function(req,res){
-		console.log("reached /users/loggedin in routes")
 		users.loggedin(req,res)});
 
 	// logout a specific user
 	app.get('/users/logout', function(req,res){
-		console.log("reached /users/logout in routes")
 		users.logout(req,res)});
 
 	// post the user login form  (LOGIN)
@@ -108,12 +104,11 @@ module.exports = function(app) {
 		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/users/:id', function(req,res){
-		console.log(req.param.id);
 		users.show(req,res)});
 	// update a specific user (profile/info)
 	app.post('/users/:id', function(req,res){
 		users.update(req,res)});
-	
+
 	//check who is logged in
 	app.get('/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
@@ -136,5 +131,10 @@ module.exports = function(app) {
     app.get('/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
     /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
+		app.get('/*', function(req,res){
+			res.redirect('/')
+		});
 
 }  // end of module.exports
