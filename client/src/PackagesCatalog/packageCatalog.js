@@ -35,6 +35,7 @@ class PackageCatalog extends Component{
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
                               allPackages: result.data   })            
+
         }).catch((err) =>{
             console.log(err);
         })
@@ -87,6 +88,7 @@ class PackageCatalog extends Component{
         //when the user deletes everything in the input it will display all packages again
         if(e.target.value === "" && this.state.selectValue === "All Categories"){
             this.setState({ listOfPackages: this.state.allPackages   })            
+
         }else{
             //first checking if there are items at all
             if(this.state.listOfItems.length !== 0){
@@ -107,6 +109,7 @@ class PackageCatalog extends Component{
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
             for(var j = 0; j < this.state.allPackages.length; j++){                
+
                 let name = this.state.allPackages[j].name.toLowerCase();
                 let description = this.state.allPackages[j].description.toLowerCase();
                 let category = this.state.allPackages[j]._category
@@ -120,6 +123,7 @@ class PackageCatalog extends Component{
             //iterate through each item and check it to all the packages one at a time
             for(var m = 0; m < selected_items.length; m++){
                 for(var n = 0; n < this.state.allPackages.length; n++){                    
+
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
                     if(selected_items[m]._package === this.state.allPackages[n]._id ){
@@ -131,9 +135,11 @@ class PackageCatalog extends Component{
                     }
                 }
             }
+
             //repopulate the list of packages that will be rendered to the screen //sort the packages according to highest bid
             selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})            
             this.setState({ listOfPackages: selected_packages })
+
         }
     }
 
@@ -145,6 +151,7 @@ class PackageCatalog extends Component{
     deletePackage = (e) => {
         e.persist();
         this.setState({ listOfPackages: this.state.listOfPackages })        
+
         Axios({
             method: "post",
             url: "/remove_package",
@@ -176,7 +183,7 @@ class PackageCatalog extends Component{
                     <td>{packages.value}</td>
                     <td>{packages.description}</td>
                     <td>{packages.bid_increment}</td>
-                    <td>{packages._bids[0]}</td>
+                    <td>{packages._bids[0].amount}</td>
                     <td>{packages._items.map((item,index)=>{ return <li key={index} >{item}</li>}) } </td>
                     <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
@@ -191,6 +198,7 @@ class PackageCatalog extends Component{
                   <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                             categories={categories} selectValue={this.state.selectValue}/> 
 
+
                 <div className='table-responsive table-container'>
                     <table className='table table-striped table-bordered'>
                         <thead>
@@ -201,14 +209,14 @@ class PackageCatalog extends Component{
                                 <th>Category </th>
                                 <th>Package Value</th>
                                 <th>Item Description</th>
-                                <th>Increments</th> 
-                                <th>Starting Bid</th>   
-                                <th>Items in Package</th>    
-                                <th>Details</th>                    
+                                <th>Increments</th>
+                                <th>Starting Bid</th>
+                                <th>Items in Package</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {packageList}                        
+                            {packageList}
                         </tbody>
                     </table>
                 </div>
@@ -217,3 +225,4 @@ class PackageCatalog extends Component{
     }
 }
 export default PackageCatalog;
+

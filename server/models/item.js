@@ -10,12 +10,12 @@ var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4, maxlength: 250},
  _category: String,
- //_category: {type: Schema.Types.ObjectId, ref: 'Category'},	
+ //_category: {type: Schema.Types.ObjectId, ref: 'Category'},
  donor: {type: String, default: 'anonymous'},
  restrictions: {type: String, maxlength: 250},
  value: Number,
  packaged: Boolean,
- 
+
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
 }, { timestamps: true });

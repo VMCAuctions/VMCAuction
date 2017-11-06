@@ -26,14 +26,13 @@ class DisplayItems extends Component{
             console.log(err);
         })
 
-    }
-    
+    }    
     rowSelect= (e) =>{
         if(e.target.checked){
             this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
         }else{ 
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
-        }       
+        }
    }
 
     render(){
@@ -41,7 +40,7 @@ class DisplayItems extends Component{
         let items = this.state.itemsList.map((item,index) =>{
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' value={item._id} name={item.name}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>
@@ -58,15 +57,15 @@ class DisplayItems extends Component{
                         <tr>
                             <th>Select</th>
                             <th>Item Number</th>
-                            <th>Item Name</th>                            
+                            <th>Item Name</th>
                             <th>Fair Market Value</th>
                             <th>Donor</th>
                             <th>Item Description</th>
-                            <th>Item Restriction</th>                            
+                            <th>Item Restriction</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {items}                        
+                        {items}
                     </tbody>
                 </table>
             </div>
