@@ -82,8 +82,6 @@ class PackageDetails extends Component{
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
-        console.log("joey")
-        console.log(current_bid)
         this.state.place_bid = current_bid + bid_increment;
 
 
