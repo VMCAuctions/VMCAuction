@@ -85,7 +85,7 @@ function UsersController(){
 							},
 							function(err, user){
 									if(err){
-										console.log(err)										
+										console.log(err)
 									}
 									else{
 										req.session.userName = user.userName
@@ -162,7 +162,7 @@ function UsersController(){
 		if (req.session.userName != undefined){
 			login_check = true;
 		}
-
+		console.log(login_check);
 		if(req.session.admin == true){
 			admin = true;
 		}else{
@@ -174,17 +174,10 @@ function UsersController(){
 	this.logout = function(req,res){
 		req.session.destroy();
 
-		req.session.save(function(err, result){
-			if(err){
-				console.log(err)
-			}
-			else{
-				res.json("Logout Successful")
-			}
-		})
+
 	}
 
-	this.who_is_logged_in = function(req, res){		
+	this.who_is_logged_in = function(req, res){
 		if(req.session.admin == true){
 			res.json({admin: true})
 		}else{

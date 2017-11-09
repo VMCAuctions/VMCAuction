@@ -11,7 +11,7 @@ function PackagesController(){
 	this.index = function(req,res){
 		console.log('PackagesController index');
 
-		Package.find({}).populate("_bids").populate("_items").exec(function(err, packages) {
+		Package.find({}).populate("_bids").exec(function(err, packages) {
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');
@@ -54,8 +54,8 @@ function PackagesController(){
 	     				console.log(err);
 		      		}
 		      		else{
-		
-		      			
+
+
 		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,result){
 		        			if(err){
 		        				console.log(err);
