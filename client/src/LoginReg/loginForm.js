@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import './login.css';
 import Axios from 'axios';
-import {Route, Link} from 'react-router-dom';
-import RegForm from "./regForm.js";
-class LoginForm extends React.Component{
+import {Link} from 'react-router-dom';
 
-
+class LoginForm extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -18,25 +16,23 @@ class LoginForm extends React.Component{
         this.setState({
             [e.target.name] : e.target.value
         })
-        console.log(e.target.value);
     }
+    
     formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
             url:"/users/:id/login",
             data:{userName: this.state.userName,
-                  password: this.state.password     },
-                // headers: {Authorization: localStorage.getItem("jw-token")}
-        }).then((response) => {
-            console.log("Login promise invoked!")
-            if(response.data.search){
-                window.location.href ="/package"
-            }
-            this.setState({
-                userName:'',
-                password:''
-            })
+                  password: this.state.password  },
+            }).then((response) => {
+                if(response.data.search){
+                    window.location.href ="/package"
+                }
+                this.setState({
+                    userName:'',
+                    password:''
+                })
             alert(response.data.message)
         }).catch((err) =>{
             console.log(err);
@@ -45,12 +41,12 @@ class LoginForm extends React.Component{
     
     render(){
          return(
-            <div className='container row'>  
+            <div className='well container'>  
                 <label><h1>Login</h1> </label>
                 <div className='login-form '>
                     <form onSubmit={this.formSubmit} >
                         <div className="form-group row" >
-                            <label for="userName" className="col-sm-2 col-form-label">User Name</label>
+                            <label className="col-sm-2 col-form-label">User Name</label>
                             <div className="col-sm-10">
                                 <input className='form-control' type='text' id='userName' name='userName' 
                                         placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required  />
@@ -58,7 +54,7 @@ class LoginForm extends React.Component{
                         </div>
                        
                         <div className="form-group row">
-                            <label for="password" className="col-sm-2 col-form-label">Password</label>
+                            <label className="col-sm-2 col-form-label">Password</label>
                             <div className="col-sm-10">
                                 <input className='form-control' type='password' id='password' name='password'
                                         placeholder='Password' onChange={this.handleChange} value={this.state.password} required />
@@ -73,13 +69,8 @@ class LoginForm extends React.Component{
                         <p><Link to='/register'>Register</Link></p>
                 </div>
             </div>
-
-
          )
-
-
     }
-
 }
 export default LoginForm;
 

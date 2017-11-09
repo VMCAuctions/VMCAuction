@@ -12,66 +12,56 @@ class Menu extends React.Component{
         admin: Boolean
       }
     }
+
     logOut = () => {
-      console.log("logOut function reached")
       Axios({
           method: "get",
           url: "/users/logout",
           data: {}
-
       }).then((response) => {
-          console.log("logout function returned from database");
           this.loggedin()
-
       }).catch((err) =>{
           console.log(err);
       })
     }
+
     loggedin = () => {
-      console.log("loggedIn function reached")
       Axios({
           method: "get",
           url: "/users/loggedin",
           data: {}
-
       }).then((response) => {
-          console.log("/".repeat(80))
-          console.log("loggedin function returned from database")
-          console.log("before this.setState,response.data.login_check is", response.data.login_check)
-          console.log("before this.setState, this.state.loggedin is", this.state.loggedin)
-          
           if (response.data.login_check !== this.state.loggedin){
             this.setState({
-            loggedin: response.data.login_check,
-            admin : response.data.admin
+                    loggedin: response.data.login_check,
+                    admin : response.data.admin
             })
           }
-        
-          console.log("the admin? true/false ", this.state.admin)
-          console.log("after this.setState,response.data.login_check is", response.data.login_check)
-          console.log("after this.setState, this.state.loggedin is", this.state.loggedin)
-
       }).catch((err) =>{
           console.log(err);
       })
     }
+
     componentWillMount(){
         this.loggedin();
     }
+    
     componentWillUpdate(){
         this.loggedin();
     }
+    
     render(){
         var htmlLogCode = "";
         if (this.state.loggedin === true){
-          htmlLogCode =
-          <div><li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
-          </div>
+          htmlLogCode = <div>
+                            <li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
+                        </div>
         }
         else{
-          htmlLogCode =
-          <div><li><Link to='/register'><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
-          <li><Link to='/login'><span className="glyphicon glyphicon-log-in"></span> Login</Link></li></div>
+          htmlLogCode = <div>
+                            <li><Link to='/register'><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
+                            <li><Link to='/login'><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
+                        </div>
         }
 
         var htmlAdminItems = "";

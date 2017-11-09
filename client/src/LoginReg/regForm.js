@@ -22,20 +22,20 @@ class RegForm extends React.Component{
             cnfmPassword:''
         };
     }
+
     handleChange = (e) => {
         this.setState({
             [e.target.name] : e.target.value
         })
-        console.log(e.target.value);
     }
+
     formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
 
         //Sree, please add prompt asking for user to insert matching passwords if the below condition is met
 
-        if (this.state.password != this.state.cnfmPassword) {
+        if (this.state.password !== this.state.cnfmPassword) {
           alert("Passwords do not match. Please try again.")
-
           return;
         }
 
@@ -57,7 +57,6 @@ class RegForm extends React.Component{
                    },
 
         }).then((response) => {
-            console.log(response);
             if(response.data.validated) {
               this.setState({
                       firstName:'',
@@ -87,14 +86,12 @@ class RegForm extends React.Component{
 
     render(){
         return(
-            <div className='container row'>
+            <div className='well container'>
                 <label><h2> Register</h2></label>
                 <div className='registration-form'>
-                <form onSubmit={this.formSubmit} >
-
-          
+                <form onSubmit={this.formSubmit} >          
                     <div className="form-group row">
-                      <label for="firstName" className="col-sm-2 col-form-label">First Name</label>
+                      <label  className="col-sm-2 col-form-label">First Name</label>
                       <div className="col-sm-10">
                         <input type='text' id='firstName' className='form-control' name='firstName' 
                         placeholder='First Name' onChange={this.handleChange} value={this.state.firstName} required/>
@@ -102,7 +99,7 @@ class RegForm extends React.Component{
                     </div>          
                     
                     <div className="form-group row">
-                      <label for="lastName" className="col-sm-2 col-form-label">Last Name</label>
+                      <label className="col-sm-2 col-form-label">Last Name</label>
                       <div className="col-sm-10">
                         <input type='text' id='lastName' className='form-control' name='lastName' 
                         placeholder='Last Name' onChange={this.handleChange} value={this.state.lastName} required/>
@@ -110,7 +107,7 @@ class RegForm extends React.Component{
                     </div>                            
                     
                     <div className="form-group row">
-                            <label for="streetAddress" className="col-sm-2 col-form-label">Street Address</label>
+                            <label className="col-sm-2 col-form-label">Street Address</label>
                             <div className="col-sm-10">
                               <input type='text' id='streetAddress' className='form-control' name='streetAddress' 
                               placeholder='Street Address' onChange={this.handleChange} value={this.state.streetAddress} required/>
@@ -118,7 +115,7 @@ class RegForm extends React.Component{
                     </div>     
                     
                     <div className="form-group row">
-                            <label for="city" className="col-sm-2 col-form-label">City</label>
+                            <label className="col-sm-2 col-form-label">City</label>
                             <div className="col-sm-10">
                               <input type='text' id='city' className='form-control' name='city' 
                               placeholder='City' onChange={this.handleChange} value={this.state.city} required/>
@@ -126,7 +123,7 @@ class RegForm extends React.Component{
                     </div>    
                     
                     <div className="form-group row">
-                            <label for="states" className="col-sm-2 col-form-label">State</label>
+                            <label className="col-sm-2 col-form-label">State</label>
                             <div className="col-sm-10">
                               <input type='text' id='states' className='form-control' name='states' 
                               placeholder='State' onChange={this.handleChange} value={this.state.states} required/>
@@ -134,7 +131,7 @@ class RegForm extends React.Component{
                     </div>
                    
                     <div className="form-group row">
-                      <label for="zip" className="col-sm-2 col-form-label">Zip Code</label>
+                      <label className="col-sm-2 col-form-label">Zip Code</label>
                       <div className="col-sm-10">
                         <input type='text' id='zip' className='form-control' name='zip' 
                         placeholder='Zip Code' onChange={this.handleChange} value={this.state.zip} required/>
@@ -142,42 +139,42 @@ class RegForm extends React.Component{
                     </div>
 
                     <div className="form-group row">
-                      <label for="phoneNumber" className="col-sm-2 col-form-label">Phone Number</label>
+                      <label className="col-sm-2 col-form-label">Phone Number</label>
                       <div className="col-sm-10">
                         <input type='text' id='phoneNumber' className='form-control' name='phoneNumber'
                         placeholder='Phone Number' onChange={this.handleChange} value={this.state.phoneNumber} />
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="email" className="col-sm-2 col-form-label">Email Address</label>
+                      <label className="col-sm-2 col-form-label">Email Address</label>
                       <div className="col-sm-10">
                         <input type='text' id='email' className='form-control' name='email' 
                         placeholder='Email Address' onChange={this.handleChange} value={this.state.email} required/>
                       </div>
                     </div>
                      <div className="form-group row">
-                      <label for="creditCard" className="col-sm-2 col-form-label">Credit Card</label>
+                      <label className="col-sm-2 col-form-label">Credit Card</label>
                       <div className="col-sm-10">
                         <input type='text' id='creditCard' className='form-control' name='creditCard' 
                         placeholder='Credit Card' onChange={this.handleChange} value={this.state.creditCard} required/>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="userName" className="col-sm-2 col-form-label">User Name</label>
+                      <label className="col-sm-2 col-form-label">User Name</label>
                       <div className="col-sm-10">
                         <input type='text' id='userName' className='form-control' name='userName' 
                         placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required/>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="password" className="col-sm-2 col-form-label">Password</label>
+                      <label className="col-sm-2 col-form-label">Password</label>
                       <div className="col-sm-10">
                         <input type='password' id='password' className='form-control' name='password' 
                         placeholder='Password' onChange={this.handleChange} value={this.state.password} required/>
                       </div>
                     </div>
                     <div className="form-group row">
-                      <label for="cnfmPassword" className="col-sm-2 col-form-label">Confirm Password</label>
+                      <label className="col-sm-2 col-form-label">Confirm Password</label>
                       <div className="col-sm-10">
                         <input type='password' id='cnfmPassword' className='form-control' name='cnfmPassword' 
                         placeholder='Confirm Password' onChange={this.handleChange} value={this.state.cnfmPassword} required/>
