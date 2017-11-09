@@ -31,10 +31,10 @@ class PackageCatalog extends Component{
                 } })
             //sorting the packages by highest bid..
             result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
-            //setting the state of the categories and the list of packages 
+            //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
-                              allPackages: result.data   })            
+                              allPackages: result.data   })
 
         }).catch((err) =>{
             console.log(err);
@@ -87,7 +87,7 @@ class PackageCatalog extends Component{
         let input_letters = e.target.value.toLowerCase();
         //when the user deletes everything in the input it will display all packages again
         if(e.target.value === "" && this.state.selectValue === "All Categories"){
-            this.setState({ listOfPackages: this.state.allPackages   })            
+            this.setState({ listOfPackages: this.state.allPackages   })
 
         }else{
             //first checking if there are items at all
@@ -108,7 +108,7 @@ class PackageCatalog extends Component{
             let selected_packages = [];
             //the user may also be searching for the package name so we have to add the selected package titles too
             // searching the packages in the DB if they match the key words too.
-            for(var j = 0; j < this.state.allPackages.length; j++){                
+            for(var j = 0; j < this.state.allPackages.length; j++){
 
                 let name = this.state.allPackages[j].name.toLowerCase();
                 let description = this.state.allPackages[j].description.toLowerCase();
@@ -119,10 +119,10 @@ class PackageCatalog extends Component{
                         selected_packages.push(this.state.allPackages[j])
                     }
                 }
-            }            
+            }
             //iterate through each item and check it to all the packages one at a time
             for(var m = 0; m < selected_items.length; m++){
-                for(var n = 0; n < this.state.allPackages.length; n++){                    
+                for(var n = 0; n < this.state.allPackages.length; n++){
 
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
@@ -137,26 +137,26 @@ class PackageCatalog extends Component{
             }
 
             //repopulate the list of packages that will be rendered to the screen //sort the packages according to highest bid
-            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})            
+            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
             this.setState({ listOfPackages: selected_packages })
 
         }
     }
 
     editPackage =(e) =>{
-        //write code for editing the package 
+        //write code for editing the package
         alert("Do you want to edit");
     }
 
     deletePackage = (e) => {
         e.persist();
-        this.setState({ listOfPackages: this.state.listOfPackages })        
+        this.setState({ listOfPackages: this.state.listOfPackages })
 
         Axios({
             method: "post",
             url: "/remove_package",
             data: { package_id: e.target.id}
-        }).then((result) =>{   
+        }).then((result) =>{
             Axios.get('/packages')
             .then((result=>{    this.setState({  listOfPackages: result.data}) } ))
             .catch((err)=>{ console.log(err); })
@@ -194,9 +194,9 @@ class PackageCatalog extends Component{
         })
 
         return(
-            <div>     
+            <div>
                   <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
-                            categories={categories} selectValue={this.state.selectValue}/> 
+                            categories={categories} selectValue={this.state.selectValue}/>
 
 
                 <div className='table-responsive table-container'>
@@ -225,4 +225,3 @@ class PackageCatalog extends Component{
     }
 }
 export default PackageCatalog;
-
