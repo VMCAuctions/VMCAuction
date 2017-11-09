@@ -24,9 +24,9 @@ class Package extends Component{
     //Input fields event handler
     onPackageChange = (e) => {
         this.setState({
-        [e.target.name] : e.target.value
-    })
-    console.log(e.target.value);
+            [e.target.name] : e.target.value
+        })
+
     }
 
     componentDidMount(){
@@ -66,7 +66,6 @@ class Package extends Component{
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }
             }).then((response) =>{
-            console.log(response);
             this.setState({
                 packageName: '',
                 packageDescription: '',
@@ -83,6 +82,7 @@ class Package extends Component{
             console.log("Incomplete form submission" + err)
         })
     }
+
     //selecte items from the list and updating the display fields(totalItems and totalValue)
     capturingGroupedItems = (item, value) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
         let itemSelect = this.state.selectedItems;
@@ -95,7 +95,6 @@ class Package extends Component{
     }
      //unSelecte items from the list and updating the display fields(totalItems and totalValue)
     removeGroupedItems = (value, item) => {
-        console.log(value, item, this.state.selectedItems);
         let itemUnselect = this.state.selectedItems;
         let id;
         for(var i=0; i<itemUnselect.length;i++){
@@ -121,22 +120,22 @@ class Package extends Component{
                 <form className='form-inline' onSubmit={this.onPackageFormSubmit}>
                     <div className='package-info form-group col-sm-2' >
                         <h3>Package Info</h3>
-                        <label for="packageName" className="col-sm-2 col-form-label">Package Name</label>
+                        <label  className="col-sm-2 col-form-label">Package Name</label>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
-                        <label for="packageDescription" className="col-sm-2 col-form-label">Package Description</label>
+                        <label className="col-sm-2 col-form-label">Package Description</label>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
-                        <label for="category" className="col-sm-2 col-form-label"> Category</label><br/>
-                        <Select name='category' className='form-control' 
-                                handleChange={this.onPackageChange} selectOptions={this.state.categoryList} required/><br/>
-                        <TestModal addingCategory={this.addingCategory}/><br/><br/>
+                        <label className="col-sm-2 col-form-label"> Category</label><br/>
+                        <Select selectOptions={this.state.categoryList} name='category' className='form-control'
+                                 value={this.state.category} handleChange={this.onPackageChange} required/><br/>
 
-                        <label for="openingBid" className="col-sm-2 col-form-label">Opening Bid</label>
-                        <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} placeholder='Opening Bid' required/><br/><br/>
-                        <label for="increments" className="col-sm-2 col-form-label">Increments</label>
-                        <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
-                        <label for="totalValue" className="col-sm-2 col-form-label">Total Market value</label>
+                        <TestModal addingCategory={this.addingCategory}/><br/><br/>
+                        <label className="col-sm-2 col-form-label">Opening Bid</label>
+                        <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} min='0' placeholder='Opening Bid' required/><br/><br/>
+                        <label className="col-sm-2 col-form-label">Increments</label>
+                        <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' min='0' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
+                        <label className="col-sm-2 col-form-label">Total Market value</label>
                         <input className="form-control"  value={this.state.totalValue} placeholder="Total Items" readOnly /><br/><br/>
-                        <label for="totalItems" className="col-sm-2 col-form-label">Total Items</label>
+                        <label className="col-sm-2 col-form-label">Total Items</label>
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>
@@ -144,14 +143,13 @@ class Package extends Component{
                         <div className='item-select form'>
                             <h3>Grouping items</h3>
                             <div className='.table-responsive itemsList'>
-                                <table className='table'>
-                                    <DisplayItems
+                                    <DisplayItems 
                                         selectedItems={this.state.selectedItems}
                                         capturingGroupedItems={this.capturingGroupedItems}
                                         removeGroupedItems={this.removeGroupedItems}/>
-                                </table>
-                            </div>
-                        </div>
+                            </div>                    
+                        </div>                                  
+
                         <div className="form displaySelectedItems">
                             <h3>This package has {this.state.selectedItems.length} items</h3>
                             {items}
