@@ -15,15 +15,15 @@ function BidsController(){
 	    	if(err) {
 	      		console.log(err);
 	    	}
-	    	else {	      		        
+	    	else {
 	        	res.json(bids);
 	        }
         })  // ends Bid.find
-       
+
 	}; // ends this.index
- 
-	
-	
+
+
+
 	this.new = function(req,res){
 		// this would bring up the new bid form screen, (possibly unnecessary and will be handled by React)
 		console.log('BidsController new');
@@ -31,10 +31,10 @@ function BidsController(){
 
 	this.create = function(req,res){
 		console.log('BidsController create');
-		
-    
+
+
 	    Bid.create({amount: req.body.amount, _user: req.body.user, _package: req.body.package},  function(err, result){
-	    	 
+
 
 	      if(err){
 	        console.log(err);
@@ -50,6 +50,7 @@ function BidsController(){
 		console.log('BidsController show');
 		// this gets the single bid screen (if we want it and if not handled independently by React)
 		Bid.findById(req.params.id, function(err, result){
+			console.log(result);
 			if(err){
 	        console.log(err);
 	      }
@@ -58,8 +59,8 @@ function BidsController(){
 	      }
 	    });
 	}
-  
+
 }
 
 
-module.exports = new BidsController(); 
+module.exports = new BidsController();

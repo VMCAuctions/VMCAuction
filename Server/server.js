@@ -5,9 +5,9 @@ var session = require('express-session')
 
 app.use(session({
   secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
-  rolling: true //resters session timeout everytime the user interacts with the site
+  rolling: true //resets session timeout everytime the user interacts with the site
 }));
 
 var React = require('../client/node_modules/react');
