@@ -55,7 +55,7 @@ editItem = (e) =>{
     }
 
     render(){
-        let delete_button_header = "";
+        let action_button_header = "";
         let itemsList = this.state.listOfItems.map((item,index) =>{
             let action_button ;
             // only shoing a delete button if they have admin access
