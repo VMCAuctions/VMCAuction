@@ -48,14 +48,14 @@ editItem = (e) =>{
             url: "/remove_item",
             data: { item_id: e.target.id}
         }).then((result) =>{
-            console.log("Was able to remove a item from the list", result)                     
+            console.log("Was able to remove a item from the list", result)
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
         })
     }
 
     render(){
-        let action_button_header;       
+        let delete_button_header = "";
         let itemsList = this.state.listOfItems.map((item,index) =>{
             let action_button ;
             // only shoing a delete button if they have admin access
@@ -94,11 +94,11 @@ editItem = (e) =>{
                             <th>Fair Market Value</th>
                             <th>Item Description</th>
                             <th>Donor</th>
-                            <th>Item Restriction</th>                            
+                            <th>Item Restriction</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {itemsList}                        
+                        {itemsList}
                     </tbody>
                 </table>
             </div>
