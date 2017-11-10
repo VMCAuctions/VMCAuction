@@ -168,7 +168,7 @@ function UsersController(){
 		if (req.session.userName != undefined){
 			login_check = true;
 		}
-
+		console.log(login_check);
 		if(req.session.admin == true){
 			admin = true;
 		}else{
@@ -180,14 +180,7 @@ function UsersController(){
 	this.logout = function(req,res){
 		req.session.destroy();
 
-		req.session.save(function(err, result){
-			if(err){
-				console.log(err)
-			}
-			else{
-				res.json("Logout Successful")
-			}
-		})
+
 	}
 
 	this.who_is_logged_in = function(req, res){
