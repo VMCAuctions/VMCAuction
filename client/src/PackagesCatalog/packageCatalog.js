@@ -175,7 +175,7 @@ class PackageCatalog extends Component{
                 action_button_header = <th>Actions</th>
             }
             return(
-                
+
                     <div className="card package_card w-75">
                         <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
                         <div className="card-block">
@@ -185,7 +185,7 @@ class PackageCatalog extends Component{
                         <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
                         <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
                         </div>
-                    </div>      
+                    </div>
             )
             /*return(
                 <tr key={index}>
@@ -211,10 +211,7 @@ class PackageCatalog extends Component{
                   <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                             categories={categories} selectValue={this.state.selectValue}/>
 
-<<<<<<< HEAD
-
                 <div className='table-responsive table-container'>
-=======
                     <div className="search-block">
                         <h3>Key Word Search</h3>
                         <input type='text'  onChange={this.handleNewLetter} ref="search_bar"/>
@@ -247,7 +244,7 @@ class PackageCatalog extends Component{
                 <div className='card-deck'>
                     {packageList}
                 </div>
-                
+
             </div>
         )
     }
