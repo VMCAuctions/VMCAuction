@@ -184,6 +184,8 @@ class PackageCatalog extends Component{
                         <p class="card-text">STARTING BID: {packages._bids[0]}</p>
                         <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
                         <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
+                        // Edit and Delete buttons added to card view for now.
+                        {action_button}
                         </div>
                     </div>
             )
