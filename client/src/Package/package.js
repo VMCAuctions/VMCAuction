@@ -16,6 +16,7 @@ class Package extends Component{
             openingBid: '',
             increments:'',
             selectedItems: [],
+            selectedNames: [],
             totalItems: 0,
             totalValue: 0
         }
@@ -84,11 +85,14 @@ class Package extends Component{
     }
 
     //selecte items from the list and updating the display fields(totalItems and totalValue)
-    capturingGroupedItems = (item, value) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
+    capturingGroupedItems = (item, value, name) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
         let itemSelect = this.state.selectedItems;
         itemSelect.push(item);
+        let nameSelect = this.state.selectedNames;
+        nameSelect.push(name);
         this.setState({
             selectedItems: itemSelect,
+            selectedNames: nameSelect,
             totalItems: this.state.selectedItems.length,
             totalValue:  this.state.totalValue + value
         })
@@ -96,6 +100,7 @@ class Package extends Component{
      //unSelecte items from the list and updating the display fields(totalItems and totalValue)
     removeGroupedItems = (value, item) => {
         let itemUnselect = this.state.selectedItems;
+        var nameUnselect = this.state.selectedNames;
         let id;
         for(var i=0; i<itemUnselect.length;i++){
             if(item === itemUnselect[i]){
@@ -103,15 +108,17 @@ class Package extends Component{
             }
         }
         itemUnselect.splice(id,1)
+        nameUnselect.splice(id,1)
         this.setState({
             selectedItems: itemUnselect,
+            selectedNames: nameUnselect,
             totalItems: this.state.selectedItems.length,
             totalValue: this.state.totalValue - value
         })
     }
 
     render(){
-        let items = this.state.selectedItems.map((item,index) =>{
+        let items = this.state.selectedNames.map((item,index) =>{
             return <li key={index}>{item}</li>
         })
 
@@ -143,12 +150,12 @@ class Package extends Component{
                         <div className='item-select form'>
                             <h3>Grouping items</h3>
                             <div className='.table-responsive itemsList'>
-                                    <DisplayItems 
+                                    <DisplayItems
                                         selectedItems={this.state.selectedItems}
                                         capturingGroupedItems={this.capturingGroupedItems}
                                         removeGroupedItems={this.removeGroupedItems}/>
-                            </div>                    
-                        </div>                                  
+                            </div>
+                        </div>
 
                         <div className="form displaySelectedItems">
                             <h3>This package has {this.state.selectedItems.length} items</h3>
