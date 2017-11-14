@@ -133,8 +133,6 @@ module.exports = function(app) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){
-			res.redirect('/')
-		});
+		app.get('/*', function(req,res){ res.sendFile('index.html') });
 
 }  // end of module.exports

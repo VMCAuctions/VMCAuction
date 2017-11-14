@@ -175,6 +175,19 @@ class PackageCatalog extends Component{
                 action_button_header = <th>Actions</th>
             }
             return(
+
+                    <div className="card package_card w-75">
+                        <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
+                        <div className="card-block">
+                        <h4 className="card-title text-uppercase">{packages.name}</h4>
+                        <p class="card-text">Category: {packages._category}</p>
+                        <p class="card-text">STARTING BID: {packages._bids[0]}</p>
+                        <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
+                        <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
+                        </div>
+                    </div>
+            )
+            /*return(
                 <tr key={index}>
                     {action_button}
                     <td>{packages._id}</td>
@@ -187,7 +200,7 @@ class PackageCatalog extends Component{
                     <td>{packages._items.map((item,index)=>{ return <li key={index} >{item}</li>}) } </td>
                     <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                 </tr>
-            )
+            )*/
         })
         let categories = this.state.categories.map((category,index) =>{
             return( <option key={index} value={category}>{category}</option> )
@@ -198,8 +211,15 @@ class PackageCatalog extends Component{
                   <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                             categories={categories} selectValue={this.state.selectValue}/>
 
-
                 <div className='table-responsive table-container'>
+                    <div className="search-block">
+                        <h3>Key Word Search</h3>
+                        <input type='text'  onChange={this.handleNewLetter} ref="search_bar"/>
+                    </div>
+                </div> {/* end of search-bar */}
+                <br/>
+                {/*<div className='table-responsive table-container'>
+>>>>>>> package-cards
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
@@ -219,7 +239,12 @@ class PackageCatalog extends Component{
                             {packageList}
                         </tbody>
                     </table>
+                </div>*/}
+
+                <div className='card-deck'>
+                    {packageList}
                 </div>
+
             </div>
         )
     }
