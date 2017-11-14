@@ -103,12 +103,16 @@ class Package extends Component{
         var nameUnselect = this.state.selectedNames;
         let id;
         for(var i=0; i<itemUnselect.length;i++){
-            if(item === itemUnselect[i]){
+            if(item === String(itemUnselect[i])){
                 id = i;
+                break;
             }
         }
         itemUnselect.splice(id,1)
         nameUnselect.splice(id,1)
+
+        // console.log(itemUnselect)
+        // console.log(nameUnselect)
         this.setState({
             selectedItems: itemUnselect,
             selectedNames: nameUnselect,
