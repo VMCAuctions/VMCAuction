@@ -50,7 +50,7 @@ function BidsController(){
 		console.log('BidsController show');
 		// this gets the single bid screen (if we want it and if not handled independently by React)
 		Bid.findById(req.params.id, function(err, result){
-			console.log(result);
+			
 			if(err){
 	        console.log(err);
 	      }
