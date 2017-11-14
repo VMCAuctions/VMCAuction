@@ -20,8 +20,9 @@ var packageSchema = new Schema({
 
 
  bid_increment: Number,  // increment is a reserved word, so used bid_increment
- _bids: [{type: Schema.Types.ObjectId, ref: 'Bid'}],  //oringally Schema.Types.ObjectId, changing it to Number
 
+ bids: {type: Array},
+//Joey & Yarik: Will add in more structure to the model later (userid, bid, username)
 
  photo: String // or access item in _items { item.photo }
 }, { timestamps: true });
