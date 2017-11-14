@@ -21,7 +21,7 @@ var userSchema = new Schema({
 	ccMonth: {type: String, required: true},
 	ccYear: {type: String, required: true},
 	cvv: {type: String, required: true},
-	// _bids: [{type: Schema.Types.ObjectId, ref: 'Bid'}],
+	_packages: [{type: Number, ref: 'Package'}],
 	admin: {type: Boolean}
 })
 

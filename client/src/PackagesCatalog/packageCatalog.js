@@ -181,10 +181,9 @@ class PackageCatalog extends Component{
                         <div className="card-block">
                         <h4 className="card-title text-uppercase">{packages.name}</h4>
                         <p class="card-text">Category: {packages._category}</p>
-                        <p class="card-text">STARTING BID: {packages._bids[0]}</p>
-                        <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
+                        <p class="card-text">STARTING BID: {packages.amount}</p>
+                        <p class="card-text">Current Bid: Placholder for conditional logic involving bid being empty</p>
                         <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
-                        // Edit and Delete buttons added to card view for now.
                         {action_button}
                         </div>
                     </div>

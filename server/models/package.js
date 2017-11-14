@@ -17,6 +17,7 @@ var packageSchema = new Schema({
 // _category: {type: Schema.Types.ObjectId, ref: 'Category'},
 // >>>>>>> Stashed changes
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
+ amount: Number,
 
 
  bid_increment: Number,  // increment is a reserved word, so used bid_increment
