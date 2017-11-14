@@ -11,7 +11,7 @@ function PackagesController(){
 	this.index = function(req,res){
 		console.log('PackagesController index');
 
-		Package.find({}).populate("_bids").exec(function(err, packages) {
+		Package.find({}).exec(function(err, packages) {
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');

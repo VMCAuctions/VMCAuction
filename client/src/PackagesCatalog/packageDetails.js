@@ -88,9 +88,9 @@ class PackageDetails extends Component{
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
-                        <h4>Starting Bid: {starting_bid[0].amount}</h4>
+                        <h4>Starting Bid: {}</h4>
                         <div className='bidSection'>
-                            <h4>Current Bid:{current_bid.amount}</h4>
+                            <h4>Current Bid:{}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
                             <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>
