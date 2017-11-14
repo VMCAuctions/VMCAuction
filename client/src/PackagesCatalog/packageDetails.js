@@ -56,6 +56,7 @@ class PackageDetails extends Component{
                 packageValue = packagedata[key];
             }else if( key === '_items'){
                 packageItems = packagedata[key];
+                console.log(packageItems)
             }else if( key === '_bids'){
                 starting_bid = packagedata[key];
             }else if( key === 'bid_increment'){
@@ -99,8 +100,8 @@ class PackageDetails extends Component{
                             <br/><h4>Description: </h4>
                             <p>{packageDescription}</p>
                             <h5>Items in package: {itemsInPackage}</h5>
-                        </div>   
-                        <Link to='/package'><h5>Back to All Packages</h5></Link>             
+                        </div>
+                        <Link to='/package'><h5>Back to All Packages</h5></Link>
 
                     </div>
                 </div>
