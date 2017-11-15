@@ -30,7 +30,7 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 } })
             //sorting the packages by highest bid..
-            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+            result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,

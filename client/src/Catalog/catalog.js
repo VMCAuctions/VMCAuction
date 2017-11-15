@@ -62,6 +62,7 @@ editItem = (e) =>{
             //only deleting items that are not packaged
             if(this.state.admin === true){
                 action_button = <td>In Package</td>
+                action_button_header = <th>Actions</th>
                 if(item.packaged === false){
                     action_button = <td><button onClick={this.editItem} id={item._id} value={index}>Edit</button>
                                         <button onClick={this.deleteItem} id={item._id} value={index}>Delete</button></td>
