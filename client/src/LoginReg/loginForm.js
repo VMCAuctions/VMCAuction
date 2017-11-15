@@ -27,13 +27,13 @@ class LoginForm extends Component{
                   password: this.state.password  },
             }).then((response) => {
                 if(response.data.search){
-                    window.location.href ="/package"
+                    window.location.href ="/package" ;
                 }
                 this.setState({
                     userName:'',
                     password:''
                 })
-            alert(response.data.message)
+            alert(response.data.message);
         }).catch((err) =>{
             console.log(err);
         })

@@ -172,7 +172,7 @@ class RegForm extends React.Component{
                     </div>
 
                     <div className="form-group row">
-                     <label for="ccMonth" className="col-sm-2 col-form-label">Card Expiration Month</label>
+                     <label className="col-sm-2 col-form-label">Card Expiration Month</label>
                      <div className="col-sm-10">
                        <input type='text' id='ccMonth' className='form-control' name='ccMonth'
                        placeholder='MM' onChange={this.handleChange} value={this.state.ccMonth} required/>
@@ -180,7 +180,7 @@ class RegForm extends React.Component{
                    </div>
 
                    <div className="form-group row">
-                    <label for="ccYear" className="col-sm-2 col-form-label">Card Expiration Year</label>
+                    <label className="col-sm-2 col-form-label">Card Expiration Year</label>
                     <div className="col-sm-10">
                       <input type='text' id='ccYear' className='form-control' name='ccYear'
                       placeholder='YY' onChange={this.handleChange} value={this.state.ccYear} required/>
@@ -188,7 +188,7 @@ class RegForm extends React.Component{
                   </div>
 
                   <div className="form-group row">
-                   <label for="cvv" className="col-sm-2 col-form-label">Security Code</label>
+                   <label className="col-sm-2 col-form-label">Security Code</label>
                    <div className="col-sm-10">
                      <input type='text' id='cvv' className='form-control' name='cvv'
                      placeholder='CVV' onChange={this.handleChange} value={this.state.cvv} required/>
