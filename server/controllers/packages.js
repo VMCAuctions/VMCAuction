@@ -81,7 +81,8 @@ function PackagesController(){
 							console.log(err);
 						}
                         else{
-                          res.json(package);
+							// changed res.json(package) to return res.send() because set header after send error and resulting data is unnecessary anyways
+							return res.send();
                         }
 					});
 
