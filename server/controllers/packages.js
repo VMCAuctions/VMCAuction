@@ -125,7 +125,7 @@ function PackagesController(){
 		        package.name = req.body.packageName || package.name;
 
 		        package.description = req.body.packageDescription || package.description;
-		        package._bids[0] = req.body.openingBid || package._bids[0];
+		        package.bids[0] = req.body.openingBid || package.bids[0];
 		        package.value = req.body.fairMarketValue || package.value;
 		        package.bid_increment = req.body.increments || package.bid_increment;
 		        package._category = req.body.category || package._category;
@@ -147,9 +147,9 @@ function PackagesController(){
 		            }
 		            else{
 		            	// update the items in this package
-		    			for(id in package._items){
-		    				Item.update({_id: id}, { $set: { _package: package.id}}, callback);
-		    			}
+		    					for(id in package._items){
+		    						Item.update({_id: id}, { $set: { _package: package.id}}, callback);
+		    					}
 
 		            	res.json(package);
 		            }
