@@ -30,7 +30,7 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 } })
             //sorting the packages by highest bid..
-            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+            result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
@@ -170,23 +170,23 @@ class PackageCatalog extends Component{
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => { 
             if(this.state.admin === true){
-            action_button_header = <th>Actions</th>
-            action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
-                                    <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
-                return(
-                    <tr key={index}>
-                                    {action_button}
-                                    <td>{packages._id}</td>
-                                    <td>{packages.name}</td>
-                                    <td>{packages._category}</td>
-                                    <td>{packages.value}</td>
-                                    <td>{packages.description}</td>
-                                    <td>{packages.bid_increment}</td>
-                                    <td>{}</td>
-                                    <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item}</li>}) } </td>
-                                    <td><Link to={`/packageDetails/	${packages._id}`}>Show</Link></td>
-                    </tr>  
-                    )}else {
+                action_button_header = <th>Actions</th>
+                action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
+                                        <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
+                    return(
+                        <tr key={index}>
+                                        {action_button}
+                                        <td>{packages._id}</td>
+                                        <td>{packages.name}</td>
+                                        <td>{packages._category}</td>
+                                        <td>{packages.value}</td>
+                                        <td>{packages.description}</td>
+                                        <td>{packages.bid_increment}</td>
+                                        <td>{}</td>
+                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item}</li>}) } </td>
+                                        <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
+                        </tr>  
+                 )}else {
                         return(
                             <div key={index} className="card package_card w-75">
                                         <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>

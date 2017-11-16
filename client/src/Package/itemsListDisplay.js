@@ -28,8 +28,15 @@ class DisplayItems extends Component{
 
     }
     rowSelect= (e) =>{
+        var object;
         if(e.target.checked){
-            this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
+            for (var i = 0; i < this.state.itemsList.length; i++){
+              if (e.target.name == this.state.itemsList[i]._id){
+                object = this.state.itemsList[i];
+                break;
+              }
+            }
+            this.props.capturingGroupedItems(object._id, parseInt((object.value),10), object.name)
         }else{
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
         }
