@@ -54,6 +54,9 @@ class PackageDetails extends Component{
                 packageDescription = packagedata[key];
             }else if(key === 'value'){
                 packageValue = packagedata[key];
+                if (packageValue == 0){
+                  packageValue = "Priceless"
+                }
             }else if( key === '_items'){
                 packageItems = packagedata[key];
                 console.log(packageItems)
