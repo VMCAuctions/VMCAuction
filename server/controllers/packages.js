@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
-	Bid = require('../models/bid.js'),
 	User = require('../models/user.js');
 
 
@@ -11,7 +10,10 @@ function PackagesController(){
 	this.index = function(req,res){
 		console.log('PackagesController index');
 
-		Package.find({}).exec(function(err, packages) {
+		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
+
+		Package.find({}).populate("_items").exec(function(err, packages) {
+
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');
@@ -40,7 +42,9 @@ function PackagesController(){
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
 	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category},
+	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
+			bid: [], amount: req.body.openingBid
+			},
 	    	function(err, package){
 
 
@@ -48,42 +52,20 @@ function PackagesController(){
 		        console.log(err);
 		      }
 		      else{
-		       	// currently setting package._bids[0] to be the opening bid with no user associated with it
-	     		Bid.create({amount: req.body.openingBid, _package: package._id}, function(err, bid){
-	     			if(err){
-	     				console.log(err);
-		      		}
-		      		else{
 
+			    	for(var i=0; i<package._items.length; i++){
 
-		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,result){
-		        			if(err){
-		        				console.log(err);
-		        			}
-		        			else{
-		        				console.log(result);
-		        			}
-		        		}); // end of Package.update inside Bid.create
-		      		}
-		    	}); // end of Bid.create()
+			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
+							if(err){
+								console.log(err);
+							}
+	                        else{
+								// changed res.json(package) to return res.send() because set header after send error and resulting data is unnecessary anyways
+								return res.send();
+	                        }
+						});
 
-
-
-
-		    	// update the items in this package to reflect item._package == this package._id we're creating
-
-		    	for(var i=0; i<package._items.length; i++){
-
-		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
-						if(err){
-							console.log(err);
-						}
-                        else{
-                          res.json(package);
-                        }
-					});
-
-		    	}
+			    	}
 			  }
 			}
 		); // end of Package.create
