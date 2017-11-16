@@ -13,6 +13,7 @@ function PackagesController(){
 		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
 
 		Package.find({}).populate("_items").exec(function(err, packages) {
+
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');
