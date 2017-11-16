@@ -54,6 +54,9 @@ class PackageDetails extends Component{
                 packageDescription = packagedata[key];
             }else if(key === 'value'){
                 packageValue = packagedata[key];
+                if (packageValue == 0){
+                  packageValue = "Priceless"
+                }
             }else if( key === '_items'){
                 packageItems = packagedata[key];
                 console.log(packageItems)
@@ -96,7 +99,7 @@ class PackageDetails extends Component{
                         <h4>Package Value: {packageValue} </h4>
                         <h4>Starting Bid: {starting_bid}</h4>
                         <div className='bidSection'>
-                            <h4>Current Bid:{current_bid.amount}</h4>
+                            <h4>Current Bid:{}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
                             <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>
