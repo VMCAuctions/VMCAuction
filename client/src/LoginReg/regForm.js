@@ -95,10 +95,10 @@ class RegForm extends React.Component{
 
     render(){
         return(
-            <div className='well container'>
-                <label><h2> Register</h2></label>
-                <div className='registration-form'>
-                <form onSubmit={this.formSubmit} >
+            <div className='container'>
+                <div className='well registration-form'>
+                 <h2> Register</h2> 
+                 <form onSubmit={this.formSubmit} >
                     <div className="form-group row">
                       <label  className="col-sm-2 col-form-label">First Name</label>
                       <div className="col-sm-10">
