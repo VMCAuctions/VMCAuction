@@ -43,7 +43,7 @@ class PackageDetails extends Component{
         //traversing the target package(which is JSON object)
         let packagedata = this.state.listOfPackages[packageIndex];
         let x = [];
-        let packageName = '', packageDescription='', packageValue = '',packageItems=[], starting_bid="", bid_increment='';
+        let packageName = '', packageDescription='', packageValue = '',packageItems=[], starting_bid="", bids = [], bid_increment='';
 
         for(var key in packagedata){
             x.push(packagedata[key]);
@@ -54,11 +54,16 @@ class PackageDetails extends Component{
                 packageDescription = packagedata[key];
             }else if(key === 'value'){
                 packageValue = packagedata[key];
+                if (packageValue == 0){
+                  packageValue = "Priceless"
+                }
             }else if( key === '_items'){
                 packageItems = packagedata[key];
                 console.log(packageItems)
-            }else if( key === '_bids'){
+            }else if( key === 'amount'){
                 starting_bid = packagedata[key];
+            }else if( key === 'bids'){
+                bids = packagedata[key];
             }else if( key === 'bid_increment'){
                 bid_increment = packagedata[key];
             }
@@ -70,7 +75,10 @@ class PackageDetails extends Component{
             )
         })
         //current_bid
-        let current_bid = starting_bid[starting_bid.length-1];
+        let current_bid = starting_bid;
+        if (bids.length != 0){
+          current_bid = bids[bids.length - 1].bid
+        }
 
         //Place bid
 
@@ -89,7 +97,7 @@ class PackageDetails extends Component{
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
-                        <h4>Starting Bid: {starting_bid[0].amount}</h4>
+                        <h4>Starting Bid: {starting_bid}</h4>
                         <div className='bidSection'>
                             <h4>Current Bid:{current_bid.amount}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
