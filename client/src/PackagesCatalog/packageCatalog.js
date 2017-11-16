@@ -21,7 +21,7 @@ class PackageCatalog extends Component{
          //when the component loads set the value initially to all categories
         this.setState({selectValue:"All Categories"})
          //loading all the packages
-        Axios.get("/packages")
+        Axios.get("/api/packages")
         .then((result) =>{
             //adding to the categories drop down menu, not including duplicates//
             let categories_list = [];
@@ -41,7 +41,7 @@ class PackageCatalog extends Component{
         })
 
         //loading all the items to search.
-        Axios.get("/items")
+        Axios.get("/api/items")
         .then((result) =>{
             this.setState({ listOfItems: result.data })
         }).catch((err) =>{
@@ -49,7 +49,7 @@ class PackageCatalog extends Component{
         })
 
         //loading user information:        //if the user's name is administrator then they have admin access
-        Axios.get("/which_user_is_logged_in")
+        Axios.get("/api/which_user_is_logged_in")
         .then((result) =>{
             this.setState({ admin: result.data.admin })
         })
@@ -67,7 +67,7 @@ class PackageCatalog extends Component{
         }else{
             Axios({
                 method: "post",
-                url: "/get_selected_packages",
+                url: "/api/get_selected_packages",
                 data: { category: e.target.value}
             }).then((result) =>{
                 //sorting the packages according to the highest bid
@@ -154,10 +154,10 @@ class PackageCatalog extends Component{
 
         Axios({
             method: "post",
-            url: "/remove_package",
+            url: "/api/remove_package",
             data: { package_id: e.target.id}
         }).then((result) =>{
-            Axios.get('/packages')
+            Axios.get('/api/packages')
             .then((result=>{    this.setState({  listOfPackages: result.data}) } ))
             .catch((err)=>{ console.log(err); })
         }).catch((err) =>{

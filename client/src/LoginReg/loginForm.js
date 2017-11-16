@@ -17,12 +17,12 @@ class LoginForm extends Component{
             [e.target.name] : e.target.value
         })
     }
-    
+
     formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/users/:id/login",
+            url:"/api/users/:id/login",
             data:{userName: this.state.userName,
                   password: this.state.password  },
             }).then((response) => {
@@ -38,21 +38,21 @@ class LoginForm extends Component{
             console.log(err);
         })
     }
-    
+
     render(){
          return(
-            <div className='well container'>  
+            <div className='well container'>
                 <label><h1>Login</h1> </label>
                 <div className='login-form '>
                     <form onSubmit={this.formSubmit} >
                         <div className="form-group row" >
                             <label className="col-sm-2 col-form-label">User Name</label>
                             <div className="col-sm-10">
-                                <input className='form-control' type='text' id='userName' name='userName' 
+                                <input className='form-control' type='text' id='userName' name='userName'
                                         placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required  />
                             </div>
                         </div>
-                       
+
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label">Password</label>
                             <div className="col-sm-10">
@@ -73,4 +73,3 @@ class LoginForm extends Component{
     }
 }
 export default LoginForm;
-

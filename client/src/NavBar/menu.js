@@ -16,7 +16,7 @@ class Menu extends React.Component{
     logOut = () => {
       Axios({
           method: "get",
-          url: "/users/logout",
+          url: "/api/users/logout",
           data: {}
       }).then((response) => {
           this.loggedin()
@@ -28,7 +28,7 @@ class Menu extends React.Component{
     loggedin = () => {
       Axios({
           method: "get",
-          url: "/users/loggedin",
+          url: "/api/users/loggedin",
           data: {}
       }).then((response) => {
           if (response.data.login_check !== this.state.loggedin){
@@ -45,11 +45,11 @@ class Menu extends React.Component{
     componentWillMount(){
         this.loggedin();
     }
-    
+
     componentWillUpdate(){
         this.loggedin();
     }
-    
+
     render(){
         var htmlLogCode = "";
         if (this.state.loggedin === true){

@@ -11,7 +11,7 @@ class DisplayItems extends Component{
     }
 
     componentDidMount(){
-        Axios.get("/items")
+        Axios.get("/api/items")
         .then((result) =>{
             let unpackaged_items = [];
             for(var i = 0; i < result.data.length; i++){

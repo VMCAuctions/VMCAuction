@@ -28,7 +28,7 @@ class ItemEntryAdmin extends Component{
 
     componentDidMount(){
         //Get request for category dropdown list
-        Axios.get("/categories")
+        Axios.get("/api/categories")
         .then((response)=>{
             this.setState({
                 selectOptions: response.data
@@ -41,7 +41,7 @@ class ItemEntryAdmin extends Component{
     addingCategory = (value) =>{
        Axios({
            method: "post",
-           url: "/categories",
+           url: "/api/categories",
            data: { category: value},
        }).then((response)=>{
            this.setState({
@@ -57,7 +57,7 @@ class ItemEntryAdmin extends Component{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/items",
+            url:"/api/items",
             data:{itemName: this.state.itemName, donor: this.state.donor, category: this.state.category,
                   fairMarketValue: this.state.fairMarketValue, itemDescription: this.state.itemDescription,
                 itemRestriction: this.state.itemRestriction},
