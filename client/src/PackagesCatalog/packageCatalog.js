@@ -30,7 +30,7 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 } })
             //sorting the packages by highest bid..
-            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+            result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
@@ -181,10 +181,9 @@ class PackageCatalog extends Component{
                         <div className="card-block">
                         <h4 className="card-title text-uppercase">{packages.name}</h4>
                         <p class="card-text">Category: {packages._category}</p>
-                        <p class="card-text">STARTING BID: {packages._bids[0]}</p>
-                        <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
+                        <p class="card-text">STARTING BID: {packages.amount}</p>
+                        <p class="card-text">Current Bid: Placholder for conditional logic involving bid being empty</p>
                         <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
-                        // Edit and Delete buttons added to card view for now.
                         {action_button}
                         </div>
                     </div>
