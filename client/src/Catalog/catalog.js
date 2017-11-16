@@ -12,7 +12,7 @@ class Catalog extends Component{
     }
 
     componentDidMount(){
-        Axios.get("/items")
+        Axios.get("/api/items")
         .then((result) =>{
             this.setState({
                 listOfItems: result.data
@@ -23,7 +23,7 @@ class Catalog extends Component{
 
         //loading user information:
         //if the user's name is administrator then they have admin access
-        Axios.get("/which_user_is_logged_in")
+        Axios.get("/api/which_user_is_logged_in")
         .then((result) =>{
             console.log("if true they are admin, if false they are not: ", result.data.admin);
             this.setState({
@@ -45,7 +45,7 @@ editItem = (e) =>{
         this.setState({listOfItems:this.state.listOfItems})
         Axios({
             method: "post",
-            url: "/remove_item",
+            url: "/api/remove_item",
             data: { item_id: e.target.id}
         }).then((result) =>{
             console.log("Was able to remove a item from the list", result)
