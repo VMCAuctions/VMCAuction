@@ -102,11 +102,15 @@ io.sockets.on('connection', function(socket){
 
     socket.on("msg_sent", function(data) {
 
-      allBidsBigObj[data.packId].push({
-        bid: data.bid,
-        packId: data.pack_id,
-        userId: data.userName
-      })
+      // allBidsBigObj[data.packId].push({
+      //   bid: data.bid,
+      //   packId: data.pack_id,
+      //   userId: data.userName
+      // })
+      console.log(
+        "bid placed: " +
+        data
+      )
 
       // console.log(`into chatLog was added new line: ${users[data.userId].name}: ${data.msg}`);
       // now, it's easy to send a message to just the clients in a given room
@@ -117,10 +121,7 @@ io.sockets.on('connection', function(socket){
       // });
 
       // PREVIOUS VERSION FROM CHAT LOGIC
-      io.emit("update_chat", {
-        chatLog: allBidsBigObj[data.packId][allBidsBigObj[data.packId].length-1],
-        packId: data.packId
-      })
+      io.emit("update_chat", data.bid )
 
     })
 
