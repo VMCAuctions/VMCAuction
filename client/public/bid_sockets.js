@@ -6,8 +6,8 @@ var socket = io.connect();
 (function(){
 socket.emit('page_refresh',{})
 })()
-// var currentBid = $('.bidInput').value();
-// console.log(currentBid);
+var currentBid = $('.bidInput').val();
+console.log(currentBid);
 
 $('.placeBid').click(function(){
 
