@@ -25,7 +25,10 @@ class PackageDetails extends Component{
             place_bid: '',
 
             // our sockets default value
-            bidsUpdate: 'Loading bids...'
+            bidsUpdate: {
+              lastBid:"...",
+              userBidLast: ".."
+            }
 
         }
 
@@ -56,8 +59,8 @@ class PackageDetails extends Component{
         socket.emit('msg_sent',{
           bid: this.state.place_bid,
           packId: this.state.packageId,
-          userId: "",
-          userName: ""
+          userId: "userId",
+          userName: "yarik"
         })
 
     }
@@ -125,7 +128,10 @@ class PackageDetails extends Component{
         if(this.state.listOfPackages){
         return(
             <div className='container-fluid bidContainer'>
-            <div className='bids'>socket response: {this.state.bidsUpdate}</div>
+            <div className='bids'>
+            Last bid: {this.state.bidsUpdate.lastBid}<br/>
+            Made by: <b>{this.state.bidsUpdate.userBidLast}</b>
+            </div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
                         <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
