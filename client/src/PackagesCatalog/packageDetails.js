@@ -3,6 +3,18 @@ import Axios from 'axios';
 import './packageDetails.css';
 import {Link} from 'react-router-dom';
 
+  // socket import
+  import openSocket from 'socket.io-client';
+  const socket = openSocket('http://localhost:8000');
+
+  // subscribe to bids from server
+  function subscribeToBids(cb) {
+    // receiving data from server on "update Chat"
+    socket.on('update_chat', bidsUpdate => cb(null, bidsUpdate));
+    // sending event to refresh bids
+    socket.emit('page_refresh', {});
+  }
+
 
 class PackageDetails extends Component{
     constructor(props){
@@ -13,9 +25,13 @@ class PackageDetails extends Component{
             place_bid: '',
 
             // our sockets
-            // response: false,
-            // endpoint: "http://localhost:8000"
+            bidsUpdate: 'Loading bids...'
+
         }
+
+        subscribeToBids((err, bidsUpdate) => this.setState({
+          bidsUpdate
+        })); // {this.state.bidsUpdate}
     }
 
     componentDidMount(){
@@ -109,7 +125,7 @@ class PackageDetails extends Component{
         if(this.state.listOfPackages){
         return(
             <div className='container-fluid bidContainer'>
-            <div className='bids'>FF</div>
+            <div className='bids'>socket response: {this.state.bidsUpdate}</div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
                         <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
