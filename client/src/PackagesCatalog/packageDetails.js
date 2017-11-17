@@ -24,11 +24,12 @@ class PackageDetails extends Component{
             listOfPackages: '',
             place_bid: '',
 
-            // our sockets
+            // our sockets default value
             bidsUpdate: 'Loading bids...'
 
         }
 
+        // function to update sockets
         subscribeToBids((err, bidsUpdate) => this.setState({
           bidsUpdate
         })); // {this.state.bidsUpdate}
@@ -44,25 +45,24 @@ class PackageDetails extends Component{
             console.log(err);
         })
 
-        // SOCKETS
-        // const { endpoint } = this.state;
-        // const socket = socketIOClient(endpoint);
-        // socket.emit("page_refresh", data => {
-        //   console.log("emit pare_refresh");
-        //   this.setState({ response: data });
-        // } );
     }
 
     placeBidSubmit = () =>{
-        alert("Yay!!! You are the top bidder.");
+        // alert("Yay!!! You are the top bidder.");
+        console.log('bid placed');
+        var pack_id = this.state.packageId;
+        var bid = this.state.place_bid;
+
+        socket.emit('msg_sent',{
+          bid: this.state.place_bid,
+          packId: this.state.packageId,
+          userId: "",
+          userName: ""
+        })
 
     }
 
     render(){
-        // SOCKETS
-        const { response } = this.state;
-        console.log('/'.repeat(80));
-        console.log(response);
 
         // trying to find the index of the (show)package from the array
         let packageIndex = '';
