@@ -131,22 +131,22 @@ class Package extends Component{
                 <form className='form-inline' onSubmit={this.onPackageFormSubmit}>
                     <div className='package-info form-group col-sm-2' >
                         <h3>Package Info</h3>
-                        <label  className="col-sm-2 col-form-label">Package Name</label>
+                        <label  className="col-sm-2 col-form-label">Package Name</label><br/>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
-                        <label className="col-sm-2 col-form-label">Package Description</label>
+                        <label className="col-sm-2 col-form-label">Package Description</label><br/>
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
                         <label className="col-sm-2 col-form-label"> Category</label><br/>
                         <Select selectOptions={this.state.categoryList} name='category' className='form-control'
                                  value={this.state.category} handleChange={this.onPackageChange} required/><br/>
 
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
-                        <label className="col-sm-2 col-form-label">Opening Bid</label>
+                        <label className="col-sm-2 col-form-label">Opening Bid</label><br/>
                         <input type='number' name='openingBid' className='form-control' value={this.state.openingBid} onChange={this.onPackageChange} min='0' placeholder='Opening Bid' required/><br/><br/>
-                        <label className="col-sm-2 col-form-label">Increments</label>
+                        <label className="col-sm-2 col-form-label">Increments</label><br/>
                         <input type='number' name='increments' className='form-control' value={this.state.increments} step='5' min='0' onChange={this.onPackageChange} placeholder='Increments' required/><br/><br/>
-                        <label className="col-sm-2 col-form-label">Total Market value</label>
+                        <label className="col-sm-2 col-form-label">Total Market value</label><br/>
                         <input className="form-control"  value={this.state.totalValue} placeholder="Total Items" readOnly /><br/><br/>
-                        <label className="col-sm-2 col-form-label">Total Items</label>
+                        <label className="col-sm-2 col-form-label">Total Items</label><br/>
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>
