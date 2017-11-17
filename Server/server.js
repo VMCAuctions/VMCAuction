@@ -3,6 +3,8 @@ var express = require("express");
 var app = express();
 var session = require('express-session')
 
+// var mongoose = require('mongoose')
+// var Package = require('./models/package.js')
 
 
 
@@ -75,58 +77,66 @@ var allBidsBigObj = {
   // package1: [
   //     {userId: "user4", bid: 150, name: "Yarik"},
   //     {userId: "user3", bid: 200 name: "Brendan"}
-  //   ],
-  // package2: [
-  //     {userId: "user2", bid: 200, name: "Jonathan"},
-  //     {userId: "user1", bid: 210, name: "Tali"}
   //   ]
 }
 
 io.sockets.on('connection', function(socket){
 
-
-
-  // once a client has connected, we expect to get a ping from them saying what room they want to join
-  // socket.on('room', function(room){
-  //     if(socket.room)
-  //         socket.leave(socket.room);
-  //
-  //     socket.room = room;
-  //     socket.join(room);
-  // });
-
   console.log('We are using sockets')
   console.log("sodket id:"  + socket.id)
 
   // ALL CHAT LOGIC
-
     socket.on("msg_sent", function(data) {
 
-      // allBidsBigObj[data.packId].push({
-      //   bid: data.bid,
-      //   packId: data.pack_id,
-      //   userId: data.userName
-      // })
+      if(allBidsBigObj[data.packId] == undefined){
+        allBidsBigObj[data.packId] = [];
+      }
+
+      allBidsBigObj[data.packId].push({
+        userId: data.userName,
+        bid: data.bid,
+        name: data.userName
+      })
+
+      // Package.findById(data.packId).exec(
+      //   function(err, data){
+      //     if(err){
+      //       console.log("error occured " + err);
+      //     } else {
+      //       if(data!=null) {
+      //         data.amount = Number(data.bid);
+      //         data.save(function(err){
+      //           if(err){
+      //             console.log("error when saving: " + err);
+      //           } else{
+      //             console.log("successfully ");
+      //           }
+      //         })
+      //       }
+      //     }
+      //   }
+      // )
+
       console.log(
         "bid placed: " +
-        data
+        data.bid
       )
 
-      // console.log(`into chatLog was added new line: ${users[data.userId].name}: ${data.msg}`);
-      // now, it's easy to send a message to just the clients in a given room
-      // var room = data.packId;
-      // io.sockets.in(room).emit("update_chat", {
-      //   chatLog: allBidsBigObj[data.packId][allBidsBigObj[data.packId].length-1],
-      //   packId: data.packId
-      // });
+
 
       // PREVIOUS VERSION FROM CHAT LOGIC
-      io.emit("update_chat", data.bid )
+      io.emit("update_chat", {
+        lastBid: data.bid,
+        userBidLast: data.userName
+      } )
 
     })
 
     socket.on("page_refresh", function(data) {
-      io.emit("update_chat", "response blabla")
+      io.emit("update_chat", {
+        lastBid:"empty",
+        userBidLast: "nobody"
+      })
     })
 
     socket.on("disconnect", () => console.log("Client disconnected"));
