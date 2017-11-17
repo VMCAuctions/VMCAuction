@@ -3,13 +3,18 @@ import Axios from 'axios';
 import './packageDetails.css';
 import {Link} from 'react-router-dom';
 
+
 class PackageDetails extends Component{
     constructor(props){
         super(props);
         this.state = {
             packageId: this.props.match.params.packageId,
             listOfPackages: '',
-            place_bid: ''
+            place_bid: '',
+
+            // our sockets
+            // response: false,
+            // endpoint: "http://localhost:8000"
         }
     }
 
@@ -22,13 +27,27 @@ class PackageDetails extends Component{
         }).catch((err) =>{
             console.log(err);
         })
+
+        // SOCKETS
+        // const { endpoint } = this.state;
+        // const socket = socketIOClient(endpoint);
+        // socket.emit("page_refresh", data => {
+        //   console.log("emit pare_refresh");
+        //   this.setState({ response: data });
+        // } );
     }
 
     placeBidSubmit = () =>{
         alert("Yay!!! You are the top bidder.");
+
     }
 
     render(){
+        // SOCKETS
+        const { response } = this.state;
+        console.log('/'.repeat(80));
+        console.log(response);
+
         // trying to find the index of the (show)package from the array
         let packageIndex = '';
         for(var i=0; i < this.state.listOfPackages.length; i++){
@@ -79,17 +98,18 @@ class PackageDetails extends Component{
         if (bids.length != 0){
           current_bid = bids[bids.length - 1].bid
         }
-
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
         this.state.place_bid = current_bid + bid_increment;
 
 
+
         //conditional rendering
         if(this.state.listOfPackages){
         return(
             <div className='container-fluid bidContainer'>
+            <div className='bids'>FF</div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
                         <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
@@ -101,7 +121,7 @@ class PackageDetails extends Component{
                         <div className='bidSection'>
                             <h4>Current Bid:{}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
-                            <input className='btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
+                            <input className='placeBid btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>
                         </div>
                         <div className='packageDescription'>
