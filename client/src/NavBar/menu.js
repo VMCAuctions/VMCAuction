@@ -31,7 +31,7 @@ class Menu extends React.Component{
           url: "/users/loggedin",
           data: {}
       }).then((response) => {
-          if (response.data.login_check !== this.state.loggedin){
+         if (response.data.login_check !== this.state.loggedin){
             this.setState({
                     loggedin: response.data.login_check,
                     admin : response.data.admin
@@ -41,7 +41,7 @@ class Menu extends React.Component{
           console.log(err);
       })
     }
-
+  
     componentWillMount(){
         this.loggedin();
     }
@@ -54,6 +54,7 @@ class Menu extends React.Component{
         var htmlLogCode = "";
         if (this.state.loggedin === true){
           htmlLogCode = <div>
+                            <li>Hi, {localStorage.user} </li>
                             <li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
                         </div>
         }
