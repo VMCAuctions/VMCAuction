@@ -67,20 +67,30 @@ class PackageDetails extends Component{
 
 
     placeBidSubmit = () =>{
-        // alert("Yay!!! You are the top bidder.");
-        console.log('bid placed');
-        var pack_id = this.state.packageId;
-        var bid = this.state.place_bid;
 
-        makeABid((err, bidsUpdate) => this.setState({
+        Axios({
+          method: "get",
+          url: "/users/loggedin",
+          data: {}
+      }).then((response) => {
+          console.log(response.data)
+          if (!response.data.login_check){
+            alert("Please login to Bid");
+            window.location.href ="/login" ;
+          }else{
+              var pack_id = this.state.packageId;
+              var bid = this.state.place_bid;
+              makeABid((err, bidsUpdate) => this.setState({
           bidsUpdate
         }),{
           bid: this.state.place_bid,
           packId: this.state.packageId,
-          userId: "userId",
-          userName: "yarik"
+          userName: localStorage.user
         });
-
+          }
+      }).catch((err) =>{
+          console.log(err);
+      })
 
 
     }
@@ -177,7 +187,9 @@ class PackageDetails extends Component{
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
+
                         <h4>Starting Bid: {starting_bid}</h4>
+
                         <div className='bidSection'>
                             <h4>Current Bid:{}</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
