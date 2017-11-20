@@ -57,19 +57,7 @@ var server = app.listen(port, function() {
 })
 
 
-// var io = require('socket.io').listen(server);
-//
-// io.sockets.on('connection', function(socket){
-// 	console.log('using sockets');
-// 	console.log(socket.id);
-// 	//all the socket code goes in here!
-// 	socket.on('posting_form', function(data){
-// 		console.log(data.form);
-// 		socket.emit('server_response', {response: 'back from the server',
-// 			name: data.name}
-// 		);
-// 	});
-// })
+
 
 /////////////// SOCKETS /////////////////
 var Package = require('./models/package.js')
@@ -79,27 +67,16 @@ var io = require('socket.io').listen(server);
 // allBidsObject to store all bids in controller
 var allBidsBigObj = {
   // package1: [
-  //     {userId: "user4", bid: 150, name: "Yarik"},
-  //     {userId: "user3", bid: 200 name: "Brendan"}
+  //     {bid: 150, name: "Yarik"},
+  //     {bid: 200 name: "Brendan"}
   //   ]
-  // allBidsBigObj[packId][allBidsBigObj[packId].length-1].name
-  // allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid
 }
 
 io.sockets.on('connection', function(socket){
 
-  console.log('We are using sockets')
-  console.log("sodket id:"  + socket.id)
-
-  console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20))
-  console.dir(allBidsBigObj)
-  console.log("/".repeat(20))
-
   // ALL BID LOGIC
     socket.on("msg_sent", function(data) {
-      console.log("this pack id " + data.packId);
 
-      var userId = data.userId;
       var userBid = data.bid;
       var userName = data.userName;
 
@@ -108,23 +85,20 @@ io.sockets.on('connection', function(socket){
       }
 
       allBidsBigObj[data.packId].push({
-        userId: data.userId,
         bid: data.bid,
         name: data.userName
       })
-      console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
-      console.dir(allBidsBigObj)
+      
       Package.findById(data.packId).exec(
         function(err, data){
           if(err){
             console.log("error occured " + err);
           } else {
-            if(data!=null) {
-
-              data.bids.push({
-                userId: userId,
-                bidAmount: userBid,
-                name: userName
+              if(data.bids.length != 0 && data.bids[data.bids.length - 1].bidAmount < userBid ) {
+            
+                data.bids.push({
+                  bidAmount: userBid,
+                  name: userName
               });
               data.save(function(err){
                 if(err){
@@ -138,10 +112,8 @@ io.sockets.on('connection', function(socket){
         }
       )
 
-      console.log( "bid placed: " + data.bid )
 
       var uniqChatUpdateId = 'update_chat' + data.packId;
-      console.log(data.packId);
 
       // PREVIOUS VERSION FROM CHAT LOGIC
       io.emit(uniqChatUpdateId, {
@@ -155,8 +127,7 @@ io.sockets.on('connection', function(socket){
       var uniqChatUpdateId = 'update_chat' + data.pId;
       var packId = data.pId;
 
-      console.log("/".repeat(20) + " packId on page_refresh " + "/".repeat(20) )
-      console.log(packId);
+      
 
       if(allBidsBigObj[packId] ==  undefined){
           io.emit(uniqChatUpdateId, {
