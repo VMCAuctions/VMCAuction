@@ -32,8 +32,11 @@ class LoginForm extends Component{
                 this.setState({
                     userName:'',
                     password:''
-                })
+                });
+            console.log(response.data.user.userName);
+            localStorage.setItem('user',response.data.user.userName);
             alert(response.data.message)
+            
         }).catch((err) =>{
             console.log(err);
         })
