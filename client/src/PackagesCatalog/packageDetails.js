@@ -8,13 +8,24 @@ import {Link} from 'react-router-dom';
   const socket = openSocket('http://localhost:8000');
 
   // subscribe to bids from server
-  function subscribeToBids(cb) {
+  function subscribeToBids(cb, packId ) {
+
+    var uniqChatUpdateId = 'update_chat' + packId;
     // receiving data from server on "update Chat"
-    socket.on('update_chat', bidsUpdate => cb(null, bidsUpdate));
+    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
     // sending event to refresh bids
-    socket.emit('page_refresh', {});
+    socket.emit('page_refresh', {pId: packId });
   }
 
+  // make a bid
+  function makeABid(cb, objectWithdata) {
+
+    var uniqChatUpdateId = 'update_chat' + objectWithdata.packId;
+    // receiving data from server on "update Chat"
+    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
+    // sending event to refresh bids
+    socket.emit('msg_sent', objectWithdata);
+  }
 
 class PackageDetails extends Component{
     constructor(props){
@@ -35,8 +46,9 @@ class PackageDetails extends Component{
         // function to update sockets
         subscribeToBids((err, bidsUpdate) => this.setState({
           bidsUpdate
-        })); // {this.state.bidsUpdate}
+        }), this.state.packageId ); // {this.state.bidsUpdate}
     }
+
 
     componentDidMount(){
         Axios.get("/packages")
@@ -50,22 +62,45 @@ class PackageDetails extends Component{
 
     }
 
+
+
+
     placeBidSubmit = () =>{
         // alert("Yay!!! You are the top bidder.");
         console.log('bid placed');
         var pack_id = this.state.packageId;
         var bid = this.state.place_bid;
 
-        socket.emit('msg_sent',{
+        makeABid((err, bidsUpdate) => this.setState({
+          bidsUpdate
+        }),{
           bid: this.state.place_bid,
           packId: this.state.packageId,
           userId: "userId",
           userName: "yarik"
-        })
+        });
+
+
 
     }
 
     render(){
+
+      var self = this;
+      // We are always listening to dedicated for this package channel for
+      // emitted by server messegase with te same uniq name
+      // step 1: generating uniq channel name
+      var packIdId = this.props.match.params.packageId;
+      var packIdchannel = 'update_chat' + packIdId;
+      // step 2: making sockets to listening to this channel
+      socket.on(packIdchannel,function(data){
+        console.log(packIdchannel);
+        console.log("listening successfully");
+        console.log(data);
+
+        self.componentDidMount()
+      })
+
 
         // trying to find the index of the (show)package from the array
         let packageIndex = '';
@@ -115,12 +150,13 @@ class PackageDetails extends Component{
         //current_bid
         let current_bid = starting_bid;
         if (bids.length != 0){
-          current_bid = bids[bids.length - 1].bid
+          current_bid = bids[bids.length - 1].bidAmount
         }
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
         this.state.place_bid = current_bid + bid_increment;
+
 
 
 
@@ -162,6 +198,7 @@ class PackageDetails extends Component{
                 <h3>Loading....</h3>
             )
         }
+
     }
 }
 

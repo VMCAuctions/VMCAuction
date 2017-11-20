@@ -3,8 +3,11 @@ var express = require("express");
 var app = express();
 var session = require('express-session')
 
-// var mongoose = require('mongoose')
-// var Package = require('./models/package.js')
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema,
+	autoIncrement = require('mongoose-auto-increment');
+mongoose.Promise = global.Promise;
+
 
 
 
@@ -69,15 +72,18 @@ var server = app.listen(port, function() {
 // })
 
 /////////////// SOCKETS /////////////////
+var Package = require('./models/package.js')
 
 var io = require('socket.io').listen(server);
 
-// allBidsObject
+// allBidsObject to store all bids in controller
 var allBidsBigObj = {
   // package1: [
   //     {userId: "user4", bid: 150, name: "Yarik"},
   //     {userId: "user3", bid: 200 name: "Brendan"}
   //   ]
+  // allBidsBigObj[packId][allBidsBigObj[packId].length-1].name
+  // allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid
 }
 
 io.sockets.on('connection', function(socket){
@@ -85,47 +91,60 @@ io.sockets.on('connection', function(socket){
   console.log('We are using sockets')
   console.log("sodket id:"  + socket.id)
 
-  // ALL CHAT LOGIC
+  console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20))
+  console.dir(allBidsBigObj)
+  console.log("/".repeat(20))
+
+  // ALL BID LOGIC
     socket.on("msg_sent", function(data) {
+      console.log("this pack id " + data.packId);
+
+      var userId = data.userId;
+      var userBid = data.bid;
+      var userName = data.userName;
 
       if(allBidsBigObj[data.packId] == undefined){
         allBidsBigObj[data.packId] = [];
       }
 
       allBidsBigObj[data.packId].push({
-        userId: data.userName,
+        userId: data.userId,
         bid: data.bid,
         name: data.userName
       })
+      console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
+      console.dir(allBidsBigObj)
+      Package.findById(data.packId).exec(
+        function(err, data){
+          if(err){
+            console.log("error occured " + err);
+          } else {
+            if(data!=null) {
 
-      // Package.findById(data.packId).exec(
-      //   function(err, data){
-      //     if(err){
-      //       console.log("error occured " + err);
-      //     } else {
-      //       if(data!=null) {
-      //         data.amount = Number(data.bid);
-      //         data.save(function(err){
-      //           if(err){
-      //             console.log("error when saving: " + err);
-      //           } else{
-      //             console.log("successfully ");
-      //           }
-      //         })
-      //       }
-      //     }
-      //   }
-      // )
-
-      console.log(
-        "bid placed: " +
-        data.bid
+              data.bids.push({
+                userId: userId,
+                bidAmount: userBid,
+                name: userName
+              });
+              data.save(function(err){
+                if(err){
+                  console.log("error when saving: " + err);
+                } else{
+                  console.log("successfully ");
+                }
+              })
+            }
+          }
+        }
       )
 
+      console.log( "bid placed: " + data.bid )
 
+      var uniqChatUpdateId = 'update_chat' + data.packId;
+      console.log(data.packId);
 
       // PREVIOUS VERSION FROM CHAT LOGIC
-      io.emit("update_chat", {
+      io.emit(uniqChatUpdateId, {
         lastBid: data.bid,
         userBidLast: data.userName
       } )
@@ -133,14 +152,28 @@ io.sockets.on('connection', function(socket){
     })
 
     socket.on("page_refresh", function(data) {
-      io.emit("update_chat", {
-        lastBid:"empty",
-        userBidLast: "nobody"
-      })
+      var uniqChatUpdateId = 'update_chat' + data.pId;
+      var packId = data.pId;
+
+      console.log("/".repeat(20) + " packId on page_refresh " + "/".repeat(20) )
+      console.log(packId);
+
+      if(allBidsBigObj[packId] ==  undefined){
+          io.emit(uniqChatUpdateId, {
+            lastBid:"none",
+            userBidLast:"nobody"
+          })
+      } else {
+          io.emit(uniqChatUpdateId, {
+            lastBid: allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid,
+            userBidLast: allBidsBigObj[packId][allBidsBigObj[packId].length-1].name
+          })
+      }
+
     })
 
     socket.on("disconnect", () => console.log("Client disconnected"));
-  // ALL CHAT LOGIC
+  // ALL BID LOGIC
 
 
 })
