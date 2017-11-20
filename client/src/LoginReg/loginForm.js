@@ -32,8 +32,12 @@ class LoginForm extends Component{
                 this.setState({
                     userName:'',
                     password:''
-                })
-            alert(response.data.message);
+
+                });
+            console.log(response.data.user.userName);
+            localStorage.setItem('user',response.data.user.userName);
+            alert(response.data.message)
+            
         }).catch((err) =>{
             console.log(err);
         })
@@ -41,9 +45,9 @@ class LoginForm extends Component{
     
     render(){
          return(
-            <div className='well container'>  
-                <label><h1>Login</h1> </label>
-                <div className='login-form '>
+            <div className='container'>  
+                <div className='well login-form'>
+                     <h1>Login</h1>
                     <form onSubmit={this.formSubmit} >
                         <div className="form-group row" >
                             <label className="col-sm-2 col-form-label">User Name</label>

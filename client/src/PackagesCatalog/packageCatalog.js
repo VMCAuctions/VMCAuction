@@ -30,7 +30,7 @@ class PackageCatalog extends Component{
                     categories_list.push(categories._category);
                 } })
             //sorting the packages by highest bid..
-            result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+            result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
@@ -166,62 +166,53 @@ class PackageCatalog extends Component{
     }
 
     render(){
-        let action_button_header = "";
-        let packageList = this.state.listOfPackages.map((packages,index) =>{
-            let action_button = "";
+        let action_button ='';
+        let action_button_header='';
+        let packageList = this.state.listOfPackages.map((packages,index) => {
             if(this.state.admin === true){
-                action_button = <td><button onClick={this.editPackage} id={packages._id} value={index}>Edit</button>
-                                    <button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button> </td>
                 action_button_header = <th>Actions</th>
-            }
-            return(
+                action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
+                                        <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
+                    return(
+                        <tr key={index}>
+                                        {action_button}
+                                        <td>{packages._id}</td>
+                                        <td>{packages.name}</td>
+                                        <td>{packages._category}</td>
+                                        <td>{packages.value}</td>
+                                        <td>{packages.description}</td>
+                                        <td>{packages.bid_increment}</td>
+                                        <td>{}</td>
+                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>
+                                        <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
+                        </tr>
+                 )}else {
+                        return(
+                            <div key={index} className="card package_card w-75">
+                                        <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
+                                        <div className="card-block">
+                                            <h4 className="card-title text-uppercase">{packages.name}</h4>
+                                            <p className="card-text">Category: {packages._category}</p>
+                                            <p className="card-text">STARTING BID: {packages.amount}</p>
+                                            <p className="card-text">Current Bid: Placholder for conditional logic involving bid being empty</p>
+                                            <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
+                                        </div>
+                                    </div>
+                        )
+                }
+            })
+    let categories = this.state.categories.map((category,index) =>{
+                        return( <option key={index} value={category}>{category}</option> )
+                    })
 
-                    <div className="card package_card w-75">
-                        <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
-                        <div className="card-block">
-                        <h4 className="card-title text-uppercase">{packages.name}</h4>
-                        <p class="card-text">Category: {packages._category}</p>
-                        <p class="card-text">STARTING BID: {packages._bids[0]}</p>
-                        <p class="card-text">Current Bid:{packages._bids[packages._bids.length - 1]}</p>
-                        <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
-                        // Edit and Delete buttons added to card view for now.
-                        {action_button}
-                        </div>
-                    </div>
-            )
-            /*return(
-                <tr key={index}>
-                    {action_button}
-                    <td>{packages._id}</td>
-                    <td>{packages.name}</td>
-                    <td>{packages._category}</td>
-                    <td>{packages.value}</td>
-                    <td>{packages.description}</td>
-                    <td>{packages.bid_increment}</td>
-                    <td>{packages._bids[0].amount}</td>
-                    <td>{packages._items.map((item,index)=>{ return <li key={index} >{item}</li>}) } </td>
-                    <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
-                </tr>
-            )*/
-        })
-        let categories = this.state.categories.map((category,index) =>{
-            return( <option key={index} value={category}>{category}</option> )
-        })
-
+    if(this.state.admin === true){
         return(
+        <div>
             <div>
-                  <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
-                            categories={categories} selectValue={this.state.selectValue}/>
-
-                <div className='table-responsive table-container'>
-                    <div className="search-block">
-                        <h3>Key Word Search</h3>
-                        <input type='text'  onChange={this.handleNewLetter} ref="search_bar"/>
-                    </div>
-                </div> {/* end of search-bar */}
-                <br/>
-                {/*<div className='table-responsive table-container'>
->>>>>>> package-cards
+                <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
+                                    categories={categories} selectValue={this.state.selectValue}/>
+            </div>
+            <div className='table-responsive table-container'>
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
@@ -241,14 +232,21 @@ class PackageCatalog extends Component{
                             {packageList}
                         </tbody>
                     </table>
-                </div>*/}
-
-                <div className='card-deck'>
-                    {packageList}
                 </div>
-
-            </div>
-        )
-    }
+        </div>
+          )  }else{
+                return(
+                    <div>
+                        <div>
+                                <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
+                                                    categories={categories} selectValue={this.state.selectValue}/>
+                            </div>
+                            <div className='card-deck'>
+                                {packageList}
+                            </div>
+                    </div>
+                )
+          }
+ }
 }
 export default PackageCatalog;
