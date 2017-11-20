@@ -9,7 +9,6 @@ import {Link} from 'react-router-dom';
 
   // subscribe to bids from server
   function subscribeToBids(cb, packId ) {
-
     var uniqChatUpdateId = 'update_chat' + packId;
     // receiving data from server on "update Chat"
     socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
@@ -19,7 +18,6 @@ import {Link} from 'react-router-dom';
 
   // make a bid
   function makeABid(cb, objectWithdata) {
-
     var uniqChatUpdateId = 'update_chat' + objectWithdata.packId;
     // receiving data from server on "update Chat"
     socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
@@ -35,10 +33,13 @@ class PackageDetails extends Component{
             listOfPackages: '',
             place_bid: '',
 
+
             // our sockets default value
+
             bidsUpdate: {
               lastBid:"...",
-              userBidLast: ".."
+              userBidLast: "..",
+              socket_current_bid: false
             }
 
         }
@@ -86,12 +87,12 @@ class PackageDetails extends Component{
 
     render(){
 
-      var self = this;
       // We are always listening to dedicated for this package channel for
       // emitted by server messegase with te same uniq name
       // step 1: generating uniq channel name
       var packIdId = this.props.match.params.packageId;
       var packIdchannel = 'update_chat' + packIdId;
+      var self = this;
       // step 2: making sockets to listening to this channel
       socket.on(packIdchannel,function(data){
         console.log(packIdchannel);
@@ -155,6 +156,7 @@ class PackageDetails extends Component{
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
+
         this.state.place_bid = current_bid + bid_increment;
 
 

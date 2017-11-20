@@ -166,7 +166,8 @@ io.sockets.on('connection', function(socket){
       } else {
           io.emit(uniqChatUpdateId, {
             lastBid: allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid,
-            userBidLast: allBidsBigObj[packId][allBidsBigObj[packId].length-1].name
+            userBidLast: allBidsBigObj[packId][allBidsBigObj[packId].length-1].name,
+            socket_current_bid: this.lastBid
           })
       }
 
