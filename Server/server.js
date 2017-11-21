@@ -3,6 +3,14 @@ var express = require("express");
 var app = express();
 var session = require('express-session')
 
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema,
+	autoIncrement = require('mongoose-auto-increment');
+mongoose.Promise = global.Promise;
+
+
+
+
 app.use(session({
   secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL',
   resave: false,
@@ -49,16 +57,95 @@ var server = app.listen(port, function() {
 })
 
 
+
+
+/////////////// SOCKETS /////////////////
+var Package = require('./models/package.js')
+
 var io = require('socket.io').listen(server);
 
+// allBidsObject to store all bids in controller
+var allBidsBigObj = {
+  // package1: [
+  //     {bid: 150, name: "Yarik"},
+  //     {bid: 200 name: "Brendan"}
+  //   ]
+}
+
 io.sockets.on('connection', function(socket){
-	console.log('using sockets');
-	console.log(socket.id);
-	//all the socket code goes in here!
-	socket.on('posting_form', function(data){
-		console.log(data.form);
-		socket.emit('server_response', {response: 'back from the server',
-			name: data.name}
-		);
-	});
+
+  // ALL BID LOGIC
+    socket.on("msg_sent", function(data) {
+
+      var userBid = data.bid;
+      var userName = data.userName;
+
+      if(allBidsBigObj[data.packId] == undefined){
+        allBidsBigObj[data.packId] = [];
+      }
+
+      allBidsBigObj[data.packId].push({
+        bid: data.bid,
+        name: data.userName
+      })
+      
+      Package.findById(data.packId).exec(
+        function(err, data){
+          if(err){
+            console.log("error occured " + err);
+          } else {
+              if(data.bids.length != 0 && data.bids[data.bids.length - 1].bidAmount < userBid ) {
+            
+                data.bids.push({
+                  bidAmount: userBid,
+                  name: userName
+              });
+              data.save(function(err){
+                if(err){
+                  console.log("error when saving: " + err);
+                } else{
+                  console.log("successfully ");
+                }
+              })
+            }
+          }
+        }
+      )
+
+
+      var uniqChatUpdateId = 'update_chat' + data.packId;
+
+      // PREVIOUS VERSION FROM CHAT LOGIC
+      io.emit(uniqChatUpdateId, {
+        lastBid: data.bid,
+        userBidLast: data.userName
+      } )
+
+    })
+
+    socket.on("page_refresh", function(data) {
+      var uniqChatUpdateId = 'update_chat' + data.pId;
+      var packId = data.pId;
+
+      
+
+      if(allBidsBigObj[packId] ==  undefined){
+          io.emit(uniqChatUpdateId, {
+            lastBid:"none",
+            userBidLast:"nobody"
+          })
+      } else {
+          io.emit(uniqChatUpdateId, {
+            lastBid: allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid,
+            userBidLast: allBidsBigObj[packId][allBidsBigObj[packId].length-1].name,
+            socket_current_bid: this.lastBid
+          })
+      }
+
+    })
+
+    socket.on("disconnect", () => console.log("Client disconnected"));
+  // ALL BID LOGIC
+
+
 })
