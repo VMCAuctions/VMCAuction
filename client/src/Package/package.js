@@ -32,7 +32,7 @@ class Package extends Component{
 
     componentDidMount(){
         //Get request for category dropdown list
-        Axios.get("/categories")
+        Axios.get("/api/categories")
         .then((response)=>{
             this.setState({
                 categoryList: response.data
@@ -47,7 +47,7 @@ class Package extends Component{
     addingCategory = (value) =>{
         Axios({
             method: "post",
-            url: "/categories",
+            url: "/api/categories",
             data: { category: value},
         }).then((response)=>{
             this.setState({
@@ -62,7 +62,7 @@ class Package extends Component{
         e.preventDefault(); // prevents the default form behaviour
         Axios({
             method: 'post',
-            url:'/packages',
+            url:'/api/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }

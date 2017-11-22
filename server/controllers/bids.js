@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 
 function BidsController(){
 
+
 	// this.index = function(req,res){
 	// 	console.log('BidsController index');
 	// 	Bid.find({}, function(err, bids) {

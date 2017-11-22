@@ -44,7 +44,7 @@ class RegForm extends React.Component{
 
         Axios({
             method: "post",
-            url: "/users",
+            url: "/api/users",
             data: {
                   firstName: this.state.firstName,
                   lastName:this.state.lastName,

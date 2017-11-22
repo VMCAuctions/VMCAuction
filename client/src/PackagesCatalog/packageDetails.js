@@ -52,7 +52,7 @@ class PackageDetails extends Component{
 
 
     componentDidMount(){
-        Axios.get("/packages")
+        Axios.get("/api/packages")
         .then((result) =>{
             this.setState({
                 listOfPackages: result.data
