@@ -70,7 +70,7 @@ class PackageDetails extends Component{
 
         Axios({
           method: "get",
-          url: "/users/loggedin",
+          url: "/api/users/loggedin",
           data: {}
       }).then((response) => {
           console.log(response.data)
