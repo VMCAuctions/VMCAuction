@@ -74,6 +74,11 @@ var allBidsBigObj = {
 
 io.sockets.on('connection', function(socket){
 
+
+console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20))
+console.dir(allBidsBigObj)
+console.log("/".repeat(20))
+
   // ALL BID LOGIC
     socket.on("msg_sent", function(data) {
 
@@ -88,26 +93,42 @@ io.sockets.on('connection', function(socket){
         bid: data.bid,
         name: data.userName
       })
-      
+
+console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
+console.dir(allBidsBigObj)
+
       Package.findById(data.packId).exec(
         function(err, data){
           if(err){
             console.log("error occured " + err);
           } else {
-              if(data.bids.length != 0 && data.bids[data.bids.length - 1].bidAmount < userBid ) {
-            
-                data.bids.push({
-                  bidAmount: userBid,
-                  name: userName
-              });
-              data.save(function(err){
-                if(err){
-                  console.log("error when saving: " + err);
-                } else{
-                  console.log("successfully ");
-                }
-              })
-            }
+						if(data != null){
+							if(data.bids.length == 0 ){
+								data.bids.push({
+									bidAmount: userBid,
+									name: userName
+								});
+							} else {
+								// if our bids array already NOT EMPTY
+										if(data.bids[data.bids.length - 1].bidAmount < userBid ) {
+			                data.bids.push({
+			                  bidAmount: userBid,
+			                  name: userName
+			              });
+			            }
+								// END of if our bids array already NOT EMPTY
+							}
+								// SAVE ALL STUFF
+								data.save(function(err){
+									if(err){
+										console.log("error when saving: " + err);
+									} else{
+										console.log("successfully ");
+									}
+								})
+						}
+
+
           }
         }
       )
@@ -127,7 +148,7 @@ io.sockets.on('connection', function(socket){
       var uniqChatUpdateId = 'update_chat' + data.pId;
       var packId = data.pId;
 
-      
+
 
       if(allBidsBigObj[packId] ==  undefined){
           io.emit(uniqChatUpdateId, {
