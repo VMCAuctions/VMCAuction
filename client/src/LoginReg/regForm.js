@@ -142,24 +142,24 @@ class RegForm extends React.Component{
                     <div className="form-group row">
                       <label className="col-sm-2 col-form-label">Zip Code</label>
                       <div className="col-sm-10">
-                        <input type='text' id='zip' className='form-control' name='zip'
-                        placeholder='Zip Code' onChange={this.handleChange} value={this.state.zip} required/>
+                        <input type='number' id='zip' className='form-control' name='zip' min='5'
+                        placeholder='Ex: 94050' onChange={this.handleChange} value={this.state.zip} required/>
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label className="col-sm-2 col-form-label">Phone Number</label>
                       <div className="col-sm-10">
-                        <input type='text' id='phoneNumber' className='form-control' name='phoneNumber'
-                        placeholder='Phone Number' onChange={this.handleChange} value={this.state.phoneNumber} />
+                        <input type='tel' id='phoneNumber' className='form-control' name='phoneNumber'
+                        placeholder='Ex: 4084044080' onChange={this.handleChange} value={this.state.phoneNumber} />
                       </div>
                     </div>
 
                     <div className="form-group row">
                       <label className="col-sm-2 col-form-label">Email Address</label>
                       <div className="col-sm-10">
-                        <input type='text' id='email' className='form-control' name='email'
-                        placeholder='Email Address' onChange={this.handleChange} value={this.state.email} required/>
+                        <input type='email' id='email' className='form-control' name='email'
+                        placeholder='Ex:example@gmail.com' onChange={this.handleChange} value={this.state.email} required/>
                       </div>
                     </div>
 
