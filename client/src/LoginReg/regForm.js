@@ -83,7 +83,7 @@ class RegForm extends React.Component{
               })
 
               window.location.href ="/package"
-
+              localStorage.setItem('user',response.data.user.userName);
             };
             alert(response.data.message);
 
