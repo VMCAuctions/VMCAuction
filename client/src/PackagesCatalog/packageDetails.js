@@ -32,16 +32,12 @@ class PackageDetails extends Component{
             packageId: this.props.match.params.packageId,
             listOfPackages: '',
             place_bid: '',
-
-
             // our sockets default value
-
             bidsUpdate: {
               lastBid:"...",
               userBidLast: "..",
               socket_current_bid: false
             }
-
         }
 
         // function to update sockets
@@ -49,7 +45,6 @@ class PackageDetails extends Component{
           bidsUpdate
         }), this.state.packageId ); // {this.state.bidsUpdate}
     }
-
 
     componentDidMount(){
         Axios.get("/api/packages")
@@ -60,11 +55,7 @@ class PackageDetails extends Component{
         }).catch((err) =>{
             console.log(err);
         })
-
     }
-
-
-
 
     placeBidSubmit = () =>{
 
@@ -91,8 +82,6 @@ class PackageDetails extends Component{
       }).catch((err) =>{
           console.log(err);
       })
-
-
     }
 
     render(){
@@ -111,8 +100,6 @@ class PackageDetails extends Component{
 
         self.componentDidMount()
       })
-
-
         // trying to find the index of the (show)package from the array
         let packageIndex = '';
         for(var i=0; i < this.state.listOfPackages.length; i++){
@@ -138,7 +125,7 @@ class PackageDetails extends Component{
                 packageDescription = packagedata[key];
             }else if(key === 'value'){
                 packageValue = packagedata[key];
-                if (packageValue == 0){
+                if (packageValue === 0){
                   packageValue = "Priceless"
                 }
             }else if( key === '_items'){
@@ -155,12 +142,15 @@ class PackageDetails extends Component{
         //listing the items in the package
         let itemsInPackage = packageItems.map((item, index)=>{
             return(
-                <li key={index}>{item.name} - {item.description} - by<span className='donor-info'> {item.donor}</span></li>
+                <div key={index}>
+                    <li>{item.name} - {item.description} - by<span className='donor-info'>{ item.donor}</span></li>
+                    <p>Item Restriction - {item.restriction}</p>
+                </div>
             )
         })
         //current_bid
         let current_bid = starting_bid;
-        if (bids.length != 0){
+        if (bids.length !== 0){
           current_bid = bids[bids.length - 1].bidAmount
         }
         //Place bid
@@ -177,8 +167,6 @@ class PackageDetails extends Component{
         return(
             <div className='container-fluid bidContainer'>
             <div className='bids'>
-            Last bid: {this.state.bidsUpdate.lastBid}<br/>
-            Made by: <b>{this.state.bidsUpdate.userBidLast}</b>
             </div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
@@ -191,7 +179,11 @@ class PackageDetails extends Component{
                         <h4>Starting Bid: {starting_bid}</h4>
 
                         <div className='bidSection'>
-                            <h4>Current Bid:{}</h4>
+                            <div>
+                                <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by-<b>{this.state.bidsUpdate.userBidLast}</b></h5>
+                                 
+                            </div>
+                            <h4>Place Next Bid</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
                             <input className='placeBid btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>
