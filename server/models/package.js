@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 
 var packageSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
- _items: [{type: Number, ref: 'Item'}],
+ _items: [{type: Number, required: true, ref: 'Item'}],
  description: {type: String, maxlength: 250},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
 // <<<<<<< Updated upstream

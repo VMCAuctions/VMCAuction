@@ -65,8 +65,12 @@ class Package extends Component{
             url:'/api/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
-                selectedItems:this.state.selectedItems, totalValue: this.state.totalValue  }
+                selectedItems:this.state.selectedItems, totalValue: this.state.totalValue}
             }).then((response) =>{
+            if (response.data == false){
+              alert("Package cannot be empty.")
+            }
+          else{
             this.setState({
                 packageName: '',
                 packageDescription: '',
@@ -76,9 +80,13 @@ class Package extends Component{
                 selectedItems: [],
                 totalItems: 0,
                 totalValue: 0
+              
             })
-            //reloading the page after the form has been submitted to show the remaining items that have not been added to a package
             window.location.reload();
+          }
+            //reloading the page after the form has been submitted to show the remaining items that have not been added to a package
+            
+            
         }).catch((err)=>{
             console.log("Incomplete form submission" + err)
         })
