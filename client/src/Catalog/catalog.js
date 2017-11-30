@@ -69,7 +69,7 @@ editItem = (e) =>{
                     action_button_header = <th>Actions</th>
                 }
             }
-            if (item.value == 0){
+            if (item.value === 0){
               item.value = "Priceless"
             } 
             
