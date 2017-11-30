@@ -5,7 +5,15 @@ import {Link} from 'react-router-dom';
 
   // socket import
   import openSocket from 'socket.io-client';
-  const socket = openSocket('http://localhost:8000');
+
+  if (process.env.NODE_ENV === "production") {
+    // for DEPLOYMENT;
+    var host = "http://" + window.location.hostname;
+  } else {
+    // for LOCAL;
+    var host = "http://localhost:8000";
+  }
+  const socket = openSocket(host);
 
   // subscribe to bids from server
   function subscribeToBids(cb, packId ) {
