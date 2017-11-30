@@ -151,7 +151,7 @@ class PackageDetails extends Component{
         let itemsInPackage = packageItems.map((item, index)=>{
             return(
                 <div key={index}>
-                    <li>{item.name} - {item.description} - by<span className='donor-info'>{ item.donor}</span></li>
+                    <li>{item.name} - {item.description} - by <span className='donor-info'>{ item.donor}</span></li>
                     <p>Item Restriction - {item.restriction}</p>
                 </div>
             )
@@ -188,7 +188,7 @@ class PackageDetails extends Component{
 
                         <div className='bidSection'>
                             <div>
-                                <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by-<b>{this.state.bidsUpdate.userBidLast}</b></h5>
+                                <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by- <b>{this.state.bidsUpdate.userBidLast}</b></h5>
                                  
                             </div>
                             <h4>Place Next Bid</h4>
