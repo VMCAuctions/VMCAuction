@@ -30,9 +30,7 @@ import {Link} from 'react-router-dom';
     socket.emit('msg_sent', objectWithdata);
   }
 
-  var packIdId,packages,packIdchannel;
   var socket_updated = false;
-  var current_bid_mod;
   function counter(){
     var number = 0;
     return function(){
@@ -50,10 +48,7 @@ class PackageDetails extends Component{
             listOfPackages: '',
             place_bid: '',
 
-
             // our sockets default value
-            // this.state.bidsUpdate.socket_current_bid
-            // this.state.bidsUpdate.lastBid
             bidsUpdate: {
               lastBid:"...",
               userBidLast: "..",
@@ -75,23 +70,19 @@ class PackageDetails extends Component{
             this.setState({
                 listOfPackages: result.data
             })
-            packages = result.data;
         }).catch((err) =>{
             console.log(err);
         })
 
-
         // We are always listening to dedicated for this package channel for
         // emitted by server messegase with te same uniq name
         // step 1: generating uniq channel name
-        packIdId = this.props.match.params.packageId;
-        packIdchannel = 'update_chat' + packIdId;
+        var packIdId = this.props.match.params.packageId;
+        var packIdchannel = 'update_chat' + packIdId;
         var self = this;
         socket_updated = false;
         // step 2: making sockets to listening to this channel
         socket.on(packIdchannel,function(data){
-
-          // self.componentDidMount()
           self.updateStateAfterBidding();
         })
 
@@ -100,7 +91,6 @@ class PackageDetails extends Component{
 
     updateStateAfterBidding = () =>{
       socket_updated = true;
-      // this.render()
     }
 
 
