@@ -28,10 +28,10 @@ class DisplayItems extends Component{
 
     }
     rowSelect= (e) =>{
-        var object;
+        var object={};
         if(e.target.checked){
             for (var i = 0; i < this.state.itemsList.length; i++){
-              if (e.target.name == this.state.itemsList[i]._id){
+              if (e.target.name === String(this.state.itemsList[i]._id)){
                 object = this.state.itemsList[i];
                 break;
               }
