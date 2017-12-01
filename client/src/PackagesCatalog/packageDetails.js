@@ -26,12 +26,12 @@ import {Link} from 'react-router-dom';
 
   // make a bid
   function makeABid(cb, objectWithdata) {
-    var uniqChatUpdateId = 'update_chat' + objectWithdata.packId;
-    // receiving data from server on "update Chat"
-    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
     // sending event to refresh bids
     socket.emit('msg_sent', objectWithdata);
   }
+
+  var socket_updated = false;
+  
 
 class PackageDetails extends Component{
     constructor(props){
@@ -63,7 +63,27 @@ class PackageDetails extends Component{
         }).catch((err) =>{
             console.log(err);
         })
+
+
+        // We are always listening to dedicated for this package channel for
+        // emitted by server messegase with te same uniq name
+        // step 1: generating uniq channel name
+        var packIdId = this.props.match.params.packageId;
+        var packIdchannel = 'update_chat' + packIdId;
+        var self = this;
+        socket_updated = false;
+        // step 2: making sockets to listening to this channel
+        socket.on(packIdchannel,function(data){
+          self.updateStateAfterBidding();
+        })
+
+
     }
+
+    updateStateAfterBidding = () =>{
+      socket_updated = true;
+    }
+
 
     placeBidSubmit = () =>{
 
@@ -94,20 +114,7 @@ class PackageDetails extends Component{
 
     render(){
 
-      // We are always listening to dedicated for this package channel for
-      // emitted by server messegase with te same uniq name
-      // step 1: generating uniq channel name
-      var packIdId = this.props.match.params.packageId;
-      var packIdchannel = 'update_chat' + packIdId;
-      var self = this;
-      // step 2: making sockets to listening to this channel
-      socket.on(packIdchannel,function(data){
-        console.log(packIdchannel);
-        console.log("listening successfully");
-        console.log(data);
 
-        self.componentDidMount()
-      })
         // trying to find the index of the (show)package from the array
         let packageIndex = '';
         for(var i=0; i < this.state.listOfPackages.length; i++){
@@ -164,11 +171,12 @@ class PackageDetails extends Component{
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
+        if(socket_updated && typeof this.state.bidsUpdate.lastBid == 'number'){
+          this.state.place_bid = parseInt((this.state.bidsUpdate.lastBid),10) + bid_increment;
 
-        this.state.place_bid = current_bid + bid_increment;
-
-
-
+        } else {
+          this.state.place_bid = current_bid + bid_increment;
+        }
 
         //conditional rendering
         if(this.state.listOfPackages){
