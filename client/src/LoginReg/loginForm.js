@@ -34,7 +34,6 @@ class LoginForm extends Component{
                     password:''
 
                 });
-            console.log(response.data.user.userName);
             localStorage.setItem('user',response.data.user.userName);
             alert(response.data.message)
             
