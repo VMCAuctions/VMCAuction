@@ -13,7 +13,7 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
-            admin: Boolean,
+            // admin: Boolean,
         }
     }
 
@@ -40,22 +40,14 @@ class PackageCatalog extends Component{
             console.log(err);
         })
 
-        //loading all the items to search.
-        Axios.get("/api/items")
-        .then((result) =>{
-            this.setState({ listOfItems: result.data })
-        }).catch((err) =>{
-            console.log(err);
-        })
-
         //loading user information:        //if the user's name is administrator then they have admin access
-        Axios.get("/api/which_user_is_logged_in")
-        .then((result) =>{
-            this.setState({ admin: result.data.admin })
-        })
-        .catch((err) =>{
-            console.log(err);
-        })
+        // Axios.get("/api/which_user_is_logged_in")
+        // .then((result) =>{
+        //     this.setState({ admin: result.data.admin })
+        // })
+        // .catch((err) =>{
+        //     console.log(err);
+        // })
     }
 
     //when the option is changed it will update the packages on display
@@ -81,6 +73,14 @@ class PackageCatalog extends Component{
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
+        //loading all the items to search.
+        Axios.get("/api/items")
+        .then((result) =>{
+            this.setState({ listOfItems: result.data })
+        }).catch((err) =>{
+            console.log(err);
+        })
+
         //the letter they typed in, if there is a match with the item name add it to this array
         let selected_items = [];
         //converted all the input letter to lower case
@@ -137,7 +137,7 @@ class PackageCatalog extends Component{
             }
 
             //repopulate the list of packages that will be rendered to the screen //sort the packages according to highest bid
-            selected_packages.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+            selected_packages.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             this.setState({ listOfPackages: selected_packages })
 
         }
@@ -170,7 +170,7 @@ class PackageCatalog extends Component{
         let action_button ='';
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => {
-            if(this.state.admin === true){
+            if(localStorage.checkAdmin === 'true'){
                 action_button_header = <th>Actions</th>
                 action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
                                         <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
@@ -207,7 +207,7 @@ class PackageCatalog extends Component{
                         return( <option key={index} value={category}>{category}</option> )
                     })
 
-    if(this.state.admin === true){
+    if(localStorage.checkAdmin === 'true'){
         return(
         <div>
             <div>
