@@ -19,7 +19,8 @@ class Menu extends React.Component{
           url: "/api/users/logout",
           data: {}
       }).then((response) => {
-          this.loggedin()
+         localStorage.clear();
+          
       }).catch((err) =>{
           console.log(err);
       })
