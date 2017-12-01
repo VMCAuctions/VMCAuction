@@ -38,10 +38,16 @@ function PackagesController(){
 		console.log('PackagesController create');
 
 
-
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
-	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
+	    if (req.body.selectedItems.length == 0){
+          console.log()
+          console.log('reached empty item list')
+          return res.json(false)  
+        }
+        
+        
+        Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
 	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
 			bid: [], amount: req.body.openingBid
 			},
@@ -61,7 +67,8 @@ function PackagesController(){
 							}
 	                        else{
 								// changed res.json(package) to return res.send() because set header after send error and resulting data is unnecessary anyways
-								return res.send();
+                                console.log('submit correctly')
+								return res.json(true);
 	                        }
 						});
 
