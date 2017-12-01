@@ -34,7 +34,9 @@ class LoginForm extends Component{
                     password:''
 
                 });
+                console.log('response', response.data.user.admin);
             localStorage.setItem('user',response.data.user.userName);
+            localStorage.setItem('checkAdmin', response.data.user.admin)
             alert(response.data.message)
             
         }).catch((err) =>{
