@@ -7,8 +7,7 @@ module.exports = function(app) {
 
 	// get the Login/Registration screen.  This is our root route //
 	app.get('/api', function(req,res){
-		users.welcome(req,res)});
-
+});
 	// ITEMS //
 	// get the index page of all items
 	app.get('/api/items', function(req,res){

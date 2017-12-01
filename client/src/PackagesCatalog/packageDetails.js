@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom';
 
   // socket import
   import openSocket from 'socket.io-client';
+  var host = "http://"+window.location.hostname ;
+
   const socket = openSocket('http://localhost:8000');
 
   // subscribe to bids from server
@@ -52,6 +54,7 @@ class PackageDetails extends Component{
 
 
     componentDidMount(){
+      console.log("hi");
         Axios.get("/api/packages")
         .then((result) =>{
             this.setState({
