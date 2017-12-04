@@ -73,14 +73,6 @@ class PackageCatalog extends Component{
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
-        //loading all the items to search.
-        Axios.get("/api/items")
-        .then((result) =>{
-            this.setState({ listOfItems: result.data })
-        }).catch((err) =>{
-            console.log(err);
-        })
-
         //the letter they typed in, if there is a match with the item name add it to this array
         let selected_items = [];
         //converted all the input letter to lower case
