@@ -55,10 +55,13 @@ class PackageDetails extends Component{
     }
 
     componentDidMount(){
-        Axios.get("/api/packages")
+        var packIdId = this.props.match.params.packageId;
+        Axios.get("/api/packages/" + packIdId)
         .then((result) =>{
-            this.setState({
+            console.log(result)
+          this.setState({
                 listOfPackages: result.data
+                
             })
         }).catch((err) =>{
             console.log(err);
@@ -68,7 +71,7 @@ class PackageDetails extends Component{
         // We are always listening to dedicated for this package channel for
         // emitted by server messegase with te same uniq name
         // step 1: generating uniq channel name
-        var packIdId = this.props.match.params.packageId;
+        //var packIdId = this.props.match.params.packageId;
         var packIdchannel = 'update_chat' + packIdId;
         var self = this;
         socket_updated = false;
@@ -113,21 +116,11 @@ class PackageDetails extends Component{
     }
 
     render(){
-
-
+      
+        console.log(this.state.listOfPackages)
         // trying to find the index of the (show)package from the array
-        let packageIndex = '';
-        for(var i=0; i < this.state.listOfPackages.length; i++){
-            let eachPackage = this.state.listOfPackages[i];
-            let id = eachPackage._id;
-            if(id === parseInt((this.state.packageId),10)){
-                packageIndex = i;
-            }
-
-        }
-
         //traversing the target package(which is JSON object)
-        let packagedata = this.state.listOfPackages[packageIndex];
+        let packagedata = this.state.listOfPackages;
         let x = [];
         let packageName = '', packageDescription='', packageValue = '',packageItems=[], starting_bid="", bids = [], bid_increment='';
 
