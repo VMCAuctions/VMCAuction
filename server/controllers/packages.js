@@ -87,7 +87,7 @@ function PackagesController(){
 	this.show = function(req,res){
 		console.log('PackagesController show');
 		// sending ID by url or in req.body????????????????
-		Package.findById(req.params.id, function(err,result){
+		Package.findById(req.params.id).populate("_items").exec(function(err,result){
 			if(err){
 				console.log(err);
 			}
