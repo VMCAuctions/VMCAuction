@@ -31,7 +31,7 @@ import {Link} from 'react-router-dom';
   }
 
   var socket_updated = false;
-  
+
 
 class PackageDetails extends Component{
     constructor(props){
@@ -61,7 +61,7 @@ class PackageDetails extends Component{
             console.log(result)
           this.setState({
                 listOfPackages: result.data
-                
+
             })
         }).catch((err) =>{
             console.log(err);
@@ -116,7 +116,7 @@ class PackageDetails extends Component{
     }
 
     render(){
-      
+
         console.log(this.state.listOfPackages)
         // trying to find the index of the (show)package from the array
         //traversing the target package(which is JSON object)
@@ -174,6 +174,7 @@ class PackageDetails extends Component{
         //conditional rendering
         if(this.state.listOfPackages){
         return(
+<div className="container"><div className="row">
             <div className='container-fluid bidContainer'>
             <div className='bids'>
             </div>
@@ -190,7 +191,7 @@ class PackageDetails extends Component{
                         <div className='bidSection'>
                             <div>
                                 <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by- <b>{this.state.bidsUpdate.userBidLast}</b></h5>
-                                 
+
                             </div>
                             <h4>Place Next Bid</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
@@ -207,6 +208,7 @@ class PackageDetails extends Component{
                     </div>
                 </div>
             </div>
+</div></div>
         )}
         else{
             return(

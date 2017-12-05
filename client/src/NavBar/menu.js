@@ -20,7 +20,7 @@ class Menu extends React.Component{
           data: {}
       }).then((response) => {
          localStorage.clear();
-          
+
       }).catch((err) =>{
           console.log(err);
       })
@@ -42,7 +42,7 @@ class Menu extends React.Component{
           console.log(err);
       })
     }
-  
+
     componentWillMount(){
         this.loggedin();
     }
@@ -76,6 +76,8 @@ class Menu extends React.Component{
             htmlAdminPackage = <li><Link to='/packages/new'>Package</Link></li>
         }
         return(
+<div className="navBg">
+<div className="container"><div className="row">
             <nav className="navbar navbar-inverse">
                 <div className="container-fluid">
                     <div className="navbar-header">
@@ -107,6 +109,8 @@ class Menu extends React.Component{
                     </div>
                 </div>
           </nav>
+</div></div>
+</div>
         )
     }
 }

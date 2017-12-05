@@ -71,10 +71,10 @@ editItem = (e) =>{
             }
             if (item.value === 0){
               item.value = "Priceless"
-            } 
-            
-          
-          
+            }
+
+
+
 
             return(
                 <tr key={index}>
@@ -90,6 +90,7 @@ editItem = (e) =>{
             )
         })
         return(
+<div className="container"><div className="row">
             <div className='table-responsive table-container'>
                 <table className='table table-striped table-bordered'>
                     <thead>
@@ -109,6 +110,7 @@ editItem = (e) =>{
                     </tbody>
                 </table>
             </div>
+</div></div>
         )
     }
 }
