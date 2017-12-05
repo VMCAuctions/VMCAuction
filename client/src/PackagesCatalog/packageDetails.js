@@ -181,7 +181,7 @@ class PackageDetails extends Component{
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
                         <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
-                        <img src='' alt={packageName} className='img-thumbnail col-xs-12'/>
+                        <img src='/no-image.png' alt={packageName} className='img-thumbnail col-xs-12'/>
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
                         <h4>Package Value: {packageValue} </h4>
