@@ -183,7 +183,7 @@ class PackageCatalog extends Component{
                  )}else {
                         return(
                             <div key={index} className="card package_card w-75">
-                                        <img className="card-img-top card_img" src="" alt={`${packages.name}`}/>
+                                        <img className="card-img-top card_img" src="/no-image.png" alt={`${packages.name}`}/>
                                         <div className="card-block">
                                             <h4 className="card-title text-uppercase">{packages.name}</h4>
                                             <p className="card-text">Category: {packages._category}</p>

@@ -5,3 +5,7 @@
 .search-block{
     display: inline-block;
 }
+
+img.card_img {
+  width:300px
+}
