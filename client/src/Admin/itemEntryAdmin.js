@@ -77,6 +77,7 @@ class ItemEntryAdmin extends Component{
 
     render(){
         return(
+<div className="container"><div className="row">
             <div className='container row'>
                 <label><h2>Item Info</h2> </label>
                 <div className='item-info'>
@@ -115,7 +116,7 @@ class ItemEntryAdmin extends Component{
                                 <div className="input-group-addon">$</div>
                                     <input type="number" name='fairMarketValue' id="fairMarketValue" className="form-control" placeholder="Fair Market Value"
                                             value={this.state.fairMarketValue} onChange={this.handleChange} min='0' required />
-                          
+
                                 <div className="input-group-addon">.00</div>
                             </div><br/>
                          </div>
@@ -141,6 +142,7 @@ class ItemEntryAdmin extends Component{
                 </div>
 
             </div>
+</div></div>
         )
     }
 }

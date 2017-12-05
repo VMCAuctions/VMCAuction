@@ -1,7 +1,30 @@
+.navBg {
+  background-color: #222;
+border-color: #080808;
+}
+  .navBg .navbar-inverse {
+    border:none;
+  }
+
+  .navBg .container {
+    padding-left:0;
+    padding-right:0;
+  }
+
 .nav li{
      display: block;
     font-size: 20px;
     color: antiquewhite;
     padding:5px;
     margin: 5px;
+}
+
+
+
+.form-inline {
+  display: block; width:100%;
+}
+
+.nopad {
+  padding-left:0;padding-right:0;
 }

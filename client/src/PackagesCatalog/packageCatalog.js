@@ -178,7 +178,7 @@ class PackageCatalog extends Component{
                                         <td>{packages._id}</td>
                                         <td>{packages._category}</td>
                                         <td>{packages.description}</td>
-                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>                                        
+                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>
                         </tr>
                  )}else {
                         return(
@@ -201,6 +201,7 @@ class PackageCatalog extends Component{
 
     if(localStorage.checkAdmin === 'true'){
         return(
+<div className="container"><div className="row">
         <div>
             <div>
                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
@@ -221,7 +222,7 @@ class PackageCatalog extends Component{
                                 <th>Category </th>
                                 <th>Item Description</th>
                                 <th>Items in Package</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>
@@ -230,6 +231,7 @@ class PackageCatalog extends Component{
                     </table>
                 </div>
         </div>
+</div></div>
           )  }else{
                 return(
                     <div>
