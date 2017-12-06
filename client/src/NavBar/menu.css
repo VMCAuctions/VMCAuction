@@ -67,7 +67,7 @@ h1,h2,h3,h4,h5,h6 {
 border-color: #080808;
 }
   #nav a {
-    color:#ECECEC;
+    /*color:#A5D1F3;;*/
   }
   #nav .row {
     /*background-color: #222;*/
@@ -106,7 +106,7 @@ border-color: #080808;
         border-radius: 5px;
         -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
-        
+
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0090bc+0,006f9b+100 */
         background: #0090bc; /* Old browsers */
         background: -moz-linear-gradient(top, #0090bc 0%, #006f9b 100%); /* FF3.6-15 */
