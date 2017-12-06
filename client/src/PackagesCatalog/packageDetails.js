@@ -174,13 +174,15 @@ class PackageDetails extends Component{
         //conditional rendering
         if(this.state.listOfPackages){
         return(
-<div className="container"><div className="row">
+<div className="container">
+  <div className="row">
+            <h2 className='text-uppercase packageName'> {packageName} </h2>
             <div className='container-fluid bidContainer'>
             <div className='bids'>
             </div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
-                        <h2 className='text-uppercase packageName'> {packageName} </h2><br/>
+
                         <img src='/no-image.png' alt={packageName} className='img-thumbnail col-xs-12'/>
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>

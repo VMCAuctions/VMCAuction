@@ -76,10 +76,10 @@ class Menu extends React.Component{
             htmlAdminPackage = <li><Link to='/packages/new'>Package</Link></li>
         }
         return(
-<div className="navBg">
-<div className="container"><div className="row">
-            <nav className="navbar navbar-inverse">
-                <div className="container-fluid">
+<div className="navBg" id="nav">
+<div className="container navbar navbar-inverse"><div className="row">
+
+            <nav className="">
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false">
                             <span className="icon-bar"></span>
@@ -104,8 +104,8 @@ class Menu extends React.Component{
                             {htmlLogCode}
                         </ul>
                     </div>
-                </div>
-          </nav>
+              </nav>
+
 </div></div>
 </div>
         )
