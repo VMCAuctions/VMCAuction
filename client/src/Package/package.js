@@ -138,7 +138,7 @@ class Package extends Component{
 <div className="container"><div className="row">
             <div id='package-container' className='container-fluid'>
 
-                <form className='form-inline' onSubmit={this.onPackageFormSubmit} >
+                <form className='form-inline' onSubmit={this.onPackageFormSubmit} id="packageInfo" >
                     <div className='package-info form-group col-sm-3 nopad' >
                         <h3>Package Info</h3>
                         <label  className="col-sm-2 col-form-label">Package Name</label><br/>
