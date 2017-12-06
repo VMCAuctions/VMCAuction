@@ -6,8 +6,9 @@
     display: inline-block;
 }
 .img-thumbnail{
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width:400px;
+    height: auto;
     border: 1px solid gray;
 }
 .packageName, .bidDetails, .packageDescription{
@@ -20,7 +21,7 @@
 }
 .bidInput{
     background-color: burlywood;
-}   
+}
 .donor-info{
     font-weight: bold;
     color: orangered;
