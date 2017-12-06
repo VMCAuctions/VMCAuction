@@ -43,6 +43,11 @@ border-color: #080808;
 }
 
 
+.close-white {
+    color: #fff;
+    opacity: 1;
+}
+
 @media screen and (min-width: 768px) {
   #nav .navbar-right {
     margin-right:0;
