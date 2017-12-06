@@ -176,7 +176,7 @@ class PackageDetails extends Component{
         return(
 <div className="container">
   <div className="row">
-            <h2 className='text-uppercase packageName'> {packageName} </h2>
+
             <div className='container-fluid bidContainer'>
             <div className='bids'>
             </div>
@@ -186,26 +186,46 @@ class PackageDetails extends Component{
                         <img src='/no-image.png' alt={packageName} className='img-thumbnail col-xs-12'/>
                     </div>
                     <div className='bidDetails col-xs-12 col-sm-6 col-md-9'>
-                        <h4>Package Value: {packageValue} </h4>
 
-                        <h4>Starting Bid: {starting_bid}</h4>
+                        <h1 className='text-uppercase packageName'> {packageName} </h1>
+
+                        <div className="hline"></div>
+                        <table className="packIntro">
+                        <tr>
+                          <td>Package Value:</td>
+                          <td><b>{packageValue}</b></td>
+                        </tr>
+                        <tr>
+                          <td>Starting Bid:</td>
+                          <td><b>${starting_bid}</b></td>
+                        </tr>
+                        </table>
 
                         <div className='bidSection'>
-                            <div>
-                                <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by- <b>{this.state.bidsUpdate.userBidLast}</b></h5>
-
-                            </div>
-                            <h4>Place Next Bid</h4>
-                            <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
-                            <input className='placeBid btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
-                            <br/>
+                          <table className="packIntro">
+                          <tr className="curBid">
+                            <td>Current Bid:</td>
+                            <td><b >${this.state.bidsUpdate.lastBid} </b>
+                              (by <span>{this.state.bidsUpdate.userBidLast}</span>)
+                            </td>
+                          </tr>
+                          <tr className="curBid">
+                            <td></td>
+                            <td>
+                                <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
+                                <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit}>Place bid</button>
+                            </td>
+                          </tr>
+                          </table>
                         </div>
                         <div className='packageDescription'>
-                            <br/><h4>Description: </h4>
-                            <p>{packageDescription}</p>
-                            <h5>Items in package: {itemsInPackage}</h5>
+                            <h4>Description: </h4>
+                            <p className="packdescription">{packageDescription}</p>
+                            <h5>Items in package: </h5>
+                              <p className="packdescription">{itemsInPackage}</p>
+                            
                         </div>
-                        <Link to='/package'><h5>Back to All Packages</h5></Link>
+                        <Link to='/package'>Back to All Packages</Link>
 
                     </div>
                 </div>
