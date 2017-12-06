@@ -5,6 +5,9 @@
 .imgNtitle, .bidDetails{
     display: inline-block;
 }
+.imgNtitle img {
+  margin-top:30px;
+}
 .img-thumbnail{
     width: 100%;
     max-width:400px;
@@ -14,15 +17,24 @@
 .packageName, .bidDetails, .packageDescription{
     text-align: left;
 }
-.bidSection{
-    background-color: cadetblue;
-    padding: 5px;
-    width: 300px;
+.packageDescription {
+  border: 1px solid #ccc;
+  padding: 10px; margin-top:10px;
+}
+.bidSection {
+    background-color: #D0EAFF;
+    /*padding: 10px;*/
+    width: 100%;
+}
+.packageDescription, .bidSection {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 .bidInput{
     background-color: burlywood;
 }
 .donor-info{
     font-weight: bold;
-    color: orangered;
+    /*color: orangered;*/
 }
