@@ -182,16 +182,20 @@ class PackageCatalog extends Component{
                         </tr>
                  )}else {
                         return(
-                            <div key={index} className="card package_card w-75">
-                                        <img className="card-img-top card_img" src="/no-image.png" alt={`${packages.name}`}/>
-                                        <div className="card-block">
-                                            <h4 className="card-title text-uppercase">{packages.name}</h4>
-                                            <p className="card-text">Category: {packages._category}</p>
-                                            <p className="card-text">STARTING BID: {packages.amount}</p>
-                                            <p className="card-text">Current Bid: Placholder for conditional logic involving bid being empty</p>
-                                            <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
-                                        </div>
-                                    </div>
+                          <div key={index} className="col-sm-6 col-md-4">
+                            <div className="thumbnail">
+                              <img src="/no-image.png" alt={`${packages.name}`} />
+                              <div className="caption">
+                                <h3><Link to={`/packageDetails/${packages._id}`}>{packages.name}</Link></h3>
+
+                                  <p><b>Category</b>: {packages._category}</p>
+                                  <p><b>STARTING BID</b>: {packages.amount}</p>
+                                  <p><b>Current Bid</b>: Placholder for conditional logic involving bid being empty</p>
+
+                              </div>
+                            </div>
+                          </div>
+
                         )
                 }
             })
@@ -234,12 +238,12 @@ class PackageCatalog extends Component{
 </div></div>
           )  }else{
                 return(
-                    <div>
-                        <div>
+                  <div className="container">
+                            <div className="row">
                                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                                                     categories={categories} selectValue={this.state.selectValue}/>
                             </div>
-                            <div className='card-deck'>
+                            <div className=' row'>
                                 {packageList}
                             </div>
                     </div>
