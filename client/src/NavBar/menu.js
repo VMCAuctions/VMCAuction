@@ -77,7 +77,7 @@ class Menu extends React.Component{
         }
         return(
 <div className="navBg" id="nav">
-<div className="container navbar navbar-inverse"><div className="row">
+<div className="container navbar-inverse"><div className="row">
 
             <nav className="">
                     <div className="navbar-header">

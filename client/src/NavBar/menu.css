@@ -6,8 +6,9 @@ border-color: #080808;
     background-color: #222;
   }
   #nav .navbar-inverse {
-    height:auto;
+    height:auto; ;
   }
+
   .navBg .navbar-inverse {
     border:none;
   }
@@ -15,6 +16,7 @@ border-color: #080808;
   .navBg .container {
     padding-left:0;
     padding-right:0;
+    margin:0 auto;
   }
 
 .nav li{
@@ -38,4 +40,11 @@ border-color: #080808;
 .navbar-brand {
 
   padding:15px 15px 15px 30px; display: block; float: left;
+}
+
+
+@media screen and (min-width: 768px) {
+  #nav .navbar-right {
+    margin-right:0;
+  }
 }
