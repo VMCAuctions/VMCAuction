@@ -5,3 +5,20 @@
 .search-block{
     display: inline-block;
 }
+
+img.card_img {
+  width:300px
+}
+
+
+
+.package-item {
+
+}
+.package-item h3, .package-item p {
+  text-align: left;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
+}
