@@ -44,3 +44,6 @@
 #packageInfo .form-control {
   width:95%;
 }
+.packageDescription{
+    text-overflow: ellipsis;
+}

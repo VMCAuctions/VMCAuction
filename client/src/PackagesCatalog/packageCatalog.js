@@ -182,7 +182,7 @@ class PackageCatalog extends Component{
                         </tr>
                  )}else {
                         return(
-                          <div key={index} className="col-sm-6 col-md-4 package-item">
+                          <div key={index} className="col-sm-6 col-md-4 col-lg-3 package-item">
                             <div className="thumbnail">
                               <img src="/no-image.png" alt={`${packages.name}`} />
                               <div className="caption">
