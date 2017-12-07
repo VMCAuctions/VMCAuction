@@ -178,20 +178,24 @@ class PackageCatalog extends Component{
                                         <td>{packages._id}</td>
                                         <td>{packages._category}</td>
                                         <td>{packages.description}</td>
-                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>                                        
+                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>
                         </tr>
                  )}else {
                         return(
-                            <div key={index} className="card package_card w-75">
-                                        <img className="card-img-top card_img" src="" alt={`${packages.name}`}/>
-                                        <div className="card-block">
-                                            <h4 className="card-title text-uppercase">{packages.name}</h4>
-                                            <p className="card-text">Category: {packages._category}</p>
-                                            <p className="card-text">STARTING BID: {packages.amount}</p>
-                                            <p className="card-text">Current Bid: Placholder for conditional logic involving bid being empty</p>
-                                            <p className="card-text"><Link to={`/packageDetails/${packages._id}`}>Show</Link></p>
-                                        </div>
-                                    </div>
+                          <div key={index} className="col-sm-6 col-md-4 col-lg-3 package-item">
+                            <div className="thumbnail">
+                              <img src="/no-image.png" alt={`${packages.name}`} />
+                              <div className="caption">
+                                <h3><Link to={`/packageDetails/${packages._id}`}>{packages.name}</Link></h3>
+
+                                  <p><b>Category</b>: {packages._category}</p>
+                                  <p><b>STARTING BID</b>: {packages.amount}</p>
+                                  <p><b>Current Bid</b>: Placholder for conditional logic involving bid being empty</p>
+
+                              </div>
+                            </div>
+                          </div>
+
                         )
                 }
             })
@@ -201,6 +205,7 @@ class PackageCatalog extends Component{
 
     if(localStorage.checkAdmin === 'true'){
         return(
+<div className="container"><div className="row">
         <div>
             <div>
                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
@@ -221,7 +226,7 @@ class PackageCatalog extends Component{
                                 <th>Category </th>
                                 <th>Item Description</th>
                                 <th>Items in Package</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>
@@ -230,14 +235,15 @@ class PackageCatalog extends Component{
                     </table>
                 </div>
         </div>
+</div></div>
           )  }else{
                 return(
-                    <div>
-                        <div>
+                  <div className="container">
+                            <div className="row">
                                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                                                     categories={categories} selectValue={this.state.selectValue}/>
                             </div>
-                            <div className='card-deck'>
+                            <div className=' row'>
                                 {packageList}
                             </div>
                     </div>

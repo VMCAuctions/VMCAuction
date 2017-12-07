@@ -80,13 +80,13 @@ class Package extends Component{
                 selectedItems: [],
                 totalItems: 0,
                 totalValue: 0
-              
+
             })
             window.location.reload();
           }
             //reloading the page after the form has been submitted to show the remaining items that have not been added to a package
-            
-            
+
+
         }).catch((err)=>{
             console.log("Incomplete form submission" + err)
         })
@@ -135,11 +135,11 @@ class Package extends Component{
         })
 
         return(
-
+<div className="container"><div className="row">
             <div id='package-container' className='container-fluid'>
-            
-                <form className='form-inline' onSubmit={this.onPackageFormSubmit}>
-                    <div className='package-info form-group col-sm-2' >
+
+                <form className='form-inline' onSubmit={this.onPackageFormSubmit} id="packageInfo" >
+                    <div className='package-info form-group col-sm-3 nopad' >
                         <h3>Package Info</h3>
                         <label  className="col-sm-2 col-form-label">Package Name</label><br/>
                         <input type='text' name='packageName' className='form-control' value={this.state.packageName} onChange={this.onPackageChange} placeholder='Package Name' required/><br/><br/>
@@ -160,7 +160,7 @@ class Package extends Component{
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
                         <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
                     </div>
-                    <div className="form-group groupingItems col-sm-9">
+                    <div className="form-group groupingItems col-sm-9 nopad">
                         <div className='item-select form'>
                             <h3>Grouping items</h3>
                             <div className='.table-responsive itemsList'>
@@ -178,6 +178,7 @@ class Package extends Component{
                    </div>
                </form>
             </div>
+</div></div>
         )
     }
 }
