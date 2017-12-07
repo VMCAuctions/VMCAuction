@@ -210,7 +210,7 @@ class PackageDetails extends Component{
                             </td>
                           </tr>
                           <tr className="curBid">
-                            <td></td>
+                            <td>Next Bid:</td>
                             <td>
                                 <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
                                 <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit}>Place bid</button>
