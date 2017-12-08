@@ -7,7 +7,8 @@ class Catalog extends Component{
         super(props);
         this.state = {
             listOfItems: [],
-            admin: Boolean
+            admin: Boolean,
+            title: "Catalog"
         }
     }
 
@@ -91,6 +92,7 @@ editItem = (e) =>{
         })
         return(
 <div className="container"><div className="row">
+            <h1 className="h1">{this.state.title}</h1>
             <div className='table-responsive table-container'>
                 <table className='table table-striped table-bordered'>
                     <thead>
