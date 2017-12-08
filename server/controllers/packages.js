@@ -55,26 +55,25 @@ function PackagesController(){
 
 
 		      if(err){
-		        console.log(err);
+				console.log(err);
+				return;
 		      }
 		      else{
 
 			    	for(var i=0; i<package._items.length; i++){
-
 			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
 							if(err){
 								console.log(err);
+								return;
 							}
-	                        else{
-								// changed res.json(package) to return res.send() because set header after send error and resulting data is unnecessary anyways
-                                console.log('submit correctly')
-								return res.json(true);
-	                        }
-						});
-
-			    	}
+							
+						})
+						if (i == package._items.length -1){
+							return res.json(true)
+						}
+					};
+			    }
 			  }
-			}
 		); // end of Package.create
 
 
