@@ -22,3 +22,23 @@ img.card_img {
   white-space: nowrap;
   text-overflow: ellipsis
 }
+
+/********************************/
+/* Temporary patch to display single columns beter, until good table solution */
+/********************************/
+
+  .packageCatalog table td:nth-child(4) {
+    width:50px;
+  }
+  .packageCatalog table td:nth-child(4) {
+    width:50px;
+  }
+  .packageCatalog table td:nth-child(5) {
+    width:50px;
+  }
+  .packageCatalog table td:nth-child(8) {
+    width:50px;
+  }
+  .packageCatalog table td:first-child {
+    min-width: 120px;
+  }

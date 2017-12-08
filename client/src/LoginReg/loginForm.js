@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import './login.css';
 import Axios from 'axios';
 import {Link} from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 class LoginForm extends Component{
     constructor(props){
         super(props)
         this.state = {
             userName:'',
-            password:''
+            password:'',
+            redirect: false
          };
     }
 
@@ -27,30 +29,37 @@ class LoginForm extends Component{
                   password: this.state.password  },
             }).then((response) => {
                 if(response.data.search){
-                    window.location.href ="/package" ;
+                    // window.location.href ="/package" ;
+                    this.setState({
+                      userName:'',
+                      password:'',
+                      redirect: true
+                    });
                 }
-                this.setState({
-                    userName:'',
-                    password:''
-
-                });
                 console.log('response', response.data.user.admin);
             localStorage.setItem('user',response.data.user.userName);
             localStorage.setItem('checkAdmin', response.data.user.admin)
             alert(response.data.message)
-            
+
         }).catch((err) =>{
             console.log(err);
         })
     }
 
     render(){
+
+        // Redirect
+        var redirect  = this.state.redirect;
+        if (redirect) {
+          return <Redirect to='/package'/>;
+        }
+
          return(
 
-            <div className='container'>  
+            <div className='container'>
                 <div className='well login-form'>
                      <h1>Login</h1>
-           
+
                     <form onSubmit={this.formSubmit} >
                         <div className="form-group row" >
                             <label className="col-sm-2 col-form-label">User Name</label>
