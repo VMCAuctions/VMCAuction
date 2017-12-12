@@ -2,12 +2,13 @@ var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
+var path = require("path");
 
 module.exports = function(app) {
 
 	// get the Login/Registration screen.  This is our root route //
-	app.get('/api', function(req,res){
-		users.welcome(req,res)});
+	// app.get('/api', function(req,res){
+	// 	users.welcome(req,res)});
 
 	// ITEMS //
 	// get the index page of all items
@@ -133,6 +134,10 @@ module.exports = function(app) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){ res.sendFile('index.html') });
+		app.get('/*', function(req,res){ 
+			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
+//res.('/var/www/POTR/client/src/index.js');
+			//res.redirect('/');
+		});
 
 }  // end of module.exports

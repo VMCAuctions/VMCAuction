@@ -2,7 +2,7 @@ import React from 'react';
 import './register.css';
 import Axios from 'axios';
 import {Link} from 'react-router-dom';
-
+import { Redirect } from 'react-router';
 
 class RegForm extends React.Component{
     constructor (props){
@@ -18,7 +18,8 @@ class RegForm extends React.Component{
             email:'',
             userName:'',
             password:'',
-            cnfmPassword:''
+            cnfmPassword:'',
+            redirect: false
         };
     }
 
@@ -67,10 +68,11 @@ class RegForm extends React.Component{
                       email:'',
                       userName:'',
                       password:'',
-                      cnfmPassword:''
+                      cnfmPassword:'',
+                      redirect: true
               })
 
-              window.location.href ="/package"
+              // window.location.href ="/package"
               localStorage.setItem('user',response.data.user.userName);
             };
             alert(response.data.message);
@@ -82,6 +84,13 @@ class RegForm extends React.Component{
     }
 
     render(){
+
+      // Redirect
+      var redirect  = this.state.redirect;
+      if (redirect) {
+        return <Redirect to='/package'/>;
+      }
+
         return(
             <div className='container'>
                 <div className='well registration-form'>
