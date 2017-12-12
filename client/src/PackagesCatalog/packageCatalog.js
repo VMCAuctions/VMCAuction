@@ -13,6 +13,7 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
+            title: "Packages/Bids"
             // admin: Boolean,
         }
     }
@@ -205,13 +206,15 @@ class PackageCatalog extends Component{
 
     if(localStorage.checkAdmin === 'true'){
         return(
-<div className="container"><div className="row">
-        <div>
-            <div>
+<div className="container">
+        <div className="row">
+        <h1 className="h1">{this.state.title}</h1>
+
                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                                     categories={categories} selectValue={this.state.selectValue}/>
-            </div>
-            <div className='table-responsive table-container'>
+        </div>
+        <div className="row">
+            <div className='table-responsive table-container packageCatalog'>
                     <table className='table table-striped table-bordered'>
                         <thead>
                             <tr>
@@ -233,13 +236,15 @@ class PackageCatalog extends Component{
                             {packageList}
                         </tbody>
                     </table>
-                </div>
+            </div>
         </div>
-</div></div>
+</div>
           )  }else{
                 return(
                   <div className="container">
                             <div className="row">
+                                <h1 className="h1">{this.state.title}</h1>
+
                                 <SearchBar handleChange={this.handleChange} handleNewLetter={this.handleNewLetter}
                                                     categories={categories} selectValue={this.state.selectValue}/>
                             </div>
