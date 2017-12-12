@@ -134,8 +134,9 @@ module.exports = function(app) {
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
 		app.get('/*', function(req,res){ 
-			//res.sendFile('/var/www/POTR/client/src/index.js');
-			res.redirect('/');
+			res.sendFile('/var/www/POTR/client/build/index.html')
+//res.('/var/www/POTR/client/src/index.js');
+			//res.redirect('/');
 		});
 
 }  // end of module.exports
