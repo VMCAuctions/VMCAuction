@@ -2,6 +2,7 @@ var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
+var path = require("path");
 
 module.exports = function(app) {
 
@@ -134,7 +135,7 @@ module.exports = function(app) {
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
 		app.get('/*', function(req,res){ 
-			res.sendFile('/var/www/POTR/client/build/index.html')
+			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
 //res.('/var/www/POTR/client/src/index.js');
 			//res.redirect('/');
 		});
