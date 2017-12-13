@@ -101,7 +101,7 @@ module.exports = function(app) {
 		users.logout(req,res)});
 
 	// post the user login form  (LOGIN)
-	app.post('/api/users/:id/login', function(req,res){
+	app.post('/api/users/login', function(req,res){
 		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/api/users/:id', function(req,res){
@@ -134,7 +134,7 @@ module.exports = function(app) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){ 
+		app.get('/*', function(req,res){
 			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
 //res.('/var/www/POTR/client/src/index.js');
 			//res.redirect('/');

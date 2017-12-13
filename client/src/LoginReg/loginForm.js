@@ -24,7 +24,7 @@ class LoginForm extends Component{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/api/users/:id/login",
+            url:"/api/users/login",
             data:{userName: this.state.userName,
                   password: this.state.password  },
             }).then((response) => {
