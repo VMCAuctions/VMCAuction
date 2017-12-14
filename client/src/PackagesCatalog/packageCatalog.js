@@ -3,6 +3,7 @@ import Axios from 'axios';
 import './packageCatalog.css';
 import SearchBar from './searchBar.js';
 import {Link} from 'react-router-dom';
+import { log } from 'util';
 
 class PackageCatalog extends Component{
     constructor(props){
@@ -35,8 +36,9 @@ class PackageCatalog extends Component{
             //setting the state of the categories and the list of packages
             this.setState({   listOfPackages: result.data,
                               categories: categories_list,
-                              allPackages: result.data   })
-
+                              allPackages: result.data,
+                              listOfItems: result.data
+                              })
         }).catch((err) =>{
             console.log(err);
         })
@@ -51,7 +53,7 @@ class PackageCatalog extends Component{
         // })
     }
 
-    //when the option is changed it will update the packages on display
+    //when the option is changed it will update the packages on display; category dropdown
     handleChange = (e) =>{
         this.setState({selectValue:e.target.value});
         e.preventDefault();
@@ -64,7 +66,7 @@ class PackageCatalog extends Component{
                 data: { category: e.target.value}
             }).then((result) =>{
                 //sorting the packages according to the highest bid
-                result.data.sort(function(a,b){return b._bids[b._bids.length - 1] - a._bids[a._bids.length - 1]})
+                result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
                 this.setState({ listOfPackages: result.data })
             }).catch((err) =>{
                 console.log("there was an error making it to the server..")
@@ -83,17 +85,21 @@ class PackageCatalog extends Component{
             this.setState({ listOfPackages: this.state.allPackages   })
 
         }else{
+            console.log(this.state.listOfItems)
             //first checking if there are items at all
             if(this.state.listOfItems.length !== 0){
                 //iterating through the list of items pulled from the DB
                 for(var i = 0; i < this.state.listOfItems.length; i++){
+                    for(let j = 0; j < this.state.listOfItems[i]._items.length; j++){
                     //converting each string to lowercase to match the input //we have to check the items name, description, and donor name
-                    let name = this.state.listOfItems[i].name.toLowerCase()
-                    let donor = this.state.listOfItems[i].donor.toLowerCase();
-                    let description = this.state.listOfItems[i].description.toLowerCase();
+                    let name = this.state.listOfItems[i]._items[j].name.toLowerCase()
+                    let donor = this.state.listOfItems[i]._items[j].donor.toLowerCase();
+                    let description = this.state.listOfItems[i]._items[j].description.toLowerCase();
                     //checking if the input matches any of the words in the item name //if there is a match add it to the array of selected items
                     if(name.indexOf(input_letters) >= 0 || donor.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
                         selected_items.push(this.state.listOfItems[i])
+                        
+                    }
                     }
                 }
             }
@@ -119,7 +125,7 @@ class PackageCatalog extends Component{
 
                     //if the selected item's package matches one of the package id's
                     //AND if it has not already been added to the array, push it to the selected packages array
-                    if(selected_items[m]._package === this.state.allPackages[n]._id ){
+                    if(selected_items[m]._id === this.state.allPackages[n]._id ){
                         if(selected_packages.includes(this.state.allPackages[n]) === false){
                             if(this.state.allPackages[n]._category === this.state.selectValue || this.state.selectValue === "All Categories"){
                                 selected_packages.push(this.state.allPackages[n]);
