@@ -24,7 +24,7 @@ class LoginForm extends Component{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/api/users/:id/login",
+            url:"/api/users/login",
             data:{userName: this.state.userName,
                   password: this.state.password  },
             }).then((response) => {
@@ -35,10 +35,10 @@ class LoginForm extends Component{
                       password:'',
                       redirect: true
                     });
+                    console.log('response', response.data.user.admin);
+                    localStorage.setItem('user',response.data.user.userName);
+                    localStorage.setItem('checkAdmin', response.data.user.admin);
                 }
-                console.log('response', response.data.user.admin);
-            localStorage.setItem('user',response.data.user.userName);
-            localStorage.setItem('checkAdmin', response.data.user.admin)
             alert(response.data.message)
 
         }).catch((err) =>{
