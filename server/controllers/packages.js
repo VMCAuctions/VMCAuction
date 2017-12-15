@@ -20,7 +20,7 @@ function PackagesController(){
 						res.status(500).send('Failed to Load Packages');
 				}
 				else {
-						res.json(packages);
+						res.json({packages: packages, admin:req.session.admin});
 					}
 				})  // ends Package.find
 
@@ -43,10 +43,10 @@ function PackagesController(){
 	    if (req.body.selectedItems.length == 0){
           console.log()
           console.log('reached empty item list')
-          return res.json(false)  
+          return res.json(false)
         }
-        
-        
+
+
         Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
 	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
 			bid: [], amount: req.body.openingBid
@@ -66,7 +66,7 @@ function PackagesController(){
 								console.log(err);
 								return;
 							}
-							
+
 						})
 						if (i == package._items.length -1){
 							return res.json(true)
@@ -91,7 +91,7 @@ function PackagesController(){
 				console.log(err);
 			}
 			else{
-				res.json(result);
+				res.json({packages: result});
 			}
 		})
 	};

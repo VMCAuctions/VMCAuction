@@ -30,9 +30,14 @@ class ItemEntryAdmin extends Component{
         //Get request for category dropdown list
         Axios.get("/api/categories")
         .then((response)=>{
-            this.setState({
-                selectOptions: response.data
-            })
+            if (!response.data.admin){
+              window.location = "/"
+            }
+            else{
+              this.setState({
+                  selectOptions: response.data.categories
+              })
+            }
         }).catch((err)=>{
             console.log("categoryList failed", err)
         })

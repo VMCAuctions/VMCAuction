@@ -14,8 +14,8 @@ class PackageCatalog extends Component{
             categories: [],
             listOfItems: [],
             allPackages: [],
-            title: "Packages/Bids"
-            // admin: Boolean,
+            title: "Packages/Bids",
+            admin: "",
         }
     }
 
@@ -27,17 +27,19 @@ class PackageCatalog extends Component{
         .then((result) =>{
             //adding to the categories drop down menu, not including duplicates//
             let categories_list = [];
-            result.data.map((categories) =>{
+            result.data.packages.map((categories) =>{
                 if(categories_list.includes(categories._category) === false){
                     categories_list.push(categories._category);
                 } })
             //sorting the packages by highest bid..
-            result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
+            result.data.packages.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
-            this.setState({   listOfPackages: result.data,
+            // console.dir(result.data)
+            this.setState({   listOfPackages: result.data.packages,
                               categories: categories_list,
-                              allPackages: result.data,
-                              listOfItems: result.data
+                              allPackages: result.data.packages,
+                              listOfItems: result.data.packages,
+                              admin: result.data.admin
                               })
         }).catch((err) =>{
             console.log(err);
@@ -98,7 +100,7 @@ class PackageCatalog extends Component{
                     //checking if the input matches any of the words in the item name //if there is a match add it to the array of selected items
                     if(name.indexOf(input_letters) >= 0 || donor.indexOf(input_letters) >= 0 || description.indexOf(input_letters) >= 0){
                         selected_items.push(this.state.listOfItems[i])
-                        
+
                     }
                     }
                 }
@@ -169,7 +171,7 @@ class PackageCatalog extends Component{
         let action_button ='';
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => {
-            if(localStorage.checkAdmin === 'true'){
+            if(this.state.admin === true){
                 action_button_header = <th>Actions</th>
                 action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
                                         <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
@@ -209,8 +211,7 @@ class PackageCatalog extends Component{
     let categories = this.state.categories.map((category,index) =>{
                         return( <option key={index} value={category}>{category}</option> )
                     })
-
-    if(localStorage.checkAdmin === 'true'){
+    if(this.state.admin === true){
         return(
 <div className="container">
         <div className="row">
