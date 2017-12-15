@@ -59,9 +59,8 @@ class PackageDetails extends Component{
         Axios.get("/api/packages/" + packIdId)
         .then((result) =>{
             console.log(result)
-          this.setState({
-                listOfPackages: result.data
-
+            this.setState({
+                  listOfPackages: result.data.packages
             })
         }).catch((err) =>{
             console.log(err);
@@ -223,7 +222,7 @@ class PackageDetails extends Component{
                             <p className="packdescription">{packageDescription}</p>
                             <h5>Items in package: </h5>
                               <p className="packdescription">{itemsInPackage}</p>
-                            
+
                         </div>
                         <Link to='/package'>Back to All Packages</Link>
 
