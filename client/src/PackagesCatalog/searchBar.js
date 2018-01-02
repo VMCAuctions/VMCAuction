@@ -19,7 +19,7 @@ class SearchBar extends Component{
                             <option value="All Categories">All Categories</option>
                             {this.props.categories}  
                         </select>
-                        <input type='text' className='form-control' onChange={this.handleChange} placeholder='KeywordSearch' />                            
+                        <input type='text' className='form-control' onChange={this.handleNewLetter} placeholder='KeywordSearch' />                            
                     </div>
                 </div>
 

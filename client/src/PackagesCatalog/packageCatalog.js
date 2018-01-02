@@ -10,7 +10,7 @@ class PackageCatalog extends Component{
         super(props);
         this.state = {
             listOfPackages: [],
-            selectValue: '',
+            selectValue: 'All Categories',
             categories: [],
             listOfItems: [],
             allPackages: [],
@@ -27,10 +27,11 @@ class PackageCatalog extends Component{
         .then((result) =>{
             //adding to the categories drop down menu, not including duplicates//
             let categories_list = [];
-            result.data.map((categories) =>{
-                if(categories_list.includes(categories._category) === false){
-                    categories_list.push(categories._category);
-                } })
+            result.data.map((packages) =>{
+                if(categories_list.includes(packages._category) === false){
+                   categories_list.push(packages._category);
+                } 
+            })
             //sorting the packages by highest bid..
             result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             //setting the state of the categories and the list of packages
@@ -55,23 +56,38 @@ class PackageCatalog extends Component{
 
     //when the option is changed it will update the packages on display; category dropdown
     handleChange = (e) =>{
-        this.setState({selectValue:e.target.value});
-        e.preventDefault();
-        if(e.target.value === "All Categories"){
+        this.setState({
+            selectValue: e.target.value
+        })
+        if(e.target.value === 'All Categories'){
             this.setState({ listOfPackages: this.state.allPackages })
-        }else{
-            Axios({
-                method: "post",
-                url: "/api/get_selected_packages",
-                data: { category: e.target.value}
-            }).then((result) =>{
-                //sorting the packages according to the highest bid
-                result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
-                this.setState({ listOfPackages: result.data })
-            }).catch((err) =>{
-                console.log("there was an error making it to the server..")
+        } else{
+            let filterPackages = [];
+             this.state.allPackages.map((packages)=>{
+                if(e.target.value === packages._category){
+                    filterPackages.push(packages);
+                }
             })
-        }
+        this.setState({ listOfPackages : filterPackages});
+
+    }
+    //     this.setState({selectValue:e.target.value});
+    //     e.preventDefault();
+    //     if(e.target.value === "All Categories"){
+    //         this.setState({ listOfPackages: this.state.allPackages })
+    //     }else{
+    //         Axios({
+    //             method: "post",
+    //             url: "/api/get_selected_packages",
+    //             data: { category: e.target.value}
+    //         }).then((result) =>{
+    //             //sorting the packages according to the highest bid
+    //             result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
+    //             this.setState({ listOfPackages: result.data })
+    //         }).catch((err) =>{
+    //             console.log("there was an error making it to the server..")
+    //         })
+    //     }
     }
 
     //this function deals with the user locating packages, this function is run after every new letter
@@ -165,7 +181,7 @@ class PackageCatalog extends Component{
     }
 
     render(){
-        console.log("packages:", this.state.listOfPackages);
+        // console.log("packages:", this.state.listOfPackages);
         let action_button ='';
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => {
