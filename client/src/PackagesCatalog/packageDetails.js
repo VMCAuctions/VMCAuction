@@ -5,9 +5,15 @@ import {Link} from 'react-router-dom';
 
   // socket import
   import openSocket from 'socket.io-client';
-  var host = "http://"+window.location.hostname ;
 
-  const socket = openSocket('http://localhost:8000');
+  if (process.env.NODE_ENV === "production") {
+    // for DEPLOYMENT;
+    var host = "http://" + window.location.hostname;
+  } else {
+    // for LOCAL;
+    var host = "http://localhost:8000";
+  }
+  const socket = openSocket(host);
 
   // subscribe to bids from server
   function subscribeToBids(cb, packId ) {
@@ -20,12 +26,12 @@ import {Link} from 'react-router-dom';
 
   // make a bid
   function makeABid(cb, objectWithdata) {
-    var uniqChatUpdateId = 'update_chat' + objectWithdata.packId;
-    // receiving data from server on "update Chat"
-    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
     // sending event to refresh bids
     socket.emit('msg_sent', objectWithdata);
   }
+
+  var socket_updated = false;
+
 
 class PackageDetails extends Component{
     constructor(props){
@@ -34,16 +40,12 @@ class PackageDetails extends Component{
             packageId: this.props.match.params.packageId,
             listOfPackages: '',
             place_bid: '',
-
-
             // our sockets default value
-
             bidsUpdate: {
               lastBid:"...",
               userBidLast: "..",
               socket_current_bid: false
             }
-
         }
 
         // function to update sockets
@@ -51,7 +53,6 @@ class PackageDetails extends Component{
           bidsUpdate
         }), this.state.packageId ); // {this.state.bidsUpdate}
     }
-
 
     componentDidMount(){
       console.log("hi");
@@ -64,9 +65,25 @@ class PackageDetails extends Component{
             console.log(err);
         })
 
+
+        // We are always listening to dedicated for this package channel for
+        // emitted by server messegase with te same uniq name
+        // step 1: generating uniq channel name
+        var packIdId = this.props.match.params.packageId;
+        var packIdchannel = 'update_chat' + packIdId;
+        var self = this;
+        socket_updated = false;
+        // step 2: making sockets to listening to this channel
+        socket.on(packIdchannel,function(data){
+          self.updateStateAfterBidding();
+        })
+
+
     }
 
-
+    updateStateAfterBidding = () =>{
+      socket_updated = true;
+    }
 
 
     placeBidSubmit = () =>{
@@ -94,26 +111,9 @@ class PackageDetails extends Component{
       }).catch((err) =>{
           console.log(err);
       })
-
-
     }
 
     render(){
-
-      // We are always listening to dedicated for this package channel for
-      // emitted by server messegase with te same uniq name
-      // step 1: generating uniq channel name
-      var packIdId = this.props.match.params.packageId;
-      var packIdchannel = 'update_chat' + packIdId;
-      var self = this;
-      // step 2: making sockets to listening to this channel
-      socket.on(packIdchannel,function(data){
-        console.log(packIdchannel);
-        console.log("listening successfully");
-        console.log(data);
-
-        self.componentDidMount()
-      })
 
 
         // trying to find the index of the (show)package from the array
@@ -141,7 +141,7 @@ class PackageDetails extends Component{
                 packageDescription = packagedata[key];
             }else if(key === 'value'){
                 packageValue = packagedata[key];
-                if (packageValue == 0){
+                if (packageValue === 0){
                   packageValue = "Priceless"
                 }
             }else if( key === '_items'){
@@ -158,30 +158,32 @@ class PackageDetails extends Component{
         //listing the items in the package
         let itemsInPackage = packageItems.map((item, index)=>{
             return(
-                <li key={index}>{item.name}</li>
+                <div key={index}>
+                    <li>{item.name} - {item.description} - by <span className='donor-info'>{ item.donor}</span></li>
+                    <p>Item Restriction - {item.restriction}</p>
+                </div>
             )
         })
         //current_bid
         let current_bid = starting_bid;
-        if (bids.length != 0){
+        if (bids.length !== 0){
           current_bid = bids[bids.length - 1].bidAmount
         }
         //Place bid
 
         //Discovered this is a timing issue: current bid is not defined when this "render" function takes place, so it can't look inside of it; however, the function works when you don't look inside of it, because it is null and then changes to the object on render
+        if(socket_updated && typeof this.state.bidsUpdate.lastBid == 'number'){
+          this.state.place_bid = parseInt((this.state.bidsUpdate.lastBid),10) + bid_increment;
 
-        this.state.place_bid = current_bid + bid_increment;
-
-
-
+        } else {
+          this.state.place_bid = current_bid + bid_increment;
+        }
 
         //conditional rendering
         if(this.state.listOfPackages){
         return(
             <div className='container-fluid bidContainer'>
             <div className='bids'>
-            Last bid: {this.state.bidsUpdate.lastBid}<br/>
-            Made by: <b>{this.state.bidsUpdate.userBidLast}</b>
             </div>
                 <div className='row'>
                     <div className='imgNtitle  pull-left col-xs-12 col-sm-6 col-md-3'>
@@ -194,7 +196,11 @@ class PackageDetails extends Component{
                         <h4>Starting Bid: {starting_bid}</h4>
 
                         <div className='bidSection'>
-                            <h4>Current Bid:{}</h4>
+                            <div>
+                                <h5>Current Bid: <b>{this.state.bidsUpdate.lastBid}</b> Made by- <b>{this.state.bidsUpdate.userBidLast}</b></h5>
+
+                            </div>
+                            <h4>Place Next Bid</h4>
                             <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
                             <input className='placeBid btn-primary' type='submit'  value='Place Bid!!' onClick={this.placeBidSubmit}/>
                             <br/>

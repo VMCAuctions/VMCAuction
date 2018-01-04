@@ -166,6 +166,7 @@ class PackageCatalog extends Component{
     }
 
     render(){
+        console.log("packages:", this.state.listOfPackages);
         let action_button ='';
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => {
@@ -176,20 +177,21 @@ class PackageCatalog extends Component{
                     return(
                         <tr key={index}>
                                         {action_button}
-                                        <td>{packages._id}</td>
+                                        <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
                                         <td>{packages.name}</td>
-                                        <td>{packages._category}</td>
                                         <td>{packages.value}</td>
-                                        <td>{packages.description}</td>
+                                        <td>{packages.amount}</td>
                                         <td>{packages.bid_increment}</td>
                                         <td>{}</td>
-                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>
-                                        <td><Link to={`/packageDetails/${packages._id}`}>Show</Link></td>
+                                        <td>{packages._id}</td>
+                                        <td>{packages._category}</td>
+                                        <td>{packages.description}</td>
+                                        <td>{packages._items.map((item,index)=>{ 	return <li key={index} >{item.name}</li>}) } </td>                                        
                         </tr>
                  )}else {
                         return(
                             <div key={index} className="card package_card w-75">
-                                        <img className="card-img-top card_img" src="" alt={`${packages.name} Image`}/>
+                                        <img className="card-img-top card_img" src="" alt={`${packages.name}`}/>
                                         <div className="card-block">
                                             <h4 className="card-title text-uppercase">{packages.name}</h4>
                                             <p className="card-text">Category: {packages._category}</p>
@@ -217,15 +219,17 @@ class PackageCatalog extends Component{
                         <thead>
                             <tr>
                                 {action_button_header}
-                                <th>Package Number</th>
-                                <th>Package Name</th>
-                                <th>Category </th>
-                                <th>Package Value</th>
-                                <th>Item Description</th>
-                                <th>Increments</th>
-                                <th>Starting Bid</th>
-                                <th>Items in Package</th>
                                 <th>Details</th>
+                                <th>Package Name</th>
+                                <th>Package Value</th>
+                                <th>Starting Bid</th>
+                                <th>Increments</th>
+                                <th>Current Bid</th>
+                                <th>Package Number</th>
+                                <th>Category </th>
+                                <th>Item Description</th>
+                                <th>Items in Package</th>
+                                
                             </tr>
                         </thead>
                         <tbody>

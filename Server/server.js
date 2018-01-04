@@ -30,7 +30,12 @@ var path = require("path");
 
 
 // static content
-app.use(express.static(path.join(__dirname, "../client/public")));
+// static content
+if (process.env.NODE_ENV === "production") {
+		app.use(express.static(path.join(__dirname, "../client/build")));
+} else {
+		app.use(express.static(path.join(__dirname, "../client/public")));
+}
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
 
