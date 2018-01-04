@@ -27,8 +27,8 @@ class PackageCatalog extends Component{
         .then((result) =>{
             //adding to the categories drop down menu, not including duplicates//
             let categories_list = [];
-
-            result.data.map((packages) =>{
+            console.log("Result", Array.isArray(result.data.packages), result.data.packages);
+            result.data.packages.map((packages) =>{
                 if(categories_list.includes(packages._category) === false){
                    categories_list.push(packages._category);
                 } 
