@@ -16,22 +16,10 @@ class Catalog extends Component{
         Axios.get("/api/items")
         .then((result) =>{
             this.setState({
-                listOfItems: result.data
-            })
-        }).catch((err) =>{
-            console.log(err);
-        })
-
-        //loading user information:
-        //if the user's name is administrator then they have admin access
-        Axios.get("/api/which_user_is_logged_in")
-        .then((result) =>{
-            console.log("if true they are admin, if false they are not: ", result.data.admin);
-            this.setState({
+                listOfItems: result.data.listOfItems,
                 admin: result.data.admin
             })
-        })
-        .catch((err) =>{
+        }).catch((err) =>{
             console.log(err);
         })
     }

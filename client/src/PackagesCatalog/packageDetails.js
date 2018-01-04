@@ -58,9 +58,8 @@ class PackageDetails extends Component{
         Axios.get("/api/packages/" + packIdId)
         .then((result) =>{
             console.log(result)
-          this.setState({
-                listOfPackages: result.data
-
+            this.setState({
+                  listOfPackages: result.data.packages
             })
         }).catch((err) =>{
             console.log(err);
@@ -172,6 +171,7 @@ class PackageDetails extends Component{
         //conditional rendering
         if(this.state.listOfPackages){
         return(
+
             <div className="container">
                 <div className="row">
                     <div className='container-fluid bidContainer'>
