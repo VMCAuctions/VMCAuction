@@ -72,7 +72,7 @@ class Package extends Component{
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue}
             }).then((response) =>{
-            if (response.data == false){
+            if (response.data === false){
               alert("Package cannot be empty.")
             }
           else{
