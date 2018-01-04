@@ -14,9 +14,9 @@ class DisplayItems extends Component{
         Axios.get("/api/items")
         .then((result) =>{
             let unpackaged_items = [];
-            for(var i = 0; i < result.data.length; i++){
-                if(result.data[i].packaged === false){
-                    unpackaged_items.push(result.data[i])
+            for(var i = 0; i < result.data.listOfItems.length; i++){
+                if(!result.data.listOfItems[i].packaged){
+                    unpackaged_items.push(result.data.listOfItems[i])
                 }
             }
             this.setState({
@@ -45,6 +45,7 @@ class DisplayItems extends Component{
     render(){
         //maping the array of objects into table data
         let items = this.state.itemsList.map((item,index) =>{
+            console.log("items is", items)
             return(
                 <tr key={index} >
                     <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
