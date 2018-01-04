@@ -176,7 +176,7 @@ class PackageCatalog extends Component{
             data: { package_id: e.target.id}
         }).then((result) =>{
             Axios.get('/api/packages')
-            .then((result=>{    this.setState({  listOfPackages: result.data}) } ))
+            .then((result=>{    this.setState({  listOfPackages: result.data.packages}) } ))
             .catch((err)=>{ console.log(err); })
         }).catch((err) =>{
             console.log(err);
