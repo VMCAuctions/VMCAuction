@@ -12,7 +12,7 @@ var itemSchema = new Schema({
  _category: String,
  //_category: {type: Schema.Types.ObjectId, ref: 'Category'},
  donor: {type: String, default: 'anonymous'},
- restrictions: {type: String, maxlength: 250},
+ restrictions: {type: String},
  value: Number,
  packaged: Boolean,
 
