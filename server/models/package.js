@@ -9,19 +9,21 @@ mongoose.Promise = global.Promise;
 
 var packageSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
- _items: [{type: Number, ref: 'Item'}],
- description: {type: String, maxlength: 250},
+ _items: [{type: Number, required: true, ref: 'Item'}],
+ description: {type: String},
  //donor: {type: String, default: 'anonymous'}, // can access donor(s) by looping for item in package._items { item.donor }
 // <<<<<<< Updated upstream
   _category: String,
 // _category: {type: Schema.Types.ObjectId, ref: 'Category'},
 // >>>>>>> Stashed changes
  value: Number,  // maybe prepopulate field with for item in package._items { value += item.value }
+ amount: Number,
 
 
  bid_increment: Number,  // increment is a reserved word, so used bid_increment
- _bids: [{type: Schema.Types.ObjectId, ref: 'Bid'}],  //oringally Schema.Types.ObjectId, changing it to Number
 
+ bids: {type: Array},
+//Joey & Yarik: Will add in more structure to the model later (userid, bid, username)
 
  photo: String // or access item in _items { item.photo }
 }, { timestamps: true });

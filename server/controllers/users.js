@@ -47,7 +47,6 @@ function UsersController(){
                   ["zip", 5, "zip code"],
                   ["phoneNumber", 10, "phone number"],
                   ["email", 5, "email address"],
-									["creditCard", 15, "credit card"],
                   ["userName", 5, "user name"],
                   ["password", 6, "password"]
 								];
@@ -59,7 +58,16 @@ function UsersController(){
 								}
 								return output
 							}
-							const validation = registrationValidation()
+							var validation = registrationValidation()
+
+							console.log("before new regex, validation is", validation)
+							var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+							var unValidatedEmail = req.body.email;
+							var result = unValidatedEmail.match(reg);
+							if (!result){
+								validation += "Invalid email.\n"
+							}
+							console.log("after new regex, validation is", validation)
 
 							if(validation.length > 0){
 								res.json({validated: false, message: validation})
@@ -75,7 +83,6 @@ function UsersController(){
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
 								email: req.body.email,
-								creditCard: req.body.creditCard,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -85,7 +92,7 @@ function UsersController(){
 							},
 							function(err, user){
 									if(err){
-										console.log(err)										
+										console.log(err)
 									}
 									else{
 										req.session.userName = user.userName
@@ -162,7 +169,7 @@ function UsersController(){
 		if (req.session.userName != undefined){
 			login_check = true;
 		}
-
+		console.log(login_check);
 		if(req.session.admin == true){
 			admin = true;
 		}else{
@@ -173,18 +180,11 @@ function UsersController(){
 
 	this.logout = function(req,res){
 		req.session.destroy();
+        return res.json(true)
 
-		req.session.save(function(err, result){
-			if(err){
-				console.log(err)
-			}
-			else{
-				res.json("Logout Successful")
-			}
-		})
 	}
 
-	this.who_is_logged_in = function(req, res){		
+	this.who_is_logged_in = function(req, res){
 		if(req.session.admin == true){
 			res.json({admin: true})
 		}else{

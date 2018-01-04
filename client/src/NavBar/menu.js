@@ -16,10 +16,11 @@ class Menu extends React.Component{
     logOut = () => {
       Axios({
           method: "get",
-          url: "/users/logout",
+          url: "/api/users/logout",
           data: {}
       }).then((response) => {
-          this.loggedin()
+         localStorage.clear();
+
       }).catch((err) =>{
           console.log(err);
       })
@@ -28,12 +29,12 @@ class Menu extends React.Component{
     loggedin = () => {
       Axios({
           method: "get",
-          url: "/users/loggedin",
+          url: "/api/users/loggedin",
           data: {}
       }).then((response) => {
-          if (response.data.login_check !== this.state.loggedin){
+         if (response.data.login_check !== this.state.loggedIn){
             this.setState({
-                    loggedin: response.data.login_check,
+                    loggedIn: response.data.login_check,
                     admin : response.data.admin
             })
           }
@@ -45,15 +46,16 @@ class Menu extends React.Component{
     componentWillMount(){
         this.loggedin();
     }
-    
+
     componentWillUpdate(){
         this.loggedin();
     }
-    
+
     render(){
         var htmlLogCode = "";
-        if (this.state.loggedin === true){
+        if (this.state.loggedIn === true){
           htmlLogCode = <div>
+                            <li>Hi, {localStorage.user} </li>
                             <li><Link to='/' onClick={this.logOut}><span className="glyphicon glyphicon-log-out"></span> Logout</Link></li>
                         </div>
         }
@@ -74,21 +76,20 @@ class Menu extends React.Component{
             htmlAdminPackage = <li><Link to='/packages/new'>Package</Link></li>
         }
         return(
-            <nav className="navbar navbar-inverse">
-                <div className="container-fluid">
+<div className="navBg" id="nav">
+<div className="container navbar-inverse"><div className="row">
+
+            <nav className="">
                     <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false">
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/">VMC POTR</a>
+                        <Link to='/' className="navbar-brand" >VMC POTR</Link>
                     </div>
                     <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav">
-                            <li>
-                                <Link to='/'>Home</Link>
-                            </li>
                             {htmlAdminItems}
                             <li>
                                 <Link to='/items'>Catalog</Link>
@@ -103,8 +104,10 @@ class Menu extends React.Component{
                             {htmlLogCode}
                         </ul>
                     </div>
-                </div>
-          </nav>
+              </nav>
+
+</div></div>
+</div>
         )
     }
 }

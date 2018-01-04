@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
-	Bid = require('../models/bid.js'),
 	User = require('../models/user.js');
 
 
@@ -11,14 +10,17 @@ function PackagesController(){
 	this.index = function(req,res){
 		console.log('PackagesController index');
 
-		Package.find({}).populate("_bids").populate("_items").exec(function(err, packages) {
+		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
+
+		Package.find({}).populate("_items").exec(function(err, packages) {
+
 				// This is the method that finds all of the packages from the database
 				if(err) {
 						console.log('Package Index Error');
 						res.status(500).send('Failed to Load Packages');
 				}
 				else {
-						res.json(packages);
+						res.json({packages: packages, admin:req.session.admin});
 					}
 				})  // ends Package.find
 
@@ -36,56 +38,42 @@ function PackagesController(){
 		console.log('PackagesController create');
 
 
-
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
-	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category},
+	    if (req.body.selectedItems.length == 0){
+          console.log()
+          console.log('reached empty item list')
+          return res.json(false)
+        }
+
+
+        Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
+	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
+			bid: [], amount: req.body.openingBid
+			},
 	    	function(err, package){
 
 
 		      if(err){
-		        console.log(err);
+				console.log(err);
+				return;
 		      }
 		      else{
-		       	// currently setting package._bids[0] to be the opening bid with no user associated with it
-	     		Bid.create({amount: req.body.openingBid, _package: package._id}, function(err, bid){
-	     			if(err){
-	     				console.log(err);
-		      		}
-		      		else{
-		
-		      			
-		        		Package.update({_id: package._id}, { $push: { _bids : bid._id }}, function(err,result){
-		        			if(err){
-		        				console.log(err);
-		        			}
-		        			else{
-		        				console.log(result);
-		        			}
-		        		}); // end of Package.update inside Bid.create
-		      		}
-		    	}); // end of Bid.create()
 
+			    	for(var i=0; i<package._items.length; i++){
+			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
+							if(err){
+								console.log(err);
+								return;
+							}
 
-
-
-		    	// update the items in this package to reflect item._package == this package._id we're creating
-
-		    	for(var i=0; i<package._items.length; i++){
-
-		    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
-						if(err){
-							console.log(err);
+						})
+						if (i == package._items.length -1){
+							return res.json(true)
 						}
-                        else{
-                          res.json(package);
-                        }
-					});
-
-		    	}
+					};
+			    }
 			  }
-			}
 		); // end of Package.create
 
 
@@ -98,12 +86,12 @@ function PackagesController(){
 	this.show = function(req,res){
 		console.log('PackagesController show');
 		// sending ID by url or in req.body????????????????
-		Package.findById(req.params.id, function(err,result){
+		Package.findById(req.params.id).populate("_items").exec(function(err,result){
 			if(err){
 				console.log(err);
 			}
 			else{
-				res.json(result);
+				res.json({packages: result});
 			}
 		})
 	};
@@ -122,7 +110,7 @@ function PackagesController(){
 		        package.name = req.body.packageName || package.name;
 
 		        package.description = req.body.packageDescription || package.description;
-		        package._bids[0] = req.body.openingBid || package._bids[0];
+		        package.bids[0] = req.body.openingBid || package.bids[0];
 		        package.value = req.body.fairMarketValue || package.value;
 		        package.bid_increment = req.body.increments || package.bid_increment;
 		        package._category = req.body.category || package._category;
@@ -144,9 +132,9 @@ function PackagesController(){
 		            }
 		            else{
 		            	// update the items in this package
-		    			for(id in package._items){
-		    				Item.update({_id: id}, { $set: { _package: package.id}}, callback);
-		    			}
+		    					for(id in package._items){
+		    						Item.update({_id: id}, { $set: { _package: package.id}}, callback);
+		    					}
 
 		            	res.json(package);
 		            }

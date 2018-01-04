@@ -8,11 +8,11 @@ mongoose.Promise = global.Promise;
 
 var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
- description: {type: String, required: true, minlength: 4, maxlength: 250},
+ description: {type: String, required: true, minlength: 4},
  _category: String,
  //_category: {type: Schema.Types.ObjectId, ref: 'Category'},
  donor: {type: String, default: 'anonymous'},
- restrictions: {type: String, maxlength: 250},
+ restrictions: {type: String},
  value: Number,
  packaged: Boolean,
 

@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import './login.css';
 import Axios from 'axios';
 import {Link} from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 class LoginForm extends Component{
     constructor(props){
         super(props)
         this.state = {
             userName:'',
-            password:''
+            password:'',
+            redirect: false
          };
     }
 
@@ -17,42 +19,56 @@ class LoginForm extends Component{
             [e.target.name] : e.target.value
         })
     }
-    
+
     formSubmit = (e) =>{
         e.preventDefault(); // prevent default form submission behaviour
         Axios({
             method: "post",
-            url:"/users/:id/login",
+            url:"/api/users/login",
             data:{userName: this.state.userName,
                   password: this.state.password  },
             }).then((response) => {
                 if(response.data.search){
-                    window.location.href ="/package"
+                    // window.location.href ="/package" ;
+                    this.setState({
+                      userName:'',
+                      password:'',
+                      redirect: true
+                    });
+                    console.log('response', response.data.user.admin);
+                    localStorage.setItem('user',response.data.user.userName);
+                    localStorage.setItem('checkAdmin', response.data.user.admin);
                 }
-                this.setState({
-                    userName:'',
-                    password:''
-                })
             alert(response.data.message)
+
         }).catch((err) =>{
             console.log(err);
         })
     }
-    
+
     render(){
+
+        // Redirect
+        var redirect  = this.state.redirect;
+        if (redirect) {
+          return <Redirect to='/package'/>;
+        }
+
          return(
-            <div className='well container'>  
-                <label><h1>Login</h1> </label>
-                <div className='login-form '>
+
+            <div className='container'>
+                <div className='well login-form'>
+                     <h1>Login</h1>
+
                     <form onSubmit={this.formSubmit} >
                         <div className="form-group row" >
                             <label className="col-sm-2 col-form-label">User Name</label>
                             <div className="col-sm-10">
-                                <input className='form-control' type='text' id='userName' name='userName' 
+                                <input className='form-control' type='text' id='userName' name='userName'
                                         placeholder='User Name' onChange={this.handleChange} value={this.state.userName} required  />
                             </div>
                         </div>
-                       
+
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label">Password</label>
                             <div className="col-sm-10">
@@ -73,4 +89,3 @@ class LoginForm extends Component{
     }
 }
 export default LoginForm;
-

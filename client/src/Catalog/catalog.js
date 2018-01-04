@@ -7,30 +7,19 @@ class Catalog extends Component{
         super(props);
         this.state = {
             listOfItems: [],
-            admin: Boolean
+            admin: Boolean,
+            title: "Catalog"
         }
     }
 
     componentDidMount(){
-        Axios.get("/items")
+        Axios.get("/api/items")
         .then((result) =>{
             this.setState({
-                listOfItems: result.data
-            })
-        }).catch((err) =>{
-            console.log(err);
-        })
-
-        //loading user information:
-        //if the user's name is administrator then they have admin access
-        Axios.get("/which_user_is_logged_in")
-        .then((result) =>{
-            console.log("if true they are admin, if false they are not: ", result.data.admin);
-            this.setState({
+                listOfItems: result.data.listOfItems,
                 admin: result.data.admin
             })
-        })
-        .catch((err) =>{
+        }).catch((err) =>{
             console.log(err);
         })
     }
@@ -45,29 +34,36 @@ editItem = (e) =>{
         this.setState({listOfItems:this.state.listOfItems})
         Axios({
             method: "post",
-            url: "/remove_item",
+            url: "/api/remove_item",
             data: { item_id: e.target.id}
         }).then((result) =>{
-            console.log("Was able to remove a item from the list", result)                     
+            console.log("Was able to remove a item from the list", result)
         }).catch((err) =>{
             console.log("there was an error making it to the server..")
         })
     }
 
     render(){
-        let action_button_header;       
+        let action_button_header = "";
         let itemsList = this.state.listOfItems.map((item,index) =>{
             let action_button ;
             // only shoing a delete button if they have admin access
             //only deleting items that are not packaged
             if(this.state.admin === true){
                 action_button = <td>In Package</td>
+                action_button_header = <th>Actions</th>
                 if(item.packaged === false){
                     action_button = <td><button onClick={this.editItem} id={item._id} value={index}>Edit</button>
                                         <button onClick={this.deleteItem} id={item._id} value={index}>Delete</button></td>
                     action_button_header = <th>Actions</th>
                 }
             }
+            if (item.value === 0){
+              item.value = "Priceless"
+            }
+
+
+
 
             return(
                 <tr key={index}>
@@ -83,6 +79,8 @@ editItem = (e) =>{
             )
         })
         return(
+<div className="container"><div className="row">
+            <h1 className="h1">{this.state.title}</h1>
             <div className='table-responsive table-container'>
                 <table className='table table-striped table-bordered'>
                     <thead>
@@ -94,14 +92,15 @@ editItem = (e) =>{
                             <th>Fair Market Value</th>
                             <th>Item Description</th>
                             <th>Donor</th>
-                            <th>Item Restriction</th>                            
+                            <th>Item Restriction</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {itemsList}                        
+                        {itemsList}
                     </tbody>
                 </table>
             </div>
+</div></div>
         )
     }
 }
