@@ -11,12 +11,12 @@ class DisplayItems extends Component{
     }
 
     componentDidMount(){
-        Axios.get("/items")
+        Axios.get("/api/items")
         .then((result) =>{
             let unpackaged_items = [];
-            for(var i = 0; i < result.data.length; i++){
-                if(result.data[i].packaged === false){
-                    unpackaged_items.push(result.data[i])
+            for(var i = 0; i < result.data.listOfItems.length; i++){
+                if(!result.data.listOfItems[i].packaged){
+                    unpackaged_items.push(result.data.listOfItems[i])
                 }
             }
             this.setState({
@@ -26,11 +26,18 @@ class DisplayItems extends Component{
             console.log(err);
         })
 
-    }    
+    }
     rowSelect= (e) =>{
+        var object={};
         if(e.target.checked){
-            this.props.capturingGroupedItems(e.target.name, parseInt((e.target.value),10))
-        }else{ 
+            for (var i = 0; i < this.state.itemsList.length; i++){
+              if (e.target.name === String(this.state.itemsList[i]._id)){
+                object = this.state.itemsList[i];
+                break;
+              }
+            }
+            this.props.capturingGroupedItems(object._id, parseInt((object.value),10), object.name)
+        }else{
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
         }
    }
@@ -38,9 +45,10 @@ class DisplayItems extends Component{
     render(){
         //maping the array of objects into table data
         let items = this.state.itemsList.map((item,index) =>{
+            console.log("items is", items)
             return(
                 <tr key={index} >
-                    <td><input type='checkbox' value={item._id} name={item.name}  onChange={this.rowSelect}/></td>
+                    <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item.value}</td>

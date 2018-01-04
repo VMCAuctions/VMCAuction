@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import Axios from 'axios';
 
 class Select extends Component{
-    constructor(props){
-        super(props);
-    }
+    
     handleChange = (e) => {
         this.props.handleChange(e); //invoke the parent(itemEntryAdmin.js) callback for handling the changes
     }
@@ -17,6 +14,7 @@ class Select extends Component{
         return(
             <div>
                 <select className='form-control' onChange={this.handleChange} name={this.props.name} >
+                    <option>Select a category</option>
                     {dropdownOptions}
                 </select>
             </div>
