@@ -98,7 +98,7 @@ class ItemEdit extends Component{
         return(
             <div className="container"><div className="row">
                 <div className='container row'>
-                    <label><h2>Item Info</h2> </label>
+                    <label><h2>Update Item Info</h2> </label>
                     <div className='item-info'>
                         <form  onSubmit={this.formSubmit}>
                             <div className="form-group row">
@@ -119,7 +119,7 @@ class ItemEdit extends Component{
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label">Category</label>
                                 <div className="col-sm-10">
-                                    <Select name='category' handleChange={this.handleChange} selectOptions={this.state.selectOptions}/><br/>
+                                    <Select name='category' handleChange={this.handleChange} selectOptions={this.state.selectOptions} optionValue={this.state.category}/><br/>
                                 </div>
                             </div>
                             {/*TestModal component renders the modal for adding new category option to the dropdown*/}
@@ -155,7 +155,7 @@ class ItemEdit extends Component{
                                 </div>
                             </div>
                             <div className="form-group row">
-                                <input type='submit' className='btn btn-primary' value='Add' />
+                                <input type='submit' className='btn btn-primary' value='Update' />
                             </div>
                         </form>
                     </div>

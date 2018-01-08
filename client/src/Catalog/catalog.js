@@ -25,18 +25,6 @@ class Catalog extends Component{
         })
     }
 
-// editItem = (e) =>{
-//     //Write logic for editing an item
-//     alert("Are you sure you want to edit an item.")
-//     Axios.get("/api/items/"+ e.target.id)
-//     .then((result) =>{
-//             console.log("result", result.data);
-//             // console.log("Was able to remove a item from the list", result)
-//         }).catch((err) =>{
-//             console.log("there was an error making it to the server..")
-//         })
-// }
-
     deleteItem = (e) => {
         this.state.listOfItems.splice(e.target.value, 1)
         this.setState({listOfItems:this.state.listOfItems})
@@ -61,7 +49,7 @@ class Catalog extends Component{
                 action_button = <td>In Package</td>
                 action_button_header = <th>Actions</th>
                 if(item.packaged === false){
-                    action_button = <td><button ><Link to={`/item/edit/${item._id}`}>Edit</Link></button>
+                    action_button = <td><Link to ={`/item/edit/${item._id}`}><button type='button'>Edit</button></Link>
                                         <button onClick={this.deleteItem} id={item._id} value={index}>Delete</button></td>
                     action_button_header = <th>Actions</th>
                 }
