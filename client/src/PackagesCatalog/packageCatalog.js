@@ -72,26 +72,7 @@ class PackageCatalog extends Component{
                 }
             })
         this.setState({ listOfPackages : filterPackages});
-
-    }
-    //     this.setState({selectValue:e.target.value});
-    //     e.preventDefault();
-    //     if(e.target.value === "All Categories"){
-    //         this.setState({ listOfPackages: this.state.allPackages })
-    //     }else{
-    //         Axios({
-    //             method: "post",
-    //             url: "/api/get_selected_packages",
-    //             data: { category: e.target.value}
-    //         }).then((result) =>{
-    //             //sorting the packages according to the highest bid
-    //             result.data.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
-    //             this.setState({ listOfPackages: result.data })
-    //         }).catch((err) =>{
-    //             console.log("there was an error making it to the server..")
-    //         })
-    //     }
-    }
+        }  }
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
@@ -157,13 +138,7 @@ class PackageCatalog extends Component{
             //repopulate the list of packages that will be rendered to the screen //sort the packages according to highest bid
             selected_packages.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             this.setState({ listOfPackages: selected_packages })
-
         }
-    }
-
-    editPackage =(e) =>{
-        //write code for editing the package
-        alert("Do you want to edit");
     }
 
     deletePackage = (e) => {
@@ -190,8 +165,8 @@ class PackageCatalog extends Component{
         let packageList = this.state.listOfPackages.map((packages,index) => {
             if(this.state.admin === true){
                 action_button_header = <th>Actions</th>
-                action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
-                                        <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
+                action_button = <td><button><Link to={`/packages/edit/${packages._id}`}>Edit</Link></button>
+                                        <button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button> </td>
                     return(
                         <tr key={index}>
                                         {action_button}
@@ -217,11 +192,9 @@ class PackageCatalog extends Component{
                                   <p><b>Category</b>: {packages._category}</p>
                                   <p><b>STARTING BID</b>: {packages.amount}</p>
                                   <p><b>Current Bid</b>: Placholder for conditional logic involving bid being empty</p>
-
                               </div>
                             </div>
                           </div>
-
                         )
                 }
             })
@@ -253,7 +226,6 @@ class PackageCatalog extends Component{
                                 <th>Category </th>
                                 <th>Item Description</th>
                                 <th>Items in Package</th>
-
                             </tr>
                         </thead>
                         <tbody>
