@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js');
+var ObjectId = require('mongodb').ObjectId;
+
 
 
 function PackagesController(){
@@ -99,12 +101,13 @@ function PackagesController(){
 	this.update = function(req,res){
 		console.log('PackagesController update');
 		Package.findById(req.params.id, function (err, package) {
-
+			console.log(package);
 		    if (err) {
 		        res.status(500).send(err);
 		    }
 
 		    else {
+				console.log("update pacakge");
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        package.name = req.body.packageName || package.name;
@@ -118,20 +121,24 @@ function PackagesController(){
 		        // we don't want the items removed from this package to still show this package in their
 		        // item._package field so we will just set each current item._package to null
 		        for(id in package._items){
-		        	Item.update({_id: id}, { $set: { _package: null}}, callback);
+					console.log("item id",id );
+		        	Item.update({_id:ObjectId(id)}, { $set: { _package: null}});
 		        }
 		        // now set package._items to the items in this request, we will reset the appropriate item._package fields below
 		        package._items = req.body.items;
 
 
 		        // Save the updated document back to the database
+				console.log("before package save");
 		        package.save(function (err, package) {
+					console.log("Package save")
 		            if (err) {
                         console.log(err)
 		                //res.status(500).send(err)
 		            }
 		            else{
 		            	// update the items in this package
+						console.log("save update pacakge")
 		    					for(id in package._items){
 		    						Item.update({_id: id}, { $set: { _package: package.id}}, callback);
 		    					}
