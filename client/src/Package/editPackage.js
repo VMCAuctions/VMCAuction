@@ -174,7 +174,8 @@ class EditPackage extends Component{
                         <textarea name='packageDescription' className='form-control' value={this.state.packageDescription} rows='5'  onChange={this.onPackageChange} placeholder='Package Description'></textarea><br/><br/>
                         <label className="col-sm-2 col-form-label"> Category</label><br/>
                         <Select selectOptions={this.state.categoryList} name='category' className='form-control'
-                                 value={this.state.category} handleChange={this.onPackageChange} required/><br/>
+                                 value={this.state.category} handleChange={this.onPackageChange} 
+                                 optionValue={this.state.category} required/><br/>
 
                         <TestModal addingCategory={this.addingCategory}/><br/><br/>
                         <label className="col-sm-2 col-form-label">Opening Bid</label><br/>
@@ -185,7 +186,7 @@ class EditPackage extends Component{
                         <input className="form-control"  value={this.state.totalValue} placeholder="Total Items" readOnly /><br/><br/>
                         <label className="col-sm-2 col-form-label">Total Items</label><br/>
                         <input className="form-control" value={this.state.totalItems} placeholder="Total Items" readOnly /><br/><br/>
-                        <input type='submit' value='Add New Package'className='btn btn-primary form-control'/>
+                        <input type='submit' value='Update Package'className='btn btn-primary form-control'/>
                     </div>
                     <div className="form-group groupingItems col-sm-9 nopad">
                         <div className='item-select form'>
