@@ -9,16 +9,22 @@ class Menu extends React.Component{
       super(props);
       this.state = {
         loggedIn: false,
-        admin: Boolean
+        admin: Boolean,
+        loggedOut: false
       }
     }
 
     logOut = () => {
+      console.log("out");
       Axios({
           method: "get",
           url: "/api/users/logout",
           data: {}
       }).then((response) => {
+        this.state = {
+          loggedIn: false,
+          loggedOut: true
+        }
          localStorage.clear();
 
       }).catch((err) =>{
@@ -32,12 +38,20 @@ class Menu extends React.Component{
           url: "/api/users/loggedin",
           data: {}
       }).then((response) => {
-         if (response.data.login_check !== this.state.loggedIn){
+        if (this.state.loggedOut===true) {
+          this.setState({
+                  loggedIn: false,
+                  admin : false,
+                  loggedOut:false
+          })
+        }
+         else if (response.data.login_check !== this.state.loggedIn){
             this.setState({
                     loggedIn: response.data.login_check,
                     admin : response.data.admin
             })
           }
+
       }).catch((err) =>{
           console.log(err);
       })
