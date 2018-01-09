@@ -119,13 +119,15 @@ function PackagesController(){
 		        package._category = req.body.category || package._category;
 
 		        // we don't want the items removed from this package to still show this package in their
-		        // item._package field so we will just set each current item._package to null
-		        for(id in package._items){
-					console.log("item id",id );
-		        	Item.update({_id:ObjectId(id)}, { $set: { _package: null}});
-		        }
+				// item._package field so we will just set each current item._package to null
+				// this shows sets all items in current package to unpackaged (currently)
+				// we want all items in this package AND all unpacked items (future design)
+		        // for(let i = 0; i < package.items.length -1; i++){
+				// 	console.log("item id",id );
+		        // 	package.items[i]({_id:ObjectId(id)}, { $set: { _package: null}});
+		        // }
 		        // now set package._items to the items in this request, we will reset the appropriate item._package fields below
-		        package._items = req.body.items;
+		        package._items = req.body.items || package.items;
 
 
 		        // Save the updated document back to the database
