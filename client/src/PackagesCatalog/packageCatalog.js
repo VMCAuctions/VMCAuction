@@ -165,7 +165,7 @@ class PackageCatalog extends Component{
         let packageList = this.state.listOfPackages.map((packages,index) => {
             if(this.state.admin === true){
                 action_button_header = <th>Actions</th>
-                action_button = <td><button><Link to={`/packages/edit/${packages._id}`}>Edit</Link></button>
+                action_button = <td><Link to={`/packages/edit/${packages._id}`}><button>Edit</button></Link>
                                         <button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button> </td>
                     return(
                         <tr key={index}>
