@@ -89,7 +89,7 @@ class EditPackage extends Component{
         e.preventDefault(); // prevents the default form behaviour
         Axios({
             method: 'post',
-            url:'/api/packages',
+            url:'/api/packages/'+this.props.match.params.packageId,
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
                 selectedItems:this.state.selectedItems, totalValue: this.state.totalValue}
