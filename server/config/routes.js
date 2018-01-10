@@ -19,7 +19,7 @@ module.exports = function(app) {
 		items.create(req,res)});
 	// show a single item (might be handled solely by React)
 	app.get('/api/items/:id', function(req,res){
-		items.show(req,res)});git 
+		items.show(req,res)});
 	// update a single item
 	app.post('/api/items/:id', function(req,res){
 		items.update(req,res)});
