@@ -69,7 +69,7 @@ class Package extends Component{
             url:'/api/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
-                selectedItems:this.state.selectedItems, totalValue: this.state.totalValue}
+                items:this.state.selectedItems, totalValue: this.state.totalValue}
             }).then((response) =>{
             if (response.data === false){
               alert("Package cannot be empty.")
@@ -97,7 +97,7 @@ class Package extends Component{
     //selecte items from the list and updating the display fields(totalItems and totalValue)
     capturingGroupedItems = (item) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
         let itemSelect = this.state.selectedItems;
-        itemSelect.push(item);
+        itemSelect.push(item._id);
         let nameSelect = this.state.selectedNames;
         nameSelect.push(item.name);
         this.setState({
@@ -166,7 +166,7 @@ class Package extends Component{
                                 </div>
                                 <div className="form-group groupingItems col-sm-9 nopad">
                                     <div className='item-select form'>
-                                        <h3>Grouping items</h3>
+                                        <h3>Add items to the package</h3>
                                         <div className='.table-responsive itemsList'>
                                                 <DisplayItems
                                                     selectedItems={this.state.selectedItems}

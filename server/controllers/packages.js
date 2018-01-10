@@ -63,6 +63,7 @@ function PackagesController(){
 		      else{
 
 			    	for(var i=0; i<package._items.length; i++){
+						console.log("Packaged ");
 			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
 							if(err){
 								console.log(err);
@@ -127,7 +128,7 @@ function PackagesController(){
 		        // 	package.items[i]({_id:ObjectId(id)}, { $set: { _package: null}});
 		        // }
 		        // now set package._items to the items in this request, we will reset the appropriate item._package fields below
-		        package._items = req.body.items || package.items;
+		        package._items = req.body.selectedItems ;
 
 
 		        // Save the updated document back to the database
@@ -142,7 +143,7 @@ function PackagesController(){
 		            	// update the items in this package
 						console.log("save update pacakge")
 		    					for(id in package._items){
-		    						Item.update({_id: id}, { $set: { _package: package.id}}, callback);
+		    						Item.update({_id: id}, { $set: { _package: package.id}});
 		    					}
 
 		            	res.json(package);

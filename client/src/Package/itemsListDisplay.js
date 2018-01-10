@@ -15,7 +15,7 @@ class DisplayItems extends Component{
         .then((result) =>{
             let unpackaged_items = [];
             for(var i = 0; i < result.data.listOfItems.length; i++){
-                if(!result.data.listOfItems[i].packaged || result.data.listOfItems[i]._package == null ){
+                if(!result.data.listOfItems[i].packaged ){
                     unpackaged_items.push(result.data.listOfItems[i])
                 }
             }
