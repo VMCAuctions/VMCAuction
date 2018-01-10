@@ -224,7 +224,7 @@ class PackageCatalog extends Component{
                                 <th>Current Bid</th>
                                 <th>Package Number</th>
                                 <th>Category </th>
-                                <th>Item Description</th>
+                                <th>Package Description</th>
                                 <th>Items in Package</th>
                             </tr>
                         </thead>

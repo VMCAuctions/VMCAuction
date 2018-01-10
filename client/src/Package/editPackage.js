@@ -87,6 +87,7 @@ class EditPackage extends Component{
     //Package form submit function
     onPackageFormSubmit = (e) => {
         e.preventDefault(); // prevents the default form behaviour
+        console.log("this.state", this.state);
         Axios({
             method: 'post',
             url:'/api/packages/'+this.props.match.params.packageId,
@@ -122,7 +123,7 @@ class EditPackage extends Component{
     //selecte items from the list and updating the display fields(totalItems and totalValue)
     capturingGroupedItems = (item) =>{   //callback function with two parameters -- item(is a number) and value(fair market value of the selected item)
         let itemSelect = this.state.selectedItems;
-        itemSelect.push(item);
+        itemSelect.push(item._id);
         let nameSelect = this.state.selectedNames;
         nameSelect.push(item.name);
         this.setState({
@@ -159,7 +160,7 @@ class EditPackage extends Component{
     render(){
          let items = this.state.selectedItems.map((item,index) =>{
             return <tr key={index} >
-                        <td><input type='checkbox' /></td>
+                        <td><input type='checkbox' checked='true'/></td>
                         <td>{item._id}</td>
                         <td>{item.name}</td>
                         <td>{item.value}</td>                    
@@ -194,7 +195,7 @@ class EditPackage extends Component{
                                 </div>
                                 <div className="form-group groupingItems col-sm-9 nopad">
                                     <div className='item-select form'>
-                                        <h3>Grouping items</h3>
+                                        <h3>Add items to the package</h3>
                                         <div className='.table-responsive itemsList'>
                                                 <DisplayItems
                                                     selectedItems={this.state.selectedItems}
