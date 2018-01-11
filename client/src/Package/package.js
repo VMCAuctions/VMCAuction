@@ -69,7 +69,7 @@ class Package extends Component{
             url:'/api/packages',
             data:{packageName: this.state.packageName, packageDescription: this.state.packageDescription,
                   category: this.state.category, openingBid: this.state.openingBid, increments: this.state.increments,
-                items:this.state.selectedItems, totalValue: this.state.totalValue}
+                selectedItems:this.state.selectedItems, totalValue: this.state.totalValue}
             }).then((response) =>{
             if (response.data === false){
               alert("Package cannot be empty.")

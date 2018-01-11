@@ -38,12 +38,11 @@ function PackagesController(){
 	this.create = function(req,res){
 		// this handles the form post that creates a new package
 		console.log('PackagesController create');
-
-
+		console.log(req.body)
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
-	    if (req.body.selectedItems.length == 0){
-          console.log()
+		
+		if (req.body.selectedItems.length == 0){
           console.log('reached empty item list')
           return res.json(false)
         }
@@ -123,12 +122,22 @@ function PackagesController(){
 				// item._package field so we will just set each current item._package to null
 				// this shows sets all items in current package to unpackaged (currently)
 				// we want all items in this package AND all unpacked items (future design)
-		        // for(let i = 0; i < package.items.length -1; i++){
-				// 	console.log("item id",id );
-		        // 	package.items[i]({_id:ObjectId(id)}, { $set: { _package: null}});
-		        // }
+				package._items = req.body.selectedItems;
+		        // for(var i=0; i<package._items.length; i++){
+				// 	console.log("Packaged ");
+				// 	Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
+				// 		if(err){
+				// 			console.log(err);
+				// 			return;
+				// 		}
+
+				// 	})
+				// 	if (i == package._items.length -1){
+				// 		return res.json(true)
+				// 	}
+				// };
 		        // now set package._items to the items in this request, we will reset the appropriate item._package fields below
-		        package._items = req.body.selectedItems ;
+		        
 
 
 		        // Save the updated document back to the database
@@ -142,8 +151,27 @@ function PackagesController(){
 		            else{
 		            	// update the items in this package
 						console.log("save update pacakge")
-		    					for(id in package._items){
-		    						Item.update({_id: id}, { $set: { _package: package.id}});
+		    					for(let i = 0; i < package._items.length; i++ ){
+									//Item.update({_id: id}, { $set: { _package: package.id}});
+									
+									Item.findOne({_id: package._items[i]} , function(err, item){
+											item.packaged = true;
+											item._package = package.id;
+
+											item.save(function (err){
+												if (err){
+													console.log(err)
+												}
+												else{
+													
+													
+												}
+											})
+									})
+
+										
+									
+									
 		    					}
 
 		            	res.json(package);

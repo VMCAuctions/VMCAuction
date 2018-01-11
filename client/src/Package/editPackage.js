@@ -136,7 +136,9 @@ class EditPackage extends Component{
      //unSelecte items from the list and updating the display fields(totalItems and totalValue)
     removeGroupedItems = (value, item) => {
         let itemUnselect = this.state.selectedItems;
-        var nameUnselect = this.state.selectedNames;
+        let nameUnselect = this.state.selectedNames;
+        console.log("this is itemUnselect" , itemUnselect)
+        console.log("this is nameUnselect", nameUnselect)
         let id;
         for(var i=0; i<itemUnselect.length;i++){
             if(item === String(itemUnselect[i])){
@@ -156,7 +158,7 @@ class EditPackage extends Component{
             totalValue: this.state.totalValue - value
         })
     }
-
+    //eventhandler =selected: !this.state.selected
     render(){
          let items = this.state.selectedItems.map((item,index) =>{
             return <tr key={index} >
