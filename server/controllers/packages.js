@@ -114,7 +114,7 @@ function PackagesController(){
 
 		        package.description = req.body.packageDescription || package.description;
 		        package.bids[0] = req.body.openingBid || package.bids[0];
-		        package.value = req.body.fairMarketValue || package.value;
+		        package.value = req.body.totalValue || package.value;
 		        package.bid_increment = req.body.increments || package.bid_increment;
 		        package._category = req.body.category || package._category;
 
