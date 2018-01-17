@@ -23,7 +23,8 @@ var packageSchema = new Schema({
  bid_increment: Number,  // increment is a reserved word, so used bid_increment
 
  bids: {type: Array},
-//Joey & Yarik: Will add in more structure to the model later (userid, bid, username)
+//Joey & Yarik: our model for object is:
+// {bidAmount: 50, name: yarik }
 
  photo: String // or access item in _items { item.photo }
 }, { timestamps: true });
