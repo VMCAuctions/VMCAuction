@@ -201,7 +201,7 @@ if(packagesButtonStates[data.packId].buttonstate){
           }
         }
       )
-
+  
 			// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
 			io.emit(uniqChatUpdateId, {
 				lastBid: data.bid,
@@ -223,6 +223,7 @@ if(packagesButtonStates[data.packId].buttonstate){
 // IF statement of package button state to prevent overload of mongoDB
 }
 // -------------------------------------------------------------------
+
 
     })
 
@@ -246,6 +247,12 @@ if(packagesButtonStates[data.packId].buttonstate){
       }
 
     })
+
+		// FOR ALL PACKAGES SEND OBJECT WITH ALL BIDS
+		socket.on("package_page_refresh", function(data) {
+			console.dir(allBidsBigObj);
+			io.emit("allPackagesChannel", allBidsBigObj );
+		})
 
     socket.on("disconnect", () => console.log("Client disconnected"));
   // ALL BID LOGIC
