@@ -11,10 +11,12 @@ class Select extends Component{
         let dropdownOptions = this.props.selectOptions.map((itemValue,index) => {
             return <option key={index} value={itemValue.name} >{itemValue.name}</option>
         })
+        let optionValue = this.props.optionValue === undefined?'Select a category ': this.props.optionValue;
+        console.log("optionValue:", optionValue);
         return(
             <div>
                 <select className='form-control' onChange={this.handleChange} name={this.props.name} >
-                    <option>Select a category</option>
+                    <option>{optionValue}</option>
                     {dropdownOptions}
                 </select>
             </div>
