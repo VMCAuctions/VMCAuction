@@ -166,10 +166,17 @@ function UsersController(){
 		var login_check = false;
 		var admin;
 
-		if (req.session.userName != undefined){
+		if (!req.session.userName){
+			login_check = false;
+		}
+		else {
+			console.log(req.session.userName);
+			console.log(req.session);
 			login_check = true;
 		}
+		console.log('login check v');
 		console.log(login_check);
+		console.log(req.session);
 		if(req.session.admin == true){
 			admin = true;
 		}else{
@@ -179,7 +186,9 @@ function UsersController(){
 	}
 
 	this.logout = function(req,res){
+		login_check = false;
 		req.session.destroy();
+		console.log(req.session);
         return res.json(true)
 
 	}
