@@ -96,8 +96,6 @@ class PackageCatalog extends Component{
         this.setState({ listOfPackages : filterPackages});
         }
     }
-]
-
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
         //the letter they typed in, if there is a match with the item name add it to this array
