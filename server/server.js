@@ -147,6 +147,9 @@ console.dir(allBidsBigObj)
 
       var uniqChatUpdateId = 'update_chat' + data.packId;
 
+			// AFTER EACH BID UPDATE ALL PACKAGES PAGE
+      io.emit("allPackagesChannel", allBidsBigObj )
+
       // PREVIOUS VERSION FROM CHAT LOGIC
       io.emit(uniqChatUpdateId, {
         lastBid: data.bid,
@@ -175,6 +178,12 @@ console.dir(allBidsBigObj)
       }
 
     })
+
+		// FOR ALL PACKAGES SEND OBJECT WITH ALL BIDS
+		socket.on("package_page_refresh", function(data) {
+			console.dir(allBidsBigObj);
+			io.emit("allPackagesChannel", allBidsBigObj );
+		})
 
     socket.on("disconnect", () => console.log("Client disconnected"));
   // ALL BID LOGIC

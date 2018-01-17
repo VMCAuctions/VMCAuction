@@ -5,6 +5,29 @@ import SearchBar from './searchBar.js';
 import {Link} from 'react-router-dom';
 import { log } from 'util';
 
+// socket import
+    import openSocket from 'socket.io-client';
+    if (process.env.NODE_ENV === "production") {
+      // for DEPLOYMENT;
+      var host = "http://" + window.location.hostname;
+    } else {
+      // for LOCAL;
+      var host = "http://localhost:8000";
+    }
+    const socket = openSocket(host);
+// socket import
+
+
+// subscribe to bids from server
+function subscribeToBids(cb ) {
+
+  // receiving data from server on "update Chat"
+  socket.on("allPackagesChannel", (allPackagesBids) => cb(null, allPackagesBids));
+  // sending event to refresh bids
+  socket.emit('package_page_refresh', {empty:"empty"});
+}
+
+
 class PackageCatalog extends Component{
     constructor(props){
         super(props);
@@ -16,7 +39,13 @@ class PackageCatalog extends Component{
             allPackages: [],
             title: "Packages/Bids",
             admin: "",
+
+            allPackagesBids: {}
         }
+        // function to update sockets
+        subscribeToBids((err, allPackagesBids) => this.setState({
+          allPackagesBids
+        }) ); // {this.state.bidsUpdate}
     }
 
      componentDidMount(){
@@ -31,7 +60,7 @@ class PackageCatalog extends Component{
             result.data.packages.map((packages) =>{
                 if(categories_list.includes(packages._category) === false){
                    categories_list.push(packages._category);
-                } 
+                }
             })
             //sorting the packages by highest bid..
             result.data.packages.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
@@ -47,15 +76,8 @@ class PackageCatalog extends Component{
             console.log(err);
         })
 
-        //loading user information:        //if the user's name is administrator then they have admin access
-        // Axios.get("/api/which_user_is_logged_in")
-        // .then((result) =>{
-        //     this.setState({ admin: result.data.admin })
-        // })
-        // .catch((err) =>{
-        //     console.log(err);
-        // })
     }
+
 
     //when the option is changed it will update the packages on display; category dropdown
     handleChange = (e) =>{
@@ -72,7 +94,9 @@ class PackageCatalog extends Component{
                 }
             })
         this.setState({ listOfPackages : filterPackages});
-        }  }
+        }
+    }
+]
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
@@ -159,10 +183,28 @@ class PackageCatalog extends Component{
     }
 
     render(){
+
+        var serverBids = this.state.allPackagesBids;
+
+
         // console.log("packages:", this.state.listOfPackages);
         let action_button ='';
         let action_button_header='';
         let packageList = this.state.listOfPackages.map((packages,index) => {
+
+            // IF SERVER ALL BIDS OBJECT DOES HAVE OUR ID
+            if(serverBids[packages._id] != undefined){
+              packages.bids.push({
+                bidAmount: serverBids[packages._id][serverBids[packages._id].length-1].bid,
+                name: serverBids[packages._id][serverBids[packages._id].length-1].name
+              })
+            } else if (packages.bids.length == 0){
+              packages.bids.push({
+                bidAmount: packages.amount,
+                name: "nobody"
+              })
+            }
+
             if(this.state.admin === true){
                 action_button_header = <th>Actions</th>
                 action_button = <td><Link to={`/packages/edit/${packages._id}`}><button>Edit</button></Link>
@@ -175,7 +217,10 @@ class PackageCatalog extends Component{
                                         <td>{packages.value}</td>
                                         <td>{packages.amount}</td>
                                         <td>{packages.bid_increment}</td>
-                                        <td>{}</td>
+                                        <td>
+                                        {packages.bids[packages.bids.length-1].bidAmount} (by <b>{packages.bids[packages.bids.length-1].name}</b>)
+                                        </td>
+
                                         <td>{packages._id}</td>
                                         <td>{packages._category}</td>
                                         <td>{packages.description}</td>
@@ -191,7 +236,11 @@ class PackageCatalog extends Component{
 
                                   <p><b>Category</b>: {packages._category}</p>
                                   <p><b>STARTING BID</b>: {packages.amount}</p>
-                                  <p><b>Current Bid</b>: Placholder for conditional logic involving bid being empty</p>
+                                  <p><b>Current Bid</b>:
+                                      {packages.bids[packages.bids.length-1].bidAmount} (by <b>{packages.bids[packages.bids.length-1].name}</b>)
+                                  </p>
+
+
                               </div>
                             </div>
                           </div>
