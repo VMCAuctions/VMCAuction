@@ -129,6 +129,7 @@ class PackageDetails extends Component{
 
 
     render(){
+
         let htmlBidButton;
 
         if(this.state.buttonEnabled){
@@ -140,6 +141,7 @@ class PackageDetails extends Component{
             debugger;
         }
         // console.log(this.state.listOfPackages)
+
         // trying to find the index of the (show)package from the array
         //traversing the target package(which is JSON object)
         let packagedata = this.state.listOfPackages;
@@ -192,6 +194,13 @@ class PackageDetails extends Component{
         } else {
           this.state.place_bid = current_bid + bid_increment;
             //  this.updatePlaceBid(current_bid, bid_increment);
+        }
+
+        // console.log("packagedata.bids");
+        // console.log(packagedata.bids);
+        if(this.state.bidsUpdate.lastBid == "none" && packagedata.bids != undefined && packagedata.bids.length != 0) {
+          this.state.bidsUpdate.lastBid = packagedata.bids[packagedata.bids.length-1].bidAmount;
+          this.state.bidsUpdate.userBidLast = packagedata.bids[packagedata.bids.length-1].name
         }
 
         //conditional rendering

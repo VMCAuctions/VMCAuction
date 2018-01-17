@@ -91,10 +91,12 @@ module.exports = function(app) {
 
 	// checks if a user is logged in
 	app.get('/api/users/loggedin', function(req,res){
+		console.log("route in");
 		users.loggedin(req,res)});
 
 	// logout a specific user
 	app.get('/api/users/logout', function(req,res){
+		console.log("route out");
 		users.logout(req,res)});
 
 	// post the user login form  (LOGIN)
