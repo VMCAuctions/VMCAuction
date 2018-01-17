@@ -32,7 +32,6 @@ import {Link} from 'react-router-dom';
 
   var socket_updated = false;
 
-
 class PackageDetails extends Component{
     constructor(props){
         super(props);
@@ -45,7 +44,9 @@ class PackageDetails extends Component{
               lastBid:"...",
               userBidLast: "..",
               socket_current_bid: false
-            }
+            },
+            stateOfBidButton: '',
+            buttonEnabled: true
         }
         // function to update sockets
         subscribeToBids((err, bidsUpdate) => this.setState({
@@ -71,14 +72,28 @@ class PackageDetails extends Component{
         var packIdchannel = 'update_chat' + packIdId;
         var self = this;
         socket_updated = false;
+
         // step 2: making sockets to listening to this channel
         socket.on(packIdchannel,function(data){
           self.updateStateAfterBidding();
+        })
+
+        // "BID" button update state variable
+        var buttonStateChannel = 'button_state' + packIdId;
+        socket.on(buttonStateChannel,function(data){
+            self.buttonStateChange(data);
         })
     }
 
     updateStateAfterBidding = () =>{
       socket_updated = true;
+    }
+
+    buttonStateChange = (data) =>{
+      this.setState({
+        buttonEnabled: data.button
+      })
+      console.log("state is changed to " + data.button)
     }
 
     updatePlaceBid = (lastBid, bidIncrement) =>{
@@ -112,8 +127,21 @@ class PackageDetails extends Component{
       })
     }
 
+
     render(){
-        console.log(this.state.listOfPackages)
+
+        let htmlBidButton;
+
+        if(this.state.buttonEnabled){
+            htmlBidButton = <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit} >Place bid</button>
+
+        } else if( !this.state.buttonEnabled ) {
+            htmlBidButton = <button className='placeBid btn-primary disabledButton' type='submit'  value='' onClick={this.placeBidSubmit} disabled>Place bid</button>
+            console.log("button state is DISABLED");
+            debugger;
+        }
+        // console.log(this.state.listOfPackages)
+
         // trying to find the index of the (show)package from the array
         //traversing the target package(which is JSON object)
         let packagedata = this.state.listOfPackages;
@@ -213,7 +241,8 @@ class PackageDetails extends Component{
                                             <td>Next Bid:</td>
                                             <td>
                                                 <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
-                                                <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit}>Place bid</button>
+                                                {htmlBidButton}
+
                                             </td>
                                         </tr>
                                     </table>
