@@ -94,9 +94,9 @@ class PackageCatalog extends Component{
                 }
             })
         this.setState({ listOfPackages : filterPackages});
-
         }
     }
+]
 
     //this function deals with the user locating packages, this function is run after every new letter
     handleNewLetter = (e) => {
@@ -162,13 +162,7 @@ class PackageCatalog extends Component{
             //repopulate the list of packages that will be rendered to the screen //sort the packages according to highest bid
             selected_packages.sort(function(a,b){return b.bids[b.bids.length - 1] - a.bids[a.bids.length - 1]})
             this.setState({ listOfPackages: selected_packages })
-
         }
-    }
-
-    editPackage =(e) =>{
-        //write code for editing the package
-        alert("Do you want to edit");
     }
 
     deletePackage = (e) => {
@@ -181,7 +175,7 @@ class PackageCatalog extends Component{
             data: { package_id: e.target.id}
         }).then((result) =>{
             Axios.get('/api/packages')
-            .then((result=>{    this.setState({  listOfPackages: result.data}) } ))
+            .then((result=>{    this.setState({  listOfPackages: result.data.packages}) } ))
             .catch((err)=>{ console.log(err); })
         }).catch((err) =>{
             console.log(err);
@@ -213,8 +207,8 @@ class PackageCatalog extends Component{
 
             if(this.state.admin === true){
                 action_button_header = <th>Actions</th>
-                action_button = <td><button onClick={this.editPackage} 	id={packages._id} value={index}>Edit</button>
-                                        <button onClick={this.deletePackage} 	id={packages._id} value={index}>Delete</button> </td>
+                action_button = <td><Link to={`/packages/edit/${packages._id}`}><button>Edit</button></Link>
+                                        <button onClick={this.deletePackage} id={packages._id} value={index}>Delete</button> </td>
                     return(
                         <tr key={index}>
                                         {action_button}
@@ -246,10 +240,10 @@ class PackageCatalog extends Component{
                                       {packages.bids[packages.bids.length-1].bidAmount} (by <b>{packages.bids[packages.bids.length-1].name}</b>)
                                   </p>
 
+
                               </div>
                             </div>
                           </div>
-
                         )
                 }
             })
@@ -279,9 +273,8 @@ class PackageCatalog extends Component{
                                 <th>Current Bid</th>
                                 <th>Package Number</th>
                                 <th>Category </th>
-                                <th>Item Description</th>
+                                <th>Package Description</th>
                                 <th>Items in Package</th>
-
                             </tr>
                         </thead>
                         <tbody>
