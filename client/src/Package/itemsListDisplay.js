@@ -45,7 +45,6 @@ class DisplayItems extends Component{
     render(){
         //maping the array of objects into table data
         let items = this.state.itemsList.map((item,index) =>{
-            console.log("items is", items)
             return(
                 <tr key={index} >
                     <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>
