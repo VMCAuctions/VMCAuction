@@ -83,7 +83,7 @@ module.exports = function(app) {
 	app.get('/api/users', function(req,res){
 		users.index(req,res)});
 	// get the new user registration form
-	app.get('/api/users/new', function(req,res){
+	app.get('/api/users_login', function(req,res){
 		users.new(req,res)});
 	// post the new user form and create that new user (Registration)
 	app.post('/api/users', function(req,res){

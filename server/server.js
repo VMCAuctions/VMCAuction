@@ -24,6 +24,7 @@ var React = require('../client/node_modules/react');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var path = require("path");
@@ -201,7 +202,7 @@ if(packagesButtonStates[data.packId].buttonstate){
           }
         }
       )
-  
+
 			// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
 			io.emit(uniqChatUpdateId, {
 				lastBid: data.bid,

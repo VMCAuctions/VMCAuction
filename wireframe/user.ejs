@@ -18,21 +18,18 @@
   </nav>
   <h2>Update User Profile</h2>
 
-  <form>
-    <h3>Note: At least one form of Contact Inforamtion (Address, Email, Phone) must be present</H3>
-    <p>
-      <label>
+  <form action="/api/users" method="post">
+
           First Name:&nbsp
-          <input placeholder="First Name" type="text" name="first_name">
-      </label>
+          <input placeholder="First Name" type="text" name="firstName">
       <label>
           Last Name:&nbsp
-          <input placeholder="Last Name" type="text" name="last_name">
+          <input placeholder="Last Name" type="text" name="lastName">
       </label>
-    </p>
+    
     <p>
     <label>Address:&nbsp
-      <input size="30" placeholder="Strees Address" type="text" name="street">
+      <input size="30" placeholder="Strees Address" type="text" name="streetAddress">
     </label>
   </p>
   <p>
@@ -40,27 +37,36 @@
         <input placeholder="City" type="text" name="city">
       </label>
       <label>State:&nbsp
-       <input size="2" placeholder="ST" type="text" name="state">
+       <input size="2" placeholder="ST" type="text" name="states">
       </label>
       <label>Zip:&nbsp
        <input placeholder="Zip" type="text" name="zip">
       </label>
   </p>
-    <br>
   <p>
     <label>Phone:&nbsp
-     <input placeholder="Phone" type="text" name="phone">
+     <input placeholder="Phone" type="text" name="phoneNumber">
     </label>
   </p>
-  <br>
   <p>
     <label>Email Adress:&nbsp
-      <input placeholder="Email Address" type="text" name="eamil">
+      <input placeholder="Email Address" type="text" name="email">
+    </label>
+  </p>
+  <p>
+    <label>Username:&nbsp
+      <input placeholder="Username" type="text" name="userName">
+    </label>
+  </p>
+  <p>
+    <label>Password:&nbsp
+      <input placeholder="Password" type="password" name="password">
     </label>
   </p>
 
+
   <p>
-     <input type="submit" value="Update">
+     <input type="submit" value="Submit">
   </p>
   </form>
   </div>

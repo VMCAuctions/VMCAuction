@@ -14,7 +14,7 @@ function PackagesController(){
 
 		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
 
-		Package.find({}).populate("_items").exec(function(err, packages) {
+		Package.find({}).populate("_items").exec(function(err, lollipop) {
 
 				// This is the method that finds all of the packages from the database
 				if(err) {
@@ -22,7 +22,10 @@ function PackagesController(){
 						res.status(500).send('Failed to Load Packages');
 				}
 				else {
-						res.json({packages: packages, admin:req.session.admin});
+						// res.json({packages: packages, admin:req.session.admin});
+						console.log(req.session);
+						res.render('packages', {packages: lollipop})
+
 					}
 				})  // ends Package.find
 
@@ -41,7 +44,7 @@ function PackagesController(){
 		console.log(req.body)
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
-		
+
 		if (req.body.selectedItems.length == 0){
           console.log('reached empty item list')
           return res.json(false)
@@ -137,7 +140,7 @@ function PackagesController(){
 				// 	}
 				// };
 		        // now set package._items to the items in this request, we will reset the appropriate item._package fields below
-		        
+
 
 
 		        // Save the updated document back to the database
@@ -153,7 +156,7 @@ function PackagesController(){
 						console.log("save update pacakge")
 		    					for(let i = 0; i < package._items.length; i++ ){
 									//Item.update({_id: id}, { $set: { _package: package.id}});
-									
+
 									Item.findOne({_id: package._items[i]} , function(err, item){
 											item.packaged = true;
 											item._package = package.id;
@@ -163,15 +166,15 @@ function PackagesController(){
 													console.log(err)
 												}
 												else{
-													
-													
+
+
 												}
 											})
 									})
 
-										
-									
-									
+
+
+
 		    					}
 
 		            	res.json(package);

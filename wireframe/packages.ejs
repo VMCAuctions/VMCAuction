@@ -10,56 +10,25 @@
 
 <body>
   <nav>
-    <a href="/items">Items</a> |
-    <a href="/packages">Packages</a> |
-    <a href="/bids">Bids</a> |
+    <a href="/items">VMC</a> |
+    <a href="/packages">Catalog</a> |
+    <a href="/bids">Packages/Bids</a> |
   </nav>
-  <h2>Package Bidding Report</h2>
-
-  <table>
-
-      <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th >Current</th>
-        </tr>
-        <tr>
-            <th>Package</th>
-            <th>Package</th>
-            <th >High</th>
-        </tr>
-          <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th >Bid ($)</th>
-          </tr>
-          <tr>
-              <th>========</th>
-              <th>========================================</th>
-              <th >==========</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr>
-              <td>001</td>
-              <td>Trip to the moon</td>
-              <td>1,000,000</td>
-          </tr>
-          <tr>
-              <td>002</td>
-              <td>1 Case - Chateau Lafitte Rothchilde 1947</td>
-              <td>80,000</td>
-          </tr>
-          <tr>
-              <td>003</td>
-              <td>Iphone 8</td>
-              <td>3000</td>
-          </tr>
-
-      </tbody>
-  </table>
-
+  <h2>Packages/Bids</h2>
+<% for (var p in packages){%>
+<div class="package">
+  <img src="/no-image.png" alt="img">
+  <br>
+  <a href="#"><%=packages[p].name%></a>
+  <p><b>Category:</b> <%=packages[p].catagory%></p>
+  <p><b>STARTING BID:</b> <%=packages[p].amount%></p>
+  <%if(packages[p].bids[packages[p].bids.length-1]){%>
+  <p><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
+  <%}else{%>
+    <p><b>Current Bid:</b> None (By: Nobody)</p>
+  <%}%>
+</div>
+<% }%>
 </body>
 
 </html>

@@ -13,13 +13,15 @@ function UsersController(){
 	// get all bidders and their packages won, audit page
 	this.index = function(req,res){
 		console.log('UsersController index');
+		res.render('user')
 	};
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
-		console.log('UsersController new');
+		console.log('hi');
+		res.render('login')
 	};
 	// post the new user registration form and create a new user
-	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
+	// add redirect when done with refactor
 	this.create = function(req,res){
 		console.log('UsersController create');
 
@@ -52,6 +54,7 @@ function UsersController(){
 								];
 								let output = "";
 								for(let i = 0; i < validationArray.length; i++) {
+									console.log(validationArray[i]);
 									if (req.body[validationArray[i][0]].length < validationArray[i][1]) {
 										output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
 									}
@@ -68,7 +71,6 @@ function UsersController(){
 								validation += "Invalid email.\n"
 							}
 							console.log("after new regex, validation is", validation)
-
 							if(validation.length > 0){
 								res.json({validated: false, message: validation})
 								return;
@@ -97,8 +99,10 @@ function UsersController(){
 									else{
 										req.session.userName = user.userName
 										req.session.admin = user.admin
-										res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
-										res.json();
+										// res.json({validated: true, user: user, message: "Welcome, " + user.userName + "!"});
+										// res.json();
+										// add redirect when done with refactor
+										res.redirect('packages')
 										return;
 									}
 							});
@@ -125,7 +129,8 @@ function UsersController(){
 					else if(match){
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
+						//res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
+						res.redirect('/api/packages')
 					}
 					else{
 						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
@@ -134,6 +139,7 @@ function UsersController(){
 			}
 			else{
 				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
+
 			}
 		})
 	}
