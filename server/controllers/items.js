@@ -19,7 +19,8 @@ function ItemsController(){
 	      		//res.status(500).send('Failed to Load Items');
 	    	}
 	    	else {
-	        	res.json({admin: req.session.admin, listOfItems: items});
+	        	//  res.json({admin: req.session.admin, listOfItems: items});
+						res.render('items', {items: items})
 	        }
         })  // ends Item.find
 
@@ -28,10 +29,19 @@ function ItemsController(){
 
 
 	this.new = function(req,res){
-		// this would bring up the new item form screen
-		console.log('ItemsController new');
-	};
+		Category.find({}, function(err, categories) {
+    		// This is the method that finds all of the items from the database
+	    	if(err) {
+	      		console.log(err);
+	      		//res.status(500).send('Failed to Load Items');
+	    	}
+	    	else {
 
+					res.render('createItem', {categories: categories})
+				}
+		console.log('ItemsController new');
+	});
+}
 	this.create = function(req,res){
 		console.log('ItemsController create');
 

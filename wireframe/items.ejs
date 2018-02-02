@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        Item Report
+        Item Creation
     </title>
 
 </head>
@@ -22,50 +22,29 @@
   <table>
       <thead>
         <tr>
-            <th>Item</th>
-            <th>Item</th>
+            <th>Item Number</th>
+            <th>Item Name</th>
             <th>Package</th>
-            <th>Package</th>
+            <th>Category</th>
+            <th>Fair Market Value</th>
+            <th>Item Description</th>
+            <th>Donor</th>
+            <th>Item Restriction</th>
         </tr>
-          <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Name</th>
-              <th>ID</th>
-          </tr>
-          <tr>
-              <th>========</th>
-              <th>========================================</th>
-              <th>========================================</th>
-              <th>========</th>
-          </tr>
       </thead>
       <tbody>
+        <% for (var i in items){%>
           <tr>
-              <td>001</td>
-              <td>Ticket to Moon</td>
-              <td>950,000</td>
-              <td>001</td>
+              <td><%= items[i]._id%></td>
+              <td><%= items[i].name%></td>
+              <td><%= items[i]._package%></td>
+              <td><%= items[i]._category%></td>
+              <td><%= items[i].value%></td>
+              <td><%= items[i].description%></td>
+              <td><%= items[i].donor%></td>
+              <td><%= items[i].restrictions%></td>
           </tr>
-          <tr>
-              <td>002</td>
-              <td>Space Suit</td>
-              <td>50,000</td>
-              <td>001</td>
-          </tr>
-          <tr>
-              <td>003</td>
-              <td>Iphone 8</td>
-              <td>3000</td>
-              <td>002</td>
-          </tr>
-          <tr>
-              <td>004</td>
-              <td>14 Weeks atCoding Dojo</td>
-              <td>1,200</td>
-              <td>003</td>
-          </tr>
-
+        <%}%>
       </tbody>
   </table>
 
