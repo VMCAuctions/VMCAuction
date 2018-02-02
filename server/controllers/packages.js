@@ -14,7 +14,7 @@ function PackagesController(){
 
 		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
 
-		Package.find({}).populate("_items").exec(function(err, lollipop) {
+		Package.find({}).populate("_items").exec(function(err, packages) {
 
 				// This is the method that finds all of the packages from the database
 				if(err) {
@@ -24,7 +24,7 @@ function PackagesController(){
 				else {
 						// res.json({packages: packages, admin:req.session.admin});
 						console.log(req.session);
-						res.render('packages', {packages: lollipop})
+						res.render('packages', {packages: packages})
 
 					}
 				})  // ends Package.find
@@ -33,10 +33,35 @@ function PackagesController(){
 
 
 	this.new = function(req,res){
-		// this would be the method that gets the new package form but this is probably handled independently by React
-		console.log('PackagesController new');
-	};
+		var total = 0;
+		var itemsArray = [];
+		Item.find({}, function(err, items) {
+				// This is the method that finds all of the items from the database
+				if(err) {
+						console.log(err);
+						//res.status(500).send('Failed to Load Items');
+				}
+				else {
+					console.log(total);
+					for(item in items){
+						itemsArray.push(items[item]);
+						console.log(itemsArray);
+					}
 
+	}
+})
+		Category.find({}, function(err, categories) {
+	    	if(err) {
+	      		console.log(err);
+	      		//res.status(500).send('Failed to Load Items');
+	    	}
+	    	else {
+					console.log(itemsArray);
+					res.render('packageCreate', {categories: categories, total:total, items: itemsArray})
+		}
+		console.log('PackagesController new');
+	})
+}
 
 	this.create = function(req,res){
 		// this handles the form post that creates a new package
