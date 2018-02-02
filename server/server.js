@@ -2,6 +2,8 @@
 var express = require("express");
 var app = express();
 var session = require('express-session')
+require('jsdom-global')()
+
 
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,

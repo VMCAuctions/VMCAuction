@@ -5,6 +5,11 @@
     <title>package creation</title>
   </head>
   <body>
+    <script>
+      function test(){
+        alert('hello')
+      }
+    </script>
     <h3>create package</h3>
     <form class="" action="/api/packages" method="post">
       <input type="text" name="packageName" placeholder="packageName">
@@ -20,16 +25,29 @@
       <input type="number" name="increments" value="">
 
       <!-- need a read only feild with the current number selected -->
-      <% totalAdd = function(){ %>
-        <%var checkbox = document.getElementById("check");%>
-      <%  if (checkbox.checked == true){%>
-        <%  total += value%>
-      <%  }%>
-      <%}%>
+      <script type="text/javascript">
+      var total = 0;
+       totalAdd = function(value, id){
+         console.log(value);
+         console.log("id is", id);
+        var checkbox = document.getElementById(id);
+        console.log(checkbox);
+        if (checkbox.checked === true){
+          total += value
+          console.log("total is", total);
+
+        }
+        else if (checkbox.checked === false) {
+          total -= value
+        }
+        document.getElementById('totalValue').value = total
+      }
+      </script>
       <%for (var i in items){%>
-      <%=items[i].name%><input type="checkbox" name="selectedItems" id="check" value="<%items[i].value%>" onChange='<%total+=items[i].value%>'>
+      <%=items[i].name%>
+      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%items[i].value%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
       <%}%>
-      <input readonly type="number" name="totalValue" value="<%=total%>">
+      <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
       <input type="submit" name="submit" value="submit">
     </form>
   </body>
