@@ -46,6 +46,8 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/api/packages/:id', function(req,res){
 		packages.update(req,res)});
+		app.get('/packages/:id', function(req,res){
+			packages.edit(req,res)});
 	//filtering the packages according to the categories
 	app.post('/api/get_selected_packages', function(req, res){
 		packages.get_selected(req,res)
