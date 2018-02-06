@@ -32,23 +32,77 @@ function PackagesController(){
 	};
 
 
-	this.new = function(req,res){
-		var total = 0;
+	this.edit = function(req,res){
+		var categoryArray = [];
 		var itemsArray = [];
-		Item.find({}, function(err, items) {
-				// This is the method that finds all of the items from the database
+		var total = 0;
+		Category.find({}, function(err, categories) {
 				if(err) {
 						console.log(err);
 						//res.status(500).send('Failed to Load Items');
 				}
 				else {
-					console.log(total);
-					for(item in items){
-						itemsArray.push(items[item]);
-						console.log(itemsArray);
+					for(c in categories){
+						categoryArray.push(categories[c].name);
 					}
 
+		}
+		console.log('PackagesController new');
+	})
+	Item.find({}, function(err, items) {
+			// This is the method that finds all of the items from the database
+			if(err) {
+					console.log(err);
+					//res.status(500).send('Failed to Load Items');
+			}
+			else {
+				console.log(total);
+				for(let i = 0; i<items.length; i++){
+					if(!items[i].packaged){
+					itemsArray.push(items[i]);
+					console.log(itemsArray);
+				}
+				}
+
+}
+})
+
+
+
+		Package.findById(req.params.id).populate("_items").exec(function(err,result){
+			if(err){
+				console.log(err);
+			}
+			else{
+				let itemValues = result._items;
+				 for(let i = 0; i < itemValues.length; i++){
+					total += itemValues[i].value;
+				 	console.log(result._items[i]);
+				 }
+				console.log("result is", result)
+				res.render('packageEdit', {package: result, categories: categoryArray, items: itemsArray, total: total})
+			}
+		})
 	}
+
+
+this.new = function(req,res){
+	var total = 0;
+	var itemsArray = [];
+	Item.find({}, function(err, items) {
+			// This is the method that finds all of the items from the database
+			if(err) {
+					console.log(err);
+					//res.status(500).send('Failed to Load Items');
+			}
+			else {
+				console.log(total);
+				for(item in items){
+					itemsArray.push(items[item]);
+					console.log(itemsArray);
+				}
+
+}
 })
 		Category.find({}, function(err, categories) {
 	    	if(err) {
