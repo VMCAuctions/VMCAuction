@@ -22,8 +22,8 @@ function PackagesController(){
 						res.status(500).send('Failed to Load Packages');
 				}
 				else {
-						// res.json({packages: packages, admin:req.session.admin});
-						console.log(req.session);
+						//res.json({packages: packages, admin:req.session.admin});
+						
 						res.render('packages', {packages: packages})
 
 					}
@@ -121,7 +121,9 @@ function PackagesController(){
 				console.log(err);
 			}
 			else{
-				res.json({packages: result});
+				// res.json({packages: result});
+				console.log(result)
+				res.render('package_show',{package:result})
 			}
 		})
 	};
