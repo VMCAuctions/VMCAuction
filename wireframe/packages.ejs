@@ -13,6 +13,7 @@
     <a href="/items">VMC</a> |
     <a href="/packages">Catalog</a> |
     <a href="/bids">Packages/Bids</a> |
+    <a href='/api/users_login'>Login</a> |
   </nav>
   <h2>Packages/Bids</h2>
 <% for (var p in packages){%>
@@ -26,6 +27,10 @@
   <p><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
+  <%}%>
+  <% if (admin){ %>
+   <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
+   <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
   <%}%>
 </div>
 <% }%>

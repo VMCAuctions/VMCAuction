@@ -19,12 +19,12 @@ module.exports = function(app) {
 		items.create(req,res)});
 	// show a single item (might be handled solely by React)
 	app.get('/api/items/:id', function(req,res){
-		items.show(req,res)});
+		items.edit(req,res)});
 	// update a single item
 	app.post('/api/items/:id', function(req,res){
 		items.update(req,res)});
 	//deleting an item
-	app.post('/api/remove_item', function(req, res){
+	app.get('/api/remove_item/:id', function(req, res){
 		items.remove_item(req, res)});
 
 
@@ -46,14 +46,14 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/api/packages/:id', function(req,res){
 		packages.update(req,res)});
-		app.get('/packages/:id', function(req,res){
-			packages.edit(req,res)});
+	app.get('/packages/:id', function(req,res){
+		packages.edit(req,res)});
 	//filtering the packages according to the categories
 	app.post('/api/get_selected_packages', function(req, res){
 		packages.get_selected(req,res)
 	});
 	//removing a package from the DB
-	app.post('/api/remove_package', function(req, res){
+	app.get('/api/remove_package/:id', function(req, res){
 		packages.remove_package(req, res)
 	})
 

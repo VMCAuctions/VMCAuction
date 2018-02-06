@@ -10,7 +10,7 @@
         alert('hello')
       }
     </script>
-    <h3>create package</h3>
+    <h3>Edit Package</h3>
     <form class="" action="/api/packages/<%=package._id%>" method="post">
       <input type="text" name="packageName" value="<%=package.name%>">
       <textarea name="packageDescription" rows="8" cols="40" value='<%=package.description%>'><%=package.description%></textarea>
@@ -53,15 +53,12 @@
       </script>
       <%for (var j = 0; j < package._items.length; j++){%>
         <%=package._items[j].name%>
-        <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" value="<%package._items[j].value%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">
+        <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">
         <%}%>
-      }
-
-
       <%for (var i in items){%>
 
       <%=items[i].name%>
-      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%items[i].value%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
       <%}%>
       <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
       <input type="submit" name="submit" value="submit">
