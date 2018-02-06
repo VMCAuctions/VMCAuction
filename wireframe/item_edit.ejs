@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Item</title>
+  </head>
+  <body>
+		<h3>Edit Item</h3>
+		<form action="/api/items/<%=item._id %>" method="post">
+			<input type="text" name="itemName" value='<%= item.name %>'>
+			<input type="text" name="donor" value='<%= item.donor %>'>
+			<select class="" name="category" >
+				<option selected='<%=item._category%>'><%=item._category%></option>		
+				<% for (var c in categories){%>
+					<% if(categories[c].name != item._category) {%>
+						<option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+					<%}%>
+				<%}%>
+					<!-- add radio and jquery to make only one catagory option apear
+					or Make a seperate page to creat catagories -->
+			</select>
+			<input type="text" name="category" value="" placeholder="new category">
+			<input type="text" name="fairMarketValue" value='<%= item.value %>'>
+			<textarea name="itemDescription" rows="8" cols="40"><%=item.description %></textarea>
+			<textarea name="itemRestriction" rows="8" cols="40"><%=item.restriction %></textarea>
+			<input type="submit" name="" value="Submit">
+		</form>
+	</body>
+</html>

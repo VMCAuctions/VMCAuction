@@ -19,8 +19,8 @@ function ItemsController(){
 	      		//res.status(500).send('Failed to Load Items');
 	    	}
 	    	else {
-	        	//  res.json({admin: req.session.admin, listOfItems: items});
-						res.render('items', {items: items})
+	        	//res.json({admin: req.session.admin, listOfItems: items});
+				res.render('items', {items: items})
 	        }
         })  // ends Item.find
 
@@ -78,11 +78,21 @@ function ItemsController(){
 	        console.log(err);
 	      }
 	      else{
-	        res.json(result);
-	      }
-	    });
-	}
-
+			Category.find({}, function(err, categories) {
+				// This is the method that finds all of the items from the database
+				if(err) {
+					  console.log(err);
+					  //res.status(500).send('Failed to Load Items');
+				}
+				else{
+					//res.json(result)
+					res.render('item_edit', {item:result, categories:categories});
+				}
+	        
+	      })
+		}
+	})
+	};
 
 	this.update = function(req,res){
 		console.log('ItemsController update');
