@@ -22,6 +22,9 @@
   <table>
       <thead>
         <tr>
+            <% if (admin) { %>
+              <th>Actions</th>
+            <%} %>
             <th>Item Number</th>
             <th>Item Name</th>
             <th>Package</th>
@@ -35,6 +38,9 @@
       <tbody>
         <% for (var i in items){%>
           <tr>
+              <% if(admin){ %>
+                <td><a href='/api/items/<%=items[i]._id%>'><button>Edit</button></a>|<a href='/api/remove_item/<%=items[i]._id%>'><button>Delete</button></a></td>
+              <%}%>
               <td><%= items[i]._id%></td>
               <td><%= items[i].name%></td>
               <td><%= items[i]._package%></td>

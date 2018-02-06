@@ -20,7 +20,8 @@ function ItemsController(){
 	    	}
 	    	else {
 	        	//res.json({admin: req.session.admin, listOfItems: items});
-				res.render('items', {items: items})
+				res.render('items', {items: items, admin: req.session.admin})
+			
 	        }
         })  // ends Item.find
 
@@ -36,8 +37,11 @@ function ItemsController(){
 	      		//res.status(500).send('Failed to Load Items');
 	    	}
 	    	else {
-
-					res.render('createItem', {categories: categories})
+					if(req.session.admin){
+						res.render('createItem', {categories: categories})
+					}else{
+						res.redirect('/api/packages')
+					}
 				}
 		console.log('ItemsController new');
 	});
@@ -70,7 +74,7 @@ function ItemsController(){
 	};
 
 
-	this.show = function(req,res){
+	this.edit = function(req,res){
 		console.log('ItemsController show');
 		// this gets the single item screen (if we want it)
 		Item.findById(req.params.id, function(err, result){
@@ -86,7 +90,11 @@ function ItemsController(){
 				}
 				else{
 					//res.json(result)
-					res.render('item_edit', {item:result, categories:categories});
+					if(req.session.admin){
+						res.render('item_edit', {item:result, categories:categories});
+					}else{
+						res.redirect('/api/packages')
+					}
 				}
 	        
 	      })
@@ -130,11 +138,16 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.remove({_id: req.body.item_id}, function(err, result){
-			if(err){console.log(err)}
-			else{res.json(result)}
-		})
+		Item.findOne({_id: req.params.id}, function(err, result){
+			if(err){
+				console.log(err)
+			}else{
+				Item.remove(result, function(err, result){
+					if(err){console.log(err)}
+					else{res.json(result)}
+				}
+				)}
+		});
 	}
-
 }
 module.exports = new ItemsController();

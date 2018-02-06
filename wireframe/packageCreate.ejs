@@ -51,7 +51,7 @@
         <%if(!items[i].packaged){%>
       <%=items[i].name%>
 
-      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%items[i].value%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
       <%}%>
       <%}%>
       <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">

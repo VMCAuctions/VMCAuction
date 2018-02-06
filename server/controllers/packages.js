@@ -24,7 +24,7 @@ function PackagesController(){
 				else {
 						//res.json({packages: packages, admin:req.session.admin});
 						
-						res.render('packages', {packages: packages})
+						res.render('packages', {packages: packages, admin: req.session.admin})
 
 					}
 				})  // ends Package.find
@@ -120,7 +120,7 @@ this.new = function(req,res){
 	this.create = function(req,res){
 		// this handles the form post that creates a new package
 		console.log('PackagesController create');
-		console.log(req.body)
+		console.log('selected items' ,req.body)
 	    //////// HOW ARE WE RECEIVING THE INCLUDED ITEMS?  Should be an array of item id's  //////
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
 
@@ -277,7 +277,7 @@ this.new = function(req,res){
 
 	//removing a package from the DB
 	this.remove_package = function(req, res){
-		Package.findOne({_id: req.body.package_id}, function(err, result){
+		Package.findOne({_id: req.params.id}, function(err, result){
 			if(err){
 				console.log(err)
 			}else{
@@ -288,7 +288,7 @@ this.new = function(req,res){
 						}
 					});
 				}
-				Package.remove({_id: req.body.package_id}, function(err, result){
+				Package.remove({_id: req.params.id}, function(err, result){
 					if(err){
 						console.log(err)
 					}else{
