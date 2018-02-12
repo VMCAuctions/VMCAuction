@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Admin Panel
+    </title>
+
+</head>
+<body>
+    <!-- check with client to verify all admin powers / priveledges, regarding deleting and editing other non admin users -->
+  <nav>
+    <a href="/items">VMC</a> |
+    <a href="/packages">Catalog</a> |
+    <a href="/bids">Packages/Bids</a> |
+    <a href='/api/users_login'>Login</a> |
+  </nav>
+<table>
+    <thead>
+        <th>Users</th>
+        <th>Admin Status</th>
+        <th>Change Status</th>  
+    </thead>
+    <form class="" action="/users/admin_change" id="ourForm" method="post">
+<% for (var u in users) {%>
+    <tr>
+        <td><%= users[u].userName %></td> 
+        <td><%= users[u].admin %></td>
+        <% if(users[u].admin ){ %>            
+            <td>
+                <select name='<%=users[u]._id %>'>
+                    <option value='true'>True</option>
+                    <option value='false'>False</option>
+                </select>
+            </td>
+        <%}else { %>
+            <td>
+                    <select name='<%=users[u]._id %>'>                        
+                    <option value='false'>False</option>
+                    <option value='true'>True</option>
+                </select>
+            </td>
+        <%}%>
+    </tr>
+<%}%>
+</table>
+<input type='submit' value='Save'>
+</form>
+
+</body>
+</html>
