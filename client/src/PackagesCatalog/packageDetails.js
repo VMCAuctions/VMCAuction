@@ -16,10 +16,10 @@ import {Link} from 'react-router-dom';
   const socket = openSocket(host);
 
   // subscribe to bids from server
-  function subscribeToBids(cb, packId ) {
+  function subscribeToBids(err, packId ) {
     var uniqChatUpdateId = 'update_chat' + packId;
     // receiving data from server on "update Chat"
-    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
+    socket.on(uniqChatUpdateId, (bidsUpdate) => err(null, bidsUpdate));
     // sending event to refresh bids
     socket.emit('page_refresh', {pId: packId });
   }
