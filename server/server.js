@@ -124,8 +124,12 @@ var io = require('socket.io').listen(server);
 		})()
 // ---------------------------------- 000 --------------------------------------
 
-io.sockets.on('connection', function(socket){
 
+io.sockets.on('connection', function(socket){
+		socket.on("helloWorld", function(data){
+			console.log(data)
+	})
+	
 // DEBUGGING INFO JUST TO MONITOR allBidsObject is healty
 console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20));
 console.dir(allBidsBigObj); console.log("/".repeat(20));

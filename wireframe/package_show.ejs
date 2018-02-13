@@ -2,7 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Package Show</title>
+		<title>Package Show</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+		<script>
+				var socket = io.connect('http://localhost:8000')
+				$(document).ready(function (){
+					socket.emit('helloWorld', {message: "hello"})
+				})
+		</script>
   </head>
 	<body>
 		<div>
@@ -21,7 +29,14 @@
 			<%}%>
 			
 			<h3>Next Bid:</h3>
-			
+			<form method='POST'>
+				<% if (package.bids == false) {%>
+					<input id='bid_amount' readonly value='<%= package.amount%>'>
+				<%} else {%>
+					<input id='bid_amount' readonly value='<%= package.bids[package.bids.length -1] + package.bid_increment %> '>
+				<%}%>
+			<input type='submit' value'Place Bid'>
+			</form>
 		</div>
 		<div>
 			<h5>Items In Package</h5>

@@ -21,7 +21,7 @@
 <div class="package">
   <img src="/no-image.png" alt="img">
   <br>
-  <a href="#"><%=packages[p].name%></a>
+  <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
   <p><b>Category:</b> <%=packages[p].catagory%></p>
   <p><b>STARTING BID:</b> <%=packages[p].amount%></p>
   <%if(packages[p].bids[packages[p].bids.length-1]){%>
