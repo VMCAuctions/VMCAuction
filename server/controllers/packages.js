@@ -177,7 +177,7 @@ this.new = function(req,res){
 			else{
 				// res.json({packages: result});
 				console.log(result)
-				res.render('package_show',{package:result})
+				res.render('package_show',{package:result, userName: req.session.userName})
 			}
 		})
 	};

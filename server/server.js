@@ -141,12 +141,15 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 			var uniqChatUpdateId = 'update_chat' + data.packId;
+			console.log("message was received in server")
+			console.log("in server, bid is ", data.bid)
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
 		      io.emit(buttonStateChannel, {
 						button: false
-		      } );
+					} );
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
