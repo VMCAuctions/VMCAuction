@@ -3,9 +3,19 @@
 
 <head>
     <title>
-        Package Bidding Report
+        Packages
     </title>
-
+    <script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type='text/javascript'> 
+			var socket = io.connect('http://localhost:8000');
+			
+			$(document).ready(function(){
+					socket.on("serverTalksBack", function(data){
+						$('#currentBid').text("Current Bid: " + data.bid)
+					})
+				})
+		</script>
 </head>
 
 <body>
@@ -22,10 +32,10 @@
   <img src="/no-image.png" alt="img">
   <br>
   <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
-  <p><b>Category:</b> <%=packages[p].catagory%></p>
+  <p><b>Category:</b> <%=packages[p]._category%></p>
   <p><b>STARTING BID:</b> <%=packages[p].amount%></p>
   <%if(packages[p].bids[packages[p].bids.length-1]){%>
-  <p><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
+  <p id='currentBid'><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
