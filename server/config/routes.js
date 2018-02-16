@@ -91,6 +91,9 @@ module.exports = function(app) {
 	app.post('/api/users', function(req,res){
 		users.create(req,res)});
 
+	app.get('/users/register', function(req,res) {
+		users.register(req,res)});
+
 	// checks if a user is logged in
 	app.get('/api/users/loggedin', function(req,res){
 		console.log("route in");
@@ -113,12 +116,12 @@ module.exports = function(app) {
 	// parse through admin changes before update
 	app.post('/users/admin_change', function(req,res){
 		users.admin_change(req,res)});
-	
+
 	//check who is logged in
 	app.get('/api/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
-	
-	
+
+
 	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
 	// This was added just for a mock run through with the Foundation ////////
 	/*<a href="/items/bidder">Items</a> |

@@ -7,9 +7,9 @@
     </title>
     <script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script type='text/javascript'> 
+    <script type='text/javascript'>
 			var socket = io.connect('http://localhost:8000');
-			
+
 			$(document).ready(function(){
 					socket.on("serverTalksBack", function(data){
 						$('#currentBid').text("Current Bid: " + data.bid)
@@ -20,11 +20,20 @@
 
 <body>
   <nav>
-    <a href="/items">VMC</a> |
-    <a href="/packages">Catalog</a> |
-    <a href="/bids">Packages/Bids</a> |
+    <a href="/api/items">Catalog</a> |
+    <a href="/api/packages">Packages/Bids</a> |
+    <%if (admin){%>
+      <a href='/api/users'>All Users</a> |
+      <a href="/api/items/new"> Add Item</a> |
+      <a href="/api/packages/new"> Add Package</a> |
+    <%}%>
+    <%if (userName){%>
+      <a href='/api/users/logout'>Logout</a> |
+    <%}else{%>
     <a href='/api/users_login'>Login</a> |
-    <a href='/api/users'>All Users</a> |
+    <a href="/users/register">Register </a> |
+    <%}%>
+
   </nav>
   <h2>Packages/Bids</h2>
 <% for (var p in packages){%>
