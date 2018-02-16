@@ -5,12 +5,28 @@
     <title>Edit Item</title>
   </head>
   <body>
+    <nav>
+      <a href="/api/items">Catalog</a> |
+      <a href="/api/packages">Packages/Bids</a> |
+      <%if (admin){%>
+        <a href='/api/users'>All Users</a> |
+        <a href="/api/items/new"> Add Item</a> |
+        <a href="/api/packages/new"> Add Package</a> |
+      <%}%>
+      <%if (userName){%>
+        <a href='/api/users/logout'>Logout</a> |
+      <%}else{%>
+      <a href='/api/users_login'>Login</a> |
+      <a href="/users/register">Register </a> |
+      <%}%>
+
+    </nav>
 		<h3>Edit Item</h3>
 		<form action="/api/items/<%=item._id %>" method="post">
 			<input type="text" name="itemName" value='<%= item.name %>'>
 			<input type="text" name="donor" value='<%= item.donor %>'>
 			<select class="" name="category" >
-				<option selected='<%=item._category%>'><%=item._category%></option>		
+				<option selected='<%=item._category%>'><%=item._category%></option>
 				<% for (var c in categories){%>
 					<% if(categories[c].name != item._category) {%>
 						<option value="<%=categories[c].name%>"><%=categories[c].name%></option>

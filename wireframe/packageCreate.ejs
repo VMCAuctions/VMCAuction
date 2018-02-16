@@ -10,6 +10,22 @@
         alert('hello')
       }
     </script>
+    <nav>
+      <a href="/api/items">Catalog</a> |
+      <a href="/api/packages">Packages/Bids</a> |
+      <%if (admin){%>
+        <a href='/api/users'>All Users</a> |
+        <a href="/api/items/new"> Add Item</a> |
+        <a href="/api/packages/new"> Add Package</a> |
+      <%}%>
+      <%if (userName){%>
+        <a href='/api/users/logout'>Logout</a> |
+      <%}else{%>
+      <a href='/api/users_login'>Login</a> |
+      <a href="/users/register">Register </a> |
+      <%}%>
+
+    </nav>
     <h3>create package</h3>
     <form class="" action="/api/packages" method="post">
       <input type="text" name="packageName" placeholder="packageName">
