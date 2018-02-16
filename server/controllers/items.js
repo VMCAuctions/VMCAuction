@@ -20,8 +20,8 @@ function ItemsController(){
 	    	}
 	    	else {
 	        	//res.json({admin: req.session.admin, listOfItems: items});
-				res.render('items', {items: items, admin: req.session.admin})
-			
+				res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName})
+
 	        }
         })  // ends Item.find
 
@@ -38,7 +38,7 @@ function ItemsController(){
 	    	}
 	    	else {
 					if(req.session.admin){
-						res.render('createItem', {categories: categories})
+						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
 					}else{
 						res.redirect('/api/packages')
 					}
@@ -91,12 +91,12 @@ function ItemsController(){
 				else{
 					//res.json(result)
 					if(req.session.admin){
-						res.render('item_edit', {item:result, categories:categories});
+						res.render('item_edit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
 					}else{
 						res.redirect('/api/packages')
 					}
 				}
-	        
+
 	      })
 		}
 	})

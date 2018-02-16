@@ -23,8 +23,8 @@ function PackagesController(){
 				}
 				else {
 						//res.json({packages: packages, admin:req.session.admin});
-						
-						res.render('packages', {packages: packages, admin: req.session.admin})
+
+						res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName})
 
 					}
 				})  // ends Package.find
@@ -80,7 +80,7 @@ function PackagesController(){
 				 	console.log(result._items[i]);
 				 }
 				console.log("result is", result)
-				res.render('packageEdit', {package: result, categories: categoryArray, items: itemsArray, total: total})
+				res.render('packageEdit', {package: result, categories: categoryArray, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin})
 			}
 		})
 	}
@@ -111,7 +111,7 @@ this.new = function(req,res){
 	    	}
 	    	else {
 					console.log(itemsArray);
-					res.render('packageCreate', {categories: categories, total:total, items: itemsArray})
+					res.render('packageCreate', {categories: categories, total:total, items: itemsArray, userName: req.session.userName, admin: req.session.admin})
 		}
 		console.log('PackagesController new');
 	})
@@ -177,7 +177,7 @@ this.new = function(req,res){
 			else{
 				// res.json({packages: result});
 				console.log(result)
-				res.render('package_show',{package:result, userName: req.session.userName})
+				res.render('package_show',{package:result, userName: req.session.userName, admin: req.session.admin})
 			}
 		})
 	};

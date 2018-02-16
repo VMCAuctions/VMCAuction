@@ -19,18 +19,21 @@ function UsersController(){
 			}else{
 				var hash = {}
 				if(req.session.admin){
-					res.render('admin', {users :users, admin_hash: hash})
+					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
 				}else{
 					res.redirect('/api/packages')
 				}
-			}		
+			}
 		})
 	};
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
 		console.log('hi');
-		res.render('login')
+		res.render('login', {userName: req.session.userName, admin: req.session.admin})
 	};
+	this.register = function(req,res){
+		res.render('user', {userName: req.session.userName, admin: req.session.admin})
+	}
 	// post the new user registration form and create a new user
 	// add redirect when done with refactor
 	this.create = function(req,res){
@@ -207,7 +210,7 @@ function UsersController(){
 						if (err){
 							console.log(err)
 						}else{
-							
+
 						}
 					})
 				}
@@ -245,7 +248,7 @@ function UsersController(){
 		login_check = false;
 		req.session.destroy();
 		console.log(req.session);
-        return res.json(true)
+        res.redirect('/api/packages')
 
 	}
 
