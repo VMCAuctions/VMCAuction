@@ -10,11 +10,20 @@
 
 <body>
   <nav>
-    <a href="/item/bidder">Items</a> |
-    <a href="/package/bidder">Packages</a> |
-    <a href="/bid/bidder">Bids</a> |
-    <a href="/profile/bidder">Profile</a> |
-    <a href="/cart/bidder">Cart</a>
+    <a href="/api/items">Catalog</a> |
+    <a href="/api/packages">Packages/Bids</a> |
+    <%if (admin){%>
+      <a href='/api/users'>All Users</a> |
+      <a href="/api/items/new"> Add Item</a> |
+      <a href="/api/packages/new"> Add Package</a> |
+    <%}%>
+    <%if (userName){%>
+      <a href='/api/users/logout'>Logout</a> |
+    <%}else{%>
+    <a href='/api/users_login'>Login</a> |
+    <a href="/users/register">Register </a> |
+    <%}%>
+
   </nav>
   <h2>Create New User</h2>
 
@@ -26,7 +35,7 @@
           Last Name:&nbsp
           <input placeholder="Last Name" type="text" name="lastName">
       </label>
-    
+
     <p>
     <label>Address:&nbsp
       <input size="30" placeholder="Strees Address" type="text" name="streetAddress">
