@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 	// get the Login/Registration screen.  This is our root route //
 	// ITEMS //
-	// get the index page of all items
+	// Renders all ites page
 	app.get('/api/items', function(req,res){
 		items.index(req,res)});
 	// get the new item form
@@ -17,7 +17,7 @@ module.exports = function(app) {
 	// post the new item form and create that new item
 	app.post('/api/items', function(req,res){
 		items.create(req,res)});
-	// show a single item (might be handled solely by React)
+	// Edit item form
 	app.get('/api/items/:id', function(req,res){
 		items.edit(req,res)});
 	// update a single item
@@ -31,7 +31,7 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
-	// get the index page of all packages
+	// show all packages
 	app.get('/api/packages', function(req,res){
 		packages.index(req,res)});
 	// get the new package form
@@ -122,24 +122,6 @@ module.exports = function(app) {
 		users.who_is_logged_in(req, res)});
 
 
-	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
-	// This was added just for a mock run through with the Foundation ////////
-	/*<a href="/items/bidder">Items</a> |
-    <a href="/packages/bidder">Packages</a> |
-    <a href="/bids/bidder">Bids</a> |
-    <a href="/profile/bidder">Profile</a> |
-    <a href="/cart/bidder">Cart</a>*/
-    app.get('/api/item/bidder', function(req,res){res.render('items')});
-
-    app.get('/api/package/bidder', function(req,res){res.render('packagesBidder')});
-
-    app.get('/api/bid/bidder', function(req,res){res.render('bidderPackages')});
-
-    app.get('/api/profile/bidder', function(req,res){res.render('user')});
-
-    app.get('/api/cart/bidder', function(req,res){res.send('<h1>Bidder Cart at Checkout</h1>')});
-    /// DELETE THESE ROUTES AFTER BUILDING BIDDER SCREENS INTO REACT /////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
 		app.get('/*', function(req,res){

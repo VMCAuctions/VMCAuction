@@ -153,7 +153,7 @@ this.new = function(req,res){
 
 						})
 						if (i == package._items.length -1){
-							return res.json(true)
+							res.redirect('/api/packages')
 						}
 					};
 			    }
