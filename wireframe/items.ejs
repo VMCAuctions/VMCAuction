@@ -2,6 +2,15 @@
 <html>
 
 <head>
+
+    <!-- <link rel="stylesheet" type="text/css" href="./css/style.css" > -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <title>
         Item Creation
     </title>
@@ -9,30 +18,26 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/item/bidder">Items</a> |
-    <a href="/package/bidder">Packages</a> |
-    <a href="/bid/bidder">Bids</a> |
-    <a href="/profile/bidder">Profile</a> |
-    <a href="/cart/bidder">Cart</a>
+  <!-- Nav-bar -->
+  <%- include('header') -%>
 
-  </nav>
-  <h2>Item Report</h2>
 
-  <table>
+  <h2 class="display-4">Item Report</h2>
+
+  <table class="table table-hover table-dark">
       <thead>
         <tr>
             <% if (admin) { %>
               <th>Actions</th>
             <%} %>
-            <th>Item Number</th>
-            <th>Item Name</th>
-            <th>Package</th>
-            <th>Category</th>
-            <th>Fair Market Value</th>
-            <th>Item Description</th>
-            <th>Donor</th>
-            <th>Item Restriction</th>
+            <th scope="col">Item Number</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Package</th>
+            <th scope="col">Category</th>
+            <th scope="col">Fair Market Value</th>
+            <th scope="col">Item Description</th>
+            <th scope="col">Donor</th>
+            <th scope="col">Item Restriction</th>
         </tr>
       </thead>
       <tbody>

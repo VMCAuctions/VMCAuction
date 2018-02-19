@@ -9,43 +9,38 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/item/bidder">Items</a> |
-    <a href="/package/bidder">Packages</a> |
-    <a href="/bid/bidder">Bids</a> |
-    <a href="/profile/bidder">Profile</a> |
-    <a href="/cart/bidder">Cart</a>
+  <%- include('header') -%>
 
-  </nav>
+
   <h2>Bidder Packages Report</h2>
 
-  <table>
+  <table class="table table-hover table-dark">
 
       <thead>
         <tr>
-            <th></th>
-            <th>OUTBID PACKAGES</th>
-            <th ></th>
+            <th scope="col"></th>
+            <th scope="col">OUTBID PACKAGES</th>
+            <th scope="col"></th>
         </tr>
         <tr>
-            <th></th>
-            <th></th>
-            <th >Current</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th  scope="col">Current</th>
         </tr>
         <tr>
-            <th>Package</th>
-            <th>Package</th>
-            <th >High</th>
+            <th scope="col">Package</th>
+            <th scope="col">Package</th>
+            <th  scope="col">High</th>
         </tr>
           <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th >Bid ($)</th>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th  scope="col">Bid ($)</th>
           </tr>
           <tr>
-              <th>========</th>
-              <th>========================================</th>
-              <th >==========</th>
+              <th scope="col">========</th>
+              <th scope="col">========================================</th>
+              <th  scope="col">==========</th>
           </tr>
       </thead>
 
@@ -77,29 +72,29 @@
 
       <thead>
         <tr>
-            <th></th>
-            <th>WINNING PACKAGES</th>
-            <th ></th>
+            <th th scope="col"></th>
+            <th th scope="col">WINNING PACKAGES</th>
+            <th  th scope="col"></th>
         </tr>
         <tr>
-            <th></th>
-            <th></th>
-            <th >Current</th>
+            <th th scope="col"></th>
+            <th th scope="col"></th>
+            <th  th scope="col">Current</th>
         </tr>
         <tr>
-            <th>Package</th>
-            <th>Package</th>
-            <th >High</th>
+            <th th scope="col">Package</th>
+            <th th scope="col">Package</th>
+            <th  th scope="col">High</th>
         </tr>
           <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th >Bid ($)</th>
+              <th th scope="col">ID</th>
+              <th th scope="col">Name</th>
+              <th  th scope="col">Bid ($)</th>
           </tr>
           <tr>
-              <th>========</th>
-              <th>========================================</th>
-              <th >==========</th>
+              <th th scope="col">========</th>
+              <th th scope="col">========================================</th>
+              <th  th scope="col">==========</th>
           </tr>
       </thead>
 

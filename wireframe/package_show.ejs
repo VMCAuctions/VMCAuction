@@ -13,6 +13,10 @@
 		</script>
   </head>
 	<body>
+
+    <%- include('header') -%>
+
+
 		<div>
 			<h3><%= package.name %> </h3>
 			<p>Package Description: <%= package.description %></p>
@@ -21,13 +25,13 @@
 		</div>
 
 		<div>
-			
+
 			<% if (package.bids.length == 0) {%>
 				<h3>Current Bid: None by: nobody</h3>
 			<%} else {%>
 				<h3>Current Bid: <%= package.bids[package.bids.length -1] %> </h3>
 			<%}%>
-			
+
 			<h3>Next Bid:</h3>
 			<form method='POST'>
 				<% if (package.bids == false) {%>
@@ -42,7 +46,7 @@
 			<h5>Items In Package</h5>
 			<!-- <p>This is name: <%= package._items[0].name %> </p> -->
 			<% for (var i = 0; i < package._items.length; i++) {%>
-				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donor %></p> 
+				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donor %></p>
 			<%}%>
 		</div>
 

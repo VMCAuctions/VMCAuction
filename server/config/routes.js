@@ -4,6 +4,12 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
 var path = require("path");
 
+// var express = require("express");
+// var app = express();
+//
+// app.use(express.static("../wireframe"));
+
+
 module.exports = function(app) {
 
 	// get the Login/Registration screen.  This is our root route //
@@ -84,6 +90,11 @@ module.exports = function(app) {
 	// get the index page of all users
 	app.get('/api/users', function(req,res){
 		users.index(req,res)});
+
+	// displaying the create user page
+	app.get('/api/register', function(req,res){
+			users.register(req,res)});
+
 	// get the new user registration form
 	app.get('/api/users_login', function(req,res){
 		users.new(req,res)});
@@ -113,12 +124,12 @@ module.exports = function(app) {
 	// parse through admin changes before update
 	app.post('/users/admin_change', function(req,res){
 		users.admin_change(req,res)});
-	
+
 	//check who is logged in
 	app.get('/api/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
-	
-	
+
+
 	/////////  These are the temporary routes from the Bidders' Nav Bar still in production //////////////
 	// This was added just for a mock run through with the Foundation ////////
 	/*<a href="/items/bidder">Items</a> |

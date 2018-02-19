@@ -9,13 +9,8 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/items">VMC</a> |
-    <a href="/packages">Catalog</a> |
-    <a href="/bids">Packages/Bids</a> |
-    <a href='/api/users_login'>Login</a> |
-    <a href='/api/users'>All Users</a> |
-  </nav>
+  <%- include('header') -%>
+
   <h2>Packages/Bids</h2>
 <% for (var p in packages){%>
 <div class="package">
