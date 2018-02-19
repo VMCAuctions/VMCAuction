@@ -160,16 +160,38 @@ function UsersController(){
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
 		console.log('UsersController show');
-		User.findById(req.params.id, function(err, user){
+		let packages = [];
+		let done = false;
+		User.findOne({userName: req.params.userName}, function(err, user){
 			if(err){
 				console.log(err)
 			}
 			else{
 				console.log(user);
+				for (var i = 0; i < user._packages.length; i++) {
+					Package.findById(user._packages[i], function(err, package) {
+						if (err) {
+							console.log(err);
+						}
+						else {
+
+							packages.push(package);
+							if (i === user._packages.length-1){
+								done = true
+							}
+
+						}
+					})
+				}
 				if (user.userName === req.session.userName | req.session.admin === true) {
 
+						console.log("here");
+					console.log("3", packages);
+					setTimeout(function() {
+						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
+					}, 100)
 
-					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
+
 				}else{
 					res.redirect('/api/packages')
 				}

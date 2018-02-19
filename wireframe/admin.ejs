@@ -24,6 +24,11 @@
       <%}%>
 
     </nav>
+    <%if(userName){%>
+    <a href="/api/users/<%=userName%>">Hello, <%=userName%></a>
+    <%}else{%>
+      <p>Welcome!</p>
+      <%}%>
 <table>
     <thead>
         <th>Users</th>
@@ -33,8 +38,8 @@
     <form class="" action="/users/admin_change" id="ourForm" method="post">
 <% for (var u in users) {%>
     <tr>
-        <td><%= users[u].userName %></td>
-        <td><%= users[u].admin  %> <%=users[u]._id%></td>
+        <td><a href="/api/users/<%= users[u].userName %>"><%= users[u].userName %></a></td>
+        <td><%= users[u].admin  %></td>
 
         <% if(users[u].admin ){ %>
           <%if(users[u].userName === 'admin' | users[u].userName === userName){%>

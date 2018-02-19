@@ -21,6 +21,26 @@
       <%}%>
     </nav>
     <h3><%=user.userName%>'s Page</h3>
-    <%=user._packages[0]%>
+    <table>
+      <thead>
+        <th>package Name</th>
+        <th>Who's Winning</th>
+      </thead>
+      <tbody>
+        <%for(let i =0; i<packages.length; i++){%>
+          <tr>
+          <td><a href="/api/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+          <%if(packages[i].bids[packages[i].bids.length-1].name === userName){%>
+            <td>You!!!</td>
+          <%}else{%>
+          <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
+          <%}%>
+
+
+          </tr>
+          <%}%>
+
+      </tbody>
+    </table>
   </body>
 </html>

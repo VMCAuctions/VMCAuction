@@ -25,6 +25,11 @@
     <%}%>
 
   </nav>
+  <%if(userName){%>
+  <a href="/api/users/<%=userName%>">Hello, <%=userName%></a>
+  <%}else{%>
+    <p>Welcome!</p>
+    <%}%>
   <h2>Bidder Packages Report</h2>
 
   <table>
