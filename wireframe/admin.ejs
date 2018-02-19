@@ -34,14 +34,21 @@
 <% for (var u in users) {%>
     <tr>
         <td><%= users[u].userName %></td>
-        <td><%= users[u].admin %></td>
+        <td><%= users[u].admin  %> <%=users[u]._id%></td>
+
         <% if(users[u].admin ){ %>
+          <%if(users[u].userName === 'admin' | users[u].userName === userName){%>
+            <td>
+              <p>True</p>
+            </td>
+            <%}else{%>
             <td>
                 <select name='<%=users[u]._id %>'>
                     <option value='true'>True</option>
                     <option value='false'>False</option>
                 </select>
             </td>
+            <%}%>
         <%}else { %>
             <td>
                     <select name='<%=users[u]._id %>'>
