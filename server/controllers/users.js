@@ -23,9 +23,15 @@ function UsersController(){
 				}else{
 					res.redirect('/api/packages')
 				}
-			}		
+			}
 		})
 	};
+
+this.register = function(req, res){
+	console.log('inside the register');
+	res.render('user')
+}
+
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
 		console.log('hi');
@@ -207,7 +213,7 @@ function UsersController(){
 						if (err){
 							console.log(err)
 						}else{
-							
+
 						}
 					})
 				}

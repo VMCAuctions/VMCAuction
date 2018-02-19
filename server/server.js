@@ -35,7 +35,7 @@ var path = require("path");
 // static content
 // static content
 if (process.env.NODE_ENV === "production") {
-		app.use(express.static(path.join(__dirname, "../client/build")));
+		app.use(express.static(path.join(__dirname, "../wireframe/css")));
 		//app.use('*', express.static('../client/build'));
 //		app.use('/api/', function(){
 //			break outer;
@@ -43,7 +43,8 @@ if (process.env.NODE_ENV === "production") {
 //		app.use('*', express.static(path.join(__dirname, "../client/build")));
 //		app.use('*/api/', express.static(path.join(__dirname, "./config/routes.js")));
 } else {
-		app.use(express.static(path.join(__dirname, "../client/public")));
+		// app.use(express.static(path.join(__dirname, "../client/public")));
+		app.use(express.static(path.join(__dirname, "../wireframe/css")));
 }
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
@@ -129,7 +130,7 @@ io.sockets.on('connection', function(socket){
 		socket.on("helloWorld", function(data){
 			console.log(data)
 	})
-	
+
 // DEBUGGING INFO JUST TO MONITOR allBidsObject is healty
 console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20));
 console.dir(allBidsBigObj); console.log("/".repeat(20));

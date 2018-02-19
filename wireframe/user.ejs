@@ -9,13 +9,9 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/item/bidder">Items</a> |
-    <a href="/package/bidder">Packages</a> |
-    <a href="/bid/bidder">Bids</a> |
-    <a href="/profile/bidder">Profile</a> |
-    <a href="/cart/bidder">Cart</a>
-  </nav>
+  <!-- Nav-bar -->
+  <%- include('header') -%>
+
   <h2>Update User Profile</h2>
 
   <form action="/api/users" method="post">
@@ -26,7 +22,7 @@
           Last Name:&nbsp
           <input placeholder="Last Name" type="text" name="lastName">
       </label>
-    
+
     <p>
     <label>Address:&nbsp
       <input size="30" placeholder="Strees Address" type="text" name="streetAddress">
