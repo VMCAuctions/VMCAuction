@@ -75,6 +75,7 @@ var server = app.listen(port, function() {
 
 /////////////// SOCKETS /////////////////
 var Package = require('./models/package.js')
+var User = require('./models/user.js');
 
 var io = require('socket.io').listen(server);
 
@@ -129,7 +130,7 @@ io.sockets.on('connection', function(socket){
 		socket.on("helloWorld", function(data){
 			console.log(data)
 	})
-	
+
 // DEBUGGING INFO JUST TO MONITOR allBidsObject is healty
 console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(20));
 console.dir(allBidsBigObj); console.log("/".repeat(20));
@@ -175,13 +176,14 @@ if(packagesButtonStates[data.packId].buttonstate){
 
 			console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
 			console.dir(allBidsBigObj)
-
+console.log('data', data);
       Package.findById(data.packId).exec(
         function(err, data){
           if(err){
             console.log("error occured " + err);
           } else {
 						if(data != null){
+
 							if(data.bids.length == 0 ){
 								data.bids.push({
 									bidAmount: userBid,
@@ -205,6 +207,37 @@ if(packagesButtonStates[data.packId].buttonstate){
 										console.log("successfully ");
 									}
 								})
+						}
+
+
+          }
+        }
+      )
+			User.findOne({userName: data.userName}).exec(
+        function(err, user){
+          if(err){
+            console.log("error occured " + err);
+          } else {
+						console.log(user);
+						if(user != null){
+							var duplicatePackage = false;
+							for(var i = 0; i < user._packages.length; i++){
+								if (user._packages[i] === data._id){
+									duplicatePackage = true;
+									break;
+								}
+							}
+							if (duplicatePackage === false){
+								console.log(data);
+								user._packages.push(parseInt(data.packId))
+								user.save(function(err){
+									if(err){
+										console.log("error when saving: " + err);
+									} else{
+										console.log("successfully ");
+									}
+								})
+							}
 						}
 
 
