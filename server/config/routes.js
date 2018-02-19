@@ -108,7 +108,7 @@ module.exports = function(app) {
 	app.post('/api/users/login', function(req,res){
 		users.login(req,res)});
 	// get the page of a specific user
-	app.get('/api/users/:id', function(req,res){
+	app.get('/api/users/:userName', function(req,res){
 		users.show(req,res)});
 	// update a specific user (profile/info)
 	app.post('/api/users/:id', function(req,res){
@@ -120,6 +120,9 @@ module.exports = function(app) {
 	//check who is logged in
 	app.get('/api/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
+
+	//show individdual user page
+
 
 
 

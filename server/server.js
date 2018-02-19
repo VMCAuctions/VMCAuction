@@ -222,13 +222,17 @@ console.log('data', data);
 						if(user != null){
 							var duplicatePackage = false;
 							for(var i = 0; i < user._packages.length; i++){
-								if (user._packages[i] === data._id){
+								console.log("user", user._packages[i]);
+								console.log("data", data.packId);
+								if (user._packages[i] == data.packId){
 									duplicatePackage = true;
+
 									break;
 								}
 							}
 							if (duplicatePackage === false){
 								console.log(data);
+								console.log(duplicatePackage);
 								user._packages.push(parseInt(data.packId))
 								user.save(function(err){
 									if(err){

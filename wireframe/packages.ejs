@@ -35,6 +35,11 @@
     <%}%>
 
   </nav>
+  <%if(userName){%>
+  <a href="/api/users/<%=userName%>">Hello, <%=userName%></a>
+  <%}else{%>
+    <p>Welcome!</p>
+    <%}%>
   <h2>Packages/Bids</h2>
 <% for (var p in packages){%>
 <div class="package">
