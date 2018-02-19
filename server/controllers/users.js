@@ -160,19 +160,20 @@ function UsersController(){
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
 		console.log('UsersController show');
-        // User.findById(req.params.id, function(err, result){
-        //     if(err){
-        //         console.log('user show-err');
-        //     }else{
-        //         req.json(result);
-        //     }
-        // });
-		User.findOne({userName: req.params.userName}, function(err, user){
+		User.findById(req.params.id, function(err, user){
 			if(err){
 				console.log(err)
 			}
 			else{
-				res.json(user)
+				console.log(user);
+				if (user.userName === req.session.userName | req.session.admin === true) {
+
+
+					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
+				}else{
+					res.redirect('/api/packages')
+				}
+
 			}
 		})
 	};
@@ -205,14 +206,17 @@ function UsersController(){
 				if (err){
 					console.log(err)
 				}else {
-					user.admin = req.body[users]
-					user.save(function(err, result){
-						if (err){
-							console.log(err)
-						}else{
+					if (user.userName != 'admin' | user.userName != req.session.userName) {
+						console.log(user.userName);
+						user.admin = req.body[users]
+						user.save(function(err, result){
+							if (err){
+								console.log(err)
 
-						}
-					})
+							}
+						})
+					}
+
 				}
 			})
 		}
@@ -251,6 +255,7 @@ function UsersController(){
         res.redirect('/api/packages')
 
 	}
+
 
 	this.who_is_logged_in = function(req, res){
 		if(req.session.admin == true){
