@@ -22,22 +22,11 @@
   </head>
 
 	<body>
-    <nav>
-      <a href="/api/items">Catalog</a> |
-      <a href="/api/packages">Packages/Bids</a> |
-      <%if (admin){%>
-        <a href='/api/users'>All Users</a> |
-        <a href="/api/items/new"> Add Item</a> |
-        <a href="/api/packages/new"> Add Package</a> |
-      <%}%>
-      <%if (userName){%>
-        <a href='/api/users/logout'>Logout</a> |
-      <%}else{%>
-      <a href='/api/users_login'>Login</a> |
-      <a href="/users/register">Register </a> |
-      <%}%>
-
-    </nav>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
 		<div>
 			<h3><%= package.name %> </h3>
 			<p>Package Description: <%= package.description %></p>

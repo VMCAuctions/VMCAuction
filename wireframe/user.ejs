@@ -9,23 +9,12 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/api/items">Catalog</a> |
-    <a href="/api/packages">Packages/Bids</a> |
-    <%if (admin){%>
-      <a href='/api/users'>All Users</a> |
-      <a href="/api/items/new"> Add Item</a> |
-      <a href="/api/packages/new"> Add Package</a> |
-    <%}%>
-    <%if (userName){%>
-      <a href='/api/users/logout'>Logout</a> |
-    <%}else{%>
-    <a href='/api/users_login'>Login</a> |
-    <a href="/users/register">Register </a> |
-    <%}%>
-
-  </nav>
-  <h2>Create New User</h2>
+  <%if(admin){%>
+  <%- include('admin_header') -%>
+  <%}else{%>
+    <%- include('header') -%>
+  <%}%>
+  <h2>Update User Profile</h2>
 
   <form action="/api/users" method="post">
 

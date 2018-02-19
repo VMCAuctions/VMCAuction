@@ -4,6 +4,12 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
 var path = require("path");
 
+// var express = require("express");
+// var app = express();
+//
+// app.use(express.static("../wireframe"));
+
+
 module.exports = function(app) {
 
 	// get the Login/Registration screen.  This is our root route //
@@ -84,6 +90,11 @@ module.exports = function(app) {
 	// get the index page of all users
 	app.get('/api/users', function(req,res){
 		users.index(req,res)});
+
+	// displaying the create user page
+	app.get('/api/register', function(req,res){
+			users.register(req,res)});
+
 	// get the new user registration form
 	app.get('/api/users_login', function(req,res){
 		users.new(req,res)});
@@ -120,10 +131,6 @@ module.exports = function(app) {
 	//check who is logged in
 	app.get('/api/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
-
-	//show individdual user page
-
-
 
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
