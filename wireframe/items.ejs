@@ -18,8 +18,11 @@
 </head>
 
 <body>
-  <!-- Nav-bar -->
-  <%- include('header') -%>
+  <%if(admin){%>
+  <%- include('admin_header') -%>
+  <%}else{%>
+    <%- include('header') -%>
+  <%}%>
 
 
   <h2 class="display-4">Item Report</h2>

@@ -76,6 +76,7 @@ var server = app.listen(port, function() {
 
 /////////////// SOCKETS /////////////////
 var Package = require('./models/package.js')
+var User = require('./models/user.js');
 
 var io = require('socket.io').listen(server);
 
@@ -142,12 +143,15 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 			var uniqChatUpdateId = 'update_chat' + data.packId;
+			console.log("message was received in server")
+			console.log("in server, bid is ", data.bid)
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
 		      io.emit(buttonStateChannel, {
 						button: false
-		      } );
+					} );
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
@@ -173,13 +177,14 @@ if(packagesButtonStates[data.packId].buttonstate){
 
 			console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
 			console.dir(allBidsBigObj)
-
+console.log('data', data);
       Package.findById(data.packId).exec(
         function(err, data){
           if(err){
             console.log("error occured " + err);
           } else {
 						if(data != null){
+
 							if(data.bids.length == 0 ){
 								data.bids.push({
 									bidAmount: userBid,
@@ -203,6 +208,41 @@ if(packagesButtonStates[data.packId].buttonstate){
 										console.log("successfully ");
 									}
 								})
+						}
+
+
+          }
+        }
+      )
+			User.findOne({userName: data.userName}).exec(
+        function(err, user){
+          if(err){
+            console.log("error occured " + err);
+          } else {
+						console.log(user);
+						if(user != null){
+							var duplicatePackage = false;
+							for(var i = 0; i < user._packages.length; i++){
+								console.log("user", user._packages[i]);
+								console.log("data", data.packId);
+								if (user._packages[i] == data.packId){
+									duplicatePackage = true;
+
+									break;
+								}
+							}
+							if (duplicatePackage === false){
+								console.log(data);
+								console.log(duplicatePackage);
+								user._packages.push(parseInt(data.packId))
+								user.save(function(err){
+									if(err){
+										console.log("error when saving: " + err);
+									} else{
+										console.log("successfully ");
+									}
+								})
+							}
 						}
 
 

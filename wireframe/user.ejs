@@ -3,15 +3,17 @@
 
 <head>
     <title>
-        Update User Profile
+        Create New User
     </title>
 
 </head>
 
 <body>
-  <!-- Nav-bar -->
-  <%- include('header') -%>
-
+  <%if(admin){%>
+  <%- include('admin_header') -%>
+  <%}else{%>
+    <%- include('header') -%>
+  <%}%>
   <h2>Update User Profile</h2>
 
   <form action="/api/users" method="post">
