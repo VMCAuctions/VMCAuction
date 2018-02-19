@@ -19,27 +19,11 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/api/items">Catalog</a> |
-    <a href="/api/packages">Packages/Bids</a> |
-    <%if (admin){%>
-      <a href='/api/users'>All Users</a> |
-      <a href="/api/items/new"> Add Item</a> |
-      <a href="/api/packages/new"> Add Package</a> |
-    <%}%>
-    <%if (userName){%>
-      <a href='/api/users/logout'>Logout</a> |
-    <%}else{%>
-    <a href='/api/users_login'>Login</a> |
-    <a href="/users/register">Register </a> |
-    <%}%>
-
-  </nav>
-  <%if(userName){%>
-  <a href="/api/users/<%=userName%>">Hello, <%=userName%></a>
+  <%if(admin){%>
+  <%- include('admin_header') -%>
   <%}else{%>
-    <p>Welcome!</p>
-    <%}%>
+    <%- include('header') -%>
+  <%}%>
   <h2>Packages/Bids</h2>
 <% for (var p in packages){%>
 <div class="package">

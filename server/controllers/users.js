@@ -26,6 +26,12 @@ function UsersController(){
 			}
 		})
 	};
+
+this.register = function(req, res){
+	console.log('inside the register');
+	res.render('user')
+}
+
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
 		console.log('hi');
@@ -228,6 +234,7 @@ function UsersController(){
 				if (err){
 					console.log(err)
 				}else {
+
 					if (user.userName != 'admin' | user.userName != req.session.userName) {
 						console.log(user.userName);
 						user.admin = req.body[users]
@@ -238,7 +245,6 @@ function UsersController(){
 							}
 						})
 					}
-
 				}
 			})
 		}
