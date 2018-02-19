@@ -5,8 +5,11 @@
     <title>Edit Item</title>
   </head>
   <body>
-    <%- include('header') -%>
-
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
 
 		<h3>Edit Item</h3>
 		<form action="/api/items/<%=item._id %>" method="post">

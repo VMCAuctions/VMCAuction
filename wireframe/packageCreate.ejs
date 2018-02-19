@@ -5,15 +5,16 @@
     <title>package creation</title>
   </head>
   <body>
-
-    <%- include('header') -%>
-
-
     <script>
       function test(){
         alert('hello')
       }
     </script>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
     <h3>create package</h3>
     <form class="" action="/api/packages" method="post">
       <input type="text" name="packageName" placeholder="packageName">

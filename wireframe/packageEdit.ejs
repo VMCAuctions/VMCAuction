@@ -5,15 +5,16 @@
     <title>package edeting</title>
   </head>
   <body>
-
-    <%- include('header') -%>
-
-
     <script>
       function test(){
         alert('hello')
       }
     </script>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
     <h3>Edit Package</h3>
     <form class="" action="/api/packages/<%=package._id%>" method="post">
       <input type="text" name="packageName" value="<%=package.name%>">

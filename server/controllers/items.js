@@ -20,8 +20,8 @@ function ItemsController(){
 	    	}
 	    	else {
 	        	//res.json({admin: req.session.admin, listOfItems: items});
-				res.render('items', {items: items, admin: req.session.admin})
-			
+				res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName})
+
 	        }
         })  // ends Item.find
 
@@ -38,7 +38,7 @@ function ItemsController(){
 	    	}
 	    	else {
 					if(req.session.admin){
-						res.render('createItem', {categories: categories})
+						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
 					}else{
 						res.redirect('/api/packages')
 					}
@@ -49,7 +49,14 @@ function ItemsController(){
 	this.create = function(req,res){
 		console.log('ItemsController create');
 
-
+			Category.create({name: req.body.category}, function(err, result) {
+				if(err){
+	        console.log(err);
+	        //res.status(500).send('Failed to Create Item');
+	      }
+	      else{
+	      }
+			})
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
 	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
 	      value: req.body.fairMarketValue, packaged: false},  function(err, result){
@@ -68,7 +75,7 @@ function ItemsController(){
 	        //res.status(500).send('Failed to Create Item');
 	      }
 	      else{
-	        res.json(result);
+	        res.redirect('/api/items')
 	      }
 	    });
 	};
@@ -91,12 +98,12 @@ function ItemsController(){
 				else{
 					//res.json(result)
 					if(req.session.admin){
-						res.render('item_edit', {item:result, categories:categories});
+						res.render('item_edit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
 					}else{
 						res.redirect('/api/packages')
 					}
 				}
-	        
+
 	      })
 		}
 	})
@@ -128,7 +135,7 @@ function ItemsController(){
 		                //res.status(500).send('Failed to Save Item update')
 		            }
                     else{
-		              res.send(item);
+		              res.redirect('/api/items')
                     }
 		        });
 		    }
@@ -143,8 +150,11 @@ function ItemsController(){
 				console.log(err)
 			}else{
 				Item.remove(result, function(err, result){
-					if(err){console.log(err)}
-					else{res.json(result)}
+					if(err){
+						console.log(err)
+					}else{
+						res.redirect('/api/items')
+					}
 				}
 				)}
 		});
