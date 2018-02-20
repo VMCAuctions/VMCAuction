@@ -66,6 +66,9 @@ module.exports = function(app) {
 	app.get('/packages/cancel_bid/:id', function(req,res){
 		packages.cancel_bid(req,res)
 	})
+	app.get('/packages/featured/:id', function(req, res) {
+		packages.featured(req, res)
+	})
 
 
 	// CATEGORIES //

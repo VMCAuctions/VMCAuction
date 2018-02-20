@@ -13,16 +13,16 @@
 			$(document).ready(function(){
 					socket.on("serverTalksBack", function(data){
             $('#currentBid').text("Current Bid: " + data.bid)
-            
+
           })
-          
+
         $("#keyword").on("keyup", function() {
           var value = $(this).val().toLowerCase();
           $(".package").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-      
+
       $("select[name='category']").change( function() {
           var value = $(this).val().toLowerCase();
           $(".package").filter(function(){
@@ -34,7 +34,7 @@
 </head>
 
 <body>
-  
+
   <%if(admin){%>
   <%- include('admin_header') -%>
   <%}else{%>
@@ -62,6 +62,11 @@
   <% if (admin){ %>
    <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
    <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
+   <%if(packages[p].featured === true){%>
+     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeatre</button></a>
+   <%}else{%>
+   <a href="/packages/featured/<%=packages[p]._id%>"><button>Feature</button></a>
+  <%}%>
   <%}%>
 </div>
 <% }%>
