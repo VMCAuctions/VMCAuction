@@ -311,6 +311,19 @@ this.new = function(req,res){
 		})
 
 	}
+	this.featured = function(req, res) {
+		Package.findById(req.params.id, function(err, package) {
+			if(err){
+				console.log(err);
+			}else if (package.featured === true) {
+				package.featured = false;
+			}else{
+				package.featured = true;
+			}
+			package.save()
+			res.redirect('/api/packages')
+		})
+	}
 	//cancels last bid
 	this.cancel_bid = function(req,res){
 		Package.findById(req.params.id, function(err,package){
@@ -324,11 +337,11 @@ this.new = function(req,res){
 					package.bids.pop()
 					package.save()
 					//console.log('this is the package' + package)
-					
-					//in case client want package not to show on user page 
+
+					//in case client want package not to show on user page
 					//maybe they want to bid again on the package later
 					//User.findOne({userName: req.session.userName}, function(err, user){
-						
+
 					//})
 				}
 				res.redirect('/api/users/' + req.session.userName)
@@ -337,6 +350,5 @@ this.new = function(req,res){
 	}
 
 }
-
 
 module.exports = new PackagesController();
