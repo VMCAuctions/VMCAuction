@@ -12,19 +12,41 @@
 
 			$(document).ready(function(){
 					socket.on("serverTalksBack", function(data){
-						$('#currentBid').text("Current Bid: " + data.bid)
-					})
-				})
+            $('#currentBid').text("Current Bid: " + data.bid)
+            
+          })
+          
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+      
+      $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+      });
+    })
 		</script>
 </head>
 
 <body>
+  
   <%if(admin){%>
   <%- include('admin_header') -%>
   <%}else{%>
     <%- include('header') -%>
   <%}%>
   <h2>Packages/Bids</h2>
+  <input type='search' id='keyword' placeholder="Keyword Search">
+  <select name='category' id='category'>
+    <% for(var c in categories) {%>
+      <option value="<%=categories[c]%>"><%=categories[c]%></option>
+    <%}%>
+  </select>
 <% for (var p in packages){%>
 <div class="package">
   <img src="/no-image.png" alt="img">

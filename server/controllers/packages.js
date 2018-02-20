@@ -11,10 +11,21 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
-
+		var categoryArray = []
 		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
+		Category.find({}, function(err, categories) {
+			if(err) {
+					console.log(err);
+					//res.status(500).send('Failed to Load Items');
+			}
+			else {
+				for(c in categories){
+					categoryArray.push(categories[c].name);
+				}
 
-		Package.find({}).populate("_items").exec(function(err, packages) {
+	}
+})
+		Package.find({}).populate("_items").sort({priority: 'descending'}).exec(function(err, packages) {
 
 				// This is the method that finds all of the packages from the database
 				if(err) {
@@ -24,7 +35,7 @@ function PackagesController(){
 				else {
 						//res.json({packages: packages, admin:req.session.admin});
 
-						res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName})
+						res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, categories: categoryArray})
 
 					}
 				})  // ends Package.find
@@ -132,7 +143,7 @@ this.new = function(req,res){
 
         Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
 	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
-			bid: [], amount: req.body.openingBid
+			bid: [], amount: req.body.openingBid, priority: req.body.priority
 			},
 	    	function(err, package){
 
