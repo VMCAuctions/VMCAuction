@@ -62,6 +62,10 @@ module.exports = function(app) {
 	app.get('/api/remove_package/:id', function(req, res){
 		packages.remove_package(req, res)
 	})
+	//removes last bid on package
+	app.get('/packages/cancel_bid/:id', function(req,res){
+		packages.cancel_bid(req,res)
+	})
 
 
 	// CATEGORIES //
