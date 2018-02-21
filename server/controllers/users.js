@@ -252,45 +252,46 @@ this.register = function(req, res){
 			res.redirect('/api/users');
 		}, 100);
 	}
-	this.loggedin = function(req,res){
-		console.log('reached loggedin function in server')
-		var login_check = false;
-		var admin;
 
-		if (!req.session.userName){
-			login_check = false;
-		}
-		else {
-			console.log(req.session.userName);
-			console.log(req.session);
-			login_check = true;
-		}
-		console.log('login check v');
-		console.log(login_check);
-		console.log(req.session);
-		if(req.session.admin == true){
-			admin = true;
-		}else{
-			admin = false;
-		}
-		res.json({login_check: login_check, admin: admin})
-	}
+	// old login check function
+	// this.loggedin = function(req,res){
+	// 	console.log('reached loggedin function in server')
+	// 	var login_check = false;
+	// 	var admin;
+
+	// 	if (!req.session.userName){
+	// 		login_check = false;
+	// 	}
+	// 	else {
+	// 		console.log(req.session.userName);
+	// 		console.log(req.session);
+	// 		login_check = true;
+	// 	}
+	// 	console.log('login check v');
+	// 	console.log(login_check);
+	// 	console.log(req.session);
+	// 	if(req.session.admin == true){
+	// 		admin = true;
+	// 	}else{
+	// 		admin = false;
+	// 	}
+	// 	res.json({login_check: login_check, admin: admin})
+	// }
 
 	this.logout = function(req,res){
-		login_check = false;
 		req.session.destroy();
 		console.log(req.session);
         res.redirect('/api/packages')
 
 	}
 
-
-	this.who_is_logged_in = function(req, res){
-		if(req.session.admin == true){
-			res.json({admin: true})
-		}else{
-			res.json({admin: false})
-		}
-	}
+	// old admin check
+	// this.who_is_logged_in = function(req, res){
+	// 	if(req.session.admin == true){
+	// 		res.json({admin: true})
+	// 	}else{
+	// 		res.json({admin: false})
+	// 	}
+	// }
 }
 module.exports = new UsersController();
