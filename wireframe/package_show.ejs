@@ -8,6 +8,11 @@
 		<script type='text/javascript'>
 			var socket = io.connect('http://localhost:8000');
 
+			$(document).ready(function(){
+				socket.on('button_state' + <%= package._id %>, function(data){
+					document.getElementById("submit").disabled = !data.button;
+				})
+			})
 			$(document).on('submit', function(){
 					console.log("Before receiving from server, " + $('#bid_amount')[0].defaultValue)
 					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].defaultValue), userName: '<%= userName %>' })
@@ -18,6 +23,7 @@
 						$('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
 					})
 				})
+
 		</script>
   </head>
 
@@ -53,7 +59,7 @@
 			<% if (!userName) {%>
 				<a href='/api/users_login'>Login</a>
 			<%}else{%>
-				<input type='submit' value='Place Bid'>
+				<input id='submit' type='submit' value='Place Bid'>
 			<%}%>
 			</form>
 		</div>
@@ -61,6 +67,7 @@
 			<h5>Items In Package</h5>
 			<% for (var i = 0; i < package._items.length; i++) {%>
 				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donor %></p>
+				<p>Restrictions: <%= package._items[i].restrictions %></p>
 			<%}%>
 		</div>
 
