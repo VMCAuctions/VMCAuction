@@ -17,8 +17,8 @@
     <%}%>
     <h3>create package</h3>
     <form class="" action="/api/packages" method="post">
-      <input type="text" name="packageName" placeholder="packageName">
-      <textarea name="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
+      <input type="text" name="packageName" placeholder="Package Name">
+      <textarea name="packageDescription" rows="8" cols="40" placeholder="Package Description"></textarea>
       <select class="" name="category" >
         <% for (var c in categories){%>
           <!-- add radio and jquery to make only one catagory option apear
@@ -27,7 +27,7 @@
         <%}%>
       </select>
       <input type="number" name="openingBid" placeholder="Opening Bid">
-      <input type="number" name="increments" placeholder="incrament">
+      <input type="number" name="increments" placeholder="increment">
 
       <!-- need a read only feild with the current number selected -->
       <script type="text/javascript">
@@ -60,7 +60,7 @@
       <%}%>
       <%}%>
       <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
-      <input type="submit" name="submit" value="submit">
+      <input type="submit" name="submit" value="Submit">
     </form>
   </body>
 </html>
