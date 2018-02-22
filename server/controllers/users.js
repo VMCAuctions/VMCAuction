@@ -11,6 +11,26 @@ var mongoose = require('mongoose'),
 
 function UsersController(){
 	// get all bidders and their packages won, audit page
+	function registrationValidation(input) {
+		const validationArray = [
+			["firstName", 2, "first name"],
+			["lastName", 2, "last name"],
+			["streetAddress", 2, "street address"],
+			["city", 2, "city"],
+			["states", 2, "state"],
+			["zip", 5, "zip code"],
+			["phoneNumber", 10, "phone number"],
+			["password", 6, "password"]
+		];
+		let output = "";
+		for(let i = 0; i < validationArray.length; i++) {
+			console.log(validationArray[i]);
+			if (input[validationArray[i][0]].length < validationArray[i][1]) {
+				output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
+			}
+		}
+		return output
+	}
 	this.index = function(req,res){
 		console.log('UsersController index');
 		User.find({}, function(err, users ){
@@ -35,10 +55,11 @@ this.register = function(req, res){
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
 		console.log('hi');
-		res.render('login', {userName: req.session.userName, admin: req.session.admin})
+		res.render('login', {userName: req.session.userName, admin: req.session.admin })
 	};
 	this.register = function(req,res){
-		res.render('user', {userName: req.session.userName, admin: req.session.admin})
+		console.log('this is the validation' + registrationValidation)
+		res.render('user', {userName: req.session.userName, admin: req.session.admin, validation: registrationValidation})
 	}
 	// post the new user registration form and create a new user
 	// add redirect when done with refactor
@@ -58,43 +79,32 @@ this.register = function(req, res){
 							console.log(err)
 						}
 						else{
-							//The below function checks every parameter of req.body against the value in the first index of each array, using the zero index of each array as a specifier.  If the length is less than that, it uses the second index to help generate an error message and pushes it to output.
-							function registrationValidation() {
-								const validationArray = [
-									["firstName", 2, "first name"],
-                  ["lastName", 2, "last name"],
-                  ["streetAddress", 2, "street address"],
-                  ["city", 2, "city"],
-                  ["states", 2, "state"],
-                  ["zip", 5, "zip code"],
-                  ["phoneNumber", 10, "phone number"],
-                  ["email", 5, "email address"],
-                  ["userName", 5, "user name"],
-                  ["password", 6, "password"]
-								];
-								let output = "";
-								for(let i = 0; i < validationArray.length; i++) {
-									console.log(validationArray[i]);
-									if (req.body[validationArray[i][0]].length < validationArray[i][1]) {
-										output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
-									}
-								}
-								return output
-							}
-							var validation = registrationValidation()
-
+							
+							var validation = registrationValidation(req.body)
+							// email regex validation
 							console.log("before new regex, validation is", validation)
-							var reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+							var email_reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 							var unValidatedEmail = req.body.email;
-							var result = unValidatedEmail.match(reg);
-							if (!result){
+							var email_result = unValidatedEmail.match(email_reg);
+							if (!email_result){
 								validation += "Invalid email.\n"
 							}
+
+							// userName regex validation based on no spaces in userName
+							var user_reg = /^[a-zA-Z0-9_-]{5,25}$/;
+							var unValidateduserName = req.body.userName;
+							var user_result = unValidateduserName.match(user_reg)
+							if(!user_result){
+								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
+							}
+
+
 							console.log("after new regex, validation is", validation)
 							if(validation.length > 0){
 								res.json({validated: false, message: validation})
 								return;
 							}
+
 
 							//Else, validation is ok, so hash the password and add to the database
 							hashedPassword = hash;
