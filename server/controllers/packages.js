@@ -126,7 +126,8 @@ this.new = function(req,res){
 
 		if (req.body.selectedItems.length == 0){
           console.log('reached empty item list')
-          return res.json(false)
+		  return res.json(false)
+		  //frontend validation / response if no items selected
         }
 
 
@@ -258,22 +259,23 @@ this.new = function(req,res){
 
 		    					}
 
-		            	res.json(package);
+		            	res.redirect('/api/packages/' + package._id );
 		            }
 		        });
 		    }
 		});
 	}  // end of this.update();
 
-	this.get_selected = function(req, res){
-		Package.find({_category:req.body.category}, function(err, result){
-			if(err){
-				console.log(err)
-			}else{
-				res.json(result)
-			}
-		})
-	},
+	// old category filtering
+	// this.get_selected = function(req, res){
+	// 	Package.find({_category:req.body.category}, function(err, result){
+	// 		if(err){
+	// 			console.log(err)
+	// 		}else{
+	// 			res.json(result)
+	// 		}
+	// 	})
+	// },
 
 	//removing a package from the DB
 	this.remove_package = function(req, res){
@@ -292,7 +294,7 @@ this.new = function(req,res){
 					if(err){
 						console.log(err)
 					}else{
-						res.json(result);
+						res.redirect('/api/packages');
 					}
 				})
 			}
