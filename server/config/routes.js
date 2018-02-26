@@ -64,6 +64,7 @@ module.exports = function(app) {
 	})
 
 
+
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
 	app.get('/api/categories', function(req,res){
@@ -131,6 +132,14 @@ module.exports = function(app) {
 	//check who is logged in
 	app.get('/api/which_user_is_logged_in', function(req, res){
 		users.who_is_logged_in(req, res)});
+
+	app.get('/users/interested/:id', function(req, res) {
+		users.interested(req, res)
+	})
+
+	app.get('/users/uninterested/:id', function (req,res) {
+		users.uninterested(req, res)
+	})
 
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
