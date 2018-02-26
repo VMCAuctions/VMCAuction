@@ -54,8 +54,11 @@
 				<a href='/api/users_login'>Login</a>
 			<%}else{%>
 				<input type='submit' value='Place Bid'>
-			<%}%>
+
 			</form>
+
+      <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
+      <%}%>
 		</div>
 		<div>
 			<h5>Items In Package</h5>

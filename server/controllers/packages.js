@@ -301,6 +301,8 @@ this.new = function(req,res){
 
 	}
 
+
+
 	// Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}
 
 }

@@ -292,5 +292,59 @@ this.register = function(req, res){
 			res.json({admin: false})
 		}
 	}
+
+	this.interested = function(req, res) {
+		console.log("Interested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else {
+				console.log("user in interested", user);
+				let flag= false
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+
+						flag = true;
+						console.log("1",flag);
+						break
+					}
+				}
+				console.log("2",flag);
+				if (flag === false) {
+					console.log("3",flag);
+					user._packages.push(req.params.id);
+					user.save(function(err, result) {
+						if (err) {
+							console.log(err);
+						}
+					});
+				} else {
+					flag = false;
+				}
+			}
+			res.redirect('/api/packages')
+		})
+	}
+	this.uninterested= function(req,res) {
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else {
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						console.log("in uniterested");
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+					}
+				}
+
+			}
+	})
+	res.redirect('/api/users/'+req.session.userName)
+}
 }
 module.exports = new UsersController();

@@ -15,6 +15,7 @@
       <thead>
         <th>package Name</th>
         <th>Who's Winning</th>
+        <th>Interested</th>
       </thead>
       <tbody>
         <%for(let i =0; i<packages.length; i++){%>
@@ -25,6 +26,7 @@
           <%}else{%>
           <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
           <%}%>
+          <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">No longer Interested</button></a></td>
 
 
           </tr>
