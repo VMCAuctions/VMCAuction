@@ -91,7 +91,7 @@ this.register = function(req, res){
 							}
 
 							// userName regex validation based on no spaces in userName
-							var user_reg = /^[a-zA-Z0-9_-]{5,25}$/;
+							var user_reg = /^[a-zA-Z0-9\-_.]{5,25}$/;
 							var unValidateduserName = req.body.userName;
 							var user_result = unValidateduserName.match(user_reg)
 							if(!user_result){
@@ -175,6 +175,7 @@ this.register = function(req, res){
 	}
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
+
 		console.log('UsersController show');
 		let packages = [];
 		let done = false;

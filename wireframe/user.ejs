@@ -117,8 +117,9 @@
       },
       userName: {
         required: true,
-        minlength: 5,
-        nowhitespace: true
+        user: true,
+        nowhitespace: true,
+        rangelength: [5, 25]
       },
       password: {
         required: true,
@@ -139,6 +140,10 @@
   jQuery.validator.addMethod("state", function(value, element) {
     return this.optional(element) || /^(A[AEKLPRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY]|a[aeklprz]|c[aot]|d[ce]|fl|ga|hi|i[adln]|k[sy]|la|m[adeinost]|n[cdehjmvy]|o[hkr]|pa|ri|s[cd]|t[nx]|ut|v[at]|w[aivy])$/.test(value);
   }, "Please specify the two-digit code for a US state");
+
+  jQuery.validator.addMethod("user", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z0-9\-_.]+$/.test(value);
+  }, "Please use only letters numbers -_.");
 
   validator.form();
 
