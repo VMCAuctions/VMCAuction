@@ -29,7 +29,12 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           })
       });
+      $("#noBids").click(function() {
+        $(".bids").toggle();
+        $(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
+      });
     })
+
 		</script>
 </head>
 
@@ -47,8 +52,13 @@
       <option value="<%=categories[c]%>"><%=categories[c]%></option>
     <%}%>
   </select>
+  <button type="button" id="noBids" name="button">No bids yet</button>
 <% for (var p in packages){%>
-<div class="package">
+  <%if(packages[p].bids.length>0){%>
+<div class="package bids">
+  <%}else{%>
+    <div class="package empty">
+  <%}%>
   <img src="/no-image.png" alt="img">
   <br>
   <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
@@ -63,7 +73,7 @@
    <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
    <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
    <%if(packages[p].featured === true){%>
-     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeatre</button></a>
+     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeature</button></a>
    <%}else{%>
    <a href="/packages/featured/<%=packages[p]._id%>"><button>Feature</button></a>
   <%}%>
