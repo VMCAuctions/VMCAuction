@@ -38,7 +38,7 @@ function UsersController(){
 				console.log(err)
 			}else{
 				var hash = {}
-				if(req.session.admin){
+				if(req.session.userName === 'admin'){
 					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
 				}else{
 					res.redirect('/api/packages')
