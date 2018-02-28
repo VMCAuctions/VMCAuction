@@ -18,7 +18,9 @@
     <ul class="navbar-nav mr-auto">
       <li><a href="/api/items">Catalog</a> | </li>
       <li><a href="/api/packages">Packages/Bids</a> | </li>
+      <%if(userName === 'admin'){%>
         <li><a href='/api/users'>All Users</a> | </li>
+      <%}%>
         <li><a href='/api/categories'>Add Category</a> | </li>
         <li><a href="/api/items/new"> Add Item</a> | </li>
         <li><a href="/api/packages/new"> Add Package</a></li>
