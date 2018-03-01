@@ -184,7 +184,6 @@ this.register = function(req, res){
 				console.log(err)
 			}
 			else{
-				console.log(user);
 				for (var i = 0; i < user._packages.length; i++) {
 					Package.findById(user._packages[i], function(err, package) {
 						if (err) {
