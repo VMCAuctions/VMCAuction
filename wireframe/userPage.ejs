@@ -19,20 +19,20 @@
         <th>Interested</th>
       </thead>
       <tbody>
-        <%for(let i =0; i<packages.length; i++){%>
-          <tr>
-          <td><a href="/api/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
-          <%if(packages[i].bids[packages[i].bids.length-1].name === userName){%>
-            <td>You!!!</td>
-            <td><a href='/packages/cancel_bid/<%=packages[i]._id %>'><button>Cancel Bid</button></a></td>
-          <%}else{%>
-          <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
+        <%for(let i =0; i< packages.length; i++){%>
+          <%if(packages[i]){%>
+            <tr>
+              <td><a href="/api/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+              <%if(packages[i].bids && packages[i].bids[packages[i].bids.length-1].name == user.userName){%>
+                <td>You!!!</td>
+              <%}else{%>
+                <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
+              <%}%>
+              <td> <button type="button" name="button"> <a href="/users/uninterested/<%=packages[i]._id%>">No longer interested</a> </button> </td>
+            </tr>
           <%}%>
-          <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">No longer Interested</button></a></td>
 
-
-          </tr>
-          <%}%>
+        <%}%>
 
       </tbody>
     </table>
