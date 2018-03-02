@@ -37,6 +37,9 @@
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
+  <%if(userName){%>
+    <a href="/users/interested/<%=packages[p]._id%>"><button type="button" name="interested">Interested?</button></a>
+  <%}%>
   <% if (admin){ %>
    <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
    <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>

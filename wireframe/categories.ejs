@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+    <%- include('header') -%>
+    <%}%>
+    <h3>List of Categories</h3>
+    <ul>
+        <% for(c in categories){ %>
+        <li><%= categories[c].name %></li>
+        <%}%>
+    </ul>
+    <form action='/api/categories' method='post'>
+        <input type='text' name='name' placeholder="Add New Category">
+        <input type='submit' value='Add New Category'>
+    </form>
+</body>
+</html>
