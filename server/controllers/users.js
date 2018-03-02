@@ -38,7 +38,7 @@ function UsersController(){
 				console.log(err)
 			}else{
 				var hash = {}
-				if(req.session.admin){
+				if(req.session.userName === 'admin'){
 					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
 				}else{
 					res.redirect('/api/packages')
@@ -79,7 +79,7 @@ this.register = function(req, res){
 							console.log(err)
 						}
 						else{
-							
+
 							var validation = registrationValidation(req.body)
 							// email regex validation
 							console.log("before new regex, validation is", validation)
@@ -91,7 +91,7 @@ this.register = function(req, res){
 							}
 
 							// userName regex validation based on no spaces in userName
-							var user_reg = /^[a-zA-Z0-9_-]{5,25}$/;
+							var user_reg = /^[a-zA-Z0-9\-_.]{5,25}$/;
 							var unValidateduserName = req.body.userName;
 							var user_result = unValidateduserName.match(user_reg)
 							if(!user_result){
@@ -175,43 +175,31 @@ this.register = function(req, res){
 	}
 	// get the screen for one user with all his/her bidded packages, noting which packages he/she is currently winning
 	this.show = function(req,res){
+
 		console.log('UsersController show');
-		let packages = [];
-		let done = false;
 		User.findOne({userName: req.params.userName}, function(err, user){
 			if(err){
 				console.log(err)
 			}
+
+			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-				console.log(user);
-				for (var i = 0; i < user._packages.length; i++) {
-					Package.findById(user._packages[i], function(err, package) {
-						if (err) {
-							console.log(err);
-						}
-						else {
 
-							packages.push(package);
-							if (i === user._packages.length-1){
-								done = true
-							}
+				Package.find({"_id":user._packages}, function(err, packages){
+					if (err){
+						console.log(err);
+					}
+					else{
+						console.log(packages);
+						if (user.userName === req.session.userName | req.session.admin === true){
+								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
 
 						}
-					})
-				}
-				if (user.userName === req.session.userName | req.session.admin === true) {
-
-						console.log("here");
-					console.log("3", packages);
-					setTimeout(function() {
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
-					}, 100)
-
-
-				}else{
-					res.redirect('/api/packages')
-				}
-
+						else{
+							res.redirect('/api/packages')
+						}
+					}
+				})
 			}
 		})
 	};
@@ -238,8 +226,11 @@ this.register = function(req, res){
 		console.log('UsersController admin_change')
 		console.log('req.body:', Object.keys(req.body))
 
-		for(let users in req.body){
+		// //C ould potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
+		// User.find({"_id": Object.keys(req.body)}, function(err, users){
+		// })
 
+		for(let users in req.body){
 			User.findById(users, function(err, user){
 				if (err){
 					console.log(err)
@@ -251,7 +242,6 @@ this.register = function(req, res){
 						user.save(function(err, result){
 							if (err){
 								console.log(err)
-
 							}
 						})
 					}
@@ -261,6 +251,7 @@ this.register = function(req, res){
 		setTimeout(function() {
 			res.redirect('/api/users');
 		}, 100);
+
 	}
 
 	// old login check function
@@ -295,13 +286,67 @@ this.register = function(req, res){
 
 	}
 
-	// old admin check
-	// this.who_is_logged_in = function(req, res){
-	// 	if(req.session.admin == true){
-	// 		res.json({admin: true})
-	// 	}else{
-	// 		res.json({admin: false})
-	// 	}
-	// }
+
+	this.who_is_logged_in = function(req, res){
+		if(req.session.admin == true){
+			res.json({admin: true})
+		}else{
+			res.json({admin: false})
+		}
+	}
+
+	this.interested = function(req, res) {
+		console.log("Interested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else {
+				console.log("user in interested", user);
+				let flag= false
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+
+						flag = true;
+						console.log("1",flag);
+						break
+					}
+				}
+				console.log("2",flag);
+				if (flag === false) {
+					console.log("3",flag);
+					user._packages.push(req.params.id);
+					user.save(function(err, result) {
+						if (err) {
+							console.log(err);
+						}
+					});
+				} else {
+					flag = false;
+				}
+			}
+			res.redirect('/api/packages')
+		})
+	}
+	this.uninterested= function(req,res) {
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else {
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						console.log("in uniterested");
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+					}
+				}
+
+			}
+	})
+	res.redirect('/api/users/'+req.session.userName)
+}
 }
 module.exports = new UsersController();
