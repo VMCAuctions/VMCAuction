@@ -17,7 +17,9 @@
     <form action="/api/items" id="itemsForm" method="post">
       <input type="text" id="itemName" name="itemName" placeholder="Item Name">
       <input type="text" name="donor" placeholder="Donor">
+
       <select class="" id="category" name="category" >
+
         <% for (var c in categories){%>
           <!-- add radio and jquery to make only one catagory option apear
         or Make a seperate page to creat catagories -->
