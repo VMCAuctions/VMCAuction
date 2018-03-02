@@ -62,6 +62,14 @@ module.exports = function(app) {
 	app.get('/api/remove_package/:id', function(req, res){
 		packages.remove_package(req, res)
 	})
+	//removes last bid on package
+	app.get('/packages/cancel_bid/:id', function(req,res){
+		packages.cancel_bid(req,res)
+	})
+	app.get('/packages/featured/:id', function(req, res) {
+		packages.featured(req, res)
+	})
+
 
 
 	// CATEGORIES //
@@ -131,6 +139,14 @@ module.exports = function(app) {
 	//check who is logged in
 	// app.get('/api/which_user_is_logged_in', function(req, res){
 	// 	users.who_is_logged_in(req, res)});
+
+	app.get('/users/interested/:id', function(req, res) {
+		users.interested(req, res)
+	})
+
+	app.get('/users/uninterested/:id', function (req,res) {
+		users.uninterested(req, res)
+	})
 
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly

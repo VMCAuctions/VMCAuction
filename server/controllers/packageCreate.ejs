@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>package creation</title>
+  </head>
+  <body>
+    <script>
+      function test(){
+        alert('hello')
+      }
+    </script>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
+    <h3>create package</h3>
+    <form class="" action="/api/packages" method="post">
+      <input type="text" name="packageName" placeholder="packageName">
+      <textarea name="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
+      <select class="" name="category" >
+        <% for (var c in categories){%>
+          <!-- add radio and jquery to make only one catagory option apear
+        or Make a seperate page to creat catagories -->
+          <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+        <%}%>
+      </select>
+      <input type="number" name="openingBid" placeholder="Opening Bid">
+      <input type="number" name="increments" placeholder="incrament">
+
+      <!-- need a read only feild with the current number selected -->
+      <script type="text/javascript">
+      var total = 0;
+      var checkedItems = {};
+
+       totalAdd = function(value, id){
+
+        var checkbox = document.getElementById(id);
+
+        if (checkbox.checked === true){
+          total += value
+          console.log("total is", total);
+          checkedItems[id]= id;
+          console.log(checkedItems);
+        }
+        else if (checkbox.checked === false) {
+          total -= value
+          delete checkedItems[id]
+          console.log(checkedItems)
+        }
+        document.getElementById('totalValue').value = total
+      }
+      </script>
+      <%for (var i in items){%>
+        <%if(!items[i].packaged){%>
+      <%=items[i].name%>
+
+      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+      <%}%>
+      <%}%>
+      <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
+      <input type="submit" name="submit" value="submit">
+    </form>
+  </body>
+</html>
