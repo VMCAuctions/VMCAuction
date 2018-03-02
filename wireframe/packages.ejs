@@ -12,21 +12,53 @@
 
 			$(document).ready(function(){
 					socket.on("serverTalksBack", function(data){
-						$('#currentBid').text("Current Bid: " + data.bid)
-					})
-				})
+            $('#currentBid').text("Current Bid: " + data.bid)
+
+          })
+
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+      $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+      });
+      $("#noBids").click(function() {
+        $(".bids").toggle();
+        $(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
+      });
+    })
+
 		</script>
 </head>
 
 <body>
+
   <%if(admin){%>
   <%- include('admin_header') -%>
   <%}else{%>
     <%- include('header') -%>
   <%}%>
   <h2>Packages/Bids</h2>
+  <input type='search' id='keyword' placeholder="Keyword Search">
+  <select name='category' id='category'>
+    <% for(var c in categories) {%>
+      <option value="<%=categories[c]%>"><%=categories[c]%></option>
+    <%}%>
+  </select>
+  <button type="button" id="noBids" name="button">No bids yet</button>
 <% for (var p in packages){%>
-<div class="package">
+  <%if(packages[p].bids.length>0){%>
+<div class="package bids">
+  <%}else{%>
+    <div class="package empty">
+  <%}%>
   <img src="/no-image.png" alt="img">
   <br>
   <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
@@ -43,6 +75,11 @@
   <% if (admin){ %>
    <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
    <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
+   <%if(packages[p].featured === true){%>
+     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeature</button></a>
+   <%}else{%>
+   <a href="/packages/featured/<%=packages[p]._id%>"><button>Feature</button></a>
+  <%}%>
   <%}%>
 </div>
 <% }%>
