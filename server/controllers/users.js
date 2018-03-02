@@ -184,20 +184,16 @@ this.register = function(req, res){
 
 			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-<<<<<<< HEAD
+
 				Package.find({"_id":user._packages}, function(err, packages){
 					if (err){
 						console.log(err);
 					}
 					else{
+						console.log(packages);
 						if (user.userName === req.session.userName | req.session.admin === true){
 								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
-=======
-				for (var i = 0; i < user._packages.length; i++) {
-					Package.findById(user._packages[i], function(err, package) {
-						if (err) {
-							console.log(err);
->>>>>>> ejsRedo
+
 						}
 						else{
 							res.redirect('/api/packages')
