@@ -190,7 +190,6 @@ this.register = function(req, res){
 						console.log(err);
 					}
 					else{
-						console.log(packages);
 						if (user.userName === req.session.userName | req.session.admin === true){
 								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
 
