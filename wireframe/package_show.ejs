@@ -66,6 +66,7 @@
 			<%}%>
 			</form>
 			<% var flag = false %>
+			<% if(userName){%>
 			<% for(var i = 0; i < user._packages.length; i++){ %>
 			<% if(package._id == user._packages[i]) {%>
 			
@@ -77,6 +78,7 @@
 				<% if(flag === false) {%>
 				<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
 				<%}%>
+			<%}%>
 		</div>
 		<div>
 			<h5>Items In Package</h5>

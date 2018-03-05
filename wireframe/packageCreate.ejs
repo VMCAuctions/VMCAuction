@@ -23,7 +23,7 @@
     <form id="packageForm" action="/api/packages" method="post">
       <input type="text" name="packageName" id="packageName" placeholder="packageName">
       <textarea name="packageDescription" id="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
-      <input type='number' name='priority' placeholder='Priority'>
+      <input id='priority' type='number' name='priority' placeholder='Priority'>
       <select class="" name="category" id="category" >
 
         <% for (var c in categories){%>
@@ -34,7 +34,7 @@
       </select>
 
       <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid">
-      <input type="number" name="increments" id="increments" placeholder="incrament">
+      <input type="number" name="increments" id="increments" placeholder="increment">
 
       <!-- need a read only feild with the current number selected -->
       <%for (var i in items){%>
@@ -75,7 +75,8 @@
         },
         openingBid:{
           required: true,
-          number: true
+          number: true,
+          min: 0
         },
         packageDescription: {
           required: true,
@@ -83,7 +84,14 @@
         },
         increments: {
           required: true,
+          number: true,
+          min: 5,
           step: 5
+        },
+        priority: {
+          required: true,
+          number: true,
+          min: 0
         }
       }
     });
