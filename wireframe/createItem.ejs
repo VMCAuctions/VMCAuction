@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>create Item</title>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
   </head>
   <body>
     <%if(admin){%>
@@ -11,21 +14,48 @@
       <%- include('header') -%>
     <%}%>
     <h3>Create Items</h3>
-    <form action="/api/items" method="post">
-      <input type="text" name="itemName" placeholder="Item Name">
+    <form action="/api/items" id="itemsForm" method="post">
+      <input type="text" id="itemName" name="itemName" placeholder="Item Name">
       <input type="text" name="donor" placeholder="Donor">
-      <select class="" name="category" >
+
+      <select class="" id="category" name="category" >
+
         <% for (var c in categories){%>
           <!-- add radio and jquery to make only one catagory option apear
         or Make a seperate page to creat catagories -->
           <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
         <%}%>
       </select>
-      <input type="text" name="category" value="" placeholder="new category">
-      <input type="text" name="fairMarketValue" value="" placeholder="Fair Market Value">
-      <textarea name="itemDescription" rows="8" cols="40" placeholder="Item Description"></textarea>
+
+      <!-- <input type="text" name="category" value="" placeholder="new category"> -->
+      <input type="number" id="fairMarketValue" name="fairMarketValue" value="" placeholder="Fair Market Value">
+      <textarea name="itemDescription" id="itemDescription" rows="8" cols="40" placeholder="Item Description"></textarea>
       <textarea name="itemRestriction" rows="8" cols="40" placeholder="Item restriction"></textarea>
       <input type="submit" name="" value="Submit">
     </form>
+    <script>
+
+    var validator = $("#itemsForm").validate({
+      rules: {
+        itemName: {
+          required: true,
+          minlength: 4
+        },
+        category: {
+          required: true
+        },
+        fairMarketValue:{
+          required: true,
+          number: true
+        },
+        itemDescription: {
+          required: true,
+          minlength: 4
+        }
+      }
+    });
+    validator.form();
+
+    </script>
   </body>
 </html>

@@ -48,18 +48,9 @@ function ItemsController(){
 }
 	this.create = function(req,res){
 		console.log('ItemsController create');
-
-			Category.create({name: req.body.category}, function(err, result) {
-				if(err){
-	        console.log(err);
-	        //res.status(500).send('Failed to Create Item');
-	      }
-	      else{
-	      }
-			})
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
 	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
-	      value: req.body.fairMarketValue, packaged: false},  function(err, result){
+	      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
 	    	// from front end ///////////
 	    	//	   itemName: '',
       //           donor: '',
@@ -67,9 +58,6 @@ function ItemsController(){
       //           fairMarketValue: '',
       //           itemDescription: '',
       //           itemRestriction:
-
-
-
 	      if(err){
 	        console.log(err);
 	        //res.status(500).send('Failed to Create Item');
