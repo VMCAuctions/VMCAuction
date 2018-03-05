@@ -13,11 +13,13 @@
     <h3><%=user.userName%>'s Page</h3>
     <table>
       <thead>
-        <th>package Name</th>
+        <th>Package Name</th>
         <th>Who's Winning</th>
+
         <th>Interested</th>
       </thead>
       <tbody>
+<<<<<<< HEAD
         
         <%for(let i =0; i<packages.length; i++){%>
           <tr>
@@ -37,6 +39,23 @@
           </tr>
           <%}%>
         <%}%>
+=======
+        <%for(let i =0; i< packages.length; i++){%>
+          <%if(packages[i]){%>
+            <tr>
+              <td><a href="/api/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+              <%if(packages[i].bids && packages[i].bids[packages[i].bids.length-1].name == user.userName){%>
+                <td>You!!!</td>
+              <%}else{%>
+                <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
+              <%}%>
+              <td> <button type="button" name="button"> <a href="/users/uninterested/<%=packages[i]._id%>">No longer interested</a> </button> </td>
+            </tr>
+          <%}%>
+
+        <%}%>
+
+>>>>>>> 35df196b09ac956e3c94874e06755872a267e068
       </tbody>
     </table>
     

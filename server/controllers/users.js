@@ -177,41 +177,29 @@ this.register = function(req, res){
 	this.show = function(req,res){
 
 		console.log('UsersController show');
-		let packages = [];
-		let done = false;
 		User.findOne({userName: req.params.userName}, function(err, user){
 			if(err){
 				console.log(err)
 			}
+
+			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-				for (var i = 0; i < user._packages.length; i++) {
-					Package.findById(user._packages[i], function(err, package) {
-						if (err) {
-							console.log(err);
-						}
-						else {
 
-							packages.push(package);
-							if (i === user._packages.length-1){
-								done = true
-							}
+				Package.find({"_id":user._packages}, function(err, packages){
+					if (err){
+						console.log(err);
+					}
+					else{
+						console.log(packages);
+						if (user.userName === req.session.userName | req.session.admin === true){
+								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
 
 						}
-					})
-				}
-				if (user.userName === req.session.userName | req.session.admin === true) {
-
-						console.log("here");
-					console.log("3", packages);
-					setTimeout(function() {
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
-					}, 100)
-
-
-				}else{
-					res.redirect('/api/packages')
-				}
-
+						else{
+							res.redirect('/api/packages')
+						}
+					}
+				})
 			}
 		})
 	};
@@ -238,8 +226,11 @@ this.register = function(req, res){
 		console.log('UsersController admin_change')
 		console.log('req.body:', Object.keys(req.body))
 
-		for(let users in req.body){
+		// //C ould potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
+		// User.find({"_id": Object.keys(req.body)}, function(err, users){
+		// })
 
+		for(let users in req.body){
 			User.findById(users, function(err, user){
 				if (err){
 					console.log(err)
@@ -251,7 +242,6 @@ this.register = function(req, res){
 						user.save(function(err, result){
 							if (err){
 								console.log(err)
-
 							}
 						})
 					}
@@ -261,6 +251,7 @@ this.register = function(req, res){
 		setTimeout(function() {
 			res.redirect('/api/users');
 		}, 100);
+
 	}
 
 	// old login check function
