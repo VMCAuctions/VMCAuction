@@ -70,7 +70,18 @@
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
   <%if(userName){%>
-    <a href="/users/interested/<%=packages[p]._id%>"><button type="button" name="interested">Interested?</button></a>
+    <% var flag = false %>
+    <% for(var i = 0; i < user._packages.length; i++){ %>
+    <% if(packages[p]._id == user._packages[i]) {%>
+    
+      <a href="/users/uninterested/<%= packages[p]._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
+      <% flag = true %>
+      <% break %>
+      <% } %> 
+      <%}%>
+      <% if(flag === false) {%>
+      <a href="/users/interested/<%= packages[p]._id %>"><button type="button" name="interested">Interested?</button></a>
+      <%}%>
   <%}%>
   <% if (admin){ %>
    <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
