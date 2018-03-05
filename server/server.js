@@ -2,6 +2,8 @@
 var express = require("express");
 var app = express();
 var session = require('express-session')
+require('jsdom-global')()
+
 
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
@@ -24,6 +26,7 @@ var React = require('../client/node_modules/react');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var path = require("path");
@@ -32,7 +35,7 @@ var path = require("path");
 // static content
 // static content
 if (process.env.NODE_ENV === "production") {
-		app.use(express.static(path.join(__dirname, "../client/build")));
+		app.use(express.static(path.join(__dirname, "../wireframe/css")));
 		//app.use('*', express.static('../client/build'));
 //		app.use('/api/', function(){
 //			break outer;
@@ -40,7 +43,8 @@ if (process.env.NODE_ENV === "production") {
 //		app.use('*', express.static(path.join(__dirname, "../client/build")));
 //		app.use('*/api/', express.static(path.join(__dirname, "./config/routes.js")));
 } else {
-		app.use(express.static(path.join(__dirname, "../client/public")));
+		// app.use(express.static(path.join(__dirname, "../client/public")));
+		app.use(express.static(path.join(__dirname, "../wireframe/css")));
 }
 // app.set('views', path.join(__dirname, '../client/frontend/public'));
 // app.set('views', path.join(__dirname, './views'));
@@ -72,6 +76,7 @@ var server = app.listen(port, function() {
 
 /////////////// SOCKETS /////////////////
 var Package = require('./models/package.js')
+var User = require('./models/user.js');
 
 var io = require('socket.io').listen(server);
 
@@ -121,6 +126,7 @@ var io = require('socket.io').listen(server);
 		})()
 // ---------------------------------- 000 --------------------------------------
 
+
 io.sockets.on('connection', function(socket){
 
 // DEBUGGING INFO JUST TO MONITOR allBidsObject is healty
@@ -134,12 +140,15 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 			var uniqChatUpdateId = 'update_chat' + data.packId;
+			console.log("message was received in server")
+			console.log("in server, bid is ", data.bid)
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
 		      io.emit(buttonStateChannel, {
 						button: false
-		      } );
+					} );
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
@@ -165,13 +174,14 @@ if(packagesButtonStates[data.packId].buttonstate){
 
 			console.log("/".repeat(20) + " after upd allBidsBigObj " + "/".repeat(20) )
 			console.dir(allBidsBigObj)
-
+console.log('data', data);
       Package.findById(data.packId).exec(
         function(err, data){
           if(err){
             console.log("error occured " + err);
           } else {
 						if(data != null){
+
 							if(data.bids.length == 0 ){
 								data.bids.push({
 									bidAmount: userBid,
@@ -201,7 +211,42 @@ if(packagesButtonStates[data.packId].buttonstate){
           }
         }
       )
-  
+			User.findOne({userName: data.userName}).exec(
+        function(err, user){
+          if(err){
+            console.log("error occured " + err);
+          } else {
+						console.log(user);
+						if(user != null){
+							var duplicatePackage = false;
+							for(var i = 0; i < user._packages.length; i++){
+								console.log("user", user._packages[i]);
+								console.log("data", data.packId);
+								if (user._packages[i] == data.packId){
+									duplicatePackage = true;
+
+									break;
+								}
+							}
+							if (duplicatePackage === false){
+								console.log(data);
+								console.log(duplicatePackage);
+								user._packages.push(parseInt(data.packId))
+								user.save(function(err){
+									if(err){
+										console.log("error when saving: " + err);
+									} else{
+										console.log("successfully ");
+									}
+								})
+							}
+						}
+
+
+          }
+        }
+      )
+
 			// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
 			io.emit(uniqChatUpdateId, {
 				lastBid: data.bid,
@@ -214,7 +259,7 @@ if(packagesButtonStates[data.packId].buttonstate){
 					button: true
 				} );
 				console.log("button was enabled ")
-			},100);
+			},500);
 			// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 			packagesButtonStates[data.packId].buttonstate = true;
 
