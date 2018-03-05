@@ -190,8 +190,8 @@ this.register = function(req, res){
 						console.log(err);
 					}
 					else{
-						console.log(packages);
 						if (user.userName === req.session.userName | req.session.admin === true){
+								console.log("this is packages", packages)
 								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
 
 						}
@@ -343,10 +343,10 @@ this.register = function(req, res){
 						})
 					}
 				}
-
+			
 			}
+			res.redirect('/api/users/'+req.session.userName)
 	})
-	res.redirect('/api/users/'+req.session.userName)
 }
 }
 module.exports = new UsersController();

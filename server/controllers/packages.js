@@ -5,13 +5,13 @@ var mongoose = require('mongoose'),
 	User = require('../models/user.js');
 var ObjectId = require('mongodb').ObjectId;
 
-
-
 function PackagesController(){
 
 	this.index = function(req,res){
+		// maybe embed both (user and package find) in category to make it synchronous
 		console.log('PackagesController index');
 		var categoryArray = []
+		var user
 		//Joey & Brandon: Currently halting "_bids" populate call, as this will be embedded when db is refactored
 
 		Category.find({}, function(err, categories) {
@@ -23,36 +23,29 @@ function PackagesController(){
 				for(c in categories){
 					categoryArray.push(categories[c].name);
 				}
-
-	}
-})
-		Package.find({}).populate("_items").sort({priority: 'descending'}).exec(function(err, packages) {
-
-		var user
-		User.findOne({userName:req.session.userName}, function(err, result){
-			if(err){
-				console.log(err)
-			}else{
-				user = result
-			}
-
-		})
-
-
-				// This is the method that finds all of the packages from the database
-				if(err) {
-						console.log('Package Index Error');
-						res.status(500).send('Failed to Load Packages');
-				}
-				else {
-						//res.json({packages: packages, admin:req.session.admin});
-
-
-						res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray})
-
-
+				User.findOne({userName:req.session.userName}, function(err, result){
+					if(err){
+						console.log(err)
+					}else{
+						user = result
+						Package.find({}).populate("_items").sort({priority: 'descending'}).exec(function(err, packages) {
+											// This is the method that finds all of the packages from the database
+							if(err) {
+									console.log('Package Index Error');
+									res.status(500).send('Failed to Load Packages');
+							}else {
+									console.log('this is user again', user)
+									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray})
+							}
+						}) 
 					}
-				})  // ends Package.find
+		
+				})
+
+			}
+		})
+		
+		 // ends Package.find
 
 	};
 
