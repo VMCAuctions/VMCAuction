@@ -19,7 +19,9 @@ function ItemsController(){
 	      		//res.status(500).send('Failed to Load Items');
 	    	}
 	    	else {
-	        	res.json({admin: req.session.admin, listOfItems: items});
+	        	//res.json({admin: req.session.admin, listOfItems: items});
+				res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName})
+
 	        }
         })  // ends Item.find
 
@@ -28,17 +30,27 @@ function ItemsController(){
 
 
 	this.new = function(req,res){
-		// this would bring up the new item form screen
+		Category.find({}, function(err, categories) {
+    		// This is the method that finds all of the items from the database
+	    	if(err) {
+	      		console.log(err);
+	      		//res.status(500).send('Failed to Load Items');
+	    	}
+	    	else {
+					if(req.session.admin){
+						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
+					}else{
+						res.redirect('/api/packages')
+					}
+				}
 		console.log('ItemsController new');
-	};
-
+	});
+}
 	this.create = function(req,res){
 		console.log('ItemsController create');
-
-
 	    Item.create({name: req.body.itemName, description: req.body.itemDescription,
 	      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
-	      value: req.body.fairMarketValue, packaged: false},  function(err, result){
+	      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
 	    	// from front end ///////////
 	    	//	   itemName: '',
       //           donor: '',
@@ -46,21 +58,18 @@ function ItemsController(){
       //           fairMarketValue: '',
       //           itemDescription: '',
       //           itemRestriction:
-
-
-
 	      if(err){
 	        console.log(err);
 	        //res.status(500).send('Failed to Create Item');
 	      }
 	      else{
-	        res.json(result);
+	        res.redirect('/api/items')
 	      }
 	    });
 	};
 
 
-	this.show = function(req,res){
+	this.edit = function(req,res){
 		console.log('ItemsController show');
 		// this gets the single item screen (if we want it)
 		Item.findById(req.params.id, function(err, result){
@@ -68,11 +77,25 @@ function ItemsController(){
 	        console.log(err);
 	      }
 	      else{
-	        res.json(result);
-	      }
-	    });
-	}
+			Category.find({}, function(err, categories) {
+				// This is the method that finds all of the items from the database
+				if(err) {
+					  console.log(err);
+					  //res.status(500).send('Failed to Load Items');
+				}
+				else{
+					//res.json(result)
+					if(req.session.admin){
+						res.render('item_edit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
+					}else{
+						res.redirect('/api/packages')
+					}
+				}
 
+	      })
+		}
+	})
+	};
 
 	this.update = function(req,res){
 		console.log('ItemsController update');
@@ -100,7 +123,7 @@ function ItemsController(){
 		                //res.status(500).send('Failed to Save Item update')
 		            }
                     else{
-		              res.send(item);
+		              res.redirect('/api/items')
                     }
 		        });
 		    }
@@ -110,11 +133,19 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.remove({_id: req.body.item_id}, function(err, result){
-			if(err){console.log(err)}
-			else{res.json(result)}
-		})
+		Item.findOne({_id: req.params.id}, function(err, result){
+			if(err){
+				console.log(err)
+			}else{
+				Item.remove(result, function(err, result){
+					if(err){
+						console.log(err)
+					}else{
+						res.redirect('/api/items')
+					}
+				}
+				)}
+		});
 	}
-
 }
 module.exports = new ItemsController();

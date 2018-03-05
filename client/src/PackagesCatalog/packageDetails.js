@@ -16,10 +16,10 @@ import {Link} from 'react-router-dom';
   const socket = openSocket(host);
 
   // subscribe to bids from server
-  function subscribeToBids(cb, packId ) {
+  function subscribeToBids(err, packId ) {
     var uniqChatUpdateId = 'update_chat' + packId;
     // receiving data from server on "update Chat"
-    socket.on(uniqChatUpdateId, (bidsUpdate) => cb(null, bidsUpdate));
+    socket.on(uniqChatUpdateId, (bidsUpdate) => err(null, bidsUpdate));
     // sending event to refresh bids
     socket.emit('page_refresh', {pId: packId });
   }
@@ -31,7 +31,6 @@ import {Link} from 'react-router-dom';
   }
 
   var socket_updated = false;
-
 
 class PackageDetails extends Component{
     constructor(props){
@@ -45,7 +44,9 @@ class PackageDetails extends Component{
               lastBid:"...",
               userBidLast: "..",
               socket_current_bid: false
-            }
+            },
+            stateOfBidButton: '',
+            buttonEnabled: true
         }
         // function to update sockets
         subscribeToBids((err, bidsUpdate) => this.setState({
@@ -71,14 +72,28 @@ class PackageDetails extends Component{
         var packIdchannel = 'update_chat' + packIdId;
         var self = this;
         socket_updated = false;
+
         // step 2: making sockets to listening to this channel
         socket.on(packIdchannel,function(data){
           self.updateStateAfterBidding();
+        })
+
+        // "BID" button update state variable
+        var buttonStateChannel = 'button_state' + packIdId;
+        socket.on(buttonStateChannel,function(data){
+            self.buttonStateChange(data);
         })
     }
 
     updateStateAfterBidding = () =>{
       socket_updated = true;
+    }
+
+    buttonStateChange = (data) =>{
+      this.setState({
+        buttonEnabled: data.button
+      })
+      console.log("state is changed to " + data.button)
     }
 
     updatePlaceBid = (lastBid, bidIncrement) =>{
@@ -112,8 +127,21 @@ class PackageDetails extends Component{
       })
     }
 
+
     render(){
+
+        let htmlBidButton;
+
+        if(this.state.buttonEnabled){
+            htmlBidButton = <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit} >Place bid</button>
+
+        } else if( !this.state.buttonEnabled ) {
+            htmlBidButton = <button className='placeBid btn-primary disabledButton' type='submit'  value='' onClick={this.placeBidSubmit} disabled>Place bid</button>
+            console.log("button state is DISABLED");
+            debugger;
+        }
         // console.log(this.state.listOfPackages)
+
         // trying to find the index of the (show)package from the array
         //traversing the target package(which is JSON object)
         let packagedata = this.state.listOfPackages;
@@ -168,6 +196,13 @@ class PackageDetails extends Component{
             //  this.updatePlaceBid(current_bid, bid_increment);
         }
 
+        // console.log("packagedata.bids");
+        // console.log(packagedata.bids);
+        if(this.state.bidsUpdate.lastBid == "none" && packagedata.bids != undefined && packagedata.bids.length != 0) {
+          this.state.bidsUpdate.lastBid = packagedata.bids[packagedata.bids.length-1].bidAmount;
+          this.state.bidsUpdate.userBidLast = packagedata.bids[packagedata.bids.length-1].name
+        }
+
         //conditional rendering
         if(this.state.listOfPackages){
         return(
@@ -206,7 +241,8 @@ class PackageDetails extends Component{
                                             <td>Next Bid:</td>
                                             <td>
                                                 <input className='bidInput' type='text' name='' value={this.state.place_bid} readOnly />
-                                                <button className='placeBid btn-primary' type='submit'  value='' onClick={this.placeBidSubmit}>Place bid</button>
+                                                {htmlBidButton}
+
                                             </td>
                                         </tr>
                                     </table>

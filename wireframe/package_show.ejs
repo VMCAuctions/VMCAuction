@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+		<title>Package Show</title>
+		<script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+		<script type='text/javascript'>
+			var socket = io.connect('http://localhost:8000');
+
+			$(document).ready(function(){
+				socket.on('button_state' + <%= package._id %>, function(data){
+					document.getElementById("submit").disabled = !data.button;
+				})
+			})
+			$(document).on('submit', function(){
+					console.log("Before receiving from server, " + $('#bid_amount')[0].defaultValue)
+					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].defaultValue), userName: '<%= userName %>' })
+					event.preventDefault();
+					// replace replaceWith val maybe??
+					socket.on("serverTalksBack", function(data){
+						$('#currentBid').text("Current Bid: " + data.bid)
+						$('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+					})
+				})
+
+		</script>
+  </head>
+
+	<body>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
+		<div>
+			<h3><%= package.name %> </h3>
+			<p>Package Description: <%= package.description %></p>
+			<p>Package Value: <%= package.value %></p>
+			<p>Starting Bid: <%= package.amount %></p>
+		</div>
+
+		<div>
+
+			<% if (package.bids.length == 0) {%>
+				<h3 id ='currentBid'>Current Bid: None by: nobody</h3>
+			<%} else {%>
+				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> </h3>
+			<%}%>
+
+			<h3>Next Bid:</h3>
+			<form action='/api/packages/<%= package._id %>'>
+				<% if (package.bids == false) {%>
+					<input id='bid_amount' readonly value='<%= package.amount%>'>
+				<%} else {%>
+					<input id='bid_amount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bid_increment %> '>
+				<%}%>
+
+			<% if (!userName) {%>
+				<a href='/api/users_login'>Login</a>
+			<%}else{%>
+				<input id='submit' type='submit' value='Place Bid'>
+			<%}%>
+			</form>
+			<% var flag = false %>
+			<% for(var i = 0; i < user._packages.length; i++){ %>
+			<% if(package._id == user._packages[i]) {%>
+			
+				<a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
+				<% flag = true %>
+				<% break %>
+				<% } %> 
+				<%}%>
+				<% if(flag === false) {%>
+				<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
+				<%}%>
+		</div>
+		<div>
+			<h5>Items In Package</h5>
+			<% for (var i = 0; i < package._items.length; i++) {%>
+				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donor %></p>
+				<p>Restrictions: <%= package._items[i].restrictions %></p>
+			<%}%>
+		</div>
+
+
+	</body>

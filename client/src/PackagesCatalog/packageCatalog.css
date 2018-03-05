@@ -42,3 +42,9 @@ img.card_img {
   .packageCatalog table td:first-child {
     min-width: 120px;
   }
+
+
+.disabledButton {
+  background:#ccc!important;
+  border:0!important;
+}
