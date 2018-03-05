@@ -65,9 +65,18 @@
 				<input id='submit' type='submit' value='Place Bid'>
 			<%}%>
 			</form>
-
-      <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
-      
+			<% var flag = false %>
+			<% for(var i = 0; i < user._packages.length; i++){ %>
+			<% if(package._id == user._packages[i]) {%>
+			
+				<a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
+				<% flag = true %>
+				<% break %>
+				<% } %> 
+				<%}%>
+				<% if(flag === false) {%>
+				<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
+				<%}%>
 		</div>
 		<div>
 			<h5>Items In Package</h5>
