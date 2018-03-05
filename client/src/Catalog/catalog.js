@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./catalog.css";
 import Axios from 'axios';
+import {Link} from 'react-router-dom';
 
 class Catalog extends Component{
     constructor(props){
@@ -23,11 +24,6 @@ class Catalog extends Component{
             console.log(err);
         })
     }
-
-editItem = (e) =>{
-    //Write logic for editing an item
-    alert("Are you sure you want to edit an item.")
-}
 
     deleteItem = (e) => {
         this.state.listOfItems.splice(e.target.value, 1)
@@ -53,7 +49,7 @@ editItem = (e) =>{
                 action_button = <td>In Package</td>
                 action_button_header = <th>Actions</th>
                 if(item.packaged === false){
-                    action_button = <td><button onClick={this.editItem} id={item._id} value={index}>Edit</button>
+                    action_button = <td><Link to ={`/item/edit/${item._id}`}><button type='button'>Edit</button></Link>
                                         <button onClick={this.deleteItem} id={item._id} value={index}>Delete</button></td>
                     action_button_header = <th>Actions</th>
                 }
@@ -62,15 +58,13 @@ editItem = (e) =>{
               item.value = "Priceless"
             }
 
-
-
-
             return(
                 <tr key={index}>
                     {action_button}
                     <td>{item._id}</td>
                     <td>{item.name}</td>
                     <td>{item._package}</td>
+                    <td>{item._category}</td>
                     <td>{item.value}</td>
                     <td>{item.description}</td>
                     <td>{item.donor}</td>
@@ -89,6 +83,7 @@ editItem = (e) =>{
                             <th>Item Number</th>
                             <th>Item Name</th>
                             <th>Package</th>
+                            <th>Category</th>
                             <th>Fair Market Value</th>
                             <th>Item Description</th>
                             <th>Donor</th>

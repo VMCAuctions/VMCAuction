@@ -15,7 +15,7 @@ class DisplayItems extends Component{
         .then((result) =>{
             let unpackaged_items = [];
             for(var i = 0; i < result.data.listOfItems.length; i++){
-                if(!result.data.listOfItems[i].packaged){
+                if(!result.data.listOfItems[i].packaged ){
                     unpackaged_items.push(result.data.listOfItems[i])
                 }
             }
@@ -36,7 +36,7 @@ class DisplayItems extends Component{
                 break;
               }
             }
-            this.props.capturingGroupedItems(object._id, parseInt((object.value),10), object.name)
+            this.props.capturingGroupedItems(object);
         }else{
             this.props.removeGroupedItems(parseInt((e.target.value),10), e.target.name)
         }
@@ -45,7 +45,6 @@ class DisplayItems extends Component{
     render(){
         //maping the array of objects into table data
         let items = this.state.itemsList.map((item,index) =>{
-            console.log("items is", items)
             return(
                 <tr key={index} >
                     <td><input type='checkbox' value={item.value} name={item._id}  onChange={this.rowSelect}/></td>

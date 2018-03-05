@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>package editing</title>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+  </head>
+  <body>
+    <script>
+      function test(){
+        alert('hello')
+      }
+    </script>
+    <%if(admin){%>
+    <%- include('admin_header') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
+    <h3>Edit Package</h3>
+    <form id='packageForm' action="/api/packages/<%=package._id%>" method="post">
+      <input type="text" id='packageName' name="packageName" value="<%=package.name%>">
+      <textarea id='packageDescription' name="packageDescription" rows="8" cols="40" value='<%=package.description%>'><%=package.description%></textarea>
+      <select id='category' name="category" >
+        <option value="<%=package._category%>" ><%=package._category%></option>
+        <% for (var c in categories){%>
+          <%if(package._category != categories[c]){%>
+          <!-- add radio and jquery to make only one catagory option apear
+        or Make a seperate page to creat catagories -->
+
+          <option value="<%=categories[c]%>"><%=categories[c]%></option>
+          <%}%>
+        <%}%>
+      </select>
+      <input type="number" id='openingBid' name="openingBid" value="<%=package.value%>">
+      <input type="number" id='increments' name="increments" value="<%=package.amount%>">
+
+      <!-- need a read only feild with the current number selected -->
+      <script type="text/javascript">
+      var total = <%= total%>;
+      var checkedItems = {};
+
+       totalAdd = function(value, id){
+
+        var checkbox = document.getElementById(id);
+
+        if (checkbox.checked === true){
+          total += value
+          console.log("total is", total);
+          checkedItems[id]= id;
+          console.log(checkedItems);
+        }
+        else if (checkbox.checked === false) {
+          total -= value
+          delete checkedItems[id]
+          console.log(checkedItems)
+        }
+        document.getElementById('totalValue').value = total
+      }
+      </script>
+      <%for (var j = 0; j < package._items.length; j++){%>
+        <%=package._items[j].name%>
+        <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">
+        <%}%>
+      <%for (var i in items){%>
+
+      <%=items[i].name%>
+      <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+      <%}%>
+      <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
+      <input type="submit" name="submit" value="submit">
+    </form>
+    <script>
+      var validator = $("#packageForm").validate({
+      debug: true,
+      rules: {
+        
+        packageName: {
+          required: true,
+          minlength: 4
+        },
+        category: {
+          required: true
+        },
+        openingBid:{
+          required: true,
+          number: true
+        },
+        packageDescription: {
+          required: true,
+          minlength: 4
+        },
+        increments: {
+          required: true,
+          step: 5
+        }
+      }
+    });
+    validator.form();
+    </script> 
+  </body>
+</html>
