@@ -3,63 +3,97 @@
 
 <head>
     <title>
-        Package Bidding Report
+        Packages
     </title>
+    <script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type='text/javascript'>
+			var socket = io.connect('http://localhost:8000');
 
+			$(document).ready(function(){
+					socket.on("serverTalksBack", function(data){
+            $('#currentBid').text("Current Bid: " + data.bid)
+
+          })
+
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+      $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+      });
+      $("#noBids").click(function() {
+        $(".bids").toggle();
+        $(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
+      });
+    })
+
+		</script>
 </head>
 
 <body>
-  <nav>
-    <a href="/items">Items</a> |
-    <a href="/packages">Packages</a> |
-    <a href="/bids">Bids</a> |
-  </nav>
-  <h2>Package Bidding Report</h2>
 
-  <table>
-
-      <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th >Current</th>
-        </tr>
-        <tr>
-            <th>Package</th>
-            <th>Package</th>
-            <th >High</th>
-        </tr>
-          <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th >Bid ($)</th>
-          </tr>
-          <tr>
-              <th>========</th>
-              <th>========================================</th>
-              <th >==========</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr>
-              <td>001</td>
-              <td>Trip to the moon</td>
-              <td>1,000,000</td>
-          </tr>
-          <tr>
-              <td>002</td>
-              <td>1 Case - Chateau Lafitte Rothchilde 1947</td>
-              <td>80,000</td>
-          </tr>
-          <tr>
-              <td>003</td>
-              <td>Iphone 8</td>
-              <td>3000</td>
-          </tr>
-
-      </tbody>
-  </table>
-
+  <%if(admin){%>
+  <%- include('admin_header') -%>
+  <%}else{%>
+    <%- include('header') -%>
+  <%}%>
+  <h2>Packages/Bids</h2>
+  <input type='search' id='keyword' placeholder="Keyword Search">
+  <select name='category' id='category'>
+    <% for(var c in categories) {%>
+      <option value="<%=categories[c]%>"><%=categories[c]%></option>
+    <%}%>
+  </select>
+  <button type="button" id="noBids" name="button">No bids yet</button>
+<% for (var p in packages){%>
+  <%if(packages[p].bids.length>0){%>
+<div class="package bids">
+  <%}else{%>
+    <div class="package empty">
+  <%}%>
+  <img src="/no-image.png" alt="img">
+  <br>
+  <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
+  <p><b>Category:</b> <%=packages[p]._category%></p>
+  <p><b>STARTING BID:</b> <%=packages[p].amount%></p>
+  <%if(packages[p].bids[packages[p].bids.length-1]){%>
+  <p id='currentBid'><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
+  <%}else{%>
+    <p><b>Current Bid:</b> None (By: Nobody)</p>
+  <%}%>
+  <%if(userName){%>
+    <% var flag = false %>
+    <% for(var i = 0; i < user._packages.length; i++){ %>
+    <% if(packages[p]._id == user._packages[i]) {%>
+    
+      <a href="/users/uninterested/<%= packages[p]._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
+      <% flag = true %>
+      <% break %>
+      <% } %> 
+      <%}%>
+      <% if(flag === false) {%>
+      <a href="/users/interested/<%= packages[p]._id %>"><button type="button" name="interested">Interested?</button></a>
+      <%}%>
+  <%}%>
+  <% if (admin){ %>
+   <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
+   <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
+   <%if(packages[p].featured === true){%>
+     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeature</button></a>
+   <%}else{%>
+   <a href="/packages/featured/<%=packages[p]._id%>"><button>Feature</button></a>
+  <%}%>
+  <%}%>
+</div>
+<% }%>
 </body>
 
 </html>
