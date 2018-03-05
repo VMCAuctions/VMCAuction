@@ -195,19 +195,20 @@ this.new = function(req,res){
 				console.log(err)
 			}else{
 				user = result
+				Package.findById(req.params.id).populate("_items").exec(function(err,result){
+					if(err){
+						console.log(err);
+					}
+					else{
+						// res.json({packages: result});
+						console.log(result)
+						res.render('package_show',{package:result, userName: req.session.userName, admin: req.session.admin, user:user})
+					}
+				})
 			}
 
 		})
-		Package.findById(req.params.id).populate("_items").exec(function(err,result){
-			if(err){
-				console.log(err);
-			}
-			else{
-				// res.json({packages: result});
-				console.log(result)
-				res.render('package_show',{package:result, userName: req.session.userName, admin: req.session.admin, user:user})
-			}
-		})
+		
 	};
 
 	this.update = function(req,res){
