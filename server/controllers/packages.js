@@ -195,14 +195,20 @@ this.new = function(req,res){
 				console.log(err)
 			}else{
 				user = result
-				Package.findById(req.params.id).populate("_items").exec(function(err,result){
+				Package.findById(req.params.id).populate("_items").exec(function(err,package){
 					if(err){
 						console.log(err);
 					}
 					else{
 						// res.json({packages: result});
-						console.log(result)
-						res.render('package_show',{package:result, userName: req.session.userName, admin: req.session.admin, user:user})
+						console.log(package)
+						var our_bids = false
+						var lastBid = package.amount
+						if(package.bids.length > 0){
+							our_bids = true;
+							lastBid = package.bids[package.bids.length -1 ].bidAmount
+						}
+						res.render('package_show',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: our_bids, lastBid: lastBid})
 					}
 				})
 			}
