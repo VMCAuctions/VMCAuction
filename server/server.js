@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var path = require("path");
-
+app.use(express.static("../public"));
 
 // static content
 // static content

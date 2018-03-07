@@ -35,16 +35,26 @@ function PackagesController(){
 									res.status(500).send('Failed to Load Packages');
 							}else {
 									console.log('this is user again', user)
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray})
+									var featured = [];
+									var nonfeatured = [];
+									for (var i = 0; i < packages.length; i++){
+										if(packages[i].featured === true){
+											featured.push(packages[i]);
+										}
+										else{
+											nonfeatured.push(packages[i]);
+										}
+									}
+									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured})
 							}
-						}) 
+						})
 					}
-		
+
 				})
 
 			}
 		})
-		
+
 		 // ends Package.find
 
 	};
@@ -214,7 +224,7 @@ this.new = function(req,res){
 			}
 
 		})
-		
+
 	};
 
 	this.update = function(req,res){
@@ -329,13 +339,13 @@ this.new = function(req,res){
 							for(var k= 0; k< user._packages.length; k++ ){
 								console.log("this is result", result)
 								if(result._id === user._packages[k]){
-									
+
 									user._packages.splice(k,1)
-								} 
+								}
 							}
 							user.save(function(err,result){
 								if(err){
-								
+
 									console.log(err)
 								}else{
 									console.log("JOEY")
@@ -353,7 +363,7 @@ this.new = function(req,res){
 					});
 				}
 
-			
+
 				Package.remove({_id: req.params.id}, function(err, package){
 					if(err){
 						console.log(err)
