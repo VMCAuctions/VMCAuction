@@ -236,7 +236,19 @@ this.new = function(req,res){
 		    }
 
 		    else {
+
 				console.log("update pacakge");
+						Item.find({_id: package._items}, function(err, items) {
+							if (err) {
+								console.log(err);
+							}else{
+								for (var i = 0; i < items.length; i++) {
+									items[i].packaged = false;
+									items[i]._package = null;
+									items[i].save()
+								}
+							}
+						})
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        package.name = req.body.packageName || package.name;
