@@ -63,12 +63,14 @@ module.exports = function(app) {
 		packages.remove_package(req, res)
 	})
 	//removes last bid on package
-	app.get('/packages/cancel_bid/:id', function(req,res){
+	app.post('/packages/cancelbid/:id', function(req,res){
 		packages.cancel_bid(req,res)
 	})
 	app.get('/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)
 	})
+
+
 
 
 
@@ -147,6 +149,8 @@ module.exports = function(app) {
 	app.get('/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)
 	})
+
+	
 
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly

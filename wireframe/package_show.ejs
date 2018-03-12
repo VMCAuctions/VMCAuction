@@ -10,20 +10,23 @@
 
 		<script type='text/javascript'>
 			var socket = io.connect('http://localhost:8000');
-      var customPlaceholder = parseInt(<%=lastBid%>);
-
-			$(document).on('submit', function(){
-
-					console.log("Before receiving from server, " + $('#bid_amount')[0].value)
+      		var customPlaceholder = parseInt(<%=lastBid%>);
+			$(document).ready(function(){
+				$('#submitButton').click( function(){
 					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
 					socket.on("serverTalksBack", function(data){
-						$('#currentBid').text("Current Bid: " + data.bid)
+						$('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
 						$('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-            customPlaceholder = data.bid;
+           				customPlaceholder = data.bid;
+					})
+					socket.on('buttonStateChannel', function(data){
+						$('#submitButton').attr('disabled', data.button )
 					})
 				})
+				}
+			)
 		</script>
   </head>
 
@@ -45,11 +48,11 @@
 			<% if (package.bids.length == 0) {%>
 				<h3 id ='currentBid'>Current Bid: None by: nobody</h3>
 			<%} else {%>
-				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> </h3>
+				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> by: <%= package.bids[package.bids.length-1].name%>  </h3>
 			<%}%>
 
 			<h3>Next Bid:</h3>
-			<form action='/api/packages/<%= package._id %>'>
+			<form action='/api/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
 					<input id='bid_amount' readonly value='<%= package.amount%>'>
 				<%} else {%>
@@ -62,9 +65,17 @@
 				<input id="submitButton" type='submit' value='Place Bid'>
 
 			</form>
-        <button type="button" name="Custom" id="custom">Custom Bid</button>
-      <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
-      <%}%>
+        	<button type="button" name="Custom" id="custom">Custom Bid</button>
+      		<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
+			<%}%>
+			 
+			<% if (admin === true) { %>
+				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+					<input type='text' value='' placeholder='username of bidder' name='user'>
+					<input id='cancelBid' type='submit' value='Delete Bid'>
+				</form>
+			<%}%>
+
 		</div>
 		<div>
 			<h5>Items In Package</h5>
@@ -104,16 +115,23 @@
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
       })
 
-            $("#submitButton").click(function(){
-              if($("#bid_amount").val() < <%= package.amount%>){
-                alert("Tali does not like alerts")
+        $("#submitButton").click(function(){
+        	if($("#bid_amount").val() < <%= package.amount%>){
+            	alert("Please enter a bid above ", <%= package.amount%>)
+            	return false;
+        	}else if ($("#bid_amount").val() < <%= lastBid + package.bid_increment %> && <%=ourBids%> === true) {
+            	alert("Please enter a bid above ", <%= lastBid + package.bid_increment %> )
                 return false;
-              }else if ($("#bid_amount").val() < <%= lastBid + package.bid_increment %> && <%=ourBids%> === true) {
-                alert("Tali does not like alerts")
-                return false;
-              }
+            }
 
-            })
+		})
+		
+		$('#cancelBid').click(function(){
+			var cancelBidConfirm = window.confirm('Are you sure you want to cancel' )
+			if(cancelBidConfirm === false){
+				return false;
+			}
+		})
     </script>
 
 	</body>
