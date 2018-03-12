@@ -27,7 +27,13 @@
       <%}%>
 
 
-
+      <input type='search' id='keyword' placeholder="Keyword Search">
+      <select name='category' id='category'>
+        <% for(var c in categories) {%>
+          <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+        <%}%>
+        <option value="">Reset</option>
+      </select>
       <div class="container">
         <h1 class="my-2">Item Report</h1>
         <div class="table-responsive-md ">
@@ -49,13 +55,18 @@
               </thead>
               <tbody>
                 <% for (var i in items){%>
-                  <tr>
+
+                  <tr class="itemRow">
                     <% if(admin){ %>
                       <td><a href='/api/items/<%=items[i]._id%>'><button>Edit</button></a>|<a href='/api/remove_item/<%=items[i]._id%>'><button>Delete</button></a></td>
                       <%}%>
                       <td><%= items[i]._id%></td>
                       <td><%= items[i].name%></td>
-                      <td><%= items[i]._package%></td>
+                      <% if (items[i].packaged) {%>
+                        <td> <a href="/api/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
+                      <%}else{%>
+                        <td></td>
+                      <%}%>
                       <td><%= items[i]._category%></td>
                       <td><%= items[i].value%></td>
                       <td><%= items[i].description%></td>
@@ -65,8 +76,20 @@
                     <%}%>
                   </tbody>
                 </table>
-              </div>
-              <!-- container -->
-            </div>
+              <script type="text/javascript">
+              $("#keyword").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".itemRow").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                  });
+              });
+
+            $("select[name='category']").change( function() {
+                var value = $(this).val().toLowerCase();
+                $(".itemRow").filter(function(){
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                })
+            });
+              </script>
           </body>
         </html>
