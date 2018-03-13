@@ -48,6 +48,7 @@
   <h2>Packages/Bids</h2>
   <input type='search' id='keyword' placeholder="Keyword Search">
   <select name='category' id='category'>
+    <option value="">All Categories</option>
     <% for(var c in categories) {%>
       <option value="<%=categories[c]%>"><%=categories[c]%></option>
     <%}%>
@@ -74,15 +75,15 @@
   <%if(userName){%>
     <% var flag = false %>
     <% for(var i = 0; i < user._packages.length; i++){ %>
-    <% if(featured[f]._id == user._packages[i]) {%>
-
-      <a href="/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
-      <% flag = true %>
-      <% break %>
-      <% } %>
+      <% if(featured[f]._id == user._packages[i]) {%>
+        <a href="/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+        <% flag = true %>
+        <% break %>
+        <% } %>
       <%}%>
+
       <% if(flag === false) {%>
-      <a href="/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Interested?</button></a>
+        <a href="/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
   <% if (admin){ %>
@@ -97,44 +98,43 @@
 </div>
 <% }%>
 
-<h2>Other Packages</h2>
-<% for (var n in nonfeatured){%>
-  <%if(nonfeatured[n].bids.length>0){%>
+<% for (var n in packages){%>
+  <%if(packages[n].bids.length>0){%>
 <div class="package bids">
   <%}else{%>
     <div class="package empty">
   <%}%>
   <img src="/no-image.png" alt="img">
   <br>
-  <a href="/api/packages/<%=nonfeatured[n]._id%>"><%=nonfeatured[n].name%></a>
-  <p><b>Category:</b> <%=nonfeatured[n]._category%></p>
-  <p><b>STARTING BID:</b> <%=nonfeatured[n].amount%></p>
-  <%if(nonfeatured[n].bids[nonfeatured[n].bids.length-1]){%>
-  <p id='currentBid'><b>Current Bid:</b> <%=nonfeatured[n].bids[nonfeatured[n].bids.length-1].bidAmount%> (By: <%= nonfeatured[n].bids[nonfeatured[n].bids.length-1].name%>)</p>
+  <a href="/api/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
+  <p><b>Category:</b> <%=packages[n]._category%></p>
+  <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
+  <%if(packages[n].bids[packages[n].bids.length-1]){%>
+  <p id='currentBid'><b>Current Bid:</b> <%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
   <%if(userName){%>
     <% var flag = false %>
     <% for(var i = 0; i < user._packages.length; i++){ %>
-    <% if(nonfeatured[n]._id == user._packages[i]) {%>
+    <% if(packages[n]._id == user._packages[i]) {%>
 
-      <a href="/users/uninterested/<%= nonfeatured[n]._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
+      <a href="/users/uninterested/<%= packages[n]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
       <% flag = true %>
       <% break %>
       <% } %>
       <%}%>
       <% if(flag === false) {%>
-      <a href="/users/interested/<%= nonfeatured[n]._id %>"><button type="button" name="interested">Interested?</button></a>
+      <a href="/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=nonfeatured[n]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=nonfeatured[n]._id %>'><button>Delete</button></a>
-   <%if(nonfeatured[n].featured === true){%>
-     <a href="/packages/featured/<%=nonfeatured[n]._id%>"><button>Unfeature</button></a>
+   <a href='/packages/<%=packages[n]._id%>'><button>Edit</button></a>
+   <a href='/api/remove_package/<%=packages[n]._id %>'><button>Delete</button></a>
+   <%if(packages[n].featured === true){%>
+     <a href="/packages/featured/<%=packages[n]._id%>"><button>Unfeature</button></a>
    <%}else{%>
-   <a href="/packages/featured/<%=nonfeatured[n]._id%>"><button>Feature</button></a>
+   <a href="/packages/featured/<%=packages[n]._id%>"><button>Feature</button></a>
   <%}%>
   <%}%>
 </div>

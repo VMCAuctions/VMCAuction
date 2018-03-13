@@ -15,10 +15,10 @@
       <thead>
         <th>Package Name</th>
         <th>Who's Winning</th>
-        <th>Interested</th>
+        <th>Watchlist</th>
       </thead>
       <tbody>
-        
+
         <%for(let i =0; i<packages.length; i++){%>
           <tr>
           <% if(packages[i]) {%>
@@ -31,15 +31,15 @@
               <%}%>
             <%}%>
           <%}%>
-          <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">No longer Interested</button></a></td>
+          <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
 
 
           </tr>
           <%}%>
-        
+
       </tbody>
     </table>
-    
-    
+
+
   </body>
 </html>
