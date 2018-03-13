@@ -60,10 +60,19 @@
 				<a href='/api/users_login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
-
-			</form>
+			  </form>
         <button type="button" name="Custom" id="custom">Custom Bid</button>
-      <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
+        <%var flag = false%>
+        <% for (i in user._packages){%>
+          <% if (package._id == user._packages[i]){%>
+            <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+            <%flag = true%>
+            <%break%>
+          <%}%>
+        <%}%>
+        <%if (flag == false){%>
+          <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+        <%}%>
       <%}%>
 		</div>
 		<div>
