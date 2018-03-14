@@ -28,7 +28,7 @@ function PackagesController(){
 						console.log(err)
 					}else{
 						user = result
-						Package.find({}).populate("_items").sort({priority: 'descending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 											// This is the method that finds all of the packages from the database
 							if(err) {
 									console.log('Package Index Error');
