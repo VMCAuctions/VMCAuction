@@ -153,12 +153,12 @@ this.new = function(req,res){
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
 
 		if (req.body.selectedItems.length == 0){
-          console.log('reached empty item list')
+      console.log('reached empty item list')
 		  return res.json(false)
 		  //frontend validation / response if no items selected
-        }
+    }
 
-
+				//Corrected an issue where an item was displaying twice; may or may not have fixed the issue permanently
         Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
 	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
 			bid: [], amount: req.body.openingBid, priority: req.body.priority
@@ -172,19 +172,23 @@ this.new = function(req,res){
 		      }
 		      else{
 
-			    	for(var i=0; i<package._items.length; i++){
-						console.log("Packaged ");
-			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
-							if(err){
-								console.log(err);
-								return;
-							}
+						for(let i = 0; i < package._items.length; i++ ){
+						//Item.update({_id: id}, { $set: { _package: package.id}});
 
+						Item.findOne({_id: package._items[i]} , function(err, item){
+								item.packaged = true;
+								item._package = package._id;
+
+								item.save(function (err){
+									if (err){
+										console.log(err)
+									}
+									else{
+
+									}
+								})
 						})
-						if (i == package._items.length -1){
-							res.redirect('/api/packages')
 						}
-					};
 			    }
 			  }
 		); // end of Package.create
@@ -258,6 +262,7 @@ this.new = function(req,res){
 		        package.value = req.body.totalValue || package.value;
 		        package.bid_increment = req.body.increments || package.bid_increment;
 		        package._category = req.body.category || package._category;
+						package.priority = req.body.priority || package.priority;
 
 		        // we don't want the items removed from this package to still show this package in their
 				// item._package field so we will just set each current item._package to null
@@ -309,10 +314,6 @@ this.new = function(req,res){
 												}
 											})
 									})
-
-
-
-
 		    					}
 
 		            	res.redirect('/api/packages/' + package._id );
