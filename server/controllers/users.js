@@ -142,7 +142,40 @@ this.register = function(req, res){
 		})
 	};
 
-	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
+	this.checkLogin = function(req, res){
+		User.findOne({userName: req.body.userName}, function(err, user){
+			if(err){
+				console.log(err);
+			}
+			else if(!user){
+				console.log("Did not find a user")
+				// res.write("a user was not found")
+				res.json({match: false})
+			}
+			else if(user){
+				//Comparing inputted password to hashed password in db
+				bcrypt.compare(req.body.password, user.password, function(err, match) {
+					if(err){
+						console.log(err)
+					}
+					else if(match){
+						console.log("found match")
+						// res.write("'true'")
+						res.json({match: true})
+					}
+					else{
+						console.log("did not find match")
+						// res.write("'this did not work'")
+						res.json({match: false})
+					}
+				})
+			}
+			// else{
+			// 	res.json({userName: false})
+			// }
+		})
+	}
+
 	this.login = function(req,res){
 
 		console.log('UsersController login');
@@ -163,12 +196,12 @@ this.register = function(req, res){
 						res.redirect('/api/packages')
 					}
 					else{
-						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
+						res.json({password: false})
 					}
 				})
 			}
 			else{
-				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
+				res.json({userName: false})
 
 			}
 		})
@@ -343,7 +376,7 @@ this.register = function(req, res){
 						})
 					}
 				}
-			
+
 			}
 			res.redirect('/api/users/'+req.session.userName)
 	})

@@ -113,6 +113,9 @@ module.exports = function(app) {
 	app.get('/users/register', function(req,res) {
 		users.register(req,res)});
 
+	app.post('/users/checkLogin', function(req,res){
+		users.checkLogin(req,res)});
+
 	// checks if a user is logged in
 	// app.get('/api/users/loggedin', function(req,res){
 	// 	console.log("route in");
