@@ -58,11 +58,27 @@ this.register = function(req, res){
 		res.render('login', {userName: req.session.userName, admin: req.session.admin })
 	};
 	this.register = function(req,res){
-		console.log('this is the validation' + registrationValidation)
+		console.log('this is the validation')
 		res.render('user', {userName: req.session.userName, admin: req.session.admin, validation: registrationValidation})
 	}
 	// post the new user registration form and create a new user
 	// add redirect when done with refactor
+	this.duplicate = function (req, res) {
+		console.log('dupe', req.body);
+		User.findOne({userName: req.body.userName}, function (err, duplicate) {
+			console.log(duplicate);
+			if(err){
+				console.log(err);
+			}else if (duplicate) {
+				console.log("true");
+				res.json({double: true})
+			}else {
+				console.log('false');
+				res.json({double: false})
+			}
+		})
+
+	}
 	this.create = function(req,res){
 		console.log('UsersController create');
 
@@ -143,6 +159,9 @@ this.register = function(req, res){
 	};
 
 	this.checkLogin = function(req, res){
+		console.log("in check login");
+		console.log('req.data', req.data);
+		console.log('req.body', req.body);
 		User.findOne({userName: req.body.userName}, function(err, user){
 			if(err){
 				console.log(err);
@@ -160,49 +179,14 @@ this.register = function(req, res){
 					}
 					else if(match){
 						console.log("found match")
-						// res.write("'true'")
-						res.json({match: true})
+						req.session.userName = user.userName
+						req.session.admin = user.admin
 					}
 					else{
 						console.log("did not find match")
-						// res.write("'this did not work'")
 						res.json({match: false})
 					}
 				})
-			}
-			// else{
-			// 	res.json({userName: false})
-			// }
-		})
-	}
-
-	this.login = function(req,res){
-
-		console.log('UsersController login');
-		User.findOne({userName: req.body.userName}, function(err, user){
-			if(err){
-				console.log(err);
-			}
-			else if(user){
-				//Comparing inputted password to hashed password in db
-				bcrypt.compare(req.body.password, user.password, function(err, match) {
-					if(err){
-						console.log(err)
-					}
-					else if(match){
-						req.session.userName = user.userName
-						req.session.admin = user.admin
-						//res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
-						res.redirect('/api/packages')
-					}
-					else{
-						res.json({password: false})
-					}
-				})
-			}
-			else{
-				res.json({userName: false})
-
 			}
 		})
 	}
