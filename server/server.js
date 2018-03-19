@@ -20,7 +20,7 @@ app.use(session({
   rolling: true //resets session timeout everytime the user interacts with the site
 }));
 
-var React = require('../client/node_modules/react');
+
 // var jsx = require('node-jsx');
 // jsx.intall();
 
