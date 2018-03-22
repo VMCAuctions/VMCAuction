@@ -38,7 +38,7 @@ function UsersController(){
 				console.log(err)
 			}else{
 				var hash = {}
-				if(req.session.userName === 'admin'){
+				if(req.session.admin){
 					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
 				}else{
 					res.redirect('/api/packages')
@@ -214,7 +214,7 @@ this.register = function(req, res){
 	}
 	this.admin_change = function(req,res){
 		console.log('UsersController admin_change')
-		console.log('req.body:', Object.keys(req.body))
+		console.log('req.body:', req.body)
 
 		// //C ould potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
 		// User.find({"_id": Object.keys(req.body)}, function(err, users){
@@ -226,7 +226,7 @@ this.register = function(req, res){
 					console.log(err)
 				}else {
 
-					if (user.userName != 'admin' | user.userName != req.session.userName) {
+					if (user.userName != 'admin') {
 						console.log(user.userName);
 						user.admin = req.body[users]
 						user.save(function(err, result){
@@ -335,7 +335,7 @@ this.register = function(req, res){
 						})
 					}
 				}
-			
+
 			}
 			res.redirect('/api/users/'+req.session.userName)
 	})

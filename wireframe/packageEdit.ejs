@@ -33,8 +33,9 @@
           <%}%>
         <%}%>
       </select>
-      <input type="number" id='openingBid' name="openingBid" value="<%=package.value%>">
-      <input type="number" id='increments' name="increments" value="<%=package.amount%>">
+      <input type="number" id='priority' name="priority" value="<%=package.priority%>">
+      <input type="number" id='openingBid' name="openingBid" value="<%=package.amount%>">
+      <input type="number" id='increments' name="increments" value="<%=package.bid_increment%>">
 
       <!-- need a read only feild with the current number selected -->
       <script type="text/javascript">
@@ -93,6 +94,11 @@
         increments: {
           required: true,
           step: 5
+        },
+        priority: {
+          required: true,
+          number: true,
+          min: 0
         }
       }
     });
