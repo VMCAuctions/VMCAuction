@@ -145,10 +145,10 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
-		      io.emit(buttonStateChannel, {
-						button: false
+		      io.emit("buttonStateChannel", {
+						button: 'disabled'
 					} );
-					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid})
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
@@ -255,11 +255,12 @@ console.log('data', data);
 
 			// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 			setTimeout(function(){
-				io.emit(buttonStateChannel, {
-					button: true
+				io.emit('buttonStateChannel', {
+					button: null
 				} );
 				console.log("button was enabled ")
-			},500);
+			},1000);
+			//time is set at 1 second but if user testing proves time too short disable button longer
 			// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 			packagesButtonStates[data.packId].buttonstate = true;
 
