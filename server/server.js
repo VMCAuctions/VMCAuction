@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var session = require('express-session')
-require('jsdom-global')()
+
 
 
 var mongoose = require('mongoose'),
@@ -20,7 +20,6 @@ app.use(session({
   rolling: true //resets session timeout everytime the user interacts with the site
 }));
 
-var React = require('../client/node_modules/react');
 // var jsx = require('node-jsx');
 // jsx.intall();
 
@@ -145,9 +144,11 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
-		      io.emit("buttonStateChannel", {
+		      io.emit('buttonStateChannel', {
 						button: 'disabled'
-					} );
+					});
+				console.log("button disabled");
+
 					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName})
 
 // ------------------------------ 001 -------------------------------
@@ -260,7 +261,6 @@ console.log('data', data);
 				} );
 				console.log("button was enabled ")
 			},1000);
-			//time is set at 1 second but if user testing proves time too short disable button longer
 			// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 			packagesButtonStates[data.packId].buttonstate = true;
 
