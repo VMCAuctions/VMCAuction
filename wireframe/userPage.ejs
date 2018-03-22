@@ -17,27 +17,30 @@
       <thead>
         <th>Package Name</th>
         <th>Who's Winning</th>
-        <th>Interested</th>
+        <th>Watchlist</th>
       </thead>
-      <tbody id='selections'>
-        <%for(let i =0; i< user._packages.length; i++){%> 
-          <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
-          <% if(user._packages[i]) {%>
-          <td><a href="/api/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
-          <% if(user._packages[i].bids.length > 0) {%>
-          <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
+
+      <tbody>
+        <%for(let i =0; i<packages.length; i++){%>
+          <tr>
+          <% if(packages[i]) {%>
+          <td><a href="/api/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+          <% if(packages[i].bids.length > 0) {%>
+          <%if(packages[i].bids[packages[i].bids.length-1].name == user.userName){%>
                <td>You!!!</td>
               <%}else{%>
               <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
               <%}%>
             <%}%>
           <%}%>
-          <td><a href="/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">No longer Interested</button></a></td>
+
+          <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
           </tr>
           <%}%>
-        
+
       </tbody>
     </table>
+
     <button id='update'>Update List Order</button>
     <script>
       var user_id = '<%= user._id%>';
@@ -53,6 +56,6 @@
      
 
     </script>
-    
+
   </body>
 </html>
