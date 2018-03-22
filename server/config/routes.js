@@ -12,6 +12,8 @@ var path = require("path");
 
 module.exports = function(app) {
 
+	app.get('/', function (req,res) {
+		packages.index(req,res)});
 	// get the Login/Registration screen.  This is our root route //
 	// ITEMS //
 	// Renders all ites page
@@ -154,13 +156,5 @@ module.exports = function(app) {
 	app.get('/users/updateList/:result/:user_id', function(req,res){
 		users.updateList(req,res)
 	})
-
-
-		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){
-			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
-//res.('/var/www/POTR/client/src/index.js');
-			//res.redirect('/');
-		});
 
 }  // end of module.exports
