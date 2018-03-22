@@ -404,28 +404,43 @@ this.new = function(req,res){
 	}
 	//cancels last bid
 	this.cancel_bid = function(req,res){
+		if(req.session.admin){
 		Package.findById(req.params.id, function(err,package){
 			if(err){
 				console.log(err)
 			}else{
 				var bid	= package.bids[package.bids.length - 1]
 				//console.log('before if statement' + package)
-				if(bid.name === req.session.userName){
-					//console.log('this is the bid' + bid)
-					package.bids.pop()
-					package.save()
-					//console.log('this is the package' + package)
-
-					//in case client want package not to show on user page
-					//maybe they want to bid again on the package later
-					//User.findOne({userName: req.session.userName}, function(err, user){
-
-					//})
+				if(req.body.user){
+				User.findOne({userName: req.body.user}, function(err,user){
+					if(err){
+						console.log(err)
+					}else{
+						if(bid.name === user.userName){
+							//console.log('this is the bid' + bid)
+							package.bids.pop()
+							package.save()
+							//console.log('this is the package' + package)
+		
+							//in case client want package not to show on user page
+							//maybe they want to bid again on the package later
+							//User.findOne({userName: req.session.userName}, function(err, user){
+		
+							//})
+					}	
 				}
-				res.redirect('/api/users/' + req.session.userName)
+				})
 			}
-		})
+				res.redirect('/api/packages/' + package._id)
+			
+			
+			}
+			}
+		)
+	}else{
+		res.redirect('/api/packages')
 	}
+}
 
 
 }
