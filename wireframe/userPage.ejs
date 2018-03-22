@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title><%=user.userName%></title>
   </head>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
   <body>
     <%if(admin){%>
     <%- include('admin_header') -%>
@@ -17,8 +19,8 @@
         <th>Who's Winning</th>
         <th>Watchlist</th>
       </thead>
-      <tbody>
 
+      <tbody>
         <%for(let i =0; i<packages.length; i++){%>
           <tr>
           <% if(packages[i]) {%>
@@ -27,19 +29,33 @@
           <%if(packages[i].bids[packages[i].bids.length-1].name == user.userName){%>
                <td>You!!!</td>
               <%}else{%>
-              <td><%=packages[i].bids[packages[i].bids.length-1].name%></td>
+              <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
               <%}%>
             <%}%>
           <%}%>
+
           <td><a href="/users/uninterested/<%=packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
-
-
           </tr>
           <%}%>
 
       </tbody>
     </table>
 
+    <button id='update'>Update List Order</button>
+    <script>
+      var user_id = '<%= user._id%>';
+      var el = document.getElementById('selections')
+      var sortable = Sortable.create(el)
+      $('#update').click(function(){
+        var result = sortable.toArray()
+        console.log(result)
+        $.ajax({type: 'GET',
+          url:'/users/updateList/' + result + '/' + user_id
+        })
+      })
+     
+
+    </script>
 
   </body>
 </html>
