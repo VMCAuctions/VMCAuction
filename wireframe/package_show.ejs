@@ -9,22 +9,25 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 		<script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000');
+			var socket = io.connect('https://f99abb95.ngrok.io');
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
 					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
-					socket.on("serverTalksBack", function(data){
-						$('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-						$('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-           				customPlaceholder = data.bid;
-					})
-					socket.on('buttonStateChannel', function(data){
-						$('#submitButton').attr('disabled', data.button )
-					})
+
 				})
+
+        socket.on("serverTalksBack", function(data){
+          $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+          $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+                customPlaceholder = data.bid;
+        })
+        socket.on('buttonStateChannel', function(data){
+          console.log(data.button);
+          $('#submitButton').attr('disabled', data.button )
+        })
 				}
 			)
 		</script>
@@ -63,17 +66,13 @@
 				<a href='/api/users_login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
-
-
-			</form>
-        	<button type="button" name="Custom" id="custom">Custom Bid</button>
-      		<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
 			<%}%>
-			
+
 
 			  </form>
         <button type="button" name="Custom" id="custom">Custom Bid</button>
         <%var flag = false%>
+        <%if(userName){%>
         <% for (i in user._packages){%>
           <% if (package._id == user._packages[i]){%>
             <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
@@ -84,7 +83,7 @@
         <%if (flag == false){%>
           <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
         <%}%>
-      <%}%>
+        <%}%>
       <% if (admin === true) { %>
 				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
@@ -114,8 +113,7 @@
                                   'placeholder': customPlaceholder + ' or higer'});
           $('#bid_amount').val(null);
               }
-        }
-        else{
+        }else{
           if (<%=ourBids%>===true) {
             $('#bid_amount').attr({'readonly': 'readonly',
                                   'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
@@ -140,7 +138,7 @@
             }
 
 		})
-		
+
 		$('#cancelBid').click(function(){
 			var cancelBidConfirm = window.confirm('Are you sure you want to cancel' )
 			if(cancelBidConfirm === false){
