@@ -148,6 +148,9 @@ module.exports = function(app) {
 		users.uninterested(req, res)
 	})
 
+	app.get('/users/updateList/:result/:user_id', function(req,res){
+		users.updateList(req,res)
+	})
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
 		app.get('/*', function(req,res){
