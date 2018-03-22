@@ -64,18 +64,33 @@
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 
+
 			</form>
         	<button type="button" name="Custom" id="custom">Custom Bid</button>
       		<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
 			<%}%>
-			 
-			<% if (admin === true) { %>
+			
+
+			  </form>
+        <button type="button" name="Custom" id="custom">Custom Bid</button>
+        <%var flag = false%>
+        <% for (i in user._packages){%>
+          <% if (package._id == user._packages[i]){%>
+            <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+            <%flag = true%>
+            <%break%>
+          <%}%>
+        <%}%>
+        <%if (flag == false){%>
+          <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+        <%}%>
+      <%}%>
+      <% if (admin === true) { %>
 				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
 			<%}%>
-
 		</div>
 		<div>
 			<h5>Items In Package</h5>
