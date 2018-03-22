@@ -151,11 +151,12 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.findOne({_id: req.params.id}, function(err, result){
+		Item.findOne({_id: req.params.id}, function(err, item){
 			if(err){
 				console.log(err)
 			}else{
-				Item.remove(result, function(err, result){
+				console.log('this is result', item)
+				Item.remove(item, function(err, result){
 					if(err){
 						console.log(err)
 					}else{
