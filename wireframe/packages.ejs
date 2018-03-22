@@ -8,13 +8,13 @@
     <script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000');
+			var socket = io.connect('https://f99abb95.ngrok.io');
 
 			$(document).ready(function(){
-					socket.on("serverTalksBack", function(data){
-            $('#currentBid').text("Current Bid: " + data.bid)
-
-          })
+        socket.on("serverTalksBack", function(data){
+          $('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
+          console.log(data.bid);
+        })
 
         $("#keyword").on("keyup", function() {
           var value = $(this).val().toLowerCase();
@@ -62,13 +62,13 @@
   <%}else{%>
     <div class="package empty">
   <%}%>
-  <img src="/no-image.png" alt="img">
+  <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
   <a href="/api/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
-  <p id='currentBid'><b>Current Bid:</b> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</p>
+  <p ><b>Current Bid:</b><span class='currentBid<%=fratured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
@@ -97,20 +97,20 @@
   <%}%>
 </div>
 <% }%>
-
+<h2>All packages</h2>
 <% for (var n in packages){%>
   <%if(packages[n].bids.length>0){%>
 <div class="package bids">
   <%}else{%>
     <div class="package empty">
   <%}%>
-  <img src="/no-image.png" alt="img">
+  <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
   <a href="/api/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
   <p><b>Category:</b> <%=packages[n]._category%></p>
   <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
   <%if(packages[n].bids[packages[n].bids.length-1]){%>
-  <p id='currentBid'><b>Current Bid:</b> <%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</p>
+  <p ><b>Current Bid:</b> <span class='currentBid<%=packages[n]._id%>'><%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
@@ -140,5 +140,4 @@
 </div>
 <% }%>
 </body>
-
 </html>
