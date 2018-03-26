@@ -151,20 +151,13 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.findOne({_id: req.params.id}, function(err, item){
+		Item.remove(item, function(err, result){
 			if(err){
 				console.log(err)
 			}else{
-				console.log('this is result', item)
-				Item.remove(item, function(err, result){
-					if(err){
-						console.log(err)
-					}else{
-						res.redirect('/api/items')
-					}
-				}
-				)}
-		});
+				res.redirect('/api/items')
+			}
+		})		
 	}
 }
 module.exports = new ItemsController();
