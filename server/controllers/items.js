@@ -151,13 +151,13 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-				Item.remove({_id: req.params.id}, function(err, result){
-					if(err){
-						console.log(err)
-					}else{
-						res.redirect('/api/items')
-					}
-				})
+		Item.remove({_id: req.params.id}, function(err, result){
+			if(err){
+				console.log(err)
+			}else{
+				res.redirect('/api/items')
+			}
+		})
 	}
 }
 module.exports = new ItemsController();
