@@ -4,7 +4,7 @@
     <title>
         Admin Panel
     </title>
-
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
   <%- include('admin_header') -%>
@@ -18,39 +18,43 @@
       <tr>
         <th scope="col">Users</th>
         <th scope="col">Admin Status</th>
-        <th scope="col">Change Status</th>
       </tr>
     </thead>
     <tbody>
     <form class="" action="/users/admin_change" id="ourForm" method="post">
+      <% var superAdmin = false%>
+
+      <% if (userName == "admin"){%>
+        <%superAdmin = true%>
+      <%}%>
+
       <% for (var u in users) {%>
         <tr>
           <td><a href="/api/users/<%= users[u].userName %>"><%= users[u].userName %></a></td>
-          <td><%= users[u].admin  %></td>
+          <td>
+            <%if (superAdmin){%>
+              <%if (users[u].userName == "admin"){%>
+                <p><%=users[u].admin%></p>
 
-          <% if(users[u].admin ){ %>
-            <%if(users[u].userName === 'admin' | users[u].userName === userName){%>
-          <td>
-            <p>True</p>
+              <%}else{%>
+                <select name = "<%=users[u]._id%>">
+                    <option value = "<%=users[u].admin%>">
+                      <%=users[u].admin%>
+                    </option>
+                    <option value = "<%=!users[u].admin%>">
+                      <%=!users[u].admin%>
+                    </option>
+                </select>
+              <%}%>
+
+            <%}else{%>
+              <p><%=users[u].admin%></p>
+            <%}%>
+
           </td>
-          <%}else{%>
-          <td>
-            <select name='<%=users[u]._id %>'>
-              <option value='true'>True</option>
-              <option value='false'>False</option>
-            </select>
-          </td>
-          <%}%>
-          <%}else { %>
-          <td>
-            <select name='<%=users[u]._id %>'>
-              <option value='false'>False</option>
-              <option value='true'>True</option>
-            </select>
-          </td>
-          <%}%>
-          </tr>
-          <%}%>
+        </tr>
+      <%}%>
+
         </tbody>
       </table>
       <input type='submit' value='Save'>
