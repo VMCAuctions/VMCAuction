@@ -39,10 +39,13 @@
       <!-- need a read only feild with the current number selected -->
       <%for (var i in items){%>
         <%if(!items[i].packaged){%>
+          <br>
       <%=items[i].name%>
       <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" required value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+
       <%}%>
       <%}%>
+      <br>
       <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
       <input type="submit" name="submit" value="Submit">
     </form>
