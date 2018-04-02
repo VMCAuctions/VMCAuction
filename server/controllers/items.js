@@ -151,7 +151,7 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.remove(item, function(err, result){
+		Item.remove({_id: req.params.id}, function(err, result){
 			if(err){
 				console.log(err)
 			}else{
