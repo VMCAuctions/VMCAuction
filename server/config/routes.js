@@ -117,6 +117,11 @@ module.exports = function(app) {
 	app.get('/users/register', function(req,res) {
 		users.register(req,res)});
 
+	app.post('/users/checklogin', function(req,res){
+		users.checkLogin(req,res)});
+
+	app.get('/users/duplicate/', function(req, res) {
+		users.duplicate(req,res)});
 	// checks if a user is logged in
 	// app.get('/api/users/loggedin', function(req,res){
 	// 	console.log("route in");
@@ -144,17 +149,16 @@ module.exports = function(app) {
 	// app.get('/api/which_user_is_logged_in', function(req, res){
 	// 	users.who_is_logged_in(req, res)});
 
+  //adds to watchlist
 	app.get('/users/interested/:id', function(req, res) {
 		users.interested(req, res)
 	})
-
+//removes from watchlist
 	app.get('/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)
 	})
-
-
+  //saves list of packages on users personal page as user likes it 
 	app.get('/users/updateList/:result/:user_id', function(req,res){
 		users.updateList(req,res)
 	})
-
 }  // end of module.exports

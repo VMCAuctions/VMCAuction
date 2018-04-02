@@ -2,6 +2,7 @@
 var express = require("express");
 var app = express();
 var session = require('express-session')
+require('jsdom-global');
 
 
 
@@ -19,7 +20,6 @@ app.use(session({
   saveUninitialized: true,
   rolling: true //resets session timeout everytime the user interacts with the site
 }));
-
 // var jsx = require('node-jsx');
 // jsx.intall();
 

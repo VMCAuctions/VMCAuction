@@ -18,9 +18,14 @@
     "express-session": "^1.15.6",
     "http": "0.0.0",
     "jquery-validation": "^1.17.0",
+    "jsdom-global": "^3.0.2",
     "mongodb": "^3.0.1",
     "mongoose": "^4.10.8",
     "mongoose-auto-increment": "^5.0.1",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "jsdom": "11.7.0",
+    "jsdom-global": "3.0.2"
   }
 }
