@@ -5,6 +5,7 @@ var session = require('express-session')
 require('jsdom-global');
 
 
+
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	autoIncrement = require('mongoose-auto-increment');
@@ -19,8 +20,6 @@ app.use(session({
   saveUninitialized: true,
   rolling: true //resets session timeout everytime the user interacts with the site
 }));
-
-
 // var jsx = require('node-jsx');
 // jsx.intall();
 
@@ -145,10 +144,12 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
-		      io.emit(buttonStateChannel, {
-						button: false
-					} );
-					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid})
+		      io.emit('buttonStateChannel', {
+						button: 'disabled'
+					});
+				console.log("button disabled");
+
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
@@ -255,11 +256,11 @@ console.log('data', data);
 
 			// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 			setTimeout(function(){
-				io.emit(buttonStateChannel, {
-					button: true
+				io.emit('buttonStateChannel', {
+					button: null
 				} );
 				console.log("button was enabled ")
-			},500);
+			},1000);
 			// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 			packagesButtonStates[data.packId].buttonstate = true;
 
