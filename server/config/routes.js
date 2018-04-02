@@ -116,7 +116,7 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
 
-	app.post('/users/duplicate', function(req, res) {
+	app.get('/users/duplicate/', function(req, res) {
 		users.duplicate(req,res)});
 	// checks if a user is logged in
 	// app.get('/api/users/loggedin', function(req,res){
@@ -155,10 +155,10 @@ module.exports = function(app) {
 
 
 		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){
-			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
-//res.('/var/www/POTR/client/src/index.js');
-			//res.redirect('/');
-		});
+// 		app.get('/*', function(req,res){
+// 			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
+// //res.('/var/www/POTR/client/src/index.js');
+// 			//res.redirect('/');
+// 		});
 
 }  // end of module.exports

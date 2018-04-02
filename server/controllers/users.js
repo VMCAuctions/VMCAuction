@@ -47,10 +47,7 @@ function UsersController(){
 		})
 	};
 
-this.register = function(req, res){
-	console.log('inside the register');
-	res.render('user')
-}
+
 
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
@@ -59,37 +56,40 @@ this.register = function(req, res){
 	};
 	this.register = function(req,res){
 		console.log('this is the validation')
-		res.render('user', {userName: req.session.userName, admin: req.session.admin, validation: registrationValidation})
+		res.render('user', {userName: req.session.userName, admin: req.session.admin})
 	}
 	// post the new user registration form and create a new user
 	// add redirect when done with refactor
 	this.duplicate = function (req, res) {
-		console.log('dupe', req.body);
-		User.findOne({userName: req.body.userName}, function (err, duplicate) {
+		console.log('dupe', req.query);
+		let user = req.query.userName;
+		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			console.log(duplicate);
 			if(err){
 				console.log(err);
 			}else if (duplicate) {
 				console.log("true");
-				res.json({double: true})
+				res.json('Username is taken')
 			}else {
 				console.log('false');
-				res.json({double: false})
+				res.json('true')
 			}
 		})
 
 	}
 	this.create = function(req,res){
 		console.log('UsersController create');
-
-		User.findOne({userName: req.body.userName}, function(err, duplicate) {
+		//this is here just in case
+		let user = req.body.userName;
+		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err)
 			}
 			else if(duplicate){
-				res.json({validated: false, message: "That username has already been used. Please pick a unique username."})
+				console.log(duplicate);
 			}
 			else{
+				//start actual registration
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
 							console.log(err)
@@ -121,10 +121,10 @@ this.register = function(req, res){
 								return;
 							}
 
-
 							//Else, validation is ok, so hash the password and add to the database
 							hashedPassword = hash;
-							var adminStatus = (req.body.userName == "admin");
+							var lowerUser = req.body.userName.toLowerCase();
+							var adminStatus = (lowerUser === "admin");
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -160,9 +160,9 @@ this.register = function(req, res){
 
 	this.checkLogin = function(req, res){
 		console.log("in check login");
-		console.log('req.data', req.data);
 		console.log('req.body', req.body);
-		User.findOne({userName: req.body.userName}, function(err, user){
+		theName = req.body.userName;
+		User.findOne({userName: { $regex : new RegExp(theName, "i") }}, function(err, user){
 			if(err){
 				console.log(err);
 			}
@@ -181,6 +181,7 @@ this.register = function(req, res){
 						console.log("found match")
 						req.session.userName = user.userName
 						req.session.admin = user.admin
+						res.json({match: true})
 					}
 					else{
 						console.log("did not find match")
