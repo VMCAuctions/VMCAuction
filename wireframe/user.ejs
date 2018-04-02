@@ -144,7 +144,8 @@
             required: true,
             user: true,
             nowhitespace: true,
-            rangelength: [5, 25]
+            rangelength: [5, 25],
+            remote: '/users/duplicate'
           },
           password: {
             required: true,
@@ -171,20 +172,7 @@
       }, "Please use only letters numbers -_.");
 
       validator.form();
-      $('#userName').blur(function() {
-        console.log('blur');
-        $.ajax({
-          type: "POST",
-          url: 'http://localhost:8000/users/duplicate',
-          data: {"userName":$('#userName').val()},
-          success: function(data){
-            console.log('ho');
-              if(data.double == true){
-                  $('#userName-error').text('Username in use').show()
-              }
-            }
-        })
-      })
+      
       </script>
     </body>
   </html>
