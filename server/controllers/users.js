@@ -212,12 +212,8 @@ function UsersController(){
 			}
 			else{
 				for (var i = 0; i < result.length; i++){
-					console.log("result[i].bids")
-					console.log(result[i])
 					if (result[i].bids.length > 0){
-						console.log("check1")
 						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-							console.log("check2")
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}

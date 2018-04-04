@@ -22,13 +22,15 @@
       </thead>
 
       <tbody id='selections'>
+        <%var total = 0%>
         <%for(let i =0; i<user._packages.length; i++){%>
           <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
           <% if(user._packages[i]) {%>
           <td><a href="/api/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
           <% if(user._packages[i].bids.length > 0) {%>
             <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
-                 <td>You!!!</td>
+                <%total += user._packages[i].bids[user._packages[i].bids.length-1].bidAmount%>
+                <td>You!!!</td>
             <%}else{%>
                 <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
               <%}%>
@@ -45,6 +47,9 @@
     </table>
     <button id='update'>Update List Order</button>
     <!--cant tell if pressing this button works or not on my phone-->
+
+    <h3>Total: <%=cartTotal%></h3>
+
     <script>
       var user_id = '<%= user._id%>';
       var el = document.getElementById('selections')
