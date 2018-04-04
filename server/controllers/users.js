@@ -195,19 +195,48 @@ function UsersController(){
 	this.show = function(req,res){
 
 		console.log('UsersController show');
-		User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-			if(err){
+		// Package.find({bids[bids.length - 1].name: req.params.userName}, function(err, result){
+		// 	if (err){
+		// 		console.log("error on package.find")
+		// 		console.log(err)
+		// 	}
+		// 	else{
+		// 		console.log("no error on package.find")
+		// 		console.log(result)
+		// 	}
+		// })
+		var cartTotal = 0
+		Package.find({}, function(err, result){
+			if (err){
 				console.log(err)
 			}
-
-			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-				//console.log(user)
-				if (user.userName === req.session.userName | req.session.admin === true){
-					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
-				}else{
-					res.redirect('/api/packages')
+				for (var i = 0; i < result.length; i++){
+					console.log("result[i].bids")
+					console.log(result[i])
+					if (result[i].bids.length > 0){
+						console.log("check1")
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							console.log("check2")
+							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+						}
+					}
 				}
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
+						console.log(err)
+					}
+
+					//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
+					else{
+						//console.log(user)
+						if (user.userName === req.session.userName | req.session.admin === true){
+							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal})
+						}else{
+							res.redirect('/api/packages')
+						}
+					}
+				})
 			}
 		})
 	};
@@ -360,7 +389,7 @@ function UsersController(){
 	}
 
 	this.updateList= function(req,res){
-		
+
 		User.findById(req.params.user_id,function(err,user){
 			if (err){
 				console.log(err)
