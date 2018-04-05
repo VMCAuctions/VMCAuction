@@ -205,6 +205,7 @@ function UsersController(){
 		// 		console.log(result)
 		// 	}
 		// })
+		var cartArray = []
 		var cartTotal = 0
 		Package.find({}, function(err, result){
 			if (err){
@@ -214,6 +215,7 @@ function UsersController(){
 				for (var i = 0; i < result.length; i++){
 					if (result[i].bids.length > 0){
 						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							cartArray.push(result[i])
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}
@@ -227,7 +229,7 @@ function UsersController(){
 					else{
 						//console.log(user)
 						if (user.userName === req.session.userName | req.session.admin === true){
-							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal})
+							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
 						}else{
 							res.redirect('/api/packages')
 						}
