@@ -5,6 +5,7 @@
     <title><%=user.userName%></title>
   </head>
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
   <body>
     <%if(admin){%>
@@ -22,14 +23,13 @@
       </thead>
 
       <tbody id='selections'>
-        <%var total = 0%>
         <%for(let i =0; i<user._packages.length; i++){%>
           <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
           <% if(user._packages[i]) {%>
           <td><a href="/api/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
           <% if(user._packages[i].bids.length > 0) {%>
             <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
-                <%total += user._packages[i].bids[user._packages[i].bids.length-1].bidAmount%>
+
                 <td>You!!!</td>
             <%}else{%>
                 <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
@@ -48,9 +48,11 @@
     <button id='update'>Update List Order</button>
     <!--cant tell if pressing this button works or not on my phone-->
 
-    <h3>Total: <%=cartTotal%></h3>
+    <h3 id = "cartTotal">Total: <%=cartTotal%></h3>
 
     <script>
+    	var socket = io.connect('http://localhost:8000/');
+      var cartTotal = <%=cartTotal%>
       var user_id = '<%= user._id%>';
       var el = document.getElementById('selections')
       var sortable = Sortable.create(el)
@@ -61,7 +63,21 @@
           url:'/users/updateList/' + result + '/' + user_id
         })
       })
-
+      socket.on("serverTalksBack", function(data){
+        <%for (var j = 0; j < user._packages.length; j++){%>
+          if(<%=user._packages[j]._id%> == data.packId){
+            console.log("Something on your watchlist has been changed!")
+          }
+        <%}%>
+        <%for (var j = 0; j < cartArray.length; j++){%>
+          if(<%=cartArray[j]._id%> == data.packId){
+            cartTotal -= <%=cartArray[j].bids[cartArray[j].bids.length - 1].bidAmount%>
+            console.log(cartTotal)
+            //Remove your last bid amount from cartTotal
+          }
+          //If the newest bidder is you, then you will add the new amount to cartTotal
+        <%}%>
+      })
 
     </script>
 
