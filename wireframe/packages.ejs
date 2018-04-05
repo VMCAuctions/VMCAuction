@@ -68,7 +68,7 @@
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
-  <p ><b>Current Bid:</b><span class='currentBid<%=fratured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
+  <p ><b>Current Bid:</b><span class='currentBid<%=featured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
