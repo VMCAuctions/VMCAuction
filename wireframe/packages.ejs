@@ -8,7 +8,7 @@
     <script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script type='text/javascript'>
-			var socket = io.connect('https://d6946c52.ngrok.io');
+			var socket = io.connect('http://localhost:8000/');
 
 			$(document).ready(function(){
         socket.on("serverTalksBack", function(data){
@@ -68,7 +68,7 @@
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
-  <p ><b>Current Bid:</b><span class='currentBid<%=fratured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
+  <p ><b>Current Bid:</b><span class='currentBid<%=featured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
@@ -76,6 +76,7 @@
     <% var flag = false %>
     <% for(var i = 0; i < user._packages.length; i++){ %>
       <% if(featured[f]._id == user._packages[i]) {%>
+        <!--do this in ajax call instead-->
         <a href="/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
         <% flag = true %>
         <% break %>
@@ -83,6 +84,7 @@
       <%}%>
 
       <% if(flag === false) {%>
+        <!--do this in ajax call instead-->
         <a href="/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
