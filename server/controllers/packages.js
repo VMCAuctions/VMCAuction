@@ -28,23 +28,33 @@ function PackagesController(){
 						console.log(err)
 					}else{
 						user = result
-						Package.find({}).populate("_items").sort({priority: 'descending'}).exec(function(err, packages) {
+						Package.find({}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 											// This is the method that finds all of the packages from the database
 							if(err) {
 									console.log('Package Index Error');
 									res.status(500).send('Failed to Load Packages');
 							}else {
 									console.log('this is user again', user)
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray})
+									var featured = [];
+									var nonfeatured = [];
+									for (var i = 0; i < packages.length; i++){
+										if(packages[i].featured === true){
+											featured.push(packages[i]);
+										}
+										else{
+											nonfeatured.push(packages[i]);
+										}
+									}
+									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured})
 							}
-						}) 
+						})
 					}
-		
+
 				})
 
 			}
 		})
-		
+
 		 // ends Package.find
 
 	};
@@ -76,10 +86,10 @@ function PackagesController(){
 			else {
 				console.log(total);
 				for(let i = 0; i<items.length; i++){
-					if(!items[i].packaged){
+					 if(!items[i].packaged){
 					itemsArray.push(items[i]);
 					console.log(itemsArray);
-				}
+				 }
 				}
 
 }
@@ -143,12 +153,12 @@ this.new = function(req,res){
         /////// When creating Package, do we need to save the bids, seems to be missing in this create statement ////
 
 		if (req.body.selectedItems.length == 0){
-          console.log('reached empty item list')
+      console.log('reached empty item list')
 		  return res.json(false)
 		  //frontend validation / response if no items selected
-        }
+    }
 
-
+				//Corrected an issue where an item was displaying twice; may or may not have fixed the issue permanently
         Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
 	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
 			bid: [], amount: req.body.openingBid, priority: req.body.priority
@@ -162,19 +172,23 @@ this.new = function(req,res){
 		      }
 		      else{
 
-			    	for(var i=0; i<package._items.length; i++){
-						console.log("Packaged ");
-			    		Item.update({_id: package._items[i]}, { $set: { _package: package._id, packaged: true}}, function(err,result){
-							if(err){
-								console.log(err);
-								return;
-							}
+						for(let i = 0; i < package._items.length; i++ ){
+						//Item.update({_id: id}, { $set: { _package: package.id}});
 
+						Item.findOne({_id: package._items[i]} , function(err, item){
+								item.packaged = true;
+								item._package = package._id;
+
+								item.save(function (err){
+									if (err){
+										console.log(err)
+									}
+									else{
+
+									}
+								})
 						})
-						if (i == package._items.length -1){
-							res.redirect('/api/packages')
 						}
-					};
 			    }
 			  }
 		); // end of Package.create
@@ -195,20 +209,26 @@ this.new = function(req,res){
 				console.log(err)
 			}else{
 				user = result
-				Package.findById(req.params.id).populate("_items").exec(function(err,result){
+				Package.findById(req.params.id).populate("_items").exec(function(err,package){
 					if(err){
 						console.log(err);
 					}
 					else{
 						// res.json({packages: result});
-						console.log(result)
-						res.render('package_show',{package:result, userName: req.session.userName, admin: req.session.admin, user:user})
+						console.log(package)
+						var our_bids = false
+						var lastBid = package.amount
+						if(package.bids.length > 0){
+							our_bids = true;
+							lastBid = package.bids[package.bids.length -1 ].bidAmount
+						}
+						res.render('package_show',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: our_bids, lastBid: lastBid})
 					}
 				})
 			}
 
 		})
-		
+
 	};
 
 	this.update = function(req,res){
@@ -220,7 +240,21 @@ this.new = function(req,res){
 		    }
 
 		    else {
+
 				console.log("update pacakge");
+						Item.find({_id: package._items}, function(err, items) {
+							if (err) {
+								console.log(err);
+							}else{
+								for (var i = 0; i < items.length; i++) {
+									console.log('items before save', items[i].packa);
+									items[i].packaged = false;
+									items[i]._package = null;
+									items[i].save()
+									console.log("itmes after save", items[i]);
+								}
+							}
+						})
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        package.name = req.body.packageName || package.name;
@@ -230,6 +264,7 @@ this.new = function(req,res){
 		        package.value = req.body.totalValue || package.value;
 		        package.bid_increment = req.body.increments || package.bid_increment;
 		        package._category = req.body.category || package._category;
+						package.priority = req.body.priority || package.priority;
 
 		        // we don't want the items removed from this package to still show this package in their
 				// item._package field so we will just set each current item._package to null
@@ -268,6 +303,7 @@ this.new = function(req,res){
 									//Item.update({_id: id}, { $set: { _package: package.id}});
 
 									Item.findOne({_id: package._items[i]} , function(err, item){
+											console.log('item should not be packaged', item.packaged);
 											item.packaged = true;
 											item._package = package.id;
 
@@ -276,15 +312,11 @@ this.new = function(req,res){
 													console.log(err)
 												}
 												else{
-
+													console.log('item should  be packaged', item.packaged);
 
 												}
 											})
 									})
-
-
-
-
 		    					}
 
 		            	res.redirect('/api/packages/' + package._id );
@@ -323,13 +355,13 @@ this.new = function(req,res){
 							for(var k= 0; k< user._packages.length; k++ ){
 								console.log("this is result", result)
 								if(result._id === user._packages[k]){
-									
+
 									user._packages.splice(k,1)
-								} 
+								}
 							}
 							user.save(function(err,result){
 								if(err){
-								
+
 									console.log(err)
 								}else{
 									console.log("JOEY")
@@ -347,7 +379,7 @@ this.new = function(req,res){
 					});
 				}
 
-			
+
 				Package.remove({_id: req.params.id}, function(err, package){
 					if(err){
 						console.log(err)
@@ -375,28 +407,43 @@ this.new = function(req,res){
 	}
 	//cancels last bid
 	this.cancel_bid = function(req,res){
+		if(req.session.admin){
 		Package.findById(req.params.id, function(err,package){
 			if(err){
 				console.log(err)
 			}else{
 				var bid	= package.bids[package.bids.length - 1]
 				//console.log('before if statement' + package)
-				if(bid.name === req.session.userName){
-					//console.log('this is the bid' + bid)
-					package.bids.pop()
-					package.save()
-					//console.log('this is the package' + package)
+				if(req.body.user){
+				User.findOne({userName: req.body.user}, function(err,user){
+					if(err){
+						console.log(err)
+					}else{
+						if(bid.name === user.userName){
+							//console.log('this is the bid' + bid)
+							package.bids.pop()
+							package.save()
+							//console.log('this is the package' + package)
 
-					//in case client want package not to show on user page
-					//maybe they want to bid again on the package later
-					//User.findOne({userName: req.session.userName}, function(err, user){
+							//in case client want package not to show on user page
+							//maybe they want to bid again on the package later
+							//User.findOne({userName: req.session.userName}, function(err, user){
 
-					//})
+							//})
+					}
 				}
-				res.redirect('/api/users/' + req.session.userName)
+				})
 			}
-		})
+				res.redirect('/api/packages/' + package._id)
+
+
+			}
+			}
+		)
+	}else{
+		res.redirect('/api/packages')
 	}
+}
 
 
 }
