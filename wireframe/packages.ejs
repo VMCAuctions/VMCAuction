@@ -8,13 +8,13 @@
     <script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000');
+			var socket = io.connect('http://localhost:8000/');
 
 			$(document).ready(function(){
-					socket.on("serverTalksBack", function(data){
-            $('#currentBid').text("Current Bid: " + data.bid)
-
-          })
+        socket.on("serverTalksBack", function(data){
+          $('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
+          console.log(data.bid);
+        })
 
         $("#keyword").on("keyup", function() {
           var value = $(this).val().toLowerCase();
@@ -48,52 +48,98 @@
   <h2>Packages/Bids</h2>
   <input type='search' id='keyword' placeholder="Keyword Search">
   <select name='category' id='category'>
+    <option value="">All Categories</option>
     <% for(var c in categories) {%>
       <option value="<%=categories[c]%>"><%=categories[c]%></option>
     <%}%>
   </select>
   <button type="button" id="noBids" name="button">No bids yet</button>
-<% for (var p in packages){%>
-  <%if(packages[p].bids.length>0){%>
+
+<h2>Featured Packages</h2>
+<% for (var f in featured){%>
+  <%if(featured[f].bids.length>0){%>
 <div class="package bids">
   <%}else{%>
     <div class="package empty">
   <%}%>
-  <img src="/no-image.png" alt="img">
+  <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
-  <a href="/api/packages/<%=packages[p]._id%>"><%=packages[p].name%></a>
-  <p><b>Category:</b> <%=packages[p]._category%></p>
-  <p><b>STARTING BID:</b> <%=packages[p].amount%></p>
-  <%if(packages[p].bids[packages[p].bids.length-1]){%>
-  <p id='currentBid'><b>Current Bid:</b> <%=packages[p].bids[packages[p].bids.length-1].bidAmount%> (By: <%= packages[p].bids[packages[p].bids.length-1].name%>)</p>
+  <a href="/api/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
+  <p><b>Category:</b> <%=featured[f]._category%></p>
+  <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
+  <%if(featured[f].bids[featured[f].bids.length-1]){%>
+  <p ><b>Current Bid:</b><span class='currentBid<%=featured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
   <%if(userName){%>
     <% var flag = false %>
     <% for(var i = 0; i < user._packages.length; i++){ %>
-    <% if(packages[p]._id == user._packages[i]) {%>
-    
-      <a href="/users/uninterested/<%= packages[p]._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
-      <% flag = true %>
-      <% break %>
-      <% } %> 
+      <% if(featured[f]._id == user._packages[i]) {%>
+        <!--do this in ajax call instead-->
+        <a href="/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+        <% flag = true %>
+        <% break %>
+        <% } %>
       <%}%>
+
       <% if(flag === false) {%>
-      <a href="/users/interested/<%= packages[p]._id %>"><button type="button" name="interested">Interested?</button></a>
+        <!--do this in ajax call instead-->
+        <a href="/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=packages[p]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=packages[p]._id %>'><button>Delete</button></a>
-   <%if(packages[p].featured === true){%>
-     <a href="/packages/featured/<%=packages[p]._id%>"><button>Unfeature</button></a>
+   <a href='/packages/<%=featured[f]._id%>'><button>Edit</button></a>
+   <a href='/api/remove_package/<%=featured[f]._id %>'><button>Delete</button></a>
+   <%if(featured[f].featured === true){%>
+     <a href="/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
    <%}else{%>
-   <a href="/packages/featured/<%=packages[p]._id%>"><button>Feature</button></a>
+   <a href="/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a>
+  <%}%>
+  <%}%>
+</div>
+<% }%>
+<h2>All packages</h2>
+<% for (var n in packages){%>
+  <%if(packages[n].bids.length>0){%>
+<div class="package bids">
+  <%}else{%>
+    <div class="package empty">
+  <%}%>
+  <img src="/no-image.png" style="max-width:100%" alt="img">
+  <br>
+  <a href="/api/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
+  <p><b>Category:</b> <%=packages[n]._category%></p>
+  <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
+  <%if(packages[n].bids[packages[n].bids.length-1]){%>
+  <p ><b>Current Bid:</b> <span class='currentBid<%=packages[n]._id%>'><%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></p>
+  <%}else{%>
+    <p><b>Current Bid:</b> None (By: Nobody)</p>
+  <%}%>
+  <%if(userName){%>
+    <% var flag = false %>
+    <% for(var i = 0; i < user._packages.length; i++){ %>
+    <% if(packages[n]._id == user._packages[i]) {%>
+
+      <a href="/users/uninterested/<%= packages[n]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+      <% flag = true %>
+      <% break %>
+      <% } %>
+      <%}%>
+      <% if(flag === false) {%>
+      <a href="/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+      <%}%>
+  <%}%>
+  <% if (admin){ %>
+   <a href='/packages/<%=packages[n]._id%>'><button>Edit</button></a>
+   <a href='/api/remove_package/<%=packages[n]._id %>'><button>Delete</button></a>
+   <%if(packages[n].featured === true){%>
+     <a href="/packages/featured/<%=packages[n]._id%>"><button>Unfeature</button></a>
+   <%}else{%>
+   <a href="/packages/featured/<%=packages[n]._id%>"><button>Feature</button></a>
   <%}%>
   <%}%>
 </div>
 <% }%>
 </body>
-
 </html>

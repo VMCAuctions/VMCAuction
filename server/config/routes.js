@@ -12,6 +12,8 @@ var path = require("path");
 
 module.exports = function(app) {
 
+	app.get('/', function (req,res) {
+		packages.index(req,res)});
 	// get the Login/Registration screen.  This is our root route //
 	// ITEMS //
 	// Renders all ites page
@@ -63,12 +65,14 @@ module.exports = function(app) {
 		packages.remove_package(req, res)
 	})
 	//removes last bid on package
-	app.get('/packages/cancel_bid/:id', function(req,res){
+	app.post('/packages/cancelbid/:id', function(req,res){
 		packages.cancel_bid(req,res)
 	})
 	app.get('/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)
 	})
+
+
 
 
 
@@ -113,6 +117,11 @@ module.exports = function(app) {
 	app.get('/users/register', function(req,res) {
 		users.register(req,res)});
 
+	app.post('/users/checklogin', function(req,res){
+		users.checkLogin(req,res)});
+
+	app.get('/users/duplicate/', function(req, res) {
+		users.duplicate(req,res)});
 	// checks if a user is logged in
 	// app.get('/api/users/loggedin', function(req,res){
 	// 	console.log("route in");
@@ -140,20 +149,16 @@ module.exports = function(app) {
 	// app.get('/api/which_user_is_logged_in', function(req, res){
 	// 	users.who_is_logged_in(req, res)});
 
+  //adds to watchlist
 	app.get('/users/interested/:id', function(req, res) {
 		users.interested(req, res)
 	})
-
+//removes from watchlist
 	app.get('/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)
 	})
-
-
-		// this is CATCH ALL ROUTS server side patch. To solve production error, when fron-end rout doesn't work properly
-		app.get('/*', function(req,res){
-			res.sendFile(path.join(__dirname, '../../client/build/index.html'))
-//res.('/var/www/POTR/client/src/index.js');
-			//res.redirect('/');
-		});
-
+  //saves list of packages on users personal page as user likes it 
+	app.get('/users/updateList/:result/:user_id', function(req,res){
+		users.updateList(req,res)
+	})
 }  // end of module.exports

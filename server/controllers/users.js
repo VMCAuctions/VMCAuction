@@ -38,7 +38,7 @@ function UsersController(){
 				console.log(err)
 			}else{
 				var hash = {}
-				if(req.session.userName === 'admin'){
+				if(req.session.admin){
 					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
 				}else{
 					res.redirect('/api/packages')
@@ -47,10 +47,7 @@ function UsersController(){
 		})
 	};
 
-this.register = function(req, res){
-	console.log('inside the register');
-	res.render('user')
-}
+
 
 	// could use this to get the login/registration screen or for the admin to change between bidders
 	this.new = function(req,res){
@@ -58,22 +55,41 @@ this.register = function(req, res){
 		res.render('login', {userName: req.session.userName, admin: req.session.admin })
 	};
 	this.register = function(req,res){
-		console.log('this is the validation' + registrationValidation)
-		res.render('user', {userName: req.session.userName, admin: req.session.admin, validation: registrationValidation})
+		console.log('this is the validation')
+		res.render('user', {userName: req.session.userName, admin: req.session.admin})
 	}
 	// post the new user registration form and create a new user
 	// add redirect when done with refactor
+	this.duplicate = function (req, res) {
+		console.log('dupe', req.query);
+		let user = req.query.userName;
+		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
+			console.log(duplicate);
+			if(err){
+				console.log(err);
+			}else if (duplicate) {
+				console.log("true");
+				res.json('Username is taken')
+			}else {
+				console.log('false');
+				res.json('true')
+			}
+		})
+
+	}
 	this.create = function(req,res){
 		console.log('UsersController create');
-
-		User.findOne({userName: req.body.userName}, function(err, duplicate) {
+		//this is here just in case
+		let user = req.body.userName;
+		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err)
 			}
 			else if(duplicate){
-				res.json({validated: false, message: "That username has already been used. Please pick a unique username."})
+				console.log(duplicate);
 			}
 			else{
+				//start actual registration
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
 							console.log(err)
@@ -105,10 +121,10 @@ this.register = function(req, res){
 								return;
 							}
 
-
 							//Else, validation is ok, so hash the password and add to the database
 							hashedPassword = hash;
-							var adminStatus = (req.body.userName == "admin");
+							var lowerUser = req.body.userName.toLowerCase();
+							var adminStatus = (lowerUser === "admin");
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -142,13 +158,18 @@ this.register = function(req, res){
 		})
 	};
 
-	// TESTING, NOT ENCRYPTING PASSWORD YET ///////////////////////////////////
-	this.login = function(req,res){
-
-		console.log('UsersController login');
-		User.findOne({userName: req.body.userName}, function(err, user){
+	this.checkLogin = function(req, res){
+		console.log("in check login");
+		console.log('req.body', req.body);
+		theName = req.body.userName;
+		User.findOne({userName: { $regex : new RegExp(theName, "i") }}, function(err, user){
 			if(err){
 				console.log(err);
+			}
+			else if(!user){
+				console.log("Did not find a user")
+				// res.write("a user was not found")
+				res.json({match: false})
 			}
 			else if(user){
 				//Comparing inputted password to hashed password in db
@@ -157,19 +178,16 @@ this.register = function(req, res){
 						console.log(err)
 					}
 					else if(match){
+						console.log("found match")
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						//res.json({search: true, user: user, message: "Welcome, " + user.userName + "!"})
-						res.redirect('/api/packages')
+						res.json({match: true})
 					}
 					else{
-						res.json({search: false, message: "Password does not match our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
+						console.log("did not find match")
+						res.json({match: false})
 					}
 				})
-			}
-			else{
-				res.json({search: false, message: "Username is not in our database. Please ensure the information is correct, or click 'Sign Up' to register for a new account."})
-
 			}
 		})
 	}
@@ -177,29 +195,19 @@ this.register = function(req, res){
 	this.show = function(req,res){
 
 		console.log('UsersController show');
-		User.findOne({userName: req.params.userName}, function(err, user){
+		User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
 			if(err){
 				console.log(err)
 			}
 
 			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-
-				Package.find({"_id":user._packages}, function(err, packages){
-					if (err){
-						console.log(err);
-					}
-					else{
-						if (user.userName === req.session.userName | req.session.admin === true){
-								console.log("this is packages", packages)
-								res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, packages: packages})
-
-						}
-						else{
-							res.redirect('/api/packages')
-						}
-					}
-				})
+				//console.log(user)
+				if (user.userName === req.session.userName | req.session.admin === true){
+					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
+				}else{
+					res.redirect('/api/packages')
+				}
 			}
 		})
 	};
@@ -224,7 +232,7 @@ this.register = function(req, res){
 	}
 	this.admin_change = function(req,res){
 		console.log('UsersController admin_change')
-		console.log('req.body:', Object.keys(req.body))
+		console.log('req.body:', req.body)
 
 		// //C ould potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
 		// User.find({"_id": Object.keys(req.body)}, function(err, users){
@@ -236,7 +244,7 @@ this.register = function(req, res){
 					console.log(err)
 				}else {
 
-					if (user.userName != 'admin' | user.userName != req.session.userName) {
+					if (user.userName != 'admin') {
 						console.log(user.userName);
 						user.admin = req.body[users]
 						user.save(function(err, result){
@@ -339,14 +347,39 @@ this.register = function(req, res){
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
+							}else{
+								console.log(user._packages)
 							}
 						})
 					}
 				}
-			
+
 			}
-			res.redirect('/api/users/'+req.session.userName)
+			res.redirect('/api/packages')
 	})
-}
+	}
+
+	this.updateList= function(req,res){
+
+		User.findById(req.params.user_id,function(err,user){
+			if (err){
+				console.log(err)
+			}else{
+				updatedList = req.params.result.split(',')
+				for(let i = 0; i < updatedList.length; i++){
+					updatedList[i] = parseInt(updatedList[i])
+				}
+				user._packages = updatedList
+				user.save(function(err,result){
+					if(err){
+						console.log(err)
+					}else{
+						console.log(result)
+					}
+				})
+			}
+
+		})
+	}
 }
 module.exports = new UsersController();

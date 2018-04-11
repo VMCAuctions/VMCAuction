@@ -144,7 +144,8 @@
             required: true,
             user: true,
             nowhitespace: true,
-            rangelength: [5, 25]
+            rangelength: [5, 25],
+            remote: '/users/duplicate'
           },
           password: {
             required: true,
@@ -171,7 +172,7 @@
       }, "Please use only letters numbers -_.");
 
       validator.form();
-
+      
       </script>
     </body>
   </html>

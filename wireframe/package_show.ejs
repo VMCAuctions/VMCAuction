@@ -9,24 +9,27 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 		<script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000');
-
+			var socket = io.connect('http://localhost:8000/');
+      		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
-				socket.on('button_state' + <%= package._id %>, function(data){
-					document.getElementById("submit").disabled = !data.button;
-				})
-			})
-			$(document).on('submit', function(){
-					console.log("Before receiving from server, " + $('#bid_amount')[0].defaultValue)
-					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].defaultValue), userName: '<%= userName %>' })
+				$('#submitButton').click( function(){
+					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
-					socket.on("serverTalksBack", function(data){
-						$('#currentBid').text("Current Bid: " + data.bid)
-						$('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-					})
+
 				})
 
+        socket.on("serverTalksBack", function(data){
+          $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+          $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+                customPlaceholder = data.bid;
+        })
+        socket.on('buttonStateChannel', function(data){
+          console.log(data.button);
+          $('#submitButton').attr('disabled', data.button )
+        })
+				}
+			)
 		</script>
   </head>
 
@@ -48,11 +51,11 @@
 			<% if (package.bids.length == 0) {%>
 				<h3 id ='currentBid'>Current Bid: None by: nobody</h3>
 			<%} else {%>
-				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> </h3>
+				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> by: <%= package.bids[package.bids.length-1].name%>  </h3>
 			<%}%>
 
 			<h3>Next Bid:</h3>
-			<form action='/api/packages/<%= package._id %>'>
+			<form action='/api/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
 					<input id='bid_amount' readonly value='<%= package.amount%>'>
 				<%} else {%>
@@ -62,31 +65,86 @@
 			<% if (!userName) {%>
 				<a href='/api/users_login'>Login</a>
 			<%}else{%>
-				<input id='submit' type='submit' value='Place Bid'>
+				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
-			</form>
-			<% var flag = false %>
-			<% if(userName){%>
-			<% for(var i = 0; i < user._packages.length; i++){ %>
-			<% if(package._id == user._packages[i]) {%>
-			
-				<a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">No Longer Interested?</button></a>
-				<% flag = true %>
-				<% break %>
-				<% } %> 
-				<%}%>
-				<% if(flag === false) {%>
-				<a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Interested?</button></a>
-				<%}%>
+
+
+			  </form>
+        <button type="button" name="Custom" id="custom">Custom Bid</button>
+        <%var flag = false%>
+        <%if(userName){%>
+        <% for (i in user._packages){%>
+          <% if (package._id == user._packages[i]){%>
+            <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+            <%flag = true%>
+            <%break%>
+          <%}%>
+        <%}%>
+        <%if (flag == false){%>
+          <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+        <%}%>
+        <%}%>
+      <% if (admin === true) { %>
+				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+					<input type='text' value='' placeholder='username of bidder' name='user'>
+					<input id='cancelBid' type='submit' value='Delete Bid'>
+				</form>
 			<%}%>
 		</div>
 		<div>
 			<h5>Items In Package</h5>
 			<% for (var i = 0; i < package._items.length; i++) {%>
 				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donor %></p>
-				<p>Restrictions: <%= package._items[i].restrictions %></p>
 			<%}%>
 		</div>
+    <script>
 
+      $('#custom').click(function () {
+
+        if ($('#bid_amount').attr('readonly') === 'readonly'){
+
+          if (<%=ourBids%>===true) {
+
+          $('#bid_amount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
+          $('#bid_amount').val(null);
+        }else{
+          $('#bid_amount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + ' or higer'});
+          $('#bid_amount').val(null);
+              }
+        }else{
+          if (<%=ourBids%>===true) {
+            $('#bid_amount').attr({'readonly': 'readonly',
+                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
+            $('#bid_amount').val(customPlaceholder + <%=package.bid_increment %>)
+        }else{
+          $('#bid_amount').attr({'readonly': 'readonly',
+                              'placeholder': customPlaceholder + ' or higer'});
+
+          $('#bid_amount').val(customPlaceholder)
+        }
+      }
+        $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
+      })
+
+        $("#submitButton").click(function(){
+        	if($("#bid_amount").val() < <%= package.amount%>){
+            	alert("Please enter a bid above ", <%= package.amount%>)
+            	return false;
+        	}else if ($("#bid_amount").val() < <%= lastBid + package.bid_increment %> && <%=ourBids%> === true) {
+            	alert("Please enter a bid above ", <%= lastBid + package.bid_increment %> )
+                return false;
+            }
+
+		})
+
+		$('#cancelBid').click(function(){
+			var cancelBidConfirm = window.confirm('Are you sure you want to cancel' )
+			if(cancelBidConfirm === false){
+				return false;
+			}
+		})
+    </script>
 
 	</body>
