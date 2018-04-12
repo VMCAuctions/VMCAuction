@@ -30,9 +30,9 @@
           <% if(user._packages[i].bids.length > 0) {%>
             <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
 
-                <td>You!!!</td>
+                <td id = "<%=user._packages[i]._id%>">You!!!</td>
             <%}else{%>
-                <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
+                <td id = "<%=user._packages[i]._id%>"><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
               <%}%>
             <%}else{%>
               <td>No Bids Yet!</td>
@@ -48,10 +48,10 @@
     <button id='update'>Update List Order</button>
     <!--cant tell if pressing this button works or not on my phone-->
 
-    <h3 id = "cartTotal">Total: <%=cartTotal%></h3>
+    <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
 
     <script>
-    	var socket = io.connect('http://localhost:8000/');
+    	var socket = io.connect('http://localhost:8000');
       var cartTotal = <%=cartTotal%>
       var user_id = '<%= user._id%>';
       var el = document.getElementById('selections')
@@ -64,15 +64,36 @@
         })
       })
       socket.on("serverTalksBack", function(data){
+        var isDone = false;
         <%for (var j = 0; j < user._packages.length; j++){%>
           if(<%=user._packages[j]._id%> == data.packId){
-            console.log("Something on your watchlist has been changed!")
+            if(data.userName === "<%=userName%>"){
+              $("#<%=user._packages[j]._id%>").text("You!!!")
+            }
+            else{
+              $("#<%=user._packages[j]._id%>").text(data.userName)
+            }
+          }
+          else if(data.userName === "<%=userName%>" && <%=j%> === <%=user._packages.length - 1%>){
+            isDone = true
           }
         <%}%>
+        //This below code only runs if the user has bid on a package that they had not previously had on their watchlist
+        if(isDone){
+          $("#selections").append(`
+            <tr data-id= data.packId class='selection' style='cursor: move'>
+            <td><a href="/api/packages/"` + data.packId + `">` + data.name + `</a></td>
+            <td id = "` + data.packId + `">You!!!</td>
+
+            <td><a href="/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+            </tr>`
+          )
+          //Needs to add an entire new row to the table
+        }
         <%for (var j = 0; j < cartArray.length; j++){%>
           if(<%=cartArray[j]._id%> == data.packId){
             cartTotal -= <%=cartArray[j].bids[cartArray[j].bids.length - 1].bidAmount%>
-            console.log(cartTotal)
+            $("#cartTotal").text("Total: $" + cartTotal)
             //Remove your last bid amount from cartTotal
           }
           //If the newest bidder is you, then you will add the new amount to cartTotal
