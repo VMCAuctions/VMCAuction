@@ -149,7 +149,7 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 					});
 				console.log("button disabled");
 
-					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName})
+					io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName, name: data.name})
 
 // ------------------------------ 001 -------------------------------
 // IF statement of "package button state" on the SERVER to prevent overload of mongoDB
