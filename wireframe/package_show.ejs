@@ -9,11 +9,15 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 		<script type='text/javascript'>
+<<<<<<< HEAD
 			var socket = io.connect('http://localhost:8000/');
+=======
+			var socket = io.connect('http://localhost:8000');
+>>>>>>> a8425c6852a3751c0c26799d86e0d7c2de6cfebe
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
+					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
 

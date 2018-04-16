@@ -195,19 +195,46 @@ function UsersController(){
 	this.show = function(req,res){
 
 		console.log('UsersController show');
-		User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-			if(err){
+		// Package.find({bids[bids.length - 1].name: req.params.userName}, function(err, result){
+		// 	if (err){
+		// 		console.log("error on package.find")
+		// 		console.log(err)
+		// 	}
+		// 	else{
+		// 		console.log("no error on package.find")
+		// 		console.log(result)
+		// 	}
+		// })
+		var cartArray = []
+		var cartTotal = 0
+		Package.find({}, function(err, result){
+			if (err){
 				console.log(err)
 			}
-
-			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-				//console.log(user)
-				if (user.userName === req.session.userName | req.session.admin === true){
-					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
-				}else{
-					res.redirect('/api/packages')
+				for (var i = 0; i < result.length; i++){
+					if (result[i].bids.length > 0){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							cartArray.push(result[i])
+							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+						}
+					}
 				}
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
+						console.log(err)
+					}
+
+					//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
+					else{
+						//console.log(user)
+						if (user.userName === req.session.userName | req.session.admin === true){
+							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
+						}else{
+							res.redirect('/api/packages')
+						}
+					}
+				})
 			}
 		})
 	};
