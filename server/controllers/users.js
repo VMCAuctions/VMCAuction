@@ -33,13 +33,37 @@ function UsersController(){
 	}
 	this.index = function(req,res){
 		console.log('UsersController index');
+		var cart = {}
+
+
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
 			}else{
-				var hash = {}
 				if(req.session.admin){
-					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
+					Package.find({}, function(err, result){
+						if (err){
+							console.log(err)
+						}else{
+							for (var i = 0; i < users.length; i++) {
+								var packages = []
+								var total = 0
+								for (var j = 0; j < result.length; j++) {
+									if (result[j].bids[result[j].bids.length-1].name===users[i].userName) {
+										packages.push(result[j])
+										total +=result[j].bids[result[j].bids.length-1].bidAmount
+									}
+								}
+								cart[users[i].userName]={'packages': packages, 'total': total }
+								console.log(cart[users[i].userName].packages);
+							}
+
+
+							res.render('admin', {users :users, cart: cart, userName: req.session.userName, admin: req.session.admin})
+								}
+							})
+
+
 				}else{
 					res.redirect('/api/packages')
 				}
@@ -288,31 +312,6 @@ function UsersController(){
 		}, 100);
 
 	}
-
-	// old login check function
-	// this.loggedin = function(req,res){
-	// 	console.log('reached loggedin function in server')
-	// 	var login_check = false;
-	// 	var admin;
-
-	// 	if (!req.session.userName){
-	// 		login_check = false;
-	// 	}
-	// 	else {
-	// 		console.log(req.session.userName);
-	// 		console.log(req.session);
-	// 		login_check = true;
-	// 	}
-	// 	console.log('login check v');
-	// 	console.log(login_check);
-	// 	console.log(req.session);
-	// 	if(req.session.admin == true){
-	// 		admin = true;
-	// 	}else{
-	// 		admin = false;
-	// 	}
-	// 	res.json({login_check: login_check, admin: admin})
-	// }
 
 	this.logout = function(req,res){
 		req.session.destroy();
