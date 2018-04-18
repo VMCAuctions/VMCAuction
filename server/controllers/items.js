@@ -157,7 +157,7 @@ function ItemsController(){
 			}else{
 				res.redirect('/api/items')
 			}
-		})		
+		})
 	}
 }
 module.exports = new ItemsController();

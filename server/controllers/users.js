@@ -355,12 +355,12 @@ function UsersController(){
 				}
 
 			}
-			res.redirect('/api/users/'+req.session.userName)
+			res.redirect('/api/packages')
 	})
 	}
 
 	this.updateList= function(req,res){
-		
+
 		User.findById(req.params.user_id,function(err,user){
 			if (err){
 				console.log(err)
