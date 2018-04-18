@@ -86,10 +86,10 @@ function PackagesController(){
 			else {
 				console.log(total);
 				for(let i = 0; i<items.length; i++){
-					if(!items[i].packaged){
+					 if(!items[i].packaged){
 					itemsArray.push(items[i]);
 					console.log(itemsArray);
-				}
+				 }
 				}
 
 }
@@ -247,9 +247,11 @@ this.new = function(req,res){
 								console.log(err);
 							}else{
 								for (var i = 0; i < items.length; i++) {
+									console.log('items before save', items[i].packa);
 									items[i].packaged = false;
 									items[i]._package = null;
 									items[i].save()
+									console.log("itmes after save", items[i]);
 								}
 							}
 						})
@@ -301,6 +303,7 @@ this.new = function(req,res){
 									//Item.update({_id: id}, { $set: { _package: package.id}});
 
 									Item.findOne({_id: package._items[i]} , function(err, item){
+											console.log('item should not be packaged', item.packaged);
 											item.packaged = true;
 											item._package = package.id;
 
@@ -309,7 +312,7 @@ this.new = function(req,res){
 													console.log(err)
 												}
 												else{
-
+													console.log('item should  be packaged', item.packaged);
 
 												}
 											})
@@ -421,19 +424,19 @@ this.new = function(req,res){
 							package.bids.pop()
 							package.save()
 							//console.log('this is the package' + package)
-		
+
 							//in case client want package not to show on user page
 							//maybe they want to bid again on the package later
 							//User.findOne({userName: req.session.userName}, function(err, user){
-		
+
 							//})
-					}	
+					}
 				}
 				})
 			}
 				res.redirect('/api/packages/' + package._id)
-			
-			
+
+
 			}
 			}
 		)
