@@ -145,7 +145,8 @@ console.dir(allBidsBigObj); console.log("/".repeat(20));
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 					var buttonStateChannel = 'button_state' + data.packId;
 		      io.emit('buttonStateChannel', {
-						button: 'disabled'
+						button: 'disabled',
+						packId: data.packId
 					});
 				console.log("button disabled");
 
@@ -257,7 +258,8 @@ console.log('data', data);
 			// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 			setTimeout(function(){
 				io.emit('buttonStateChannel', {
-					button: null
+					button: null,
+					packId: data.packId
 				} );
 				console.log("button was enabled ")
 			},1000);

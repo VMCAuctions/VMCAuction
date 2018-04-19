@@ -19,7 +19,7 @@
       <tr>
         <th scope="col">Users</th>
         <th scope="col">Admin Status</th>
-        <th scope="col">Packages Watched</th>
+        <!-- <th scope="col">Packages Watched</th> -->
         <th scope="col">Packages Winning</th>
         <th scope="col">Total Spent</th>
       </tr>
@@ -56,7 +56,7 @@
             <%}%>
 
           </td>
-          <td><%=users[u]._packages.length%></td>
+          <!-- <td><%=users[u]._packages.length%></td> -->
           <td id="<%=users[u].userName + 'winning'%>"><%=cart[users[u].userName].packages.length%></td>
           <td id="<%=users[u].userName + 'total'%>">$<%=cart[users[u].userName].total%></td>
         </tr>
@@ -67,25 +67,53 @@
       <input type='submit' value='Save'>
     </form>
     <script>
-    	var socket = io.connect('http://localhost:8000/');
+      var cart = <%-JSON.stringify(cart)%>;
+      var packages = <%-JSON.stringify(packages)%>;
+
+    	var socket = io.connect('https://d5b6ae81.ngrok.io/');
       socket.on("serverTalksBack", function(data){
         // console.log("coming in");
-        var cart = <%-JSON.stringify(cart)%>;
+        console.log('cart before', cart);
+        var winningAlready = false
+        console.log('1', winningAlready);
         for (var i = 0; i < cart[data.userName].packages.length; i++) {
           // console.log("data", data.packId);
           // console.log("cart", cart[data.userName].packages[i]._id);
+          console.log(data.packId);
+          console.log(cart[data.userName].packages[i]);
           if (data.packId == cart[data.userName].packages[i]._id) {
             // console.log("reache if");
             cart[data.userName].total-=cart[data.userName].packages[i].bids[cart[data.userName].packages[i].bids.length-1].bidAmount
-            cart[data.userName].total+=data.bid
+            winningAlready = true
             // console.log(cart[data.userName].total);
-            $('#'+data.userName+'total').text("$" + cart[data.userName].total)
             break
           }
-          //we need to finish the for loop. then if it never matched anything in cart we need to just add
-          //and add following code. then write code for only increasing the cart.
-          // $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
         }
+        console.log('who data', data.userName);
+        console.log('2', winningAlready);
+        if (!winningAlready) {
+          console.log('will bw winning', data.userName);
+          $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
+          console.log('winning now', data.userName);
+          for (var i = 0; i < packages.length; i++) {
+            if (data.packId == packages[i]._id) {
+              cart[packages[i].bids[packages[i].bids.length-1].name].total -=packages[i].bids[packages[i].bids.length-1].bidAmount;
+              console.log('before', cart[packages[i].bids[packages[i].bids.length-1].name].packages);
+              var lost = cart[packages[i].bids[packages[i].bids.length-1].name].packages.indexOf(packages[i]);
+              cart[packages[i].bids[packages[i].bids.length-1].name].packages.splice(lost, 1)
+              console.log('after', cart[packages[i].bids[packages[i].bids.length-1].name].packages);
+              console.log('was winning', packages[i].bids[packages[i].bids.length-1].name);
+              $('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text(parseInt($('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text())-1)
+              console.log('no longer winning', packages[i].bids[packages[i].bids.length-1].name);
+              $('#'+packages[i].bids[packages[i].bids.length-1].name+'total').text("$" + cart[packages[i].bids[packages[i].bids.length-1].name].total);
+              packages[i].bids.push({bidAmount: data.bid, name: data.userName})
+              cart[data.userName].packages.push(packages[i])
+            }
+          }
+        }
+        cart[data.userName].total+=data.bid
+        $('#'+data.userName+'total').text("$" + cart[data.userName].total);
+        console.log('cart after', cart);
       })
     </script>
   </body>

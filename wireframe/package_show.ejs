@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 		<script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000/');
+			var socket = io.connect('https://d5b6ae81.ngrok.io/');
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
@@ -20,13 +20,17 @@
 				})
 
         socket.on("serverTalksBack", function(data){
-          $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-          $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-                customPlaceholder = data.bid;
+          if (data.packId == <%= package._id %>) {
+            $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+            $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+                  customPlaceholder = data.bid;
+          }
         })
         socket.on('buttonStateChannel', function(data){
+          if (data.packId == <%= package._id %>) {
           console.log(data.button);
           $('#submitButton').attr('disabled', data.button )
+        }
         })
 				}
 			)

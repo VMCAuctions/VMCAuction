@@ -59,7 +59,7 @@ function UsersController(){
 							}
 
 
-							res.render('admin', {users :users, cart: cart, userName: req.session.userName, admin: req.session.admin})
+							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin})
 								}
 							})
 
