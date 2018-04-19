@@ -43,7 +43,7 @@
           console.log("wow");
           $.ajax({
             type: "POST",
-            url: 'https://d5b6ae81.ngrok.io/users/checklogin',
+            url: 'http://localhost:8000/users/checklogin',
             data: {"userName":$('#userName').val(), "password":$('#password').val()},
             success: function(data){
               console.log('ho');

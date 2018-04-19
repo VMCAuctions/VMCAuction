@@ -51,7 +51,7 @@
     <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
 
     <script>
-    	var socket = io.connect('https://d5b6ae81.ngrok.io/');
+    	var socket = io.connect('http://localhost:8000/');
       var cartTotal = <%=cartTotal%>
       var user_id = '<%= user._id%>';
       var el = document.getElementById('selections')

@@ -70,7 +70,7 @@
       var cart = <%-JSON.stringify(cart)%>;
       var packages = <%-JSON.stringify(packages)%>;
 
-    	var socket = io.connect('https://d5b6ae81.ngrok.io/');
+    	var socket = io.connect('http://localhost:8000/');
       socket.on("serverTalksBack", function(data){
         // console.log("coming in");
         console.log('cart before', cart);
