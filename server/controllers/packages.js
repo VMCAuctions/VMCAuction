@@ -61,40 +61,10 @@ function PackagesController(){
 
 
 	this.edit = function(req,res){
+		console.log('PackagesController new');
 		var categoryArray = [];
 		var itemsArray = [];
 		var total = 0;
-		Category.find({}, function(err, categories) {
-				if(err) {
-						console.log(err);
-						//res.status(500).send('Failed to Load Items');
-				}
-				else {
-					for(c in categories){
-						categoryArray.push(categories[c].name);
-					}
-
-		}
-		console.log('PackagesController new');
-	})
-	Item.find({}, function(err, items) {
-			// This is the method that finds all of the items from the database
-			if(err) {
-					console.log(err);
-					//res.status(500).send('Failed to Load Items');
-			}
-			else {
-				console.log(total);
-				for(let i = 0; i<items.length; i++){
-					 if(!items[i].packaged){
-					itemsArray.push(items[i]);
-					console.log(itemsArray);
-				 }
-				}
-
-}
-})
-
 
 
 		Package.findById(req.params.id).populate("_items").exec(function(err,result){
@@ -102,20 +72,42 @@ function PackagesController(){
 				console.log(err);
 			}
 			else{
-				let itemValues = result._items;
-				 for(let i = 0; i < itemValues.length; i++){
-					total += itemValues[i].value;
-				 	console.log(result._items[i]);
-				 }
-				console.log("result is", result)
-				res.render('packageEdit', {package: result, categories: categoryArray, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin})
+				Category.find({}, function(err, categories) {
+						if(err) {
+								console.log(err);
+								//res.status(500).send('Failed to Load Items');
+						}
+						else {
+							Item.find({}, function(err, items) {
+								// This is the method that finds all of the items from the database
+								if(err) {
+										console.log(err);
+										//res.status(500).send('Failed to Load Items');
+								}
+								else {
+									console.log(total);
+									for(let i = 0; i<items.length; i++){
+										 if(!items[i].packaged){
+											 itemsArray.push(items[i]);
+											 console.log(itemsArray);
+									 	}
+									}
+									 for(let i = 0; i < result._items.length; i++){
+										total += result._items[i].value;
+									 	console.log(result._items[i]);
+									 }
+									console.log("result is", result)
+									res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin})
+								}
+							})
+						}
+				})
 			}
 		})
 	}
 
 
 this.new = function(req,res){
-	var total = 0;
 	var itemsArray = [];
 	Item.find({}, function(err, items) {
 			// This is the method that finds all of the items from the database
@@ -124,25 +116,20 @@ this.new = function(req,res){
 					//res.status(500).send('Failed to Load Items');
 			}
 			else {
-				console.log(total);
-				for(item in items){
-					itemsArray.push(items[item]);
-					console.log(itemsArray);
+				Category.find({}, function(err, categories) {
+						if(err) {
+								console.log(err);
+								//res.status(500).send('Failed to Load Items');
+						}
+						else {
+							console.log(itemsArray);
+							res.render('packageCreate', {categories: categories, items: items, userName: req.session.userName, admin: req.session.admin})
 				}
-
+				console.log('PackagesController new');
+				})
 }
 })
-		Category.find({}, function(err, categories) {
-	    	if(err) {
-	      		console.log(err);
-	      		//res.status(500).send('Failed to Load Items');
-	    	}
-	    	else {
-					console.log(itemsArray);
-					res.render('packageCreate', {categories: categories, total:total, items: itemsArray, userName: req.session.userName, admin: req.session.admin})
-		}
-		console.log('PackagesController new');
-	})
+
 }
 
 	this.create = function(req,res){
@@ -184,7 +171,7 @@ this.new = function(req,res){
 										console.log(err)
 									}
 									else{
-
+										res.redirect('/api/packages/new?true')
 									}
 								})
 						})
