@@ -4,7 +4,8 @@
     <title>
         Admin Panel
     </title>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
   <%- include('admin_header') -%>
@@ -18,6 +19,9 @@
       <tr>
         <th scope="col">Users</th>
         <th scope="col">Admin Status</th>
+        <!-- <th scope="col">Packages Watched</th> -->
+        <th scope="col">Packages Winning</th>
+        <th scope="col">Total Spent</th>
       </tr>
     </thead>
     <tbody>
@@ -52,6 +56,9 @@
             <%}%>
 
           </td>
+          <!-- <td><%=users[u]._packages.length%></td> -->
+          <td id="<%=users[u].userName + 'winning'%>"><%=cart[users[u].userName].packages.length%></td>
+          <td id="<%=users[u].userName + 'total'%>">$<%=cart[users[u].userName].total%></td>
         </tr>
       <%}%>
 
@@ -59,5 +66,37 @@
       </table>
       <input type='submit' value='Save'>
     </form>
+    <script>
+      var cart = <%-JSON.stringify(cart)%>;
+      var packages = <%-JSON.stringify(packages)%>;
+
+    	var socket = io.connect('http://localhost:8000/');
+      socket.on("serverTalksBack", function(data){
+          for (var i = 0; i < packages.length; i++) {
+            if (data.packId == packages[i]._id) {
+              //subtract the previous winning bid from the total spent of the previous winner
+              cart[packages[i].bids[packages[i].bids.length-1].name].total -=packages[i].bids[packages[i].bids.length-1].bidAmount;
+              //find the index at which the package in question was in the cart.packages array of the previous winner
+              var lost = cart[packages[i].bids[packages[i].bids.length-1].name].packages.indexOf(packages[i]);
+              //get rid of that package from thier array
+              cart[packages[i].bids[packages[i].bids.length-1].name].packages.splice(lost, 1)
+              //decrament the amount of packages the previous winner was winning
+              $('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text(parseInt($('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text())-1)
+              //change the diplay of the previous winner to new decramented total amount
+              $('#'+packages[i].bids[packages[i].bids.length-1].name+'total').text("$" + cart[packages[i].bids[packages[i].bids.length-1].name].total);
+              //put new bid into packages[i] so the next check will be correct
+              packages[i].bids.push({bidAmount: data.bid, name: data.userName})
+              //put new package into cart so next check will be correct
+              cart[data.userName].packages.push(packages[i])
+            }
+          }
+        // }
+        //add new bid into cart total for new winner
+        cart[data.userName].total+=data.bid
+        //change display for new winner
+        $('#'+data.userName+'total').text("$" + cart[data.userName].total);
+        $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
+      })
+    </script>
   </body>
 </html>
