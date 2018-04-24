@@ -72,48 +72,30 @@
 
     	var socket = io.connect('http://localhost:8000/');
       socket.on("serverTalksBack", function(data){
-        // console.log("coming in");
-        console.log('cart before', cart);
-        var winningAlready = false
-        console.log('1', winningAlready);
-        for (var i = 0; i < cart[data.userName].packages.length; i++) {
-          // console.log("data", data.packId);
-          // console.log("cart", cart[data.userName].packages[i]._id);
-          console.log(data.packId);
-          console.log(cart[data.userName].packages[i]);
-          if (data.packId == cart[data.userName].packages[i]._id) {
-            // console.log("reache if");
-            cart[data.userName].total-=cart[data.userName].packages[i].bids[cart[data.userName].packages[i].bids.length-1].bidAmount
-            winningAlready = true
-            // console.log(cart[data.userName].total);
-            break
-          }
-        }
-        console.log('who data', data.userName);
-        console.log('2', winningAlready);
-        if (!winningAlready) {
-          console.log('will bw winning', data.userName);
-          $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
-          console.log('winning now', data.userName);
           for (var i = 0; i < packages.length; i++) {
             if (data.packId == packages[i]._id) {
+              //subtract the previous winning bid from the total spent of the previous winner
               cart[packages[i].bids[packages[i].bids.length-1].name].total -=packages[i].bids[packages[i].bids.length-1].bidAmount;
-              console.log('before', cart[packages[i].bids[packages[i].bids.length-1].name].packages);
+              //find the index at which the package in question was in the cart.packages array of the previous winner
               var lost = cart[packages[i].bids[packages[i].bids.length-1].name].packages.indexOf(packages[i]);
+              //get rid of that package from thier array
               cart[packages[i].bids[packages[i].bids.length-1].name].packages.splice(lost, 1)
-              console.log('after', cart[packages[i].bids[packages[i].bids.length-1].name].packages);
-              console.log('was winning', packages[i].bids[packages[i].bids.length-1].name);
+              //decrament the amount of packages the previous winner was winning
               $('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text(parseInt($('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text())-1)
-              console.log('no longer winning', packages[i].bids[packages[i].bids.length-1].name);
+              //change the diplay of the previous winner to new decramented total amount
               $('#'+packages[i].bids[packages[i].bids.length-1].name+'total').text("$" + cart[packages[i].bids[packages[i].bids.length-1].name].total);
+              //put new bid into packages[i] so the next check will be correct
               packages[i].bids.push({bidAmount: data.bid, name: data.userName})
+              //put new package into cart so next check will be correct
               cart[data.userName].packages.push(packages[i])
             }
           }
-        }
+        // }
+        //add new bid into cart total for new winner
         cart[data.userName].total+=data.bid
+        //change display for new winner
         $('#'+data.userName+'total').text("$" + cart[data.userName].total);
-        console.log('cart after', cart);
+        $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
       })
     </script>
   </body>
