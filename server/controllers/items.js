@@ -81,7 +81,7 @@ function ItemsController(){
 	        //res.status(500).send('Failed to Create Item');
 	      }
 	      else{
-	        res.redirect('/api/items')
+	        res.redirect('/api/items/new?true')
 	      }
 	    });
 	};
@@ -124,6 +124,9 @@ function ItemsController(){
 		        //res.status(500).send('Failed to Update Item');
 		    }
 		    else {
+						//Saving old value to check whether it changes; if it does, you'll want to perform a package.find
+						oldValue = item.value
+
 		        // Update each attribute with any possible attribute that may have been submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        item.name = req.body.itemName || item.name;
@@ -140,10 +143,22 @@ function ItemsController(){
                         console.log(err)
 		                //res.status(500).send('Failed to Save Item update')
 		            }
-                    else{
-		              res.redirect('/api/items')
-                    }
-		        });
+                else{
+									if (req.body.fairMarketValue != oldValue && item.packaged === true){
+										Package.findById(item._package, function(err, package){
+											package.value -= oldValue
+											package.value += item.value
+											package.save(function (err, result){
+												if (err){
+													console.error();
+												}
+											})
+										})
+
+								}
+								res.redirect('/api/items')
+                }
+		       });
 		    }
 		});
 	},  // end of this.update();
@@ -151,13 +166,39 @@ function ItemsController(){
 
 	//removing an item
 	this.remove_item = function(req, res){
-		Item.remove({_id: req.params.id}, function(err, result){
-			if(err){
-				console.log(err)
-			}else{
-				res.redirect('/api/items')
+		var val
+		var pack
+		Item.findById(req.params.id, function(err, item) {
+			if (err) {
+				console.error();
+			}else {
+				val = item.value;
+				pack = item._package;
+				Item.remove({_id: req.params.id}, function(err, result){
+					if(err){
+						console.log(err)
+					}else{
+						console.log(pack);
+						console.log(val);
+						Package.findById(pack, function (err, package) {
+							if (err) {
+								console.error();
+							}else {
+								package.value -= val;
+								package.save(function (err, result) {
+									if (err) {
+										console.error();
+									}
+								})
+							}
+						})
+						res.redirect('/api/items')
+					}
+				})
 			}
+
 		})
+
 	}
 }
 module.exports = new ItemsController();

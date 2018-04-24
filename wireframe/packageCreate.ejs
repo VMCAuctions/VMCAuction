@@ -45,10 +45,11 @@
         <%}%>
       <%}%>
       <br>
-      <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
+      <input readonly id="totalValue" type="number" name="totalValue" value="0">
       <input type="submit" name="submit" value="Submit">
     </form>
     <script>
+
       var total = 0;
       var checkedItems = {};
        totalAdd = function(value, id){
@@ -98,6 +99,9 @@
       }
     });
     validator.form();
+    if (window.location.search.substring(1) == 'true') {
+      alert('that was a success')
+    }
     </script>
   </body>
 </html>
