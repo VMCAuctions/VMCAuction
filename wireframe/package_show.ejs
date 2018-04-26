@@ -13,20 +13,24 @@
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
+					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
 
 				})
 
         socket.on("serverTalksBack", function(data){
-          $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-          $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-                customPlaceholder = data.bid;
+          if (data.packId == <%= package._id %>) {
+            $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+            $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+                  customPlaceholder = data.bid;
+          }
         })
         socket.on('buttonStateChannel', function(data){
+          if (data.packId == <%= package._id %>) {
           console.log(data.button);
           $('#submitButton').attr('disabled', data.button )
+        }
         })
 				}
 			)
@@ -89,6 +93,7 @@
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
+        <a href='/packages/<%=package._id%>'><button>Edit</button></a>
 			<%}%>
 		</div>
 		<div>

@@ -33,13 +33,37 @@ function UsersController(){
 	}
 	this.index = function(req,res){
 		console.log('UsersController index');
+		var cart = {}
+
+
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
 			}else{
-				var hash = {}
 				if(req.session.admin){
-					res.render('admin', {users :users, admin_hash: hash, userName: req.session.userName, admin: req.session.admin})
+					Package.find({}, function(err, result){
+						if (err){
+							console.log(err)
+						}else{
+							for (var i = 0; i < users.length; i++) {
+								var packages = []
+								var total = 0
+								for (var j = 0; j < result.length; j++) {
+									if (result[j].bids[result[j].bids.length-1].name===users[i].userName) {
+										packages.push(result[j])
+										total +=result[j].bids[result[j].bids.length-1].bidAmount
+									}
+								}
+								cart[users[i].userName]={'packages': packages, 'total': total }
+								console.log(cart[users[i].userName].packages);
+							}
+
+
+							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin})
+								}
+							})
+
+
 				}else{
 					res.redirect('/api/packages')
 				}
@@ -195,19 +219,46 @@ function UsersController(){
 	this.show = function(req,res){
 
 		console.log('UsersController show');
-		User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-			if(err){
+		// Package.find({bids[bids.length - 1].name: req.params.userName}, function(err, result){
+		// 	if (err){
+		// 		console.log("error on package.find")
+		// 		console.log(err)
+		// 	}
+		// 	else{
+		// 		console.log("no error on package.find")
+		// 		console.log(result)
+		// 	}
+		// })
+		var cartArray = []
+		var cartTotal = 0
+		Package.find({}, function(err, result){
+			if (err){
 				console.log(err)
 			}
-
-			//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
 			else{
-				//console.log(user)
-				if (user.userName === req.session.userName | req.session.admin === true){
-					res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user})
-				}else{
-					res.redirect('/api/packages')
+				for (var i = 0; i < result.length; i++){
+					if (result[i].bids.length > 0){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							cartArray.push(result[i])
+							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+						}
+					}
 				}
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
+						console.log(err)
+					}
+
+					//Added new code to use package.find, which return an array of packages, rather than using our old strategy of package.findById with a for-loop, which just seemed hacky and cause asynchronousity issues
+					else{
+						//console.log(user)
+						if (user.userName === req.session.userName | req.session.admin === true){
+							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
+						}else{
+							res.redirect('/api/packages')
+						}
+					}
+				})
 			}
 		})
 	};
@@ -261,31 +312,6 @@ function UsersController(){
 		}, 100);
 
 	}
-
-	// old login check function
-	// this.loggedin = function(req,res){
-	// 	console.log('reached loggedin function in server')
-	// 	var login_check = false;
-	// 	var admin;
-
-	// 	if (!req.session.userName){
-	// 		login_check = false;
-	// 	}
-	// 	else {
-	// 		console.log(req.session.userName);
-	// 		console.log(req.session);
-	// 		login_check = true;
-	// 	}
-	// 	console.log('login check v');
-	// 	console.log(login_check);
-	// 	console.log(req.session);
-	// 	if(req.session.admin == true){
-	// 		admin = true;
-	// 	}else{
-	// 		admin = false;
-	// 	}
-	// 	res.json({login_check: login_check, admin: admin})
-	// }
 
 	this.logout = function(req,res){
 		req.session.destroy();

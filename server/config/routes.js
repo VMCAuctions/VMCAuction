@@ -87,15 +87,15 @@ module.exports = function(app) {
 
 
 
-	// BIDS //
-	// get the index page of all bids //
-	app.get('/api/bids', function(req,res){
-		bids.index(req,res)}); //
-
-	// post a bid //
-	app.post('/api/bids', function(req,res){
-		bids.create(req,res)});
-
+	// // BIDS //
+	// // get the index page of all bids //
+	// app.get('/api/bids', function(req,res){
+	// 	bids.index(req,res)}); //
+	//
+	// // post a bid //
+	// app.post('/api/bids', function(req,res){
+	// 	bids.create(req,res)});
+	//
 
 
 	// USERS //
@@ -157,7 +157,7 @@ module.exports = function(app) {
 	app.get('/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)
 	})
-  //saves list of packages on users personal page as user likes it 
+  //saves list of packages on users personal page as user likes it
 	app.get('/users/updateList/:result/:user_id', function(req,res){
 		users.updateList(req,res)
 	})
