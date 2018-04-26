@@ -21,7 +21,7 @@ var packageSchema = new Schema({
  priority: {type: Number, required: true, default: 0},
  featured: Boolean,
 
- bid_increment: Number,  // increment is a reserved word, so used bid_increment
+ bidIncrement: Number,  // increment is a reserved word, so used bid_increment
 
  bids: {type: Array},
 //Joey & Yarik: our model for object is:

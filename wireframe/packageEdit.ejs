@@ -14,12 +14,12 @@
       }
     </script>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
     <h3>Edit Package</h3>
-    <form id='packageForm' action="/api/packages/<%=package._id%>" method="post">
+    <form id='packageForm' action="/packages/<%=package._id%>" method="post">
       <input type="text" id='packageName' name="packageName" value="<%=package.name%>">
       <textarea id='packageDescription' name="packageDescription" rows="8" cols="40" value='<%=package.description%>'><%=package.description%></textarea>
       <select id='category' name="category" >
@@ -35,7 +35,7 @@
       </select>
       <input type="number" id='priority' name="priority" value="<%=package.priority%>">
       <input type="number" id='openingBid' name="openingBid" value="<%=package.amount%>">
-      <input type="number" id='increments' name="increments" value="<%=package.bid_increment%>">
+      <input type="number" id='increments' name="increments" value="<%=package.bidIncrement%>">
 
       <!-- need a read only feild with the current number selected -->
       <script type="text/javascript">

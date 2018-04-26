@@ -2,7 +2,6 @@ var bcrypt = require('bcrypt-nodejs');
 
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
-	Address = require('../models/address.js'),
 	Package = require('../models/package.js');
 
  // All callbacks in Mongoose use the pattern: callback(error, result). If an error occurs executing the query,
@@ -49,9 +48,11 @@ function UsersController(){
 								var packages = []
 								var total = 0
 								for (var j = 0; j < result.length; j++) {
-									if (result[j].bids[result[j].bids.length-1].name===users[i].userName) {
-										packages.push(result[j])
-										total +=result[j].bids[result[j].bids.length-1].bidAmount
+									if (result[j].bids[result[j].bids.length-1]){
+										if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
+											packages.push(result[j])
+											total +=result[j].bids[result[j].bids.length-1].bidAmount
+										}
 									}
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total }
@@ -65,7 +66,7 @@ function UsersController(){
 
 
 				}else{
-					res.redirect('/api/packages')
+					res.redirect('/packages')
 				}
 			}
 		})
@@ -123,18 +124,18 @@ function UsersController(){
 							var validation = registrationValidation(req.body)
 							// email regex validation
 							console.log("before new regex, validation is", validation)
-							var email_reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+							var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 							var unValidatedEmail = req.body.email;
-							var email_result = unValidatedEmail.match(email_reg);
-							if (!email_result){
+							var emailResult = unValidatedEmail.match(emailReg);
+							if (!emailResult){
 								validation += "Invalid email.\n"
 							}
 
 							// userName regex validation based on no spaces in userName
-							var user_reg = /^[a-zA-Z0-9\-_.]{5,25}$/;
+							var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
 							var unValidateduserName = req.body.userName;
-							var user_result = unValidateduserName.match(user_reg)
-							if(!user_result){
+							var userResult = unValidateduserName.match(userReg)
+							if(!userResult){
 								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
 							}
 
@@ -255,7 +256,7 @@ function UsersController(){
 						if (user.userName === req.session.userName | req.session.admin === true){
 							res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
 						}else{
-							res.redirect('/api/packages')
+							res.redirect('/packages')
 						}
 					}
 				})
@@ -281,8 +282,8 @@ function UsersController(){
 			}
 		})
 	}
-	this.admin_change = function(req,res){
-		console.log('UsersController admin_change')
+	this.adminChange = function(req,res){
+		console.log('UsersController admin change')
 		console.log('req.body:', req.body)
 
 		// //C ould potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
@@ -308,7 +309,7 @@ function UsersController(){
 			})
 		}
 		setTimeout(function() {
-			res.redirect('/api/users');
+			res.redirect('/users');
 		}, 100);
 
 	}
@@ -316,17 +317,8 @@ function UsersController(){
 	this.logout = function(req,res){
 		req.session.destroy();
 		console.log(req.session);
-        res.redirect('/api/packages')
+        res.redirect('/packages')
 
-	}
-
-
-	this.who_is_logged_in = function(req, res){
-		if(req.session.admin == true){
-			res.json({admin: true})
-		}else{
-			res.json({admin: false})
-		}
 	}
 
 	this.interested = function(req, res) {
@@ -358,7 +350,7 @@ function UsersController(){
 					flag = false;
 				}
 			}
-			res.redirect('/api/packages')
+			res.redirect('/packages')
 		})
 	}
 	this.uninterested= function(req,res) {
@@ -381,13 +373,13 @@ function UsersController(){
 				}
 
 			}
-			res.redirect('/api/packages')
+			res.redirect('/packages')
 	})
 	}
 
 	this.updateList= function(req,res){
 
-		User.findById(req.params.user_id,function(err,user){
+		User.findById(req.params.userId,function(err,user){
 			if (err){
 				console.log(err)
 			}else{

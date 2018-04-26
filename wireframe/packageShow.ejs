@@ -13,7 +13,7 @@
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
+					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
 					event.preventDefault();
 					// replace replaceWith val maybe??
 
@@ -22,7 +22,7 @@
         socket.on("serverTalksBack", function(data){
           if (data.packId == <%= package._id %>) {
             $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-            $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
+            $('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>)+" ' >")
                   customPlaceholder = data.bid;
           }
         })
@@ -39,7 +39,7 @@
 
 	<body>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
@@ -59,15 +59,15 @@
 			<%}%>
 
 			<h3>Next Bid:</h3>
-			<form action='/api/packages/<%= package._id %>' id='bidding'>
+			<form action='/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
-					<input id='bid_amount' readonly value='<%= package.amount%>'>
+					<input id='bidAmount' readonly value='<%= package.amount%>'>
 				<%} else {%>
-					<input id='bid_amount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bid_increment %> '>
+					<input id='bidAmount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bidIncrement %> '>
 				<%}%>
 
 			<% if (!userName) {%>
-				<a href='/api/users_login'>Login</a>
+				<a href='/users/login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
@@ -93,7 +93,7 @@
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
-        <a href='/packages/<%=package._id%>'><button>Edit</button></a>
+        <a href='/packages/edit/<%=package._id%>'><button>Edit</button></a>
 			<%}%>
 		</div>
 		<div>
@@ -106,39 +106,39 @@
 
       $('#custom').click(function () {
 
-        if ($('#bid_amount').attr('readonly') === 'readonly'){
+        if ($('#bidAmount').attr('readonly') === 'readonly'){
 
           if (<%=ourBids%>===true) {
 
-          $('#bid_amount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
-          $('#bid_amount').val(null);
+          $('#bidAmount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+          $('#bidAmount').val(null);
         }else{
-          $('#bid_amount').attr({'readonly': false,
+          $('#bidAmount').attr({'readonly': false,
                                   'placeholder': customPlaceholder + ' or higer'});
-          $('#bid_amount').val(null);
+          $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
-            $('#bid_amount').attr({'readonly': 'readonly',
-                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
-            $('#bid_amount').val(customPlaceholder + <%=package.bid_increment %>)
+            $('#bidAmount').attr({'readonly': 'readonly',
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+            $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
         }else{
-          $('#bid_amount').attr({'readonly': 'readonly',
+          $('#bidAmount').attr({'readonly': 'readonly',
                               'placeholder': customPlaceholder + ' or higer'});
 
-          $('#bid_amount').val(customPlaceholder)
+          $('#bidAmount').val(customPlaceholder)
         }
       }
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
       })
 
         $("#submitButton").click(function(){
-        	if($("#bid_amount").val() < <%= package.amount%>){
+        	if($("#bidAmount").val() < <%= package.amount%>){
             	alert("Please enter a bid above ", <%= package.amount%>)
             	return false;
-        	}else if ($("#bid_amount").val() < <%= lastBid + package.bid_increment %> && <%=ourBids%> === true) {
-            	alert("Please enter a bid above ", <%= lastBid + package.bid_increment %> )
+        	}else if ($("#bidAmount").val() < <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true) {
+            	alert("Please enter a bid above ", <%= lastBid + package.bidIncrement %> )
                 return false;
             }
 

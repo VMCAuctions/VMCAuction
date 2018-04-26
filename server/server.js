@@ -60,8 +60,8 @@ app.set('view engine', 'ejs');
 //////  REMEMBER TO GO TO "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" /////////
 require('./config/mongoose.js');
 
-var routes_setter = require('./config/routes.js');
-routes_setter(app);
+var routesSetter = require('./config/routes.js');
+routesSetter(app);
 
 
 // tell the express app to listen on port 8000
@@ -133,17 +133,17 @@ console.log("/".repeat(20) + " allBidsBigObj before socket logic " + "/".repeat(
 console.dir(allBidsBigObj); console.log("/".repeat(20));
 
   	// ALL BID LOGIC
-		// THE CHANNEL "msg_sent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
+		// THE CHANNEL "msgSent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
 		// USING UNIQUE CHANNELS WITH PACKAGE IDs
-    socket.on("msg_sent", function(data) {
+    socket.on("msgSent", function(data) {
 
 			// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
-			var uniqChatUpdateId = 'update_chat' + data.packId;
+			var uniqChatUpdateId = 'updateChat' + data.packId;
 			console.log("message was received in server")
 			console.log("in server, bid is ", data.bid)
 
 			// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
-					var buttonStateChannel = 'button_state' + data.packId;
+					var buttonStateChannel = 'buttonState' + data.packId;
 		      io.emit('buttonStateChannel', {
 						button: 'disabled',
 						packId: data.packId
@@ -274,33 +274,6 @@ console.log('data', data);
 
 
     })
-
-    socket.on("page_refresh", function(data) {
-      var uniqChatUpdateId = 'update_chat' + data.pId;
-      var packId = data.pId;
-
-
-
-      if(allBidsBigObj[packId] ==  undefined){
-          io.emit(uniqChatUpdateId, {
-            lastBid:"none",
-            userBidLast:"nobody"
-          })
-      } else {
-          io.emit(uniqChatUpdateId, {
-            lastBid: allBidsBigObj[packId][allBidsBigObj[packId].length-1].bid,
-            userBidLast: allBidsBigObj[packId][allBidsBigObj[packId].length-1].name,
-            socket_current_bid: this.lastBid
-          })
-      }
-
-    })
-
-		// FOR ALL PACKAGES SEND OBJECT WITH ALL BIDS
-		socket.on("package_page_refresh", function(data) {
-			console.dir(allBidsBigObj);
-			io.emit("allPackagesChannel", allBidsBigObj );
-		})
 
     socket.on("disconnect", () => console.log("Client disconnected"));
   // ALL BID LOGIC

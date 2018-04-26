@@ -14,13 +14,13 @@
       }
     </script> -->
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
     <h3>create package</h3>
 
-    <form id="packageForm" action="/api/packages" method="post">
+    <form id="packageForm" action="/packages" method="post">
       <input type="text" name="packageName" id="packageName" placeholder="packageName">
       <textarea name="packageDescription" id="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
       <input id='priority' type='number' name='priority' placeholder='Priority'>

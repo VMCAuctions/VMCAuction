@@ -9,13 +9,13 @@
   </head>
   <body>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
     <div class="container mt-4">
       <h3>Create Items</h3>
-      <form action="/api/items" id="itemsForm" method="post">
+      <form action="/items" id="itemsForm" method="post">
         <div class="form-group row">
           <label   class="col-sm-2 col-form-label">Item Name</label>
           <div class="col-sm-10">

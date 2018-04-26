@@ -21,7 +21,7 @@ function CategoriesController(){
 	    	else if(req.session.admin) {
 	        	res.render('categories', {admin: req.session.admin, categories: categories, userName: req.session.userName});
 	        } else{
-				res.redirect('/api/packages')
+				res.redirect('/packages')
 			}
         })  // ends Item.find
 
@@ -48,7 +48,7 @@ function CategoriesController(){
 	    		}
 	    		else {
 
-	        	res.redirect('/api/categories');
+	        	res.redirect('/categories');
 	        }
         })
 	      }
