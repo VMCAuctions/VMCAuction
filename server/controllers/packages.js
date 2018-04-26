@@ -147,7 +147,7 @@ this.new = function(req,res){
 
 				//Corrected an issue where an item was displaying twice; may or may not have fixed the issue permanently
         Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-	    	value: req.body.totalValue, bid_increment: req.body.increments, _category: req.body.category,
+	    	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category,
 			bid: [], amount: req.body.openingBid, priority: req.body.priority
 			},
 	    	function(err, package){
@@ -171,7 +171,7 @@ this.new = function(req,res){
 										console.log(err)
 									}
 									else{
-										res.redirect('/api/packages/new?true')
+										res.redirect('/packages/new?true')
 									}
 								})
 						})
@@ -203,13 +203,13 @@ this.new = function(req,res){
 					else{
 						// res.json({packages: result});
 						console.log(package)
-						var our_bids = false
+						var ourBids = false
 						var lastBid = package.amount
 						if(package.bids.length > 0){
-							our_bids = true;
+							ourBids = true;
 							lastBid = package.bids[package.bids.length -1 ].bidAmount
 						}
-						res.render('package_show',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: our_bids, lastBid: lastBid})
+						res.render('packageShow',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: ourBids, lastBid: lastBid})
 					}
 				})
 			}
@@ -249,7 +249,7 @@ this.new = function(req,res){
 		        package.description = req.body.packageDescription || package.description;
 		        package.bids[0] = req.body.openingBid || package.bids[0];
 		        package.value = req.body.totalValue || package.value;
-		        package.bid_increment = req.body.increments || package.bid_increment;
+		        package.bidIncrement = req.body.increments || package.bidIncrement;
 		        package._category = req.body.category || package._category;
 						package.priority = req.body.priority || package.priority;
 
@@ -306,27 +306,16 @@ this.new = function(req,res){
 									})
 		    					}
 
-		            	res.redirect('/api/packages/' + package._id );
+		            	res.redirect('/packages/' + package._id );
 		            }
 		        });
 		    }
 		});
 	}  // end of this.update();
 
-	// old category filtering
-	// this.get_selected = function(req, res){
-	// 	Package.find({_category:req.body.category}, function(err, result){
-	// 		if(err){
-	// 			console.log(err)
-	// 		}else{
-	// 			res.json(result)
-	// 		}
-	// 	})
-	// },
-
 	//removing a package from the DB
-	this.remove_package = function(req, res){
-		console.log('in remove_package')
+	this.removePackage = function(req, res){
+		console.log('in remove package')
 		Package.findOne({_id: req.params.id}, function(err, result){
 			if(err){
 				console.log(err)
@@ -338,7 +327,7 @@ this.new = function(req,res){
 						if(err){
 							console.log(err)
 						}else{
-							console.log("found_user", user)
+							console.log("found user", user)
 							for(var k= 0; k< user._packages.length; k++ ){
 								console.log("this is result", result)
 								if(result._id === user._packages[k]){
@@ -358,7 +347,7 @@ this.new = function(req,res){
 					})
 				}
 				for(var i = 0; i < result._items.length; i++){
-					console.log('item_update')
+					console.log('item update')
 					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
 						if(err){
 							console.log(err)
@@ -371,7 +360,7 @@ this.new = function(req,res){
 					if(err){
 						console.log(err)
 					}else{
-						res.redirect('/api/packages');
+						res.redirect('/packages');
 					}
 				})
 			}
@@ -389,11 +378,11 @@ this.new = function(req,res){
 				package.featured = true;
 			}
 			package.save()
-			res.redirect('/api/packages')
+			res.redirect('/packages')
 		})
 	}
 	//cancels last bid
-	this.cancel_bid = function(req,res){
+	this.cancelBid = function(req,res){
 		if(req.session.admin){
 		Package.findById(req.params.id, function(err,package){
 			if(err){
@@ -421,14 +410,14 @@ this.new = function(req,res){
 				}
 				})
 			}
-				res.redirect('/api/packages/' + package._id)
+				res.redirect('/packages/' + package._id)
 
 
 			}
 			}
 		)
 	}else{
-		res.redirect('/api/packages')
+		res.redirect('/packages')
 	}
 }
 

@@ -58,7 +58,7 @@ function ItemsController(){
 					if(req.session.admin){
 						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
 					}else{
-						res.redirect('/api/packages')
+						res.redirect('/packages')
 					}
 				}
 		console.log('ItemsController new');
@@ -81,7 +81,7 @@ function ItemsController(){
 	        //res.status(500).send('Failed to Create Item');
 	      }
 	      else{
-	        res.redirect('/api/items/new?true')
+	        res.redirect('/items/new?true')
 	      }
 	    });
 	};
@@ -104,9 +104,9 @@ function ItemsController(){
 				else{
 					//res.json(result)
 					if(req.session.admin){
-						res.render('item_edit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
+						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
 					}else{
-						res.redirect('/api/packages')
+						res.redirect('/packages')
 					}
 				}
 
@@ -156,7 +156,7 @@ function ItemsController(){
 										})
 
 								}
-								res.redirect('/api/items')
+								res.redirect('/items')
                 }
 		       });
 		    }
@@ -165,7 +165,7 @@ function ItemsController(){
 
 
 	//removing an item
-	this.remove_item = function(req, res){
+	this.removeItem = function(req, res){
 		var val
 		var pack
 		Item.findById(req.params.id, function(err, item) {
@@ -192,7 +192,7 @@ function ItemsController(){
 								})
 							}
 						})
-						res.redirect('/api/items')
+						res.redirect('/items')
 					}
 				})
 			}
