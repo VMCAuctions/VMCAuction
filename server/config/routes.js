@@ -56,7 +56,7 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/packages/:id', function(req,res){
 		packages.update(req,res)});
-  // get the edit package form
+  	// get the edit package form
 	app.get('/packages/edit/:id', function(req,res){
 		packages.edit(req,res)});
 	//removing a package from the DB
@@ -94,10 +94,10 @@ module.exports = function(app) {
 	// post the new user form and create that new user (Registration)
 	app.post('/users', function(req,res){
 		users.create(req,res)});
-  //Check login credentials
+  	//Check login credentials
 	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  //Check if username is already in use
+  	//Check if username is already in use
 	app.get('/users/duplicate/', function(req, res) {
 		users.duplicate(req,res)});
 	// logout a specific user
@@ -116,13 +116,13 @@ module.exports = function(app) {
 	// parse through admin changes before update
 	app.post('/users/admin', function(req,res){
 		users.adminChange(req,res)});
-  //adds to watchlist
+  	//adds to watchlist
 	app.get('/users/interested/:id', function(req, res) {
 		users.interested(req, res)});
-//removes from watchlist
+	//removes from watchlist
 	app.get('/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)});
-  //saves list of packages on users personal page as user likes it
+  	//saves list of packages on users personal page as user likes it
 	app.get('/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
 
