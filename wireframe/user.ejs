@@ -15,14 +15,14 @@
 <body>
 
   <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
       <%}%>
       <div class="container mb-4">
         <div class="well">
           <h1 class="py-4">Create User Profile</h1>
-          <form id="registrationForm" action="/api/users" method="post">
+          <form id="registrationForm" action="/users" method="post">
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">First Name</label>
               <div class="col-sm-10">

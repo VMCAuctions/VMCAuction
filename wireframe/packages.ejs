@@ -41,7 +41,7 @@
 <body>
 
   <%if(admin){%>
-  <%- include('admin_header') -%>
+  <%- include('adminHeader') -%>
   <%}else{%>
     <%- include('header') -%>
   <%}%>
@@ -64,7 +64,7 @@
   <%}%>
   <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
-  <a href="/api/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
+  <a href="/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
@@ -90,7 +90,7 @@
   <%}%>
   <% if (admin){ %>
    <a href='/packages/<%=featured[f]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=featured[f]._id %>'><button>Delete</button></a>
+   <a href='/packages/remove/<%=featured[f]._id %>'><button>Delete</button></a>
    <%if(featured[f].featured === true){%>
      <a href="/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
    <%}else{%>
@@ -108,7 +108,7 @@
   <%}%>
   <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
-  <a href="/api/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
+  <a href="/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
   <p><b>Category:</b> <%=packages[n]._category%></p>
   <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
   <%if(packages[n].bids[packages[n].bids.length-1]){%>
@@ -131,8 +131,8 @@
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=packages[n]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=packages[n]._id %>'><button>Delete</button></a>
+   <a href='/packages/edit/<%=packages[n]._id%>'><button>Edit</button></a>
+   <a href='/packages/remove/<%=packages[n]._id %>'><button>Delete</button></a>
    <%if(packages[n].featured === true){%>
      <a href="/packages/featured/<%=packages[n]._id%>"><button>Unfeature</button></a>
    <%}else{%>
