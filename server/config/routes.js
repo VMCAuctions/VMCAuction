@@ -111,7 +111,7 @@ module.exports = function(app) {
 	app.get('/users/:userName', function(req,res){
 		users.show(req,res)});
 	// update a specific user (profile/info)
-	app.post('/users/:id', function(req,res){
+	app.post('/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
 	// parse through admin changes before update
 	app.post('/users/admin', function(req,res){
