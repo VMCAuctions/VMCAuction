@@ -4,11 +4,6 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
 var path = require("path");
 
-// var express = require("express");
-// var app = express();
-//
-// app.use(express.static("../wireframe"));
-
 
 module.exports = function(app) {
 
