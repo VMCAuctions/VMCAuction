@@ -16,7 +16,6 @@ var userSchema = new Schema({
 	states: {type: String, required: true},
 	zip: {type: String, required: true},
 	password: {type: String, required: true},
-	// leave mailing address out as this would be entered through the payment API?  Foundation wants users to enter info only once
 	_packages: [{type: Number, ref: 'Package'}],
 	admin: {type: Boolean}
 })
