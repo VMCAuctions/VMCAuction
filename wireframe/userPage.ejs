@@ -9,7 +9,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
   <body>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
@@ -26,7 +26,7 @@
         <%for(let i =0; i<user._packages.length; i++){%>
           <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
           <% if(user._packages[i]) {%>
-          <td><a href="/api/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
+          <td><a href="/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
           <% if(user._packages[i].bids.length > 0) {%>
             <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
 
@@ -53,14 +53,14 @@
     <script>
     	var socket = io.connect('http://localhost:8000/');
       var cartTotal = <%=cartTotal%>
-      var user_id = '<%= user._id%>';
+      var userId = '<%= user._id%>';
       var el = document.getElementById('selections')
       var sortable = Sortable.create(el)
       $('#update').click(function(){
         var result = sortable.toArray()
         console.log(result)
         $.ajax({type: 'GET',
-          url:'/users/updateList/' + result + '/' + user_id
+          url:'/users/updateList/' + result + '/' + userId
         })
       })
       socket.on("serverTalksBack", function(data){
@@ -82,7 +82,7 @@
         if(isDone){
           $("#selections").append(`
             <tr data-id= data.packId class='selection' style='cursor: move'>
-            <td><a href="/api/packages/"` + data.packId + `">` + data.name + `</a></td>
+            <td><a href="/packages/"` + data.packId + `">` + data.name + `</a></td>
             <td id = "` + data.packId + `">You!!!</td>
 
             <td><a href="/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
