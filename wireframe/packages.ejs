@@ -89,7 +89,7 @@
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=featured[f]._id%>'><button>Edit</button></a>
+   <a href='/packages/edit/<%=featured[f]._id%>'><button>Edit</button></a>
    <a href='/api/remove_package/<%=featured[f]._id %>'><button>Delete</button></a>
    <%if(featured[f].featured === true){%>
      <a href="/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
