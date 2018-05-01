@@ -15,7 +15,7 @@ var itemSchema = new Schema({
  value: Number,
  packaged: Boolean,
  priority: {type: Number, required: true, default: 0},
-
+_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
 }, { timestamps: true });

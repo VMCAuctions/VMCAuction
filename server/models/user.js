@@ -16,6 +16,7 @@ var userSchema = new Schema({
 	states: {type: String, required: true},
 	zip: {type: String, required: true},
 	password: {type: String, required: true},
+	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	_packages: [{type: Number, ref: 'Package'}],
 	admin: {type: Boolean}
 })

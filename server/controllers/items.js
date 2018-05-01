@@ -51,6 +51,8 @@ function ItemsController(){
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');
+		//Need to link the current auction to the item upon creation
+		//_auctions: ...
     Item.create({name: req.body.itemName, description: req.body.itemDescription,
       _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
       value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
