@@ -124,6 +124,8 @@ function UsersController(){
 							var lowerUser = req.body.userName.toLowerCase();
 							var adminStatus = (lowerUser === "admin");
 							User.create({
+								//Need to link the current auction to the user upon registration
+								//_auctions: ...
 								userName: req.body.userName,
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,

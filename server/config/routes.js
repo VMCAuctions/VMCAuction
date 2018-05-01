@@ -2,6 +2,7 @@ var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
+var auctions = require('../controllers/auctions.js')
 var path = require("path");
 
 // var express = require("express");
@@ -12,11 +13,12 @@ var path = require("path");
 
 module.exports = function(app) {
 
+	app.get('/auctions', function (req, res) {
+		auctions.index(req, res)});
+
 	//Landing Page (Packages page)
 	app.get('/', function (req,res) {
 		packages.index(req,res)});
-
-
 
 	// ITEMS //
 	// Renders all items page

@@ -130,6 +130,8 @@ this.new = function(req,res){
       console.log('reached empty item list')
 		  return res.json(false)
     }
+		//Need to link the current auction to the package upon creation
+		//_auctions: ...
     Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
   	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority
 		}, function(err, package){
