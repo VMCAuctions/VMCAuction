@@ -51,13 +51,16 @@ function ItemsController(){
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');
+		console.log(req.body)
     Item.create({name: req.body.itemName, description: req.body.itemDescription,
       _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
       value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
       if(err){
+				console.log("check 1")
         console.log(err);
         res.status(500).send('Failed to Create Item');
       }else{
+				console.log("check 2")
         res.redirect('/items/new?true')
       }
     });
