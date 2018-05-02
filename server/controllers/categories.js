@@ -13,7 +13,7 @@ function CategoriesController(){
 	    	else if(req.session.admin) {
 	        	res.render('categories', {admin: req.session.admin, categories: categories, userName: req.session.userName});
 	      }else{
-					res.redirect('/packages')
+					res.redirect('/' + req.params.auctions + '/packages')
 				}
       })
 	};
@@ -24,7 +24,7 @@ function CategoriesController(){
 	      if(err){
 	        console.log(err);
 	      }else{
-	        	res.redirect('/categories?true');
+	        	res.redirect('/' + req.params.auctions + '/categories?true');
 	      }
     })
 	 }

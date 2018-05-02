@@ -1,7 +1,8 @@
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
-	Package = require('../models/package.js');
+	Package = require('../models/package.js'),
+	Auction = require('../models/auction.js');
 
 function UsersController(){
 
@@ -30,11 +31,11 @@ function UsersController(){
 	this.index = function(req,res){
 		console.log('UsersController index');
 		var cart = {}
-		User.find({}, function(err, users ){
+		User.find({_auctions: req.params.auctions}, function(err, users ){
 			if(err){
 				console.log(err)
 			}else if(req.session.admin){
-					Package.find({}, function(err, result){
+					Package.find({_auctions: req.params.auctions}, function(err, result){
 						if (err){
 							console.log(err)
 						}else{
@@ -55,7 +56,7 @@ function UsersController(){
 						}
 					})
 			}else{
-				res.redirect('/packages')
+				res.redirect('/' + req.params.auctions  + '/packages')
 			}
 		})
 	};
@@ -184,7 +185,7 @@ function UsersController(){
 		console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
-		Package.find({}, function(err, result){
+		Package.find({_auctions: req.params.auctions}, function(err, result){
 			if (err){
 				console.log(err)
 			}else{
@@ -202,7 +203,7 @@ function UsersController(){
 					}else if (user.userName === req.session.userName | req.session.admin === true){
 						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions  + '/packages')
 					}
 				})
 			}
@@ -238,13 +239,13 @@ function UsersController(){
 				}
 			})
 		}
-			res.redirect('/users')
+			res.redirect('/' + req.params.auctions  + '/users')
 	};
 
 
 	this.logout = function(req,res){
 		req.session.destroy();
-    res.redirect('/packages')
+    res.redirect('/' + req.params.auctions  + '/packages')
 	};
 
 
@@ -272,7 +273,7 @@ function UsersController(){
 					flag = false;
 				}
 			}
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	};
 
@@ -295,7 +296,7 @@ function UsersController(){
 					}
 				}
 			};
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	};
 

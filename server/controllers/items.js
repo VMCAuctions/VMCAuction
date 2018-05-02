@@ -1,36 +1,27 @@
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
-	Category = require('../models/category.js');
-	Package = require('../models/package.js');
+	Category = require('../models/category.js'),
+	Package = require('../models/package.js'),
+	Auction = require('../models/auction.js');
 
 function ItemsController(){
 
 	this.index = function(req,res){
 		console.log('ItemsController index');
-		var packages;
-		var categories;
-		Package.find({}, function (err, result) {
-			if (err) {
-				console.log(err);
-			}else {
-				packages = result;
-			}
-		})
-		Category.find({}, function (err, result) {
+		Category.find({}, function (err, categories) {
 			if (err) {
 				console.log(err);
 			}else{
-				categories = result
+				Item.find({_auctions: req.params.auctions}).populate("_package").sort({_category:'ascending'}).exec(function(err, items){
+						if(err){
+								console.log(err);
+								res.status(500).send('Failed to Load Items');
+						}else{
+							res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, categories: categories})
+						}
+				})
 			}
 		})
-		Item.find({}).populate("_package").sort({_category:'ascending'}).exec(function(err, items){
-	    	if(err){
-	      		console.log(err);
-	      		res.status(500).send('Failed to Load Items');
-	    	}else{
-					res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, packages: packages, categories: categories})
-	       }
-    })
 	};
 
 
@@ -43,7 +34,7 @@ function ItemsController(){
 					if(req.session.admin){
 						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions + '/packages')
 					}
 				}
 		console.log('ItemsController new');
@@ -60,7 +51,7 @@ function ItemsController(){
         console.log(err);
         res.status(500).send('Failed to Create Item');
       }else{
-        res.redirect('/items/new?true')
+        res.redirect('/' + req.params.auctions + '/items/new?true')
       }
     });
 	};
@@ -79,7 +70,7 @@ function ItemsController(){
 					}else if(req.session.admin){
 						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions + '/packages')
 					}
 				})
 		  }
@@ -119,7 +110,7 @@ function ItemsController(){
 										})
 									})
 							}
-							res.redirect('/items')
+							res.redirect('/' + req.params.auctions + '/items')
           });
 	    }
 	  });
@@ -153,7 +144,7 @@ function ItemsController(){
 								})
 							}
 						})
-						res.redirect('/items')
+						res.redirect('/' + req.params.auctions + '/items')
 					}
 				})
 			}

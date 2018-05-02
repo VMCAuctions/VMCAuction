@@ -5,6 +5,11 @@
     <title></title>
   </head>
   <body>
+    <%if(admin){%>
+      <%- include('adminHeader') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
     <h1>Hello World</h1>
   </body>
 </html>
