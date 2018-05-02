@@ -6,6 +6,12 @@ mongoose.Promise = global.Promise;
 
 var auctionSchema = new Schema({
   name: {type: String, required: true},
+	startClock: {type: Date, required: true},
+	endClock: {type: Date, required: true},
+	//colors would hold the color related to the auction's theme
+	colors: {type: String},
+	//picture would hold the picture associated with the auction
+	picture: {type: String},
   _packages: [{type: Number, ref: 'Package'}],
   _items: [{type: Number, ref: 'Item'}],
   _users: {type: Schema.Types.ObjectId, ref: 'User'}

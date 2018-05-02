@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
-	User = require('../models/user.js');
+	User = require('../models/user.js'),
+	Auction = require('../models/auction.js');
 var ObjectId = require('mongodb').ObjectId;
 
 function PackagesController(){
@@ -25,7 +26,7 @@ function PackagesController(){
 					}else{
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
 									console.log('Package Index Error');
 									res.status(500).send('Failed to Load Packages');
@@ -38,6 +39,7 @@ function PackagesController(){
 										if(packages[i].featured === true){
 											featured.push(packages[i]);
 										}
+										//Not actually using nonfeatured packages right now
 										else{
 											nonfeatured.push(packages[i]);
 										}
@@ -70,7 +72,7 @@ function PackagesController(){
 								res.status(500).send('Failed to Load Items');
 						}
 						else {
-							Item.find({}, function(err, items) {
+							Item.find({_auctions: req.params.auctions}, function(err, items) {
 								if(err) {
 										console.log(err);
 										res.status(500).send('Failed to Load Items');
@@ -99,7 +101,7 @@ function PackagesController(){
 
 this.new = function(req,res){
 	var itemsArray = [];
-	Item.find({}, function(err, items) {
+	Item.find({_auctions: req.params.auctions}, function(err, items) {
 			if(err) {
 					console.log(err);
 					res.status(500).send('Failed to Load Items');
@@ -151,7 +153,7 @@ this.new = function(req,res){
 								})
 						})
 					}
-					res.redirect('/packages/new?true')
+					res.redirect('/' + req.params.auctions  + '/packages/new?true')
 			 }
 		});
 	};
@@ -232,7 +234,7 @@ this.new = function(req,res){
 											})
 										})
 		    					}
-									res.redirect('/packages/' + package._id );
+									res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
 		           }
 		       });
 		    }
@@ -249,7 +251,7 @@ this.new = function(req,res){
 					//this searches all users and removes package from their watchlist
 					//it should only happen if an in the middle of an auction if item is reported as stolen
 					//or provider of service suddenly goes out of buisness
-					User.find({}, function(err, users){
+					User.find({_auctions: req.params.auctions}, function(err, users){
 						if(err){
 							console.log(err)
 						}else{
@@ -279,7 +281,7 @@ this.new = function(req,res){
 					if(err){
 						console.log(err)
 					}else{
-						res.redirect('/packages');
+						res.redirect('/' + req.params.auctions  + '/packages');
 					}
 				})
 			}
@@ -297,7 +299,7 @@ this.new = function(req,res){
 				package.featured = true;
 			}
 			package.save()
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	}
 
@@ -321,7 +323,7 @@ this.new = function(req,res){
 							}
 						})
 					}
-					res.redirect('/packages/' + package._id)
+					res.redirect('/' + req.params.auctions  + '/packages/' + package._id)
 				}
 			})
 		}else{
