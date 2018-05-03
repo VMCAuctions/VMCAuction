@@ -17,7 +17,7 @@ function ItemsController(){
 								console.log(err);
 								res.status(500).send('Failed to Load Items');
 						}else{
-							res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, categories: categories})
+							res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, categories: categories, auction: req.params.auctions})
 						}
 				})
 			}
@@ -32,7 +32,7 @@ function ItemsController(){
 	      		res.status(500).send('Failed to Load Items');
 	    	}else{
 					if(req.session.admin){
-						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
+						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 					}else{
 						res.redirect('/' + req.params.auctions + '/packages')
 					}
@@ -42,11 +42,9 @@ function ItemsController(){
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');
-		//Need to link the current auction to the item upon creation
-		//_auctions: ...
     Item.create({name: req.body.itemName, description: req.body.itemDescription,
       _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
-      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
+      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority, _auctions: req.params.auctions},  function(err, result){
       if(err){
         console.log(err);
         res.status(500).send('Failed to Create Item');
@@ -68,7 +66,7 @@ function ItemsController(){
 					  console.log(err);
 					  res.status(500).send('Failed to Load Items');
 					}else if(req.session.admin){
-						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
+						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions});
 					}else{
 						res.redirect('/' + req.params.auctions + '/packages')
 					}
@@ -137,11 +135,26 @@ function ItemsController(){
 								console.error();
 							}else {
 								package.value -= val;
+								package._items.splice(package._items.indexOf(item._id), 1)
 								package.save(function (err, result) {
 									if (err) {
 										console.error();
 									}
 								})
+								if (package.value === 0) {
+									package.remove(package, function (err, result) {
+										if (err) {
+											console.error();
+										}
+										else{
+											Auction.removeById(item._auctions, function(err, auction){
+												if(err){
+													console.log(err)
+												}
+											})
+										}
+									})
+								}
 							}
 						})
 						res.redirect('/' + req.params.auctions + '/items')

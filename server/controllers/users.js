@@ -52,7 +52,7 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin})
+							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
 			}else{
@@ -63,12 +63,12 @@ function UsersController(){
 
 
 	this.new = function(req,res){
-		res.render('login', {userName: req.session.userName, admin: req.session.admin })
+		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions })
 	};
 
 
 	this.register = function(req,res){
-		res.render('user', {userName: req.session.userName, admin: req.session.admin})
+		res.render('user', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 	};
 
 
@@ -125,8 +125,6 @@ function UsersController(){
 							var lowerUser = req.body.userName.toLowerCase();
 							var adminStatus = (lowerUser === "admin");
 							User.create({
-								//Need to link the current auction to the user upon registration
-								//_auctions: ...
 								userName: req.body.userName,
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
@@ -136,6 +134,7 @@ function UsersController(){
 								city: req.body.city,
 								states: req.body.states,
 								zip: req.body.zip,
+								_auctions: req.params.auctions,
 								password: hash,
 								admin: adminStatus
 							},
@@ -201,7 +200,7 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
+						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
 					}else{
 						res.redirect('/' + req.params.auctions  + '/packages')
 					}

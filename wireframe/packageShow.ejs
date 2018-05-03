@@ -59,7 +59,7 @@
 			<%}%>
 
 			<h3>Next Bid:</h3>
-			<form action='/packages/<%= package._id %>' id='bidding'>
+			<form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
 					<input id='bidAmount' readonly value='<%= package.amount%>'>
 				<%} else {%>
@@ -67,7 +67,7 @@
 				<%}%>
 
 			<% if (!userName) {%>
-				<a href='/users/login'>Login</a>
+				<a href='/<%=auction%>/users/login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
@@ -79,13 +79,13 @@
         <%if(userName){%>
         <% for (i in user._packages){%>
           <% if (package._id == user._packages[i]){%>
-            <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+            <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
             <%flag = true%>
             <%break%>
           <%}%>
         <%}%>
         <%if (flag == false){%>
-          <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+          <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
         <%}%>
         <%}%>
       <% if (admin === true) { %>
@@ -93,7 +93,7 @@
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
-        <a href='/packages/edit/<%=package._id%>'><button>Edit</button></a>
+        <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a>
 			<%}%>
 		</div>
 		<div>
