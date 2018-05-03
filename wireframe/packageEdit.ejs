@@ -19,7 +19,7 @@
       <%- include('header') -%>
     <%}%>
     <h3>Edit Package</h3>
-    <form id='packageForm' action="/packages/<%=package._id%>" method="post">
+    <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post">
       <input type="text" id='packageName' name="packageName" value="<%=package.name%>">
       <textarea id='packageDescription' name="packageDescription" rows="8" cols="40" value='<%=package.description%>'><%=package.description%></textarea>
       <select id='category' name="category" >

@@ -13,10 +13,6 @@ var router = express.Router()
 
 module.exports = function(app) {
 
-	//Landing Page (Packages page)
-	app.get('/:auctions', function (req,res) {
-		packages.index(req,res)});
-
 	// ITEMS //
 	// Renders all items page
 	app.get('/:auctions/items', function(req,res){
@@ -127,8 +123,14 @@ module.exports = function(app) {
 
 	// AUCTION //
 		//admin selects what they want to do
-	app.get('/auctions', function (req, res) {
+	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
+	app.post('^/auctions$', function (req, res) {
+		auctions.create(req, res)});
+
+	//Landing Page (Packages page)
+	app.get('/:auctions', function (req,res) {
+		packages.index(req,res)});
 
 }
 // end of module.exports

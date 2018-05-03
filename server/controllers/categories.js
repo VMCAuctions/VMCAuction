@@ -11,7 +11,7 @@ function CategoriesController(){
 	      		console.log(err);
 	    	}
 	    	else if(req.session.admin) {
-	        	res.render('categories', {admin: req.session.admin, categories: categories, userName: req.session.userName});
+	        	res.render('categories', {admin: req.session.admin, categories: categories, userName: req.session.userName, auction: req.params.auctions});
 	      }else{
 					res.redirect('/' + req.params.auctions + '/packages')
 				}
