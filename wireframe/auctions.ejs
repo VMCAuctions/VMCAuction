@@ -5,11 +5,14 @@
     <title></title>
   </head>
   <body>
-    <%if(admin){%>
-      <%- include('adminHeader') -%>
-    <%}else{%>
-      <%- include('header') -%>
-    <%}%>
-    <h1>Hello World</h1>
+
+    <form class="" action="/auctions" method="post">
+      <input type="text" name="name" value="">
+      <input type="date" name="startClockDate" value="">
+      <input type="time" name="startClockTime" value="">
+      <input type="date" name="endClockDate" value="">
+      <input type="time" name="endClockTime" value="">
+      <input type="submit" name="submit" value="Submit">
+    </form>
   </body>
 </html>
