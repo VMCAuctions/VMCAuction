@@ -4,13 +4,6 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
 var auctions = require('../controllers/auctions.js')
 
-// var path = require("path");
-var express = require("express");
-// var app = express();
-// app.use(express.static("../wireframe"));
-
-var router = express.Router()
-
 module.exports = function(app) {
 
 	// ITEMS //

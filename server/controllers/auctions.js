@@ -11,12 +11,23 @@ function AuctionsController(){
   };
 	//Just used as an API for now
 	this.create = function(req, res){
-		console.log("req.body is", req.body)
+		// console.log("req.body.startClockDate is", req.body.startClockDate)
+		// console.log("req.body.startClockTime is", req.body.startClockTime)
+		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
+		var start = new Date(startDate)
+		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
+		var end = new Date(endDate)
 		Auction.create({
-			name: req.body.name
+			name: req.body.name,
+			startClock: start,
+			endClock: end
 		}, function(err, result){
 			if (err){
 				console.log(err)
+			}
+			else{
+				console.log(result)
+				res.redirect("/" + result._id)
 			}
 		})
 	}
