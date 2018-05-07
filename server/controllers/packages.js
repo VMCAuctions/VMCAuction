@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
-	User = require('../models/user.js');
+	User = require('../models/user.js'),
+	Auction = require('../models/auction.js');
 var ObjectId = require('mongodb').ObjectId;
 
 function PackagesController(){
@@ -25,7 +26,7 @@ function PackagesController(){
 					}else{
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
 									console.log('Package Index Error');
 									res.status(500).send('Failed to Load Packages');
@@ -38,11 +39,12 @@ function PackagesController(){
 										if(packages[i].featured === true){
 											featured.push(packages[i]);
 										}
+										//Not actually using nonfeatured packages right now
 										else{
 											nonfeatured.push(packages[i]);
 										}
 									}
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured})
+									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
 					}
@@ -57,8 +59,6 @@ function PackagesController(){
 		var categoryArray = [];
 		var itemsArray = [];
 		var total = 0;
-
-
 		Package.findById(req.params.id).populate("_items").exec(function(err,result){
 			if(err){
 				console.log(err);
@@ -70,7 +70,7 @@ function PackagesController(){
 								res.status(500).send('Failed to Load Items');
 						}
 						else {
-							Item.find({}, function(err, items) {
+							Item.find({_auctions: req.params.auctions}, function(err, items) {
 								if(err) {
 										console.log(err);
 										res.status(500).send('Failed to Load Items');
@@ -88,7 +88,7 @@ function PackagesController(){
 									 	console.log(result._items[i]);
 									 }
 									console.log("result is", result)
-									res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin})
+									res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 								}
 							})
 						}
@@ -99,7 +99,7 @@ function PackagesController(){
 
 this.new = function(req,res){
 	var itemsArray = [];
-	Item.find({}, function(err, items) {
+	Item.find({_auctions: req.params.auctions}, function(err, items) {
 			if(err) {
 					console.log(err);
 					res.status(500).send('Failed to Load Items');
@@ -112,9 +112,9 @@ this.new = function(req,res){
 						}
 						else {
 							console.log(itemsArray);
-							res.render('packageCreate', {categories: categories, items: items, userName: req.session.userName, admin: req.session.admin})
-				}
-				console.log('PackagesController new');
+							res.render('packageCreate', {categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+						}
+						console.log('PackagesController new');
 				})
 			}
 	})
@@ -131,7 +131,7 @@ this.new = function(req,res){
 		  return res.json(false)
     }
     Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-  	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority
+  	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, _auctions: req.params.auctions
 		}, function(err, package){
 			if(err){
 				console.log(err);
@@ -149,7 +149,7 @@ this.new = function(req,res){
 								})
 						})
 					}
-					res.redirect('/packages/new?true')
+					res.redirect('/' + req.params.auctions  + '/packages/new?true')
 			 }
 		});
 	};
@@ -175,7 +175,7 @@ this.new = function(req,res){
 							ourBids = true;
 							lastBid = package.bids[package.bids.length -1 ].bidAmount
 						}
-						res.render('packageShow',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: ourBids, lastBid: lastBid})
+						res.render('packageShow',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: ourBids, lastBid: lastBid, auction: req.params.auctions})
 					}
 				})
 			}
@@ -230,7 +230,7 @@ this.new = function(req,res){
 											})
 										})
 		    					}
-									res.redirect('/packages/' + package._id );
+									res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
 		           }
 		       });
 		    }
@@ -239,7 +239,7 @@ this.new = function(req,res){
 
 	this.removePackage = function(req, res){
 		console.log('in remove package')
-		Package.findOne({_id: req.params.id}, function(err, result){
+		Package.findOne({_id: req.params.id}, function(err, package){
 			if(err){
 				console.log(err)
 			}else{
@@ -247,13 +247,13 @@ this.new = function(req,res){
 					//this searches all users and removes package from their watchlist
 					//it should only happen if an in the middle of an auction if item is reported as stolen
 					//or provider of service suddenly goes out of buisness
-					User.find({}, function(err, users){
+					User.find({_auctions: req.params.auctions}, function(err, users){
 						if(err){
 							console.log(err)
 						}else{
 							for(var k= 0; k< users; k++ ){
 								for (var i = 0; i < users[k]._package.length; i++) {
-									if(result._id === user[k]._packages[i]){
+									if(package._id === user[k]._packages[i]){
 										user[k]._packages.splice(i,1)
 									}
 								}
@@ -263,11 +263,18 @@ this.new = function(req,res){
 									console.log(err)
 									res.status(500).send(err)
 								}
+								else{
+									Auction.removeById(package._auctions, function(err, result){
+										if (err){
+											console.log(err)
+										}
+									})
+								}
 							})
 						}
 					})
-				for(var i = 0; i < result._items.length; i++){
-					Item.update({_id: result._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
+				for(var i = 0; i < package._items.length; i++){
+					Item.update({_id: package._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
 						if(err){
 							console.log(err)
 						}
@@ -277,7 +284,7 @@ this.new = function(req,res){
 					if(err){
 						console.log(err)
 					}else{
-						res.redirect('/packages');
+						res.redirect('/' + req.params.auctions  + '/packages');
 					}
 				})
 			}
@@ -295,7 +302,7 @@ this.new = function(req,res){
 				package.featured = true;
 			}
 			package.save()
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	}
 
@@ -319,7 +326,7 @@ this.new = function(req,res){
 							}
 						})
 					}
-					res.redirect('/packages/' + package._id)
+					res.redirect('/' + req.params.auctions  + '/packages/' + package._id)
 				}
 			})
 		}else{
