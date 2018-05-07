@@ -22,7 +22,7 @@
       <div class="container mb-4">
         <div class="well">
           <h1 class="py-4">Create User Profile</h1>
-          <form id="registrationForm" action="/users" method="post">
+          <form id="registrationForm" action="/<%=auction%>/users" method="post">
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">First Name</label>
               <div class="col-sm-10">
@@ -145,7 +145,7 @@
             user: true,
             nowhitespace: true,
             rangelength: [5, 25],
-            remote: '/users/duplicate'
+            remote: '/<%=auction%>/users/duplicate'
           },
           password: {
             required: true,

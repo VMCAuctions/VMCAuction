@@ -1,36 +1,27 @@
 var mongoose = require('mongoose'),
 	Item = require('../models/item.js'),
-	Category = require('../models/category.js');
-	Package = require('../models/package.js');
+	Category = require('../models/category.js'),
+	Package = require('../models/package.js'),
+	Auction = require('../models/auction.js');
 
 function ItemsController(){
 
 	this.index = function(req,res){
 		console.log('ItemsController index');
-		var packages;
-		var categories;
-		Package.find({}, function (err, result) {
-			if (err) {
-				console.log(err);
-			}else {
-				packages = result;
-			}
-		})
-		Category.find({}, function (err, result) {
+		Category.find({}, function (err, categories) {
 			if (err) {
 				console.log(err);
 			}else{
-				categories = result
+				Item.find({_auctions: req.params.auctions}).populate("_package").sort({_category:'ascending'}).exec(function(err, items){
+						if(err){
+								console.log(err);
+								res.status(500).send('Failed to Load Items');
+						}else{
+							res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, categories: categories, auction: req.params.auctions})
+						}
+				})
 			}
 		})
-		Item.find({}).populate("_package").sort({_category:'ascending'}).exec(function(err, items){
-	    	if(err){
-	      		console.log(err);
-	      		res.status(500).send('Failed to Load Items');
-	    	}else{
-					res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, packages: packages, categories: categories})
-	       }
-    })
 	};
 
 
@@ -41,9 +32,9 @@ function ItemsController(){
 	      		res.status(500).send('Failed to Load Items');
 	    	}else{
 					if(req.session.admin){
-						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin})
+						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions + '/packages')
 					}
 				}
 		console.log('ItemsController new');
@@ -53,12 +44,12 @@ function ItemsController(){
 		console.log('ItemsController create');
     Item.create({name: req.body.itemName, description: req.body.itemDescription,
       _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
-      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority},  function(err, result){
+      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority, _auctions: req.params.auctions},  function(err, result){
       if(err){
         console.log(err);
         res.status(500).send('Failed to Create Item');
       }else{
-        res.redirect('/items/new?true')
+        res.redirect('/' + req.params.auctions + '/items/new?true')
       }
     });
 	};
@@ -75,9 +66,9 @@ function ItemsController(){
 					  console.log(err);
 					  res.status(500).send('Failed to Load Items');
 					}else if(req.session.admin){
-						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin});
+						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions});
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions + '/packages')
 					}
 				})
 		  }
@@ -117,7 +108,7 @@ function ItemsController(){
 										})
 									})
 							}
-							res.redirect('/items')
+							res.redirect('/' + req.params.auctions + '/items')
           });
 	    }
 	  });
@@ -144,14 +135,29 @@ function ItemsController(){
 								console.error();
 							}else {
 								package.value -= val;
+								package._items.splice(package._items.indexOf(item._id), 1)
 								package.save(function (err, result) {
 									if (err) {
 										console.error();
 									}
 								})
+								if (package.value === 0) {
+									package.remove(package, function (err, result) {
+										if (err) {
+											console.error();
+										}
+										else{
+											Auction.removeById(item._auctions, function(err, auction){
+												if(err){
+													console.log(err)
+												}
+											})
+										}
+									})
+								}
 							}
 						})
-						res.redirect('/items')
+						res.redirect('/' + req.params.auctions + '/items')
 					}
 				})
 			}

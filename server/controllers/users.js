@@ -1,7 +1,8 @@
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
-	Package = require('../models/package.js');
+	Package = require('../models/package.js'),
+	Auction = require('../models/auction.js');
 
 function UsersController(){
 
@@ -30,11 +31,11 @@ function UsersController(){
 	this.index = function(req,res){
 		console.log('UsersController index');
 		var cart = {}
-		User.find({}, function(err, users ){
+		User.find({_auctions: req.params.auctions}, function(err, users ){
 			if(err){
 				console.log(err)
 			}else if(req.session.admin){
-					Package.find({}, function(err, result){
+					Package.find({_auctions: req.params.auctions}, function(err, result){
 						if (err){
 							console.log(err)
 						}else{
@@ -51,23 +52,23 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin})
+							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
 			}else{
-				res.redirect('/packages')
+				res.redirect('/' + req.params.auctions  + '/packages')
 			}
 		})
 	};
 
 
 	this.new = function(req,res){
-		res.render('login', {userName: req.session.userName, admin: req.session.admin })
+		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions })
 	};
 
 
 	this.register = function(req,res){
-		res.render('user', {userName: req.session.userName, admin: req.session.admin})
+		res.render('user', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 	};
 
 
@@ -133,6 +134,7 @@ function UsersController(){
 								city: req.body.city,
 								states: req.body.states,
 								zip: req.body.zip,
+								_auctions: req.params.auctions,
 								password: hash,
 								admin: adminStatus
 							},
@@ -182,7 +184,7 @@ function UsersController(){
 		console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
-		Package.find({}, function(err, result){
+		Package.find({_auctions: req.params.auctions}, function(err, result){
 			if (err){
 				console.log(err)
 			}else{
@@ -198,9 +200,9 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray})
+						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
 					}else{
-						res.redirect('/packages')
+						res.redirect('/' + req.params.auctions  + '/packages')
 					}
 				})
 			}
@@ -236,13 +238,13 @@ function UsersController(){
 				}
 			})
 		}
-			res.redirect('/users')
+			res.redirect('/' + req.params.auctions  + '/users')
 	};
 
 
 	this.logout = function(req,res){
 		req.session.destroy();
-    res.redirect('/packages')
+    res.redirect('/' + req.params.auctions  + '/packages')
 	};
 
 
@@ -270,7 +272,7 @@ function UsersController(){
 					flag = false;
 				}
 			}
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	};
 
@@ -293,7 +295,7 @@ function UsersController(){
 					}
 				}
 			};
-			res.redirect('/packages')
+			res.redirect('/' + req.params.auctions  + '/packages')
 		})
 	};
 

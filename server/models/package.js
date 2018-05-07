@@ -12,6 +12,7 @@ var packageSchema = new Schema({
 	_items: [{type: Number, required: true, ref: 'Item'}],
 	description: {type: String},
 	_category: String,
+	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	value: Number,  //prepopulated field with for item in package._items { value += item.value }
 	amount: Number, //starting bid
 	priority: {type: Number, required: true, default: 0},
