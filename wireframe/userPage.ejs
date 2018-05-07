@@ -5,10 +5,11 @@
     <title><%=user.userName%></title>
   </head>
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
   <body>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
@@ -25,19 +26,20 @@
         <%for(let i =0; i<user._packages.length; i++){%>
           <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
           <% if(user._packages[i]) {%>
-          <td><a href="/api/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
+          <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
           <% if(user._packages[i].bids.length > 0) {%>
             <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
-                 <td>You!!!</td>
+
+                <td id = "<%=user._packages[i]._id%>">You!!!</td>
             <%}else{%>
-                <td><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
+                <td id = "<%=user._packages[i]._id%>"><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
               <%}%>
             <%}else{%>
               <td>No Bids Yet!</td>
             <%}%>
           <%}%>
 
-          <td><a href="/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+          <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
           </tr>
           <%}%>
 
@@ -45,18 +47,58 @@
     </table>
     <button id='update'>Update List Order</button>
     <!--cant tell if pressing this button works or not on my phone-->
+
+    <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
+
     <script>
-      var user_id = '<%= user._id%>';
+    	var socket = io.connect('http://localhost:8000/');
+      var cartTotal = <%=cartTotal%>
+      var userId = '<%= user._id%>';
       var el = document.getElementById('selections')
       var sortable = Sortable.create(el)
       $('#update').click(function(){
         var result = sortable.toArray()
         console.log(result)
         $.ajax({type: 'GET',
-          url:'/users/updateList/' + result + '/' + user_id
+          url:'/<%=auction%>/users/updateList/' + result + '/' + userId
         })
       })
+      socket.on("serverTalksBack", function(data){
+        var isDone = false;
+        <%for (var j = 0; j < user._packages.length; j++){%>
+          if(<%=user._packages[j]._id%> == data.packId){
+            if(data.userName === "<%=userName%>"){
+              $("#<%=user._packages[j]._id%>").text("You!!!")
+            }
+            else{
+              $("#<%=user._packages[j]._id%>").text(data.userName)
+            }
+          }
+          else if(data.userName === "<%=userName%>" && <%=j%> === <%=user._packages.length - 1%>){
+            isDone = true
+          }
+        <%}%>
+        //This below code only runs if the user has bid on a package that they had not previously had on their watchlist
+        if(isDone){
+          $("#selections").append(`
+            <tr data-id= data.packId class='selection' style='cursor: move'>
+            <td><a href="/<%=auction%>/packages/"` + data.packId + `">` + data.name + `</a></td>
+            <td id = "` + data.packId + `">You!!!</td>
 
+            <td><a href="/<%=auction%>/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+            </tr>`
+          )
+          //Needs to add an entire new row to the table
+        }
+        <%for (var j = 0; j < cartArray.length; j++){%>
+          if(<%=cartArray[j]._id%> == data.packId){
+            cartTotal -= <%=cartArray[j].bids[cartArray[j].bids.length - 1].bidAmount%>
+            $("#cartTotal").text("Total: $" + cartTotal)
+            //Remove your last bid amount from cartTotal
+          }
+          //If the newest bidder is you, then you will add the new amount to cartTotal
+        <%}%>
+      })
 
     </script>
 
