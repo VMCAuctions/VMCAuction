@@ -77,24 +77,21 @@ module.exports = function(app) {
 	app.get('/:auctions/users/register', function(req,res) {
 		users.register(req,res)});
 	// get the login form
-	app.get('/:auctions/users/login', function(req,res){
+	app.get('/users/login', function(req,res){
 		users.new(req,res)});
 	// post the new user form and create that new user (Registration)
 	app.post('/:auctions/users', function(req,res){
 		users.create(req,res)});
   	//Check login credentials
-	app.post('/:auctions/users/checklogin', function(req,res){
+	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	//Check if username is already in use
 	app.get('/:auctions/users/duplicate/', function(req, res) {
 		users.duplicate(req,res)});
 	// logout a specific user
-	app.get('/:auctions/users/logout', function(req,res){
+	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
-	// post the user login form  (LOGIN)
-	app.post('/:auctions/users/login', function(req,res){
-		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){
 		users.show(req,res)});
@@ -122,7 +119,8 @@ module.exports = function(app) {
 		auctions.create(req, res)});
 
 	//Landing Page (Packages page)
-	app.get('/:auctions', function (req,res) {
+	app.get('/:auctions/*', function (req,res) {
+		//res.redirect()
 		packages.index(req,res)});
 
 }
