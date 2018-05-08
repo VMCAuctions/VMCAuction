@@ -124,6 +124,8 @@ module.exports = function(app) {
 	//Landing Page (Packages page)
 	app.get('/:auctions', function (req,res) {
 		packages.index(req,res)});
-
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		res.render('organizerMenu')
+	})
 }
 // end of module.exports
