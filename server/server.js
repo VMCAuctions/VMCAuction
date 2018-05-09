@@ -32,10 +32,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var path = require("path");
 app.use(express.static("../public"));
-<<<<<<< HEAD
-=======
-
->>>>>>> 80b4dd60b24afe0dc783658642ad6f6fcb989caa
 
 if (process.env.NODE_ENV === "production") {
 		app.use(express.static(path.join(__dirname, "../wireframe/css")));
