@@ -2,12 +2,7 @@ var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js')
-<<<<<<< HEAD
-var path = require("path");
-
-=======
 var auctions = require('../controllers/auctions.js')
->>>>>>> 80b4dd60b24afe0dc783658642ad6f6fcb989caa
 
 module.exports = function(app) {
 
@@ -129,6 +124,8 @@ module.exports = function(app) {
 	//Landing Page (Packages page)
 	app.get('/:auctions', function (req,res) {
 		packages.index(req,res)});
-
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		res.render('organizerMenu')
+	})
 }
 // end of module.exports
