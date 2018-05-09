@@ -41,7 +41,7 @@
 <body>
 
   <%if(admin){%>
-  <%- include('admin_header') -%>
+  <%- include('adminHeader') -%>
   <%}else{%>
     <%- include('header') -%>
   <%}%>
@@ -64,7 +64,7 @@
   <%}%>
   <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
-  <a href="/api/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
+  <a href="/<%=auction%>/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
@@ -77,7 +77,7 @@
     <% for(var i = 0; i < user._packages.length; i++){ %>
       <% if(featured[f]._id == user._packages[i]) {%>
         <!--do this in ajax call instead-->
-        <a href="/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+        <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
         <% flag = true %>
         <% break %>
         <% } %>
@@ -85,16 +85,16 @@
 
       <% if(flag === false) {%>
         <!--do this in ajax call instead-->
-        <a href="/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+        <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=featured[f]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=featured[f]._id %>'><button>Delete</button></a>
+   <a href='/<%=auction%>/packages/edit/<%=featured[f]._id%>'><button>Edit</button></a>
+   <a href='/<%=auction%>/packages/remove/<%=featured[f]._id %>'><button>Delete</button></a>
    <%if(featured[f].featured === true){%>
-     <a href="/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
+     <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
    <%}else{%>
-   <a href="/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a>
+   <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a>
   <%}%>
   <%}%>
 </div>
@@ -108,7 +108,7 @@
   <%}%>
   <img src="/no-image.png" style="max-width:100%" alt="img">
   <br>
-  <a href="/api/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
+  <a href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a>
   <p><b>Category:</b> <%=packages[n]._category%></p>
   <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
   <%if(packages[n].bids[packages[n].bids.length-1]){%>
@@ -121,22 +121,22 @@
     <% for(var i = 0; i < user._packages.length; i++){ %>
     <% if(packages[n]._id == user._packages[i]) {%>
 
-      <a href="/users/uninterested/<%= packages[n]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+      <a href="/<%=auction%>/users/uninterested/<%= packages[n]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
       <% flag = true %>
       <% break %>
       <% } %>
       <%}%>
       <% if(flag === false) {%>
-      <a href="/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+      <a href="/<%=auction%>/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/packages/<%=packages[n]._id%>'><button>Edit</button></a>
-   <a href='/api/remove_package/<%=packages[n]._id %>'><button>Delete</button></a>
+   <a href='/<%=auction%>/packages/edit/<%=packages[n]._id%>'><button>Edit</button></a>
+   <a href='/<%=auction%>/packages/remove/<%=packages[n]._id %>'><button>Delete</button></a>
    <%if(packages[n].featured === true){%>
-     <a href="/packages/featured/<%=packages[n]._id%>"><button>Unfeature</button></a>
+     <a href="/<%=auction%>/packages/featured/<%=packages[n]._id%>"><button>Unfeature</button></a>
    <%}else{%>
-   <a href="/packages/featured/<%=packages[n]._id%>"><button>Feature</button></a>
+   <a href="/<%=auction%>/packages/featured/<%=packages[n]._id%>"><button>Feature</button></a>
   <%}%>
   <%}%>
 </div>
