@@ -74,19 +74,19 @@ module.exports = function(app) {
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
 	// displaying the create user page
-	app.get('/:auctions/users/register', function(req,res) {
+	app.get('/users/register', function(req,res) {
 		users.register(req,res)});
 	// get the login form
 	app.get('/users/login', function(req,res){
-		users.new(req,res)});
+		users.login(req,res)});
 	// post the new user form and create that new user (Registration)
-	app.post('/:auctions/users', function(req,res){
+	app.post('/users/create', function(req,res){
 		users.create(req,res)});
   	//Check login credentials
 	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	//Check if username is already in use
-	app.get('/:auctions/users/duplicate/', function(req, res) {
+	app.get('/users/duplicate/', function(req, res) {
 		users.duplicate(req,res)});
 	// logout a specific user
 	app.get('/users/logout', function(req,res){

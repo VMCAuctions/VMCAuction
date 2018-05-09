@@ -10,6 +10,7 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
+		req.session.auction = req.params.auctions
 		var categoryArray = []
 		var user
 		Category.find({}, function(err, categories) {
@@ -26,7 +27,7 @@ function PackagesController(){
 					}else{
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.session.auction}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
 									console.log('Package Index Error');
 									res.status(500).send('Failed to Load Packages');
@@ -44,6 +45,7 @@ function PackagesController(){
 											nonfeatured.push(packages[i]);
 										}
 									}
+									console.log("req.session is", req.session)
 									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
