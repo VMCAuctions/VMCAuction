@@ -21,7 +21,7 @@
 
 <body>
   <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
       <%}%>
@@ -58,12 +58,12 @@
 
                   <tr class="itemRow">
                     <% if(admin){ %>
-                      <td><a href='/api/items/<%=items[i]._id%>'><button>Edit</button></a>|<a href='/api/remove_item/<%=items[i]._id%>'><button>Delete</button></a></td>
+                      <td><a href='/<%=auction%>/items/<%=items[i]._id%>'><button>Edit</button></a>|<a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><button>Delete</button></a></td>
                       <%}%>
                       <td><%= items[i]._id%></td>
                       <td><%= items[i].name%></td>
                       <% if (items[i].packaged) {%>
-                        <td> <a href="/api/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
+                        <td> <a href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
                       <%}else{%>
                         <td></td>
                       <%}%>

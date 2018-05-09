@@ -14,13 +14,13 @@
       }
     </script> -->
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
     <h3>create package</h3>
 
-    <form id="packageForm" action="/api/packages" method="post">
+    <form id="packageForm" action="/<%=auction%>/packages" method="post">
       <input type="text" name="packageName" id="packageName" placeholder="packageName">
       <textarea name="packageDescription" id="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
       <input id='priority' type='number' name='priority' placeholder='Priority'>
@@ -45,10 +45,11 @@
         <%}%>
       <%}%>
       <br>
-      <input readonly id="totalValue" type="number" name="totalValue" value="<%=total%>">
+      <input readonly id="totalValue" type="number" name="totalValue" value="0">
       <input type="submit" name="submit" value="Submit">
     </form>
     <script>
+
       var total = 0;
       var checkedItems = {};
        totalAdd = function(value, id){
@@ -98,6 +99,9 @@
       }
     });
     validator.form();
+    if (window.location.search.substring(1) == 'true') {
+      alert('that was a success')
+    }
     </script>
   </body>
 </html>
