@@ -62,15 +62,17 @@ function UsersController(){
 	};
 
 
-	this.new = function(req,res){
+	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions })
+		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
 	};
 
 
 	this.register = function(req,res){
-		res.render('user', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+		Auction.find({}, function(err, auctions){
+			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+		})
 	};
 
 
@@ -89,6 +91,9 @@ function UsersController(){
 
 
 	this.create = function(req,res){
+
+		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
+
 		console.log('UsersController create');
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
@@ -136,7 +141,7 @@ function UsersController(){
 								city: req.body.city,
 								states: req.body.states,
 								zip: req.body.zip,
-								_auctions: req.params.auctions,
+								_auctions: req.body.auctions,
 								password: hash,
 								admin: adminStatus
 							},
@@ -144,9 +149,11 @@ function UsersController(){
 									if(err){
 										console.log(err)
 									}else{
+										req.session.destroy();
+										req.session.auction = req.body.auctions
 										req.session.userName = user.userName
 										req.session.admin = user.admin
-										res.redirect('/' + req.params.auctions + '/packages')
+										res.redirect('/' + req.body.auctions + '/packages')
 										return;
 									}
 							});
@@ -170,6 +177,8 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if(match){
+						req.session.destroy();
+						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
 						res.json({match: true, auction: user._auction})
