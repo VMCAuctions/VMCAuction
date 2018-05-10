@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  
+
       <%- include('header') -%>
       <div class="container mb-4">
         <div class="well">
@@ -37,9 +37,9 @@
               <label class="col-sm-2 col-form-label">Auction</label>
               <div class="col-sm-10">
 
-                <select>
+                <select name = "auctions">
                   <% for (var auction in auctions) {%>
-                    <option value="<%=auctions[auction].name%>"><%=auctions[auction].name%></option>
+                    <option value="<%=auctions[auction]._id%>"><%=auctions[auction].name%></option>
                   <%}%>
                 </select>
 
