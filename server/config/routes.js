@@ -110,6 +110,9 @@ module.exports = function(app) {
   	//saves list of packages on users personal page as user likes it
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
+		//deletes a user (Note: no front-end link to this route yet)
+	app.get('/users/delete/:user', function(req, res){
+		users.delete(req,res)});
 
 	// AUCTION //
 		//admin selects what they want to do

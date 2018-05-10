@@ -10,7 +10,9 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
-		req.session.auction = req.params.auctions
+		if (!req.session.userName){
+	  	req.session.auction = req.params.auctions
+		}
 		var categoryArray = []
 		var user
 		Category.find({}, function(err, categories) {
