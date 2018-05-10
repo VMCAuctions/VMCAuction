@@ -3,10 +3,8 @@ var express = require("express");
 var app = express();
 var session = require('express-session')
 require('jsdom-global');
-//Go to config/secret.json and follow the instructions.
-var secret = require('./config/secret.json')
 
-console.log("secret", secret.secret);
+
 
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
@@ -17,8 +15,7 @@ mongoose.Promise = global.Promise;
 
 
 app.use(session({
-	//Go to config/secret.json and follow the instructions.
-  secret: secret.secret,
+  secret: 'ploop',
   resave: false,
   saveUninitialized: true,
   rolling: true
