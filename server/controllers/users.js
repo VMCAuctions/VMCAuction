@@ -52,9 +52,22 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
+			}else{
+				res.redirect('/' + req.params.auctions  + '/packages')
+			}
+		})
+	};
+
+	this.admin = function(req,res){
+		console.log('Admin change display');
+		User.find({}, function(err, users ){
+			if(err){
+				console.log(err)
+			}else if(req.session.admin){
+				res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
 			}else{
 				res.redirect('/' + req.params.auctions  + '/packages')
 			}
@@ -263,7 +276,7 @@ function UsersController(){
 							})
 						}
 					}
-					res.redirect('/' + req.params.auctions  + '/users')
+					res.redirect('/users/admin')
 				}
 			})
 

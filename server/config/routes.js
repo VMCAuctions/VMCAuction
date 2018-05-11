@@ -99,8 +99,11 @@ module.exports = function(app) {
 	app.post('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
 	// parse through admin changes before update
-	app.post('/:auctions/users/admin', function(req,res){
+	app.post('/users/admin', function(req,res){
 		users.adminChange(req,res)});
+	// displays user cart info
+	app.get('^/users/admin$', function(req,res){
+		users.admin(req,res)});
   	//adds to watchlist
 	app.get('/:auctions/users/interested/:id', function(req, res) {
 		users.interested(req, res)});

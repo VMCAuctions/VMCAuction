@@ -89,7 +89,7 @@
         <%}%>
         <%}%>
       <% if (admin === true) { %>
-				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
