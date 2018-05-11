@@ -45,7 +45,8 @@
                 if(data.match == false){
                     alert('username and password do not match')
                 }else {
-                  if (data.auction == undefined){
+                  console.log("data.auction", data.auction)
+                  if (data.auction === undefined){
                     //This will direct to the landing page for admins, which is yet to be built
                     //For testing purposes, plugged in an auction id below
                     window.location.replace('/5aeb8667d706dc88cfe67a29/packages')
