@@ -8,7 +8,42 @@ var mongoose = require('mongoose'),
 function AuctionsController(){
   this.index = function(req, res){
     res.render("auctions", {admin: req.session.admin, userName: req.session.userName})
-  };
+	};
+	//organizer landing page
+	this.main = function(req, res) { 
+		if (req.session.admin) {
+			res.render('main', {
+				firstName: 'Julie',
+				auctions: [
+					{name: "Fall '18 Gala Puttin' on the Ritz", _id: '1234' },
+					{name: 'Holiday 2018 Fundraiser', _id: '1235' },
+					{name: 'Las Vegas  2019 Donor Lunch', _id: '1236' }	
+				],
+				archivedAuctions: [
+					{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
+					{name: 'Christmas 2017 Fundraiser', _id: '1002' },
+					{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }	
+				]
+			});		
+		} else {
+			// users.index(req,res); 
+
+			//only for testing purposes when no admin is logged in:
+			res.render('main', {
+				firstName: 'Julie',
+				auctions: [
+					{name: "Fall '18 Gala Puttin' on the Ritz", _id: '1234' },
+					{name: 'Holiday 2018 Fundraiser', _id: '1235' },
+					{name: 'Las Vegas  2019 Donor Lunch', _id: '1236' }	
+				],
+				archivedAuctions: [
+					{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
+					{name: 'Christmas 2017 Fundraiser', _id: '1002' },
+					{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }	
+				]
+			});	
+		}
+	};
 	//Just used as an API for now
 	this.create = function(req, res){
 		// console.log("req.body.startClockDate is", req.body.startClockDate)
