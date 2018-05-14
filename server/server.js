@@ -1,7 +1,7 @@
 
 var express = require("express");
 var app = express();
-var session = require('express-session')
+var session = require('express-session');
 require('jsdom-global');
 
 

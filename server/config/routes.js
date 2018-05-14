@@ -115,15 +115,21 @@ module.exports = function(app) {
 		users.updateList(req,res)});
 
 	// AUCTION //
-		//admin selects what they want to do
+	//organizer's landing page (where the organizer/admin selects what she wants to do)	
+	app.get('^/auctions/main', function (req, res) {
+		auctions.main(req, res)});
+	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
+    	
 
+		
+		
 	//Landing Page (Packages page)
 	app.get('/:auctions', function (req,res) {
-		packages.index(req,res)});
-
+		packages.index(req,res)
+	});
 }
 // end of module.exports
