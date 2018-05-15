@@ -5,8 +5,6 @@ var session = require('express-session')
 var secret = require('./config/secret.json')
 require('jsdom-global');
 
-
-
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	autoIncrement = require('mongoose-auto-increment');
@@ -21,6 +19,14 @@ app.use(session({
   rolling: true
 	//resets session timeout everytime the user interacts with the site
 }));
+
+// app.on("Category initializer", function(){
+// 	console.log("entered category initializer")
+// 	if(Category.checkIfEmpty() === true){
+// 		console.log("checkIfEmpty ran")
+// 		Category.initialize()
+// 	}
+// })
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
