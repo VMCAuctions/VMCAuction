@@ -14,15 +14,11 @@
 
 <body>
 
-  <%if(admin){%>
-    <%- include('adminHeader') -%>
-    <%}else{%>
       <%- include('header') -%>
-      <%}%>
       <div class="container mb-4">
         <div class="well">
           <h1 class="py-4">Create User Profile</h1>
-          <form id="registrationForm" action="/<%=auction%>/users" method="post">
+          <form id="registrationForm" action="/users/create" method="post">
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">First Name</label>
               <div class="col-sm-10">
@@ -34,6 +30,19 @@
               <label class="col-sm-2 col-form-label">Last Name</label>
               <div class="col-sm-10">
                 <input placeholder="Last Name" type="text" name="lastName" id="lastName" class="form-control" value required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Auction</label>
+              <div class="col-sm-10">
+
+                <select name = "auctions">
+                  <% for (var auction in auctions) {%>
+                    <option value="<%=auctions[auction]._id%>"><%=auctions[auction].name%></option>
+                  <%}%>
+                </select>
+
               </div>
             </div>
 
@@ -145,7 +154,7 @@
             user: true,
             nowhitespace: true,
             rangelength: [5, 25],
-            remote: '/<%=auction%>/users/duplicate'
+            remote: '/users/duplicate'
           },
           password: {
             required: true,

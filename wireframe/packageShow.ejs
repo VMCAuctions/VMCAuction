@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+/users/login<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -67,7 +67,7 @@
 				<%}%>
 
 			<% if (!userName) {%>
-				<a href='/<%=auction%>/users/login'>Login</a>
+				<a href='/users/login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
@@ -89,7 +89,7 @@
         <%}%>
         <%}%>
       <% if (admin === true) { %>
-				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>

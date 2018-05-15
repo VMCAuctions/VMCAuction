@@ -10,6 +10,9 @@ function PackagesController(){
 
 	this.index = function(req,res){
 		console.log('PackagesController index');
+		if (!req.session.userName){
+	  	req.session.auction = req.params.auctions
+		}
 		var categoryArray = []
 		var user
 		Category.find({}, function(err, categories) {
@@ -44,6 +47,7 @@ function PackagesController(){
 											nonfeatured.push(packages[i]);
 										}
 									}
+									console.log("req.session is", req.session)
 									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
