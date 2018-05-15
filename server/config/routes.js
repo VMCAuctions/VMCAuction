@@ -128,6 +128,8 @@ module.exports = function(app) {
 	app.get('/:auctions/*', function (req,res) {
 		//res.redirect()
 		packages.index(req,res)});
-
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		res.render('organizerMenu')
+	})
 }
 // end of module.exports
