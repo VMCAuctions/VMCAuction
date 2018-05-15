@@ -115,7 +115,7 @@ module.exports = function(app) {
 		users.updateList(req,res)});
 
 	// AUCTION //
-	//organizer's landing page (where the organizer/admin selects what she wants to do)	
+	//organizer's landing page (where the organizer selects what she wants to do)	
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
 	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
