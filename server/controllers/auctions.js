@@ -15,7 +15,7 @@ function AuctionsController(){
 			res.render('main', {
 				firstName: 'Julie',
 				auctions: [
-					{name: "Fall '18 Gala Puttin' on the Ritz", _id: '1234' },
+					{name: "23A Wicked Affair", _id: '14' },
 					{name: 'Holiday 2018 Fundraiser', _id: '1235' },
 					{name: 'Las Vegas  2019 Donor Lunch', _id: '1236' }	
 				],
@@ -32,7 +32,7 @@ function AuctionsController(){
 			res.render('main', {
 				firstName: 'Julie',
 				auctions: [
-					{name: "Fall '18 Gala Puttin' on the Ritz", _id: '1234' },
+					{name: "A Wicked Affair", _id: '1234' },
 					{name: 'Holiday 2018 Fundraiser', _id: '1235' },
 					{name: 'Las Vegas  2019 Donor Lunch', _id: '1236' }	
 				],
