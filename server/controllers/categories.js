@@ -50,58 +50,15 @@ function CategoriesController(){
 	 //This will be used to hardcode in the categories for Valley Medical upon auction creation
 	 this.initialize = function(){
 		 console.log('CategoriesController initialize');
-		 Category.create({name: "Travel/Vacations"},  function(err, result){
-				 if(err){
-					 console.log(err);
-				 }else{
-					 Category.create({name: "Food & Drink"},  function(err, result){
-							 if(err){
-								 console.log(err);
-							 }else{
-								 Category.create({name: "Sports"},  function(err, result){
-										 if(err){
-											 console.log(err);
-										 }else{
-											 Category.create({name: "Art"},  function(err, result){
-													 if(err){
-														 console.log(err);
-													 }else{
-														 Category.create({name: "Activities"},  function(err, result){
-																 if(err){
-																	 console.log(err);
-																 }else{
-																	 Category.create({name: "Lifestyle"},  function(err, result){
-																			 if(err){
-																				 console.log(err);
-																			 }else{
-																				 Category.create({name: "Specialty Items"},  function(err, result){
-																						 if(err){
-																							 console.log(err);
-																						 }else{
-																							 Category.find({}, function(err, categories){
-																								 if (err){
-																									 console.log(err)
-																								 }
-																								 else{
-																									 console.log(categories)
-																									 return
-																								 }
-																							 })
-																						 }
-																					})
-																			 }
-																		})
-																 }
-															})
-													 }
-												})
-										 }
-									})
-							 }
-						})
+		 const categoryArray = ["Travel/Vacations", "Food & Drink", "Sports", "Art", "Activities", "Lifestyle", "Specialty Items"]
+		 for (var i = 0; i < categoryArray.length; i++) {
+			 Category.create({name: categoryArray[i]},  function(err, result){
+			 	 if(err){
+			 		 console.log(err);
 				 }
-			})
-		}
+		 	 })
+		 }
+	 }
 
 }
 

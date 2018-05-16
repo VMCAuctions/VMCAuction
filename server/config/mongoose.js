@@ -72,25 +72,3 @@ fs.readdirSync( models_path ).forEach( function( file ) {
     require( path.join( models_path, file ) );
   }
 });
-
-
-
-var Category = require('../models/category.js')
-var categories = require('../controllers/categories.js')
-// console.log(categories.checkIfEmpty())
-// const emptyBoolean = categories.checkIfEmpty()
-// if(emptyBoolean === true){
-  // console.log("checkIfEmpty ran")
-// console.log("emptyBoolean is", emptyBoolean)
-Category.find({}, function(err, result){
-  if (err){
-    console.log(err)
-  }
-  else if (result.length === 0){
-    console.log("running categoriesintialize")
-    categories.initialize()
-  }
-  else{
-    console.log("not running")
-  }
-})
