@@ -46,6 +46,7 @@ app.set('views', path.join(__dirname, '../wireframe'));
 app.set('view engine', 'ejs');
 
 require('./config/mongoose.js');
+require('./config/initialize.js');
 
 var routesSetter = require('./config/routes.js');
 routesSetter(app);
