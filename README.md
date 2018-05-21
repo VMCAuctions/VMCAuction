@@ -2,7 +2,27 @@
 
 This is a silent bidding site for Valley Medical Center Foundation's fundraising auctions.
 
-## Installing / Getting started
+  * [Installing Getting started](#installing-getting-started)
+  * [Developing](#developing)
+    + [Built With](#built-with)
+    + [Prerequisites](#prerequisites)
+    + [Deploying / Publishing](#deploying---publishing)
+  * [Version Control](#version-control)
+      - [Master](#master)
+      - [Develop](#develop)
+      - [Feature Branches](#feature-branches)
+  * [Configuration](#configuration)
+  * [Style guide](#style-guide)
+  * [Database](#database)
+      - [Auction](#auction)
+      - [Categories](#categories)
+      - [Items](#items)
+      - [Packages](#packages)
+      - [Users](#users)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+## Installing Getting started
 
 Create a directory titled VMC, clone the git repository into that folder, switch to the develop branch, and then install all dependencies.
 
