@@ -14,10 +14,10 @@ var itemSchema = new Schema({
  donorLast: {type: String, required: true},
  donorDisplay: {type: String, default:"Anonymous"},
  restrictions: {type: String},
- value: Number,
- packaged: Boolean,
+ value: {type: Number, required: true},
+ packaged: {type: Boolean, default:false},
  priority: {type: Number, required: true, default: 0},
-_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
+_auctions: {type: Schema.Types.ObjectId, required:true, ref: 'Auction'},
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
 }, { timestamps: true });
