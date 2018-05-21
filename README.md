@@ -2,6 +2,8 @@
 
 This is a silent bidding site for Valley Medical Center Foundation's fundraising auctions.
 
+## Table of Contents
+
   * [Installing Getting started](#installing-getting-started)
   * [Developing](#developing)
     + [Built With](#built-with)
