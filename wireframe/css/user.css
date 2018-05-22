@@ -1,12 +1,13 @@
-body.login-body {
+body.regist-body {
    background-color: #e3eaf0;
    color: #595959;
 }
-.container.login-container {
-   margin-top: 7%;
+.container.regist-container {
+   margin-top: 4%;
+   margin-bottom: 4%;
 }
-.card.login-card {
-	padding: 80px 0px 80px 0px;
+.card.regist-card {
+	padding: 20px;
 	background-color: #f5f5f5;
 	box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
 	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
@@ -16,20 +17,26 @@ img.signin-img {
 	padding: 0 2rem 2rem; 
 	margin: auto; 
 	display: block;  
-
 }
-form.login-form {
-	max-width: 350px;
+h1, h2 {
+	text-align: center;
+	color: #003d79;
+	margin-bottom: 1.2rem;
+}
+form.reg-form {
+	max-width: 600px;
 	margin: auto;
 }
 label {
 	margin-bottom: 0.2rem;
 }
-button.login-btn {
+button.regist-btn {
 	color: #fff;
 	background-color: #719949;
-	width: 100%;
-	margin: 1.2rem 0; 
+	width: 350px;
+	margin: 1.4rem auto; 
+	display: block;
+
 }
 .question {
 	text-align: center;
