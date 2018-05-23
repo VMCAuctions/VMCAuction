@@ -108,6 +108,7 @@ function UsersController(){
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
 		console.log('UsersController create');
+		console.log(req.body)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
@@ -144,7 +145,7 @@ function UsersController(){
 							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
 							var adminStatus = (lowerUser === "admin");
-							var linkedAuction = req.body.auctions
+							var linkedAuction = req.body.auctionName
 							if (adminStatus){
 								console.log("got in adminStatus")
 								linkedAuction = null
@@ -173,7 +174,7 @@ function UsersController(){
 										req.session.userName = user.userName
 										req.session.admin = user.admin
 										console.log("afterwards, req.session is", req.session)
-										res.redirect('/' + req.body.auctions + '/packages')
+										res.redirect('/' + linkedAuction + '/packages')
 										return;
 									}
 							});

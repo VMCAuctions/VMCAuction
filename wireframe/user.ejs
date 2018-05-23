@@ -11,32 +11,37 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 		<!-- <link rel="stylesheet" href="css/style.css">  -->
-		<link rel="stylesheet" href="/css/user.css"> 
-		
+		<link rel="stylesheet" href="/css/user.css">
+
 
 		<!-- JavaScript -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 		<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>			
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
   	</head>
-  	
+
 	<body class="regist-body">
 		<div class="container regist-container">
 			<div class="row">
-				<div class="col"></div>  <!-- this column is for equal space on the margins --> 
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 				<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
 					<div class="card regist-card">
 						<div class="card-body">
 							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid signin-img" alt="Valley Medical Center Foundation logo">
-							<h2>New User Registration</h2> 
-							<form class="reg-form">
+							<h2>New User Registration</h2>
+							<form class="reg-form" id="registrationForm" method = "POST" action="/users/create">
 								<div class="form-group">
 										<label for="auctionName">Select Auction</label>
-										<select class="form-control" id="auctionName">
-											<option>Wicked Affair</option>
-										</select>	
+										<select class="form-control" name="auctionName" id="auctionName">
+                      <% for (a in auctions) {%>
+                        <option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
+                      <% } %>
+										</select>
               					</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
@@ -46,7 +51,7 @@
 									<div class="form-group col-md-6">
 										<label for="lastName">Last Name</label>
 										<input type="text" name="lastName" id="lastName" class="form-control" value required>
-									</div>	
+									</div>
 								</div>
 								<div class="form-group">
 									<label for="streetAddress">Address</label>
@@ -74,13 +79,13 @@
 									<div class="form-group col-md-6">
 										<label for="email">Email</label>
 										<input type="email" name="email" id="email" class="form-control" value >
-									</div>	
+									</div>
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label for="userName">User Name</label>
 										<input type="text" name="userName" id="userName" class="form-control" value >
-									</div>	
+									</div>
 									<div class="form-group col-md-6">
 										<label for="password">Password</label>
 										<input type="password" name="password" id="password" class="form-control" value >
@@ -95,14 +100,14 @@
 							</form>
 							<div class="question">
 								<a href="#">Need help?</a> | <a href="#">Already have an account?</a>
-							</div>	
+							</div>
 						</div><!-- End card-body-->
 					</div>
 				</div>
-				<div class="col"></div> <!-- this column is for equal space on the margins --> 
+				<div class="col"></div> <!-- this column is for equal space on the margins -->
 			</div> <!-- end row -->
 		</div> <!-- end container -->
-	
+
     <script>
 
 		var validator = $("#registrationForm").validate({
