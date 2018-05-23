@@ -44,7 +44,7 @@
           </ul>
         </div>
       </nav>
-      <table class="table table-hover text-justify table-bordered">
+      <table id="orgMenu" class="table table-hover text-justify table-bordered">
       <thead>
         <tr>
           <th scope="col">Set Up Auction</th>
@@ -57,21 +57,21 @@
       <tbody>
         <tr>
           <td class="highlight"><i class="fas fa-cog"></i> Set Up Auction</td>
-          <td class="highlight"><a href="/<%=auction%>/items/new"><i class="fas fa-plus-circle"></i> Add Items</a></td>
+          <td onClick="document.location='/<%=auction%>/items/new'" class="highlight"><i class="fas fa-plus-circle"></i> Add Items</td>
           <td class="highlight"><i class="fas fa-user-plus"></i> Add Supporters</td>
           <td class="highlight"><i class="fas fa-chart-bar"></i> Auction Summary Report</td>
-          <td class="highlight"><a href="/<%=auction%>/categories"><i class="fas fa-list-ol"></i> Edit Categories</a></td>
+          <td onClick="document.location='/<%=auction%>/categories'" class="highlight"><i class="fas fa-list-ol"></i> Edit Categories</td>
         </tr>
         <tr>
           <td class="highlight"><i class="fas fa-edit"></i> Edit Auction Details</td>
-          <td class="highlight"><a href="/<%=auction%>/packages/new"><i class="fas fa-box-open"></i> Create packages</a></td>
+          <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight"><i class="fas fa-box-open"></i> Create packages</td>
           <td class="highlight"><i class="fas fa-address-book"></i> View/Edit Supporters Registry</td>
           <td class="highlight"><i class="fas fa-archive"></i> Package Summary</td>
           <td class="highlight"><i class="fas fa-unlock-alt"></i> Admin Rights</td>
         </tr>
         <tr>
           <td class="highlight"><i class="fas fa-clock"></i> Edit Auction Clock</td>
-          <td class="highlight"><a href="/<%=auction%>/packages"><i class="fas fa-th"></i> Preview Catalog</a></td>
+          <td onClick="document.location='/<%=auction%>/packages'" class="highlight"><i class="fas fa-th"></i> Preview Catalog</td>
           <td class="highlight"><i class="fas fa-clipboard-list"></i> Create Email Distribution List</td>
           <td class="highlight"><i class="fas fa-cubes"></i> Package Details</td>
           <td class="highlight"><i class="fas fa-database"></i> Customize Data Fields</td>
@@ -107,6 +107,17 @@
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function(){
+
+      $('#orgMenu td').click(function(){
+        var href = $(this).find("a").attr("href");
+        if(href){
+          window.location = href;
+        }
+      });
+    });
+  </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
