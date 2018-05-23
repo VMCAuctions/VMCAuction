@@ -8,8 +8,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<!-- =================================================================== -->
-
 <header>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -55,14 +53,14 @@
                 <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%=userName%>  </a>
               </h3>
               <h3>
-                <a class="nav-link" href='/<%=auction%>/users/logout'>Logout</a>
+                <a class="nav-link" href='/users/logout'>Logout</a>
               </h3>
             <%}else{%>
               <h3>
-                <a class="nav-link" href='/<%=auction%>/users/login'>Login</a>
+                <a class="nav-link" href='/users/login'>Login</a>
               </h3>
               <h3>
-                <a class="nav-link" href="/<%=auction%>/users/register">Register </a>
+                <a class="nav-link" href="/users/register">Register </a>
               </h3>
             <%}%>
           </ul>

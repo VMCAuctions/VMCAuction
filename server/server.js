@@ -2,9 +2,8 @@
 var express = require("express");
 var app = express();
 var session = require('express-session');
+var secret = require('./config/secret.json')
 require('jsdom-global');
-
-
 
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
@@ -13,9 +12,8 @@ mongoose.Promise = global.Promise;
 
 
 
-
 app.use(session({
-  secret: 'Sd9JKlui26nbM52UQwer0pM15oPzXL',
+  secret: secret.secret,
   resave: false,
   saveUninitialized: true,
   rolling: true
@@ -30,11 +28,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var path = require("path");
 app.use(express.static("../public"));
 
-
 if (process.env.NODE_ENV === "production") {
-		app.use(express.static(path.join(__dirname, "../wireframe/css")));
+		app.use(express.static(path.join(__dirname, "/../wireframe")));
 }else{
-		app.use(express.static(path.join(__dirname, "../wireframe/css")));
+		app.use(express.static(path.join(__dirname, "/../wireframe")));
 }
 
 app.set('views', path.join(__dirname, '../wireframe'));
