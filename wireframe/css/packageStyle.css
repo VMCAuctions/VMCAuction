@@ -1,0 +1,30 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+body {
+  font-family: 'Roboto', sans-serif !important;
+  color: #ffffff;
+}
+
+.cardMargin{
+  margin-top: 5rem;
+}
+
+.cardListButton{
+  background-color: coral !important;
+}
+
+.cardFeature{
+  background-color: #439941 !important;
+}
+
+.cardDelete{
+  background-color: #E84646 !important;
+}
+
+.cardEdit{
+  background-color: #DDDDDD !important;
+}
+
+.cardWatch{
+  background-color: #439AEF !important;
+}
