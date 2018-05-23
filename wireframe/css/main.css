@@ -2,23 +2,23 @@
 body {
 	color: #595959;
 }
-.auction-header {
-	background-color: #003d79;
-	padding: 0px  25px;
-	color: #fff;
+
+/* Organizer's Header styles - to be moved to its own component
+-------------------------------------------------------------- */
+.nav-img {
+	height: 30px;
+	padding-right: 20px; 
 }
-.text-plus {
-	font-family: Lato, sans-serif;
-	font-size: 1.5rem;
-	letter-spacing: 3px;
-}
-.text-home {
+.btn-logout {	
+	border: solid 1px #ffff;
 	color: #fff !important;
-	font-size: 1.4rem;
+	padding: 3px 10px;  
 }
-.text-home:hover {
-	color: #99004d !important;
+.btn-logout:hover {
+	background: #99004d;
+	border: solid 1px #99004d;
 }
+/*-------------------------------------------------- */
 .jumbo-head {
 	text-align: center;
 	color: #003d79;
@@ -29,18 +29,12 @@ body {
     min-height: 250px; 
     line-height: 2.5rem;
 }
-
 .btn-create {
 	background: #719949; 
 	border: solid 1px #719949;
 	color: #fff !important; 
 }
-.btn-logout {	
-	border: solid 1px #ffff;
-	color: #fff !important;
-	padding: 3px 10px;  
-}
-.btn-logout:hover, .btn-create:hover {
+.btn-create:hover {
 	background: #99004d;
 	border: solid 1px #99004d;
 }
@@ -51,8 +45,8 @@ a:hover {
 	color: #719949;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
+/* Organizer's Sticky footer styles - to be moved to its own component
+--------------------------------------------------------------------- */
 html {
 	position: relative;
 	min-height: 100%;
@@ -75,5 +69,5 @@ body {
 	vertical-align: middle;
 	display: block; 
 }
-/*-------------------------------------------------- */
+/*---------------------------------------------------------------- */
 

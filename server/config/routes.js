@@ -74,27 +74,24 @@ module.exports = function(app) {
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
 	// displaying the create user page
-	app.get('/:auctions/users/register', function(req,res) {
+	app.get('/users/register', function(req,res) {
 		users.register(req,res)});
 	// get the login form
-	app.get('/:auctions/users/login', function(req,res){
-		users.new(req,res)});
+	app.get('/users/login', function(req,res){
+		users.login(req,res)});
 	// post the new user form and create that new user (Registration)
-	app.post('/:auctions/users', function(req,res){
+	app.post('/users/create', function(req,res){
 		users.create(req,res)});
   	//Check login credentials
-	app.post('/:auctions/users/checklogin', function(req,res){
+	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	//Check if username is already in use
-	app.get('/:auctions/users/duplicate/', function(req, res) {
+	app.get('/users/duplicate/', function(req, res) {
 		users.duplicate(req,res)});
 	// logout a specific user
-	app.get('/:auctions/users/logout', function(req,res){
+	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
-	// post the user login form  (LOGIN)
-	app.post('/:auctions/users/login', function(req,res){
-		users.login(req,res)});
 	// get the page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){
 		users.show(req,res)});
@@ -102,8 +99,11 @@ module.exports = function(app) {
 	app.post('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
 	// parse through admin changes before update
-	app.post('/:auctions/users/admin', function(req,res){
+	app.post('/users/admin', function(req,res){
 		users.adminChange(req,res)});
+	// displays user cart info
+	app.get('^/users/admin$', function(req,res){
+		users.admin(req,res)});
   	//adds to watchlist
 	app.get('/:auctions/users/interested/:id', function(req, res) {
 		users.interested(req, res)});
@@ -113,6 +113,9 @@ module.exports = function(app) {
   	//saves list of packages on users personal page as user likes it
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
+		//deletes a user (Note: no front-end link to this route yet)
+	app.get('/users/delete/:user', function(req, res){
+		users.delete(req,res)});
 
 	// AUCTION //
 	//organizer's landing page (where the organizer selects what she wants to do)	
@@ -123,13 +126,13 @@ module.exports = function(app) {
 		auctions.index(req, res)});
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-    	
-
-		
 		
 	//Landing Page (Packages page)
-	app.get('/:auctions', function (req,res) {
-		packages.index(req,res)
-	});
+	app.get('/:auctions/*', function (req,res) {
+		//res.redirect()
+		packages.index(req,res)});
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		res.render('organizerMenu')
+	})
 }
 // end of module.exports

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+/users/login<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -13,9 +13,11 @@
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
-					event.preventDefault();
-					// replace replaceWith val maybe??
+          if(($("#bidAmount").val() > <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() > <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
+  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
+  					event.preventDefault();
+  					// replace replaceWith val maybe??
+          }
 
 				})
 
@@ -67,7 +69,7 @@
 				<%}%>
 
 			<% if (!userName) {%>
-				<a href='/<%=auction%>/users/login'>Login</a>
+				<a href='/users/login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
@@ -89,7 +91,7 @@
         <%}%>
         <%}%>
       <% if (admin === true) { %>
-				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
@@ -133,14 +135,17 @@
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
       })
 
+        //There is also a socket function for submitButton.click above, with the rest of the socket stuff
         $("#submitButton").click(function(){
-        	if($("#bidAmount").val() < <%= package.amount%>){
-            	alert("Please enter a bid above ", <%= package.amount%>)
-            	return false;
+          console.log("package.amount is", <%= package.amount%>)
+          console.log("lastBid is", <%= lastBid%>)
+        	if($("#bidAmount").val() < <%= package.amount%> && <%=ourBids%> === false){
+            	alert("Please enter a bid above " + <%= package.amount%>)
+            	event.preventDefault()
         	}else if ($("#bidAmount").val() < <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true) {
-            	alert("Please enter a bid above ", <%= lastBid + package.bidIncrement %> )
-                return false;
-            }
+            	alert("Please enter a bid above " + <%= lastBid + package.bidIncrement %> )
+              event.preventDefault()
+          }
 
 		})
 

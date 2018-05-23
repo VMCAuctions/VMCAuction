@@ -52,7 +52,7 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('admin', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
 			}else{
@@ -61,14 +61,31 @@ function UsersController(){
 		})
 	};
 
+	this.admin = function(req,res){
+		console.log('Admin change display');
+		User.find({}, function(err, users ){
+			if(err){
+				console.log(err)
+			}else if(req.session.admin){
+				res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
+			}else{
+				res.redirect('/' + req.params.auctions  + '/packages')
+			}
+		})
+	};
 
-	this.new = function(req,res){
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions })
+
+	this.login = function(req,res){
+		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
+		//Auction.find()
+		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
 	};
 
 
 	this.register = function(req,res){
-		res.render('user', {userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+		Auction.find({}, function(err, auctions){
+			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+		})
 	};
 
 
@@ -87,6 +104,9 @@ function UsersController(){
 
 
 	this.create = function(req,res){
+
+		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
+
 		console.log('UsersController create');
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
@@ -124,6 +144,11 @@ function UsersController(){
 							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
 							var adminStatus = (lowerUser === "admin");
+							var linkedAuction = req.body.auctions
+							if (adminStatus){
+								console.log("got in adminStatus")
+								linkedAuction = null
+							}
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -134,7 +159,7 @@ function UsersController(){
 								city: req.body.city,
 								states: req.body.states,
 								zip: req.body.zip,
-								_auctions: req.params.auctions,
+								_auctions: linkedAuction,
 								password: hash,
 								admin: adminStatus
 							},
@@ -142,9 +167,13 @@ function UsersController(){
 									if(err){
 										console.log(err)
 									}else{
+										console.log("linkedAuction is", linkedAuction)
+										console.log("req.session is", req.session)
+										req.session.auction = linkedAuction
 										req.session.userName = user.userName
 										req.session.admin = user.admin
-										res.redirect('packages')
+										console.log("afterwards, req.session is", req.session)
+										res.redirect('/' + req.body.auctions + '/packages')
 										return;
 									}
 							});
@@ -168,9 +197,10 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if(match){
+						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true})
+						res.json({match: true, auction: user._auction})
 					}else{
 						res.json({match: false})
 					}
@@ -224,27 +254,38 @@ function UsersController(){
 	this.adminChange = function(req,res){
 		console.log('UsersController admin change')
 		//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
-		for(let users in req.body){
-			User.findById(users, function(err, user){
+		console.log("req.body is", req.body)
+
+		console.log("req.body.keys() is", Object.keys(req.body))
+
+			User.find({_id: Object.keys(req.body)}, function(err, users){
 				if (err){
 					console.log(err)
-				}else if (user.userName.toLowerCase() != 'admin') {
-					user.admin = req.body[users]
-					user.save(function(err, result){
-						if (err){
-							console.log(err)
+				}else{
+					for (user in users){
+						if (users[user].userName.toLowerCase() != 'admin') {
+							users[user].admin = req.body[users[user]._id]
+							if(req.body[users[user]._id] === "true"){
+								console.log("Got inside if statement")
+								users[user]._auctions = null
+							}
+							users[user].save(function(err, result){
+								if (err){
+									console.log(err)
+								}
+							})
 						}
-					})
+					}
+					res.redirect('/users/admin')
 				}
 			})
-		}
-			res.redirect('/' + req.params.auctions  + '/users')
+
 	};
 
 
 	this.logout = function(req,res){
 		req.session.destroy();
-    res.redirect('/' + req.params.auctions  + '/packages')
+    res.redirect('/users/login')
 	};
 
 
@@ -317,6 +358,17 @@ function UsersController(){
 						console.log(result)
 					}
 				})
+			}
+		})
+	}
+
+	this.delete = function(req, res){
+		User.remove({userName: req.params.user}, function(err, result){
+			if (err){
+				console.log(err)
+			}
+			else{
+				res.redirect("/users/register")
 			}
 		})
 	}
