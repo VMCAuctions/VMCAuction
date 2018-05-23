@@ -47,3 +47,9 @@ td {
 .table > tbody > tr > td {
   vertical-align: middle;
 }
+
+/*td a{
+  color:black;
+  display:inline-block;
+  width:100%;
+}*/

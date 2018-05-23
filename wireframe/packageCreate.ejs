@@ -81,59 +81,61 @@
           </form>
     </div>
     <script>
+      $(document).ready(function(){
 
-      var total = 0;
-      var checkedItems = {};
-       totalAdd = function(value, id){
-        var checkbox = document.getElementById(id);
-        if (checkbox.checked === true){
-          total += value
-          console.log("total is", total);
-          checkedItems[id]= id;
-          console.log(checkedItems);
+        var total = 0;
+        var checkedItems = {};
+        totalAdd = function(value, id){
+          var checkbox = document.getElementById(id);
+          if (checkbox.checked === true){
+            total += value
+            console.log("total is", total);
+            checkedItems[id]= id;
+            console.log(checkedItems);
+          }
+          else if (checkbox.checked === false) {
+            total -= value
+            delete checkedItems[id]
+            console.log(checkedItems)
+          }
+          document.getElementById('totalValue').value = total
         }
-        else if (checkbox.checked === false) {
-          total -= value
-          delete checkedItems[id]
-          console.log(checkedItems)
+        var validator = $("#packageForm").validate({
+          rules: {
+            packageName: {
+              required: true,
+              minlength: 4
+            },
+            category: {
+              required: true
+            },
+            openingBid:{
+              required: true,
+              number: true,
+              min: 0
+            },
+            packageDescription: {
+              required: true,
+              minlength: 4
+            },
+            increments: {
+              required: true,
+              number: true,
+              min: 5,
+              step: 5
+            },
+            priority: {
+              required: true,
+              number: true,
+              min: 0
+            }
+          }
+        });
+        validator.form();
+        if (window.location.search.substring(1) == 'true') {
+          alert('that was a success')
         }
-        document.getElementById('totalValue').value = total
-      }
-    var validator = $("#packageForm").validate({
-      rules: {
-        packageName: {
-          required: true,
-          minlength: 4
-        },
-        category: {
-          required: true
-        },
-        openingBid:{
-          required: true,
-          number: true,
-          min: 0
-        },
-        packageDescription: {
-          required: true,
-          minlength: 4
-        },
-        increments: {
-          required: true,
-          number: true,
-          min: 5,
-          step: 5
-        },
-        priority: {
-          required: true,
-          number: true,
-          min: 0
-        }
-      }
-    });
-    validator.form();
-    if (window.location.search.substring(1) == 'true') {
-      alert('that was a success')
-    }
+      })
     </script>
   </body>
 </html>
