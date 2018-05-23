@@ -1,8 +1,10 @@
 var items = require('../controllers/items.js');
 var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
-var categories = require('../controllers/categories.js')
-var auctions = require('../controllers/auctions.js')
+var categories = require('../controllers/categories.js');
+var auctions = require('../controllers/auctions.js');
+var menu = require('../controllers/organizerMenu.js');
+
 
 module.exports = function(app) {
 
@@ -125,11 +127,11 @@ module.exports = function(app) {
 		auctions.create(req, res)});
 
 	//Landing Page (Packages page)
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		menu.index(req, res);
+	})
 	app.get('/:auctions/*', function (req,res) {
 		//res.redirect()
 		packages.index(req,res)});
-	app.get('/:auctions/organizer-menu', function (req, res) {
-		res.render('organizerMenu')
-	})
 }
 // end of module.exports

@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
     <title>Organizer Menu</title>
   </head>
+  <%if(admin){%>
+  <%- include('adminHeader') -%>
+  <%}else{%>
+    <%- include('header') -%>
+  <%}%>
   <body>
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -51,15 +56,15 @@
       </thead>
       <tbody>
         <tr>
-          <td class="highlight"><i class="fas fa-cog"></i> Set Up Auction</td>
-          <td class="highlight"><i class="fas fa-plus-circle"></i> Add Items</td>
+          <td class="highlight"><a href="/<%=auction%>/items/new"><i class="fas fa-cog"></i> Set Up Auction</a></td>
+          <td class="highlight"><i class="fas fa-plus-circle"></i>  <a href="/<%=auction%>/items/new">Add Items</a></td>
           <td class="highlight"><i class="fas fa-user-plus"></i> Add Supporters</td>
           <td class="highlight"><i class="fas fa-chart-bar"></i> Auction Summary Report</td>
           <td class="highlight"><i class="fas fa-list-ol"></i> Edit Categories</td>
         </tr>
         <tr>
           <td class="highlight"><i class="fas fa-edit"></i> Edit Auction Details</td>
-          <td class="highlight"><i class="fas fa-box-open"></i> Create packages</td>
+          <td class="highlight"><i class="fas fa-box-open"></i> <a href="/<%=auction%>/packages/new">Create packages</a></td>
           <td class="highlight"><i class="fas fa-address-book"></i> View/Edit Supporters Registry</td>
           <td class="highlight"><i class="fas fa-archive"></i> Package Summary</td>
           <td class="highlight"><i class="fas fa-unlock-alt"></i> Admin Rights</td>
