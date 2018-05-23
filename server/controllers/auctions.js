@@ -10,41 +10,51 @@ function AuctionsController() {
     	res.render("auctions", {admin: req.session.admin, userName: req.session.userName})
 	};
 	//organizer landing page
-	this.main = function(req, res) { 
+	this.main = function(req, res) {
 		if (req.session.admin) {
-			Auction.find({}, function(err, auctions) { 
+			Auction.find({}, function(err, auctions) {
 				if (err) {
 				 	console.log(err);
 				} else {
-					for(a in auctions){
-						console.log(auctions[a]);	
-					}
+					//for now the archivd auctions are hard code.
+					//later make an if statemtn hat checks if auction is in past
+					//based on clock and todays Date
+					//if in past push into archived auctions array
+					//else push into current auctions and pass to front
+					User.findOne({userName:req.session.userName}, function(err, user){
+						if(err){
+							console.log(err)
+						}
+						else{
+							console.log("user is", user)
+							res.render('main', {user:user,
+								auctions: auctions,
+								archivedAuctions: [
+									{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
+									{name: 'Christmas 2017 Fundraiser', _id: '1002' },
+									{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }
+								]
+							});
+						}
+					})
 				}
-				res.render('main', { firstName: 'Julie', 
-					auctions: auctions, 
-					archivedAuctions: [
-						{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
-						{name: 'Christmas 2017 Fundraiser', _id: '1002' },
-						{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }	
-					]
-				});
 			});
-		// Only for testing purposes, when don't yet have access as admin				
+		// Only for testing purposes, when don't yet have access as admin
 		} else {
-			Auction.find({}, function(err, auctions) { 
+			Auction.find({}, function(err, auctions) {
 				if (err) {
 				 	console.log(err);
 				} else {
 					for(a in auctions){
-						console.log(auctions[a]);	
+						console.log(auctions[a]);
 					}
 				}
-				res.render('main', { firstName: 'Julie', 
-					auctions: auctions, 
+				res.render('main', { firstName: 'Julie',
+					auctions: auctions,
 					archivedAuctions: [
 						{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
 						{name: 'Christmas 2017 Fundraiser', _id: '1002' },
-						{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }	
+						{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }
 					]
 				});
 			});
@@ -73,6 +83,6 @@ function AuctionsController() {
 		});
 	}
 }
-	
+
 
 module.exports = new AuctionsController();
