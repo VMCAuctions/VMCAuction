@@ -13,16 +13,12 @@ function PackagesController(){
 		if (!req.session.userName){
 	  	req.session.auction = req.params.auctions
 		}
-		var categoryArray = []
 		var user
 		Category.find({}, function(err, categories) {
 			if(err) {
 					console.log(err);
 			}
 			else {
-				for(c in categories){
-					categoryArray.push(categories[c].name);
-				}
 				User.findOne({userName:req.session.userName}, function(err, result){
 					if(err){
 						console.log(err)
@@ -48,7 +44,7 @@ function PackagesController(){
 										}
 									}
 									console.log("req.session is", req.session)
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categoryArray, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
+									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
 					}
