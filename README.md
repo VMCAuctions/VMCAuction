@@ -145,3 +145,9 @@ Each user has a required userName, firstName, lastName, phone, email, streetAddr
 The packages property holds all of the packages that the user has decided to watch.  Packages in this property are not necessarily being won or even bid upon by the user.  If you want which packages are currently being won by a designated user, you must iterate through all of the packages and check the name in the last bid object.
 
 Admins, clerks, and bidders are all considered users.
+
+### Notes
+
+The mongoose auto-increment module sometimes throws an error upon creation of the first item in the database.  It seems like this error is intrinsically related to the module, and it may eventually be fixed.  Although it has not yet been merged, here is a link to code that one may be able to use to fix it on their local machine: https://github.com/chevex-archived/mongoose-auto-increment/pull/83.
+
+
