@@ -79,13 +79,14 @@
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
+  </div>
   <%if(userName){%>
     <% var flag = false %>
     <ul class="list-group list-group-flush">
     <% for(var i = 0; i < user._packages.length; i++){ %>
       <% if(featured[f]._id == user._packages[i]) {%>
         <!--do this in ajax call instead-->
-        <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
+        <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=featured[f]._id%>'">Remove from Watchlist</li>
         <!-- <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
         <% flag = true %>
         <% break %>
@@ -119,7 +120,6 @@
 </div>
 <% }%>
 </div>
-<!-- </div> -->
 
 <!-- ****************************** ALL PACKAGES ******************************** -->
 <h2>All packages</h2>
