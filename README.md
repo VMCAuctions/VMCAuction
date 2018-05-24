@@ -146,7 +146,7 @@ The packages property holds all of the packages that the user has decided to wat
 
 Admins, clerks, and bidders are all considered users.
 
-### Notes
+## Notes
 
 The mongoose auto-increment module sometimes throws an error upon creation of the first item in the database.  It seems like this error is intrinsically related to the module, and it may eventually be fixed.  Although it has not yet been merged, here is a link to code that one may be able to use to fix it on their local machine: https://github.com/chevex-archived/mongoose-auto-increment/pull/83.
 
