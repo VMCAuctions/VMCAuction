@@ -58,15 +58,20 @@
   <button type="button" id="noBids" name="button">No bids yet</button>
 
 <h2>Featured Packages</h2>
+<div class="row">
 <% for (var f in featured){%>
-  <%if(featured[f].bids.length>0){%>
+  <div class="col-s-12 col-md-4 col-xs-12">
+  <div class="card cardMargin mb-3">
+  <!-- <%if(featured[f].bids.length>0){%>
 <div class="package bids">
   <%}else{%>
     <div class="package empty">
-  <%}%>
-  <img src="/no-image.png" style="max-width:100%" alt="img">
-  <br>
-  <a href="/<%=auction%>/packages/<%=featured[f]._id%>"><%=featured[f].name%></a>
+  <%}%> -->
+  <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
+  <div class="card-body">
+  <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=featured[f]._id%>'">
+  <h5 class="card-title"><%=featured[f].name%></h5>
+  <!-- <a href="/<%=auction%>/packages/<%=featured[f]._id%>"><%=featured[f].name%></a> -->
   <p><b>Category:</b> <%=featured[f]._category%></p>
   <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
@@ -76,10 +81,12 @@
   <%}%>
   <%if(userName){%>
     <% var flag = false %>
+    <ul class="list-group list-group-flush">
     <% for(var i = 0; i < user._packages.length; i++){ %>
       <% if(featured[f]._id == user._packages[i]) {%>
         <!--do this in ajax call instead-->
-        <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+        <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
+        <!-- <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
         <% flag = true %>
         <% break %>
         <% } %>
@@ -87,28 +94,39 @@
 
       <% if(flag === false) {%>
         <!--do this in ajax call instead-->
-        <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+        <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=featured[f]._id%>'">
+          Add to Watchlist
+        </li>
+        <!-- <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
       <%}%>
   <%}%>
   <% if (admin){ %>
-   <a href='/<%=auction%>/packages/edit/<%=featured[f]._id%>'><button>Edit</button></a>
-   <a href='/<%=auction%>/packages/remove/<%=featured[f]._id %>'><button>Delete</button></a>
-   <%if(featured[f].featured === true){%>
-     <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a>
-   <%}else{%>
-   <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a>
-  <%}%>
+    <%if(featured[f].featured === true){%>
+      <!-- <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a> -->
+      <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Unfeature</li>
+      <%}else{%>
+        <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Feature</li>
+        <!-- <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a> -->
+        <%}%>
+        <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=featured[f]._id%>'">Edit</li>
+        <li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=featured[f]._id%>'">Delete</li>
+      </ul>
+    <!-- <a href='/<%=auction%>/packages/edit/<%=featured[f]._id%>'><button>Edit</button></a>
+    <a href='/<%=auction%>/packages/remove/<%=featured[f]._id %>'><button>Delete</button></a> -->
   <%}%>
 </div>
+</div>
+</div>
 <% }%>
-
+</div>
+</div>
 
 <!-- ****************************** ALL PACKAGES ******************************** -->
 <h2>All packages</h2>
 <div class="row">
 <% for (var n in packages){%>
   <div class="col-s-12 col-md-4 col-xs-12">
-  <div class="card cardMargin">
+  <div class="card cardMargin mb-3">
   <!-- <%if(packages[n].bids.length>0){%>
     <div>
   <%}else{%>
@@ -129,16 +147,16 @@
     </div>
     <%if(userName){%>
       <% var flag = false %>
+      <ul class="list-group list-group-flush">
       <% for(var i = 0; i < user._packages.length; i++){ %>
-        <ul class="list-group list-group-flush">
       <% if(packages[n]._id == user._packages[i]) {%>
-          <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/packages/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
+          <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
         <% flag = true %>
         <% break %>
         <% } %>
         <%}%>
         <% if(flag === false) {%>
-            <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/packages/interested/<%=packages[n]._id%>'">
+            <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">
               Add to Watchlist
             </li>
         <%}%>
