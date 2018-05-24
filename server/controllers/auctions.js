@@ -44,9 +44,9 @@ function AuctionsController(){
 				console.log(err)
 			}
 			else{
-				auction.name: req.body.name || auction.name;
-				auction.startClock: start || auction.startClock;
-				auction.endClock: end || auction.endClock;
+				auction.name = req.body.name || auction.name;
+				auction.startClock = start || auction.startClock;
+				auction.endClock = end || auction.endClock;
 				auction.save(function(err,result){
 					if(err){
 						console.log(err)
