@@ -31,6 +31,13 @@ td:hover {
   border-right: 1px solid #dee2e6!important;
 }
 
+.table-bordered>tbody>tr>.borderSide{
+  /*border: 0px 1px 0px 1px solid !important;*/
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+}
+
+
 /* reset the default bootstrap style on tr:hover */
 .table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th{
   background-color: #ffffff;
@@ -44,6 +51,9 @@ td {
   height: 75px;
 }
 
+th{
+  background-color: #EAEAEA;
+}
 .table > tbody > tr > td {
   vertical-align: middle;
 }
