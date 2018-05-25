@@ -18,91 +18,126 @@
     <%}else{%>
       <%- include('header') -%>
     <%}%>
-    <h3>create package</h3>
+    <div class="container mt-4">
+      <h3>Create Package</h3>
+      <form id="packageForm" action="/<%=auction%>/packages" method="post">
+        <div class="form-group">
+          <label for="packageName">Package Name</label>
+          <input type="text" name="packageName" id="packageName" class="form-control">
+        </div>
 
-    <form id="packageForm" action="/<%=auction%>/packages" method="post">
-      <input type="text" name="packageName" id="packageName" placeholder="packageName">
-      <textarea name="packageDescription" id="packageDescription" rows="8" cols="40" placeholder="Package description"></textarea>
-      <!-- priority is asscending currently 0 would be at the top of the page -->
-      <input id='priority' type='number' name='priority' placeholder='Priority'>
-      <select class="" name="category" id="category" >
+        <div class="form-group">
+          <label for="packageDescription">Package Description</label>
+          <textarea class="form-control" name="packageDescription" id="packageDescription" rows="8" cols="40"></textarea>
+        </div>
+        <!-- priority is asscending currently 0 would be at the top of the page -->
+        <div class="form-group">
+          <label for="priority">Feature Level</label>
+          <input id="priority" type='number' name='priority' placeholder='Priority' class="form-control">
+        </div>
 
-        <% for (var c in categories){%>
-          <!-- add radio and jquery to make only one catagory option apear
-        or Make a seperate page to creat catagories -->
-          <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-        <%}%>
-      </select>
+        <div class="form-group">
+          <label for="">Category</label>
+          <select name="category" id="category" class="form-control">
 
-      <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid">
-      <input type="number" name="increments" id="increments" placeholder="increment">
+            <% for (var c in categories){%>
+              <!-- add radio and jquery to make only one catagory option apear
+              or Make a seperate page to creat catagories -->
+              <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+              <%}%>
+            </select>
+        </div>
+          <div class="form-group row">
+            <div class="col-6">
+              <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid" class="form-control">
+            </div>
+            <div class="col-6">
+              <input type="number" name="increments" id="increments" placeholder="increment" class="form-control">
+            </div>
+          </div>
 
-      <!-- need a read only feild with the current number selected -->
-      <%for (var i in items){%>
-        <%if(!items[i].packaged){%>
-          <br>
-          <%=items[i].name%>
-          <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" required value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-        <%}%>
-      <%}%>
-      <br>
-      <input readonly id="totalValue" type="number" name="totalValue" value="0">
-      <input type="submit" name="submit" value="Submit">
-    </form>
+          <div class="form-group">
+          </div>
+
+          <!-- need a read only feild with the current number selected -->
+          <div class="alert alert-secondary">
+          <div class="form-check">
+            <div class="row">
+              <label for="">Items</label>
+            </div>
+            <%for (var i in items){%>
+              <%if(!items[i].packaged){%>
+                <br>
+                <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                <%}%>
+                <%}%>
+          </div>
+          </div>
+          <div class="form-group">
+            <label for="totalValue">Total Value</label>
+            <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
+          </div>
+          <a href="/<%=auction%>/organizer-menu" class="btn btn-secondary">Back</a>
+          <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+          </form>
+    </div>
     <script>
+      $(document).ready(function(){
 
-      var total = 0;
-      var checkedItems = {};
-       totalAdd = function(value, id){
-        var checkbox = document.getElementById(id);
-        if (checkbox.checked === true){
-          total += value
-          console.log("total is", total);
-          checkedItems[id]= id;
-          console.log(checkedItems);
+        var total = 0;
+        var checkedItems = {};
+        totalAdd = function(value, id){
+          var checkbox = document.getElementById(id);
+          if (checkbox.checked === true){
+            total += value
+            console.log("total is", total);
+            checkedItems[id]= id;
+            console.log(checkedItems);
+          }
+          else if (checkbox.checked === false) {
+            total -= value
+            delete checkedItems[id]
+            console.log(checkedItems)
+          }
+          document.getElementById('totalValue').value = total
         }
-        else if (checkbox.checked === false) {
-          total -= value
-          delete checkedItems[id]
-          console.log(checkedItems)
+        var validator = $("#packageForm").validate({
+          rules: {
+            packageName: {
+              required: true,
+              minlength: 4
+            },
+            category: {
+              required: true
+            },
+            openingBid:{
+              required: true,
+              number: true,
+              min: 0
+            },
+            packageDescription: {
+              required: true,
+              minlength: 4
+            },
+            increments: {
+              required: true,
+              number: true,
+              min: 5,
+              step: 5
+            },
+            priority: {
+              required: true,
+              number: true,
+              min: 0
+            }
+          }
+        });
+        validator.form();
+        if (window.location.search.substring(1) == 'true') {
+          alert('that was a success')
         }
-        document.getElementById('totalValue').value = total
-      }
-    var validator = $("#packageForm").validate({
-      rules: {
-        packageName: {
-          required: true,
-          minlength: 4
-        },
-        category: {
-          required: true
-        },
-        openingBid:{
-          required: true,
-          number: true,
-          min: 0
-        },
-        packageDescription: {
-          required: true,
-          minlength: 4
-        },
-        increments: {
-          required: true,
-          number: true,
-          min: 5,
-          step: 5
-        },
-        priority: {
-          required: true,
-          number: true,
-          min: 0
-        }
-      }
-    });
-    validator.form();
-    if (window.location.search.substring(1) == 'true') {
-      alert('that was a success')
-    }
+      })
     </script>
   </body>
 </html>
