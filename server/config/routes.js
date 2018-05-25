@@ -3,7 +3,6 @@ var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
-var menu = require('../controllers/organizerMenu.js');
 
 
 module.exports = function(app) {
@@ -127,7 +126,7 @@ module.exports = function(app) {
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
 		//Renders the organizer menu page
-	app.get('/:auctions/organizer-menu', function (req, res) {
+	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)})
 		//Edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
@@ -136,9 +135,6 @@ module.exports = function(app) {
 
 
 	//Landing Page (Packages page)
-	app.get('/:auctions/organizer-menu', function (req, res) {
-		menu.index(req, res);
-	})
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
 }
