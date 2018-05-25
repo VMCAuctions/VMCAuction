@@ -128,11 +128,11 @@ module.exports = function(app) {
 		auctions.create(req, res)});
 		
 	//Landing Page (Packages page)
-	app.get('/:auctions/*', function (req,res) {
-		//res.redirect()
-		packages.index(req,res)});
+	// app.get('/:auctions/*', function (req,res) {
+	// 	//res.redirect()
+	// 	packages.index(req,res)});
 	app.get('/:auctions/organizer-menu', function (req, res) {
-		res.render('organizerMenu')
+		res.render('organizerMenu');
 	})
 }
 // end of module.exports

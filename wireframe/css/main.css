@@ -1,24 +1,27 @@
 /* Style sheet for the Organizer's main landing page */
 body {
-	color: #595959;
+	color: #595959 !important;
 }
 
-/* Organizer's Header styles - to be moved to its own component
+/* Organizer's Header styles 
 -------------------------------------------------------------- */
 .nav-img {
 	height: 30px;
 	padding-right: 20px; 
 }
 .btn-logout {	
-	border: solid 1px #ffff;
+	border: solid 1px #fff;
 	color: #fff !important;
 	padding: 3px 10px;  
 }
-.btn-logout:hover {
-	background: #99004d;
-	border: solid 1px #99004d;
+
+a.btn-logout:hover {
+	background: #fff;
+	border: solid 1px #fff;
+	color: #003d79 !important;
 }
-/*-------------------------------------------------- */
+/* Organizer's Dashboard styles 
+-------------------------------------------------------------- */
 .jumbo-head {
 	text-align: center;
 	color: #003d79;
@@ -32,17 +35,20 @@ body {
 .btn-create {
 	background: #719949; 
 	border: solid 1px #719949;
-	color: #fff !important; 
+	color: #fff; 
 }
 .btn-create:hover {
-	background: #99004d;
-	border: solid 1px #99004d;
+	background: #99004d !important;
+	border: solid 1px #99004d !important;
+	color: #fff; 
 }
-a:link, a:visited { 
+a.dash-link { 
 	color: #99004d;
+	decoration: none; 
 }
-a:hover {
-	color: #719949;
+a.dash-link:hover {
+	color: #719949 !important;
+	decoration: none !important; 
 }
 
 /* Organizer's Sticky footer styles - to be moved to its own component

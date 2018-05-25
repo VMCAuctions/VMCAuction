@@ -38,9 +38,9 @@
 								<div class="form-group">
 										<label for="auctionName">Select Auction</label>
 										<select class="form-control" name="auctionName" id="auctionName">
-                      <% for (a in auctions) {%>
-                        <option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
-                      <% } %>
+											<% for (a in auctions) {%>
+												<option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
+											<% } %>
 										</select>
               					</div>
 								<div class="form-row">
@@ -62,11 +62,11 @@
 										<label for="city">City</label>
 										<input type="text" name="city" id="city" class="form-control" value>
 									</div>
-									<div class="form-group col-md-2">
+									<div class="form-group col-md-3">
 										<label for="states">State</label>
 										<input type="text" name="states" id="states" class="form-control" value >
 									</div>
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-3">
 										<label for="zip">Zip</label>
 										<input type="text" name="zip" id="zip" class="form-control" value >
 									</div>
@@ -99,7 +99,7 @@
 								<button type="submit" class="btn regist-btn btn-lg">Submit</button>
 							</form>
 							<div class="question">
-								<a href="#">Need help?</a> | <a href="#">Already have an account?</a>
+								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> | <a href="/users/login">Already have an account?</a>
 							</div>
 						</div><!-- End card-body-->
 					</div>

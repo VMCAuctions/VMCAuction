@@ -30,13 +30,16 @@ form.reg-form {
 label {
 	margin-bottom: 0.2rem;
 }
+label.error {
+	font-size: 0.8rem;
+	color: #99004d;
+}
 button.regist-btn {
 	color: #fff;
 	background-color: #719949;
 	width: 350px;
 	margin: 1.4rem auto; 
 	display: block;
-
 }
 .question {
 	text-align: center;
