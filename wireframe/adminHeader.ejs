@@ -11,7 +11,7 @@
 <style>
   .nav-img {
     height: 30px;
-    padding-right: 20px; 
+    padding-right: 20px;
   }
   a.btn-logout:hover {
     color: #003d79 !important;
@@ -47,27 +47,33 @@
             </li>
 
             <li>
-<<<<<<< HEAD
               <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
-=======
-              <h3><a class="nav-link" href='/users/admin'>Admin</a> </h3>
             </li>
 
             <li>
-              <h3><a class="nav-link" href='/<%=auction%>/categories'>Add Category</a></h3>
->>>>>>> develop
-            </li>
-
-            <li>
-              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a> 
+              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
             </li>
 
             <li>
               <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
             </li>
+              <h3><a class="nav-link" href='/<%=auction%>/categories'>Add Category</a></h3>
+            </li> -->
+
+            <!-- <li>
+              <h3><a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a> </h3>
+            </li> -->
+
+            <!-- <li>
+              <h3><a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a></h3>
+            </li> -->
+>>>>>>> develop
 
             <li>
               <a class="nav-link" href="/auctions">Create Auction</a>
+            </li>
+            <li>
+              <h3><a class="nav-link" href="/<%=auction%>/organizerMenu">Menu</a></h3>
             </li>
 
           </ul>
@@ -75,11 +81,11 @@
           <ul class="nav navbar-nav navbar-right">
             <%if(userName){%>
               <li>
-                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>  </a>       
+                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>  </a>
               </li>
 
               <li>
-                <a class="btn btn-outline-light btn-logout" href="/users/logout">Logout</a> 
+                <a class="btn btn-outline-light btn-logout" href="/users/logout">Logout</a>
               </li>
             <%}else{%>
               <li>
@@ -89,7 +95,7 @@
               <li>
                 <a class="nav-link" href="/users/register">Register </a>
               </li>
-             
+
             <%}%>
           </ul>
         </div>

@@ -134,7 +134,7 @@ function ItemsController(){
 						Package.findById(pack, function (err, package) {
 							if (err) {
 								console.error();
-							}else {
+							}else if (package != null){
 								package.value -= val;
 								package._items.splice(package._items.indexOf(item._id), 1)
 								package.save(function (err, result) {

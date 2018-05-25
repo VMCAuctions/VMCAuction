@@ -78,12 +78,12 @@ function AuctionsController() {
 			}
 			else{
 				console.log(result)
-				res.redirect("/" + result._id)
+				res.redirect("/" + result._id + "/organizerMenu")
 			}
 		});
 	}
 	this.menu =function(req, res) {
-		res.render('organizerMenu')
+		res.render('organizerMenu', {admin: req.session.admin, auction: req.params.auctions, userName: req.session.userName })
 	}
 	this.update = function(req, res) {
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
@@ -109,6 +109,7 @@ function AuctionsController() {
 			}
 		})
 	}
+
 }
 
 
