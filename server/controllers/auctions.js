@@ -27,7 +27,7 @@ function AuctionsController(){
 			}
 			else{
 				console.log(result)
-				res.redirect("/" + result._id)
+				res.redirect("/" + result._id + "/organizerMenu")
 			}
 		})
 	}
