@@ -5,8 +5,8 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <style>
   .nav-img {
@@ -20,7 +20,7 @@
 
 <header>
 
-<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #003d79"">
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #003d79">
   <div class="container-fluid">
     <a class="navbar-brand" href="http://vmcfoundation.org"><img class="nav-img" src="/VMCF_Logo_Simple_White_web.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,10 @@
             <li>
               <a class="nav-link" href="/auctions/main">Dashboard</a>
             </li>
-            <li class="nav-item active ">
+            <li class="nav-item active">
+              <a class="nav-link" href="/<%=auction%>/organizer-menu">Organizer's Menu<span class="sr-only">(current)</span></a>
+            </li>
+            <li>
               <a class="nav-link" href="/<%=auction%>/items">Items</a>
             </li>
             <li>
