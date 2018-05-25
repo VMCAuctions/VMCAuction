@@ -1,6 +1,66 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url('https://fonts.googleapis.com/css?family=Lato');
 
 body {
   font-family: 'Roboto', sans-serif !important;
   color: #ffffff;
 }
+
+td:hover {
+  background-color: #ffffff;
+}
+
+.table-hover>tbody>tr>.highlight:hover{
+  background-color: #f5f5f5!important; // Or any colour you
+  cursor: pointer;
+}
+
+.highlight {
+  cursor: pointer;
+}
+
+.table-hover>tbody>tr>.cellBorder{
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered>tbody>tr>.noBorder{
+  border: 0px!important;
+}
+
+.table-bordered>tbody>tr>.borderRight{
+  border: 0px!important;
+  border-right: 1px solid #dee2e6!important;
+}
+
+.table-bordered>tbody>tr>.borderSide{
+  /*border: 0px 1px 0px 1px solid !important;*/
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+}
+
+
+/* reset the default bootstrap style on tr:hover */
+.table-hover>tbody>tr:hover>td, .table-hover>tbody>tr:hover>th{
+  background-color: #ffffff;
+}
+
+th {
+  width: 15%;
+}
+
+td {
+  height: 75px;
+}
+
+th{
+  background-color: #EAEAEA;
+}
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+/*td a{
+  color:black;
+  display:inline-block;
+  width:100%;
+}*/

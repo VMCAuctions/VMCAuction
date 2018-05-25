@@ -13,20 +13,26 @@
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-					socket.emit('msg_sent', {packId: '<%= package._id %>', bid: parseInt($('#bid_amount')[0].value), userName: '<%= userName %>' })
-					event.preventDefault();
-					// replace replaceWith val maybe??
+          if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
+  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
+  					event.preventDefault();
+  					// replace replaceWith val maybe??
+          }
 
 				})
 
         socket.on("serverTalksBack", function(data){
-          $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-          $('#bid_amount').replaceWith("<input id='bid_amount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bid_increment) %>)+" ' >")
-                customPlaceholder = data.bid;
+          if (data.packId == <%= package._id %>) {
+            $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+            $('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>)+" ' >")
+                  customPlaceholder = data.bid;
+          }
         })
         socket.on('buttonStateChannel', function(data){
+          if (data.packId == <%= package._id %>) {
           console.log(data.button);
           $('#submitButton').attr('disabled', data.button )
+        }
         })
 				}
 			)
@@ -35,7 +41,7 @@
 
 	<body>
     <%if(admin){%>
-    <%- include('admin_header') -%>
+    <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
@@ -55,15 +61,15 @@
 			<%}%>
 
 			<h3>Next Bid:</h3>
-			<form action='/api/packages/<%= package._id %>' id='bidding'>
+			<form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
-					<input id='bid_amount' readonly value='<%= package.amount%>'>
+					<input id='bidAmount' readonly value='<%= package.amount%>'>
 				<%} else {%>
-					<input id='bid_amount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bid_increment %> '>
+					<input id='bidAmount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bidIncrement %> '>
 				<%}%>
 
 			<% if (!userName) {%>
-				<a href='/api/users_login'>Login</a>
+				<a href='/users/login'>Login</a>
 			<%}else{%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
@@ -75,20 +81,21 @@
         <%if(userName){%>
         <% for (i in user._packages){%>
           <% if (package._id == user._packages[i]){%>
-            <a href="/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
+            <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
             <%flag = true%>
             <%break%>
           <%}%>
         <%}%>
         <%if (flag == false){%>
-          <a href="/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
+          <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
         <%}%>
         <%}%>
       <% if (admin === true) { %>
-				<form action="/packages/cancelbid/<%=package._id %>" method='POST'>
+				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
 					<input id='cancelBid' type='submit' value='Delete Bid'>
 				</form>
+        <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a>
 			<%}%>
 		</div>
 		<div>
@@ -101,41 +108,44 @@
 
       $('#custom').click(function () {
 
-        if ($('#bid_amount').attr('readonly') === 'readonly'){
+        if ($('#bidAmount').attr('readonly') === 'readonly'){
 
           if (<%=ourBids%>===true) {
 
-          $('#bid_amount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
-          $('#bid_amount').val(null);
+          $('#bidAmount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+          $('#bidAmount').val(null);
         }else{
-          $('#bid_amount').attr({'readonly': false,
+          $('#bidAmount').attr({'readonly': false,
                                   'placeholder': customPlaceholder + ' or higer'});
-          $('#bid_amount').val(null);
+          $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
-            $('#bid_amount').attr({'readonly': 'readonly',
-                                  'placeholder': customPlaceholder + <%=package.bid_increment %> +' or higer'});
-            $('#bid_amount').val(customPlaceholder + <%=package.bid_increment %>)
+            $('#bidAmount').attr({'readonly': 'readonly',
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+            $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
         }else{
-          $('#bid_amount').attr({'readonly': 'readonly',
+          $('#bidAmount').attr({'readonly': 'readonly',
                               'placeholder': customPlaceholder + ' or higer'});
 
-          $('#bid_amount').val(customPlaceholder)
+          $('#bidAmount').val(customPlaceholder)
         }
       }
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
       })
 
+        //There is also a socket function for submitButton.click above, with the rest of the socket stuff
         $("#submitButton").click(function(){
-        	if($("#bid_amount").val() < <%= package.amount%>){
-            	alert("Please enter a bid above ", <%= package.amount%>)
-            	return false;
-        	}else if ($("#bid_amount").val() < <%= lastBid + package.bid_increment %> && <%=ourBids%> === true) {
-            	alert("Please enter a bid above ", <%= lastBid + package.bid_increment %> )
-                return false;
-            }
+          console.log("package.amount is", <%= package.amount%>)
+          console.log("lastBid is", <%= lastBid%>)
+        	if($("#bidAmount").val() < <%= package.amount%> && <%=ourBids%> === false){
+            	alert("Please enter a bid above " + <%= package.amount%>)
+            	event.preventDefault()
+        	}else if ($("#bidAmount").val() < <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true) {
+            	alert("Please enter a bid above " + <%= lastBid + package.bidIncrement %> )
+              event.preventDefault()
+          }
 
 		})
 

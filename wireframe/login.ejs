@@ -1,60 +1,81 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>login</title>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-  </head>
-  <body>
+    <head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Login | MVCF Silent Auction </title>
 
+		<!-- Bootstrap -->
 
-    <%if(admin){%>
-    <%- include('admin_header') -%>
-    <%}else{%>
-      <%- include('header') -%>
-    <%}%>
-    <div class="container">
-      <div class="well my-4">
-        <form id="loginForm" class="ml-0" action="/api/users/login" method="POST">
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">User Name</label>
-            <div class="col-sm-10">
-              <input placeholder="User Name" type="text" name="userName" id="userName" class="form-control" value required>
-            </div>
-          </div>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/login.css">
 
-          <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-10">
-              <input placeholder="Password" type="password" name="password" id="password" class="form-control" >
-            </div>
-          </div>
+		<!-- JavaScript -->
+		<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-          <input type="submit" name="submit" value="submit" id="submit" class="btn btn-default">
+  	</head>
 
-        </form>
+	<body class="login-body">
+		<div class="container login-container">
+			<div class="row">
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+				<div class="col-sm-12 col-md-6">  <!-- the column where all our content will go; for medium and larger use size 6; for mobile (small), use the full screen (size 12); -->
+					<div class="card login-card">
+						<div class="card-body">
+							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid signin-img" alt="Responsive logo">
+							<form class="login-form">
+									<div class="form-group">
+										<label for="userName">User Name</label>
+										<input class="form-control" type="text" name="userName" id="userName" value required>
+									</div>
+									<div class="form-group">
+										<label for="password">Password</label>
+										<input class="form-control" type="password" name="password" id="password"  >
+									</div>
 
-      </div>
-    </div>
-    <script type="text/javascript">
-        $('#submit').click(function(event){
-          console.log('start');
-          event.preventDefault()
-          console.log("wow");
-          $.ajax({
-            type: "POST",
-            url: 'http://localhost:8000/users/checklogin',
-            data: {"userName":$('#userName').val(), "password":$('#password').val()},
-            success: function(data){
-              console.log('ho');
-                if(data.match == false){
-                    alert('username and password do not match')
-                }else {
-                  window.location.replace('/api/packages')
-                }
-              }
-          })
-        })
-    </script>
-  </body>
+									<button type="submit" id="submit" class="btn login-btn btn-lg">Log In</button>
+							</form>
+							<div class="question">
+								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> | <a href="/users/register">Create a new account</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col"></div> <!-- this column is for equal space on the margins -->
+			</div> <!-- end row -->
+		</div> <!-- end container -->
+
+		<script type="text/javascript">
+			$('#submit').click(function(event){
+				console.log('start');
+				event.preventDefault();
+				console.log("wow");
+				$.ajax({
+					type: "POST",
+					url: 'http://localhost:8000/users/checklogin',
+					data: {"userName":$('#userName').val(), "password":$('#password').val()},
+					success: function(data){
+						console.log('ho');
+						if(data.match == false){
+							alert('username and password do not match')
+						} else {
+							console.log("data.auction", data.auction)
+							if (!data.auction){
+								//This will direct to the landing page for admins, which is yet to be built
+								//For testing purposes, plugged in an auction id below
+								window.location.replace('/auctions/main')
+							}
+							else{
+								window.location.replace('/' + data.auction + '/packages')
+							}
+						}
+					}
+				})
+			});
+		</script>
+  	</body>
 </html>
