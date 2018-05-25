@@ -20,6 +20,14 @@ app.use(session({
 	//resets session timeout everytime the user interacts with the site
 }));
 
+// app.on("Category initializer", function(){
+// 	console.log("entered category initializer")
+// 	if(Category.checkIfEmpty() === true){
+// 		console.log("checkIfEmpty ran")
+// 		Category.initialize()
+// 	}
+// })
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,6 +46,7 @@ app.set('views', path.join(__dirname, '../wireframe'));
 app.set('view engine', 'ejs');
 
 require('./config/mongoose.js');
+require('./config/initialize.js');
 
 var routesSetter = require('./config/routes.js');
 routesSetter(app);

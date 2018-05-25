@@ -144,8 +144,9 @@ function UsersController(){
 							}
 							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
-							var adminStatus = (lowerUser === "admin");
-							var linkedAuction = req.body.auctionName
+							//In the final product, this will be organizer, but keeping admin for legacy testing
+							var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+							var linkedAuction = req.body.auctions
 							if (adminStatus){
 								console.log("got in adminStatus")
 								linkedAuction = null
@@ -371,6 +372,25 @@ function UsersController(){
 			else{
 				res.redirect("/users/register")
 			}
+		})
+	}
+
+	this.initialize = function(req, res) {
+		bcrypt.hash("password", null, null, function(err, hash) {
+			User.create({
+				userName: "Organizer",
+				firstName: "Julie",
+				lastName: "Ott",
+				phone: "555-555-5555",
+				email: "organizer@gmail.com",
+				streetAddress: "555 Organizer Street",
+				city: "Sunnyvale",
+				states: "CA",
+				zip: "55555",
+				_auctions: null,
+				password: hash,
+				admin: true
+			})
 		})
 	}
 
