@@ -10,13 +10,14 @@ var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4},
  _category: String,
- //_category: {type: Schema.Types.ObjectId, ref: 'Category'},
- donor: {type: String, default: 'anonymous'},
+ donorFirst: {type: String, required: true},
+ donorLast: {type: String, required: true},
+ donorDisplay: {type: String, default:"Anonymous"},
  restrictions: {type: String},
- value: Number,
- packaged: Boolean,
+ value: {type: Number, required: true},
+ packaged: {type: Boolean, default:false},
  priority: {type: Number, required: true, default: 0},
-
+_auctions: {type: Schema.Types.ObjectId, required:true, ref: 'Auction'},
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
 }, { timestamps: true });

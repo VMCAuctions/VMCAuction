@@ -2,7 +2,30 @@
 
 This is a silent bidding site for Valley Medical Center Foundation's fundraising auctions.
 
-## Installing / Getting started
+## Table of Contents
+
+  * [Installing Getting started](#installing-getting-started)
+  * [Developing](#developing)
+    + [Built With](#built-with)
+    + [Prerequisites](#prerequisites)
+    + [Deploying / Publishing](#deploying---publishing)
+  * [Version Control](#version-control)
+      - [Master](#master)
+      - [Develop](#develop)
+      - [Feature Branches](#feature-branches)
+  * [Configuration](#configuration)
+  * [Style guide](#style-guide)
+  * [Database](#database)
+      - [Auction](#auction)
+      - [Categories](#categories)
+      - [Items](#items)
+      - [Packages](#packages)
+      - [Users](#users)
+  * [Notes] (#notes)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+## Installing Getting started
 
 Create a directory titled VMC, clone the git repository into that folder, switch to the develop branch, and then install all dependencies.
 
@@ -149,5 +172,3 @@ Admins, clerks, and bidders are all considered users.
 ## Notes
 
 The mongoose auto-increment module sometimes throws an error upon creation of the first item in the database.  It seems like this error is intrinsically related to the module, and it may eventually be fixed.  Although it has not yet been merged, here is a link to code that one may be able to use to fix it on their local machine: https://github.com/chevex-archived/mongoose-auto-increment/pull/83.
-
-
