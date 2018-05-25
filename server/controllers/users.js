@@ -146,7 +146,7 @@ function UsersController(){
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing
 							var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
-							var linkedAuction = req.body.auctions
+							var linkedAuction = req.body.auctionName
 							if (adminStatus){
 								console.log("got in adminStatus")
 								linkedAuction = null
@@ -199,10 +199,11 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if(match){
+						console.log("user._auctions", user._auctions)
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true, auction: user._auction})
+						res.json({match: true, auction: user._auctions})
 					}else{
 						res.json({match: false})
 					}
