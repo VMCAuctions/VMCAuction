@@ -5,32 +5,58 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style>
+  .nav-img {
+    height: 30px;
+    padding-right: 20px;
+  }
+  a.btn-logout:hover {
+    color: #003d79 !important;
+}
+</style>
 
 <header>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #003d79">
   <div class="container-fluid">
+    <a class="navbar-brand" href="http://vmcfoundation.org"><img class="nav-img" src="/VMCF_Logo_Simple_White_web.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active ">
-              <h3><a class="nav-link" href="/<%=auction%>/items">Items</a></h3>
+            <li>
+              <a class="nav-link" href="/auctions/main">Dashboard</a>
             </li>
-            <!-- <li>
-              <h3><a class="nav-link" href="/<%=auction%>/packages">Catalog</a></h3>
-            </li> -->
+            <li class="nav-item active">
+              <a class="nav-link" href="/<%=auction%>/organizer-menu">Organizer's Menu<span class="sr-only">(current)</span></a>
+            </li>
+            <li>
+              <a class="nav-link" href="/<%=auction%>/items">Items</a>
+            </li>
+            <li>
+              <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
+            </li>
 
             <li>
-              <h3><a class="nav-link" href='/<%=auction%>/users'>All Users</a> </h3>
+              <a class="nav-link" href='/<%=auction%>/users'>All Users</a>
             </li>
 
-              <h3><a class="nav-link" href='/<%=auction%>/categories'>Add Category</a></h3>
-            </li> -->
+            <li>
+              <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
+            </li>
+
+            <li>
+              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
+            </li>
+
+            <li>
+              <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
+            </li>
 
             <!-- <li>
               <h3><a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a> </h3>
@@ -41,29 +67,29 @@
             </li> -->
 
             <li>
-              <h3><a class="nav-link" href="/auctions">Create Auction</a></h3>
-            </li>
-            <li>
-              <h3><a class="nav-link" href="/<%=auction%>/organizerMenu">Menu</a></h3>
+              <a class="nav-link" href="/auctions">Create Auction</a>
             </li>
 
           </ul>
           <!-- right navbar -->
           <ul class="nav navbar-nav navbar-right">
             <%if(userName){%>
-              <h3>
-                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%=userName%>  </a>
-              </h3>
-              <h3>
-                <a class="nav-link" href='/users/logout'>Logout</a>
-              </h3>
+              <li>
+                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>  </a>
+              </li>
+
+              <li>
+                <a class="btn btn-outline-light btn-logout" href="/users/logout">Logout</a>
+              </li>
             <%}else{%>
-              <h3>
+              <li>
                 <a class="nav-link" href='/users/login'>Login</a>
-              </h3>
-              <h3>
+              </li>
+
+              <li>
                 <a class="nav-link" href="/users/register">Register </a>
-              </h3>
+              </li>
+
             <%}%>
           </ul>
         </div>

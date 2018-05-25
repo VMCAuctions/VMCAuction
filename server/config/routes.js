@@ -119,7 +119,10 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-		//admin selects what they want to do
+	//organizer's landing page (where the organizer selects what she wants to do)
+	app.get('^/auctions/main', function (req, res) {
+		auctions.main(req, res)});
+	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
 		//Creating an auction
