@@ -118,21 +118,26 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//organizer's landing page (where the organizer selects what she wants to do)	
+	//organizer's landing page (where the organizer selects what she wants to do)
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
 	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
+		//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-		
-	//Landing Page (Packages page)
-	// app.get('/:auctions/*', function (req,res) {
-	// 	//res.redirect()
-	// 	packages.index(req,res)});
+		//Renders the organizer menu page
 	app.get('/:auctions/organizer-menu', function (req, res) {
-		res.render('organizerMenu');
-	})
+		auctions.menu(req, res)})
+		//Edits the auction on the backend
+	app.post('/:auctions/update', function(req,res){
+		auctions.update(req, res)})
+
+
+
+	//Landing Page (Packages page)
+	app.get('/:auctions/*', function (req,res) {
+		packages.index(req,res)});
 }
 // end of module.exports
