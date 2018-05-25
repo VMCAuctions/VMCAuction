@@ -43,8 +43,7 @@ function ItemsController(){
 	this.create = function(req,res){
 		console.log('ItemsController create');
     Item.create({name: req.body.itemName, description: req.body.itemDescription,
-      _category: req.body.category, donor: req.body.donor, restrictions: req.body.itemRestriction,
-      value: req.body.fairMarketValue, packaged: false, priority: req.body.priority, _auctions: req.params.auctions},  function(err, result){
+      _category: req.body.category, donorFirst: req.body.donorFirst, donorLast: req.body.donorLast, donorDisplay: req.body.donorDisplay, restrictions: req.body.itemRestriction, value: req.body.fairMarketValue, packaged: false, priority: req.body.priority, _auctions: req.params.auctions},  function(err, result){
       if(err){
         console.log(err);
         res.status(500).send('Failed to Create Item');
@@ -89,7 +88,9 @@ function ItemsController(){
 	        // If that attribute isn't in the request body, default back to whatever it was before.
 	        item.name = req.body.itemName || item.name;
 	        item.description = req.body.itemDescription || item.description;
-	        item.donor = req.body.donor || item.donor;
+	        item.donorFirst = req.body.donorFirst || item.donorFirst;
+					item.donorLast = req.body.donorLast || item.donorLast;
+					item.donorDisplay = req.body.donorDisplay || item.donorDisplay;
 	        item.restrictions = req.body.itemRestriction || item.restrictions;
 	        item.value = req.body.fairMarketValue || item.value;
 	        item._category = req.body.category || item._category;

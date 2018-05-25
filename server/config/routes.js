@@ -123,15 +123,23 @@ module.exports = function(app) {
 		//admin selects what they want to do
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
+		//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
+		//Renders the organizer menu page
+	app.get('/:auctions/organizer-menu', function (req, res) {
+		auctions.menu(req, res)})
+		//Edits the auction on the backend
+	app.post('/:auctions/update', function(req,res){
+		auctions.update(req, res)})
+
+
 
 	//Landing Page (Packages page)
 	app.get('/:auctions/organizer-menu', function (req, res) {
 		menu.index(req, res);
 	})
 	app.get('/:auctions/*', function (req,res) {
-		//res.redirect()
 		packages.index(req,res)});
 }
 // end of module.exports

@@ -31,6 +31,33 @@ function AuctionsController(){
 			}
 		})
 	}
+	this.menu =function(req, res) {
+		res.render('organizerMenu')
+	}
+	this.update = function(req, res) {
+		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
+		var start = new Date(startDate)
+		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
+		var end = new Date(endDate)
+		Auction.find({_id: req.params.auctions}, function(err, auction){
+			if(err){
+				console.log(err)
+			}
+			else{
+				auction.name = req.body.name || auction.name;
+				auction.startClock = start || auction.startClock;
+				auction.endClock = end || auction.endClock;
+				auction.save(function(err,result){
+					if(err){
+						console.log(err)
+					}
+					else{
+						//Redirect to organizer menu
+					}
+				})
+			}
+		})
+	}
 }
 
 module.exports = new AuctionsController();
