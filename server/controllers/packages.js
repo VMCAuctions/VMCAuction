@@ -243,7 +243,7 @@ this.new = function(req,res){
 			if(err){
 				console.log(err)
 			}else{
-					//everything in the User.fin will probably never be used
+					//everything in the User.find will probably never be used
 					//this searches all users and removes package from their watchlist
 					//it should only happen if an in the middle of an auction if item is reported as stolen
 					//or provider of service suddenly goes out of buisness
@@ -253,22 +253,25 @@ this.new = function(req,res){
 						}else{
 							for(var k= 0; k< users; k++ ){
 								for (var i = 0; i < users[k]._package.length; i++) {
-									if(package._id === user[k]._packages[i]){
-										user[k]._packages.splice(i,1)
+									if(package._id === users[k]._packages[i]){
+										users[k]._packages.splice(i,1)
 									}
 								}
 							}
-							users[k].save(function(err,result){
-								if(err){
+							if (users[k]) {
+								users[k].save(function(err,result){
+									if(err){
+										console.log(err)
+										res.status(500).send(err)
+									}
+								})
+							}
+							Auction.findById(package._auctions, function(err, auction){
+								if (err){
 									console.log(err)
-									res.status(500).send(err)
 								}
 								else{
-									Auction.removeById(package._auctions, function(err, result){
-										if (err){
-											console.log(err)
-										}
-									})
+									auction._packages.splice(auction._packages.indexOf(package._auctions), 1)
 								}
 							})
 						}
