@@ -40,24 +40,9 @@ function AuctionsController() {
 				}
 			});
 		// Only for testing purposes, when don't yet have access as admin
-		} else {
-			Auction.find({}, function(err, auctions) {
-				if (err) {
-				 	console.log(err);
-				} else {
-					for(a in auctions){
-						console.log(auctions[a]);
-					}
-				}
-				res.render('main', { firstName: 'Julie',
-					auctions: auctions,
-					archivedAuctions: [
-						{name: "Fall '17 Gala Puttin' on the Ritz", _id: '1001' },
-						{name: 'Christmas 2017 Fundraiser', _id: '1002' },
-						{name: 'Las Vegas 2017 Donor Evening', _id: '1236' }
-					]
-				});
-			});
+		}
+		else{
+			res.redirect('/' + req.session.auction + '/packages')
 		}
 	}
 	//Just used as an API for now
