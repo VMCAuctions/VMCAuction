@@ -9,7 +9,7 @@
     <script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script type='text/javascript'>
-			var socket = io.connect('http://localhost:8000/');
+			var socket = io.connect('https://557b4e23.ngrok.io/');
 
 			$(document).ready(function(){
         socket.on("serverTalksBack", function(data){
@@ -60,13 +60,13 @@
 <h2>Featured Packages</h2>
 <div class="row">
 <% for (var f in featured){%>
-  <div class="col-s-12 col-md-4 col-xs-12">
+  <%if(featured[f].bids.length>0){%>
+  <div class="package bids col-s-12 col-md-4 col-xs-12">
+    <%}else{%>
+      <div class="package empty col-s-12 col-md-4 col-xs-12">
+    <%}%>
   <div class="card cardMargin mb-3">
-  <!-- <%if(featured[f].bids.length>0){%>
-<div class="package bids">
-  <%}else{%>
-    <div class="package empty">
-  <%}%> -->
+
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body">
   <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=featured[f]._id%>'">
@@ -125,13 +125,12 @@
 <h2>All packages</h2>
 <div class="row">
 <% for (var n in packages){%>
-  <div class="col-s-12 col-md-4 col-xs-12">
-  <div class="card cardMargin mb-3">
-  <!-- <%if(packages[n].bids.length>0){%>
-    <div>
+  <%if(packages[n].bids.length>0){%>
+    <div class="col-s-12 col-md-4 col-xs-12 package bids">
   <%}else{%>
-    <div>
-  <%}%> -->
+    <div class="col-s-12 col-md-4 col-xs-12 package empty">
+  <%}%>
+  <div class="card cardMargin mb-3">
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body" >
     <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=packages[n]._id%>'">
