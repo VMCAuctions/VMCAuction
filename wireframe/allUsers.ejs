@@ -1,4 +1,4 @@
-localhost:8000/<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>
@@ -38,7 +38,7 @@ localhost:8000/<!DOCTYPE html>
       var cart = <%-JSON.stringify(cart)%>;
       var packages = <%-JSON.stringify(packages)%>;
 
-    	var socket = io.connect('localhost:8000/');
+    	var socket = io.connect('http://localhost:8000/');
       socket.on("serverTalksBack", function(data){
           for (var i = 0; i < packages.length; i++) {
             if (data.packId == packages[i]._id) {
