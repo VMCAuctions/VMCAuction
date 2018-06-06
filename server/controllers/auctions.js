@@ -56,7 +56,8 @@ function AuctionsController() {
 		Auction.create({
 			name: req.body.name,
 			startClock: start,
-			endClock: end
+			endClock: end,
+			pin: req.body.pin
 		}, function(err, result){
 			if (err){
 				console.log(err)
@@ -91,6 +92,28 @@ function AuctionsController() {
 						//Redirect to organizer menu
 					}
 				})
+			}
+		})
+	}
+
+	this.pinEntry = function(req, res) {
+		res.render("clerks", {auctions: req.params.auctions})
+	}
+
+	this.pinCheck = function(req, res) {
+		Auction.findOne({_id: req.body.auctions}, function(err, auction){
+			if(err){
+				console.log(err)
+			}else{
+				if (req.body.pin === auction.pin){
+					req.session.userName = "Clerk"
+					//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
+					req.session.admin = 1
+					console.log(req.session)
+					res.json({match: true})
+				}else{
+					res.json({match: false})
+				}
 			}
 		})
 	}
