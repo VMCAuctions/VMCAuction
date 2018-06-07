@@ -166,8 +166,11 @@
         <%}else{%>
           <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Feature</li>
           <%}%>
-        <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li>
-        <li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+        <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin Rights</li>
+        <div class="dropdown-menu">
+          <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li>
+          <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-item" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+        </div>
       </ul>
     <%}%>
   </div>
