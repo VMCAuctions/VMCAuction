@@ -9,20 +9,25 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <style>
-  .nav-img {
+  /* .nav-img {
     height: 30px;
     padding-right: 20px;
+  } */
+  .admin-head {
+    background-color: #003d79;
+  }
+  .white {
+    color: #fff;
   }
   a.btn-logout:hover {
     color: #003d79 !important;
-}
+  }
 </style>
 
 <header>
 
-<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #003d79">
+<nav class="navbar navbar-expand-md navbar-dark admin-head">
   <div class="container-fluid">
-    <a class="navbar-brand" href="http://vmcfoundation.org"><img class="nav-img" src="/VMCF_Logo_Simple_White_web.png"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,7 +37,7 @@
             <li>
               <a class="nav-link" href="/auctions/main">Dashboard</a>
             </li>
-            <li class="nav-item active">
+            <li>
               <a class="nav-link" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
             </li>
             <li>
