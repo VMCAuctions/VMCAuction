@@ -13,12 +13,15 @@
     height: 30px;
     padding-right: 20px;
   } */
-  .admin-head {
+  .nav-head {
     background-color: #003d79;
   }
-  .white {
-    color: #fff;
+  .nav-org {
+    color: #ffffff !important;
+    padding-left: 1rem !mportant; 
+    padding-left: 1rem !mportant; 
   }
+
   a.btn-logout:hover {
     color: #003d79 !important;
   }
@@ -26,7 +29,7 @@
 
 <header>
 
-<nav class="navbar navbar-expand-md navbar-dark admin-head">
+<nav class="navbar navbar-expand-md navbar-dark nav-head">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -35,32 +38,32 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li>
-              <a class="nav-link" href="/auctions/main">Dashboard</a>
+              <a class="nav-link nav-org" href="/auctions/main">Dashboard</a>
             </li>
             <li>
-              <a class="nav-link" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
+              <a class="nav-link nav-org" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
             </li>
             <li>
-              <a class="nav-link" href="/<%=auction%>/items">Items</a>
+              <a class="nav-link nav-org" href="/<%=auction%>/items">Items</a>
             </li>
             <li>
-              <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
-            </li>
-
-            <li>
-              <a class="nav-link" href='/<%=auction%>/users'>All Users</a>
+              <a class="nav-link nav-org" href="/<%=auction%>/packages">Catalog</a>
             </li>
 
             <li>
-              <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
+              <a class="nav-link nav-org" href='/<%=auction%>/users'>All Users</a>
             </li>
 
             <li>
-              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
+              <a class="nav-link nav-org" href='/<%=auction%>/categories'>Add Category</a>
             </li>
 
             <li>
-              <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
+              <a class="nav-link nav-org" href="/<%=auction%>/items/new"> Add Item</a>
+            </li>
+
+            <li>
+              <a class="nav-link nav-org" href="/<%=auction%>/packages/new">Add Package</a>
             </li>
 
 
@@ -70,7 +73,7 @@
           <ul class="nav navbar-nav navbar-right">
             <%if(userName){%>
               <li>
-                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>  </a>
+                <a class="nav-link nav-org" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>!  </a>
               </li>
 
               <li>
