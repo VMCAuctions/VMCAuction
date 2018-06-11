@@ -68,7 +68,14 @@ function AuctionsController() {
 		});
 	}
 	this.menu =function(req, res) {
-		res.render('organizerMenu', {admin: req.session.admin, auction: req.params.auctions, userName: req.session.userName })
+		Auction.findById(req.params.auctions, function(err, auctionDetails) {
+			if (err) {
+				console.log(err)
+			} else {
+			    console.log('auction details', auctionDetails)
+				res.render('organizerMenu', {admin: req.session.admin, auction: auctionDetails, userName: req.session.userName })
+			}
+		})
 	}
 	this.update = function(req, res) {
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
