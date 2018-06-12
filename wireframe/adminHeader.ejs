@@ -29,18 +29,28 @@
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
-            <li>
-              <a class="nav-link" href="/auctions/main">Dashboard</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
-            </li>
+
+            <% if (admin === 2){ %>
+              <li>
+                <a class="nav-link" href="/auctions/main">Dashboard</a>
+              </li>
+            <% } %>
+
+            <% if (admin === 2){ %>
+              <li class="nav-item active">
+                <a class="nav-link" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
+              </li>
+            <% } %>
+
             <li>
               <a class="nav-link" href="/<%=auction%>/items">Items</a>
             </li>
-            <li>
-              <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
-            </li>
+
+            <% if (admin === 2){ %>
+              <li>
+                <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
+              </li>
+            <% } %>
 
             <li>
               <a class="nav-link" href='/<%=auction%>/users'>All Users</a>

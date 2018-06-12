@@ -144,8 +144,13 @@ function UsersController(){
 							}
 							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
-							//In the final product, this will be organizer, but keeping admin for legacy testing
-							var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
+							if (lowerUser === "organizer" || lowerUser === "admin"){
+								adminStatus = 2
+							}else{
+								adminStatus = 0
+							}
+							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
 							var linkedAuction = req.body.auctionName
 							if (adminStatus){
 								console.log("got in adminStatus")
@@ -390,7 +395,7 @@ function UsersController(){
 				zip: "55555",
 				_auctions: null,
 				password: hash,
-				admin: true
+				admin: 2
 			})
 		})
 	}

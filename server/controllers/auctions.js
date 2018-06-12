@@ -109,7 +109,6 @@ function AuctionsController() {
 					req.session.userName = "Clerk"
 					//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
 					req.session.admin = 1
-					console.log(req.session)
 					res.json({match: true})
 				}else{
 					res.json({match: false})
