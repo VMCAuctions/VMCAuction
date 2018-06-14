@@ -17,7 +17,7 @@ function ItemsController(){
 								console.log(err);
 								res.status(500).send('Failed to Load Items');
 						}else{
-							res.render('items', {items: items, admin: req.session.admin, userName: req.session.userName, categories: categories, auction: req.params.auctions})
+							res.render('items', {page:'items', items: items, admin: req.session.admin, userName: req.session.userName, categories: categories, auction: req.params.auctions})
 						}
 				})
 			}
@@ -32,7 +32,7 @@ function ItemsController(){
 	      		res.status(500).send('Failed to Load Items');
 	    	}else{
 					if(req.session.admin){
-						res.render('createItem', {categories: categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+						res.render('createItem', {page:'addItem', categories: categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 					}else{
 						res.redirect('/' + req.params.auctions + '/packages')
 					}

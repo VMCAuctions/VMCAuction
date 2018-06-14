@@ -1,0 +1,54 @@
+
+.brand {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 1.3rem; 
+    color: #333333 !important; 
+    font-weight: 700; 
+    letter-spacing: .1rem; 
+    padding-left: 10px; 
+}
+.nav-top {
+    height: 67px;
+}
+.top-link {
+    color: #003d79 !important;
+    /* font-size: .9rem;  */
+    font-weight: 500; 
+}
+a.top-link:hover {
+    color: #99004d !important;
+    background-color: #eef3f6;
+}
+.active1 {
+    color: #99004d !important;
+}
+.nav-head {
+    background-color: #003d79;
+}
+.nav-org {
+    color: #ffffff !important;
+}
+a.nav-org:hover {
+    color: #99ccff !important;
+    background-color: #004d99;
+}
+.active2 {
+    color: #99ccff !important;
+}
+.btn-logout {
+    border: solid 2px #99004d !important; 
+    color: #99004d !important; 
+    font-weight: bold; 
+}
+a.btn-logout:hover {
+    color: #fff !important;
+    background-color: #99004d;
+    border: solid 1px #99004d; 
+}
+.li-marg {
+    padding-right: 1.5rem; 
+}
+.li-margLeft {
+    padding-left: 1.5rem; 
+}
+
