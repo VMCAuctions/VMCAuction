@@ -49,6 +49,8 @@ function AuctionsController() {
 	this.create = function(req, res){
 		// console.log("req.body.startClockDate is", req.body.startClockDate)
 		// console.log("req.body.startClockTime is", req.body.startClockTime)
+		
+		// Add validations to ensure auction pin is unique, and that auction start occurs before auction end
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
@@ -97,22 +99,21 @@ function AuctionsController() {
 	}
 
 	this.pinEntry = function(req, res) {
-		res.render("clerks", {auctions: req.params.auctions})
+		res.render("clerks")
 	}
 
 	this.pinCheck = function(req, res) {
-		Auction.findOne({_id: req.body.auctions}, function(err, auction){
+		//Make a check on auction entry that verifies that pin is unique
+		Auction.findOne({pin: req.body.pin}, function(err, auction){
 			if(err){
 				console.log(err)
+			}else if(!auction){
+				res.json({match: false})
 			}else{
-				if (req.body.pin === auction.pin){
-					req.session.userName = "Clerk"
-					//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
-					req.session.admin = 1
-					res.json({match: true})
-				}else{
-					res.json({match: false})
-				}
+				req.session.userName = "Clerk"
+				//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
+				req.session.admin = 1
+				res.json({match: true, auctions:auction._id})
 			}
 		})
 	}

@@ -134,7 +134,7 @@ module.exports = function(app) {
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
 
-	app.get('/:auctions/clerk/login', function(req, res){
+	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});

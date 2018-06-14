@@ -46,27 +46,31 @@
               <a class="nav-link" href="/<%=auction%>/items">Items</a>
             </li>
 
-            <% if (admin === 2){ %>
-              <li>
-                <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
-              </li>
-            <% } %>
+            <li>
+              <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
+            </li>
 
             <li>
               <a class="nav-link" href='/<%=auction%>/users'>All Users</a>
             </li>
 
-            <li>
-              <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
-            </li>
+            <% if (admin === 2){ %>
+              <li>
+                <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
+              </li>
+            <% } %>
 
-            <li>
-              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
-            </li>
+            <% if (admin === 2){ %>
+              <li>
+                <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
+              </li>
+            <% } %>
 
-            <li>
-              <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
-            </li>
+            <% if (admin === 2){ %>
+              <li>
+                <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
+              </li>
+            <% } %>
 
 
 
