@@ -51,14 +51,13 @@
 				$.ajax({
 					type: "POST",
 					url: 'http://localhost:8000/clerk/pin',
-					data: {"pin":$('#pin').val(), "auctions":"<%=auctions%>"},
+					data: {"pin":$('#pin').val()},
 					success: function(data){
 						console.log('ho');
 						if(data.match == false){
-							alert('Please enter the correct pin for this auction.')
+							alert('Please enter a valid pin.')
 						} else {
-							// console.log("data.auction", data.auction)
-							window.location.replace('/<%=auctions%>/users')
+							window.location.replace('/' + data.auctions + '/users')
 					  }
 					}
 				})
