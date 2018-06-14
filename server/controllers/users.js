@@ -52,7 +52,7 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('allUsers', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
 			}else{
@@ -233,7 +233,7 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
+						res.render('userPage', {page: 'myAccount', userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
 					}else{
 						res.redirect('/' + req.params.auctions  + '/packages')
 					}

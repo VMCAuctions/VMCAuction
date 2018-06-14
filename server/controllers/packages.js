@@ -44,7 +44,7 @@ function PackagesController(){
 										}
 									}
 									console.log("req.session is", req.session)
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
+									res.render('packages', {page: 'catalog', packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
 					}
@@ -112,7 +112,7 @@ this.new = function(req,res){
 						}
 						else {
 							console.log(itemsArray);
-							res.render('packageCreate', {categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('packageCreate', {page: 'addPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 						console.log('PackagesController new');
 				})
