@@ -1,8 +1,8 @@
 
 .brand {
     font-family: 'Lato', sans-serif !important;
-    font-size: 1.3rem; 
-    color: #333333 !important; 
+    font-size: 1.2rem; 
+    color: #404040 !important; 
     font-weight: 700; 
     letter-spacing: .1rem; 
     padding-left: 10px; 
@@ -12,7 +12,6 @@
 }
 .top-link {
     color: #003d79 !important;
-    /* font-size: .9rem;  */
     font-weight: 500; 
 }
 a.top-link:hover {
@@ -29,21 +28,21 @@ a.top-link:hover {
     color: #ffffff !important;
 }
 a.nav-org:hover {
-    color: #99ccff !important;
+    color: #b3d9ff !important;
     background-color: #004d99;
 }
 .active2 {
-    color: #99ccff !important;
+    color: #b3d9ff !important;
 }
 .btn-logout {
-    border: solid 2px #99004d !important; 
-    color: #99004d !important; 
+    border: solid 2px #003d79 !important; 
+    color: #003d79 !important; 
     font-weight: bold; 
 }
 a.btn-logout:hover {
     color: #fff !important;
     background-color: #99004d;
-    border: solid 1px #99004d; 
+    border: solid 2px #99004d !important; 
 }
 .li-marg {
     padding-right: 1.5rem; 
