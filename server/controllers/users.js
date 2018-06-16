@@ -91,6 +91,7 @@ function UsersController(){
 
 	this.duplicate = function (req, res) {
 		let user = req.query.userName;
+		console.log(req.query)
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);

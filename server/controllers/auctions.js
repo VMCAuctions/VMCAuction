@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js');
+	Global = require('../models/global.js');
 
 function AuctionsController() {
   	this.index = function(req, res) {
@@ -49,26 +50,48 @@ function AuctionsController() {
 	this.create = function(req, res){
 		// console.log("req.body.startClockDate is", req.body.startClockDate)
 		// console.log("req.body.startClockTime is", req.body.startClockTime)
-		
-		// Add validations to ensure auction pin is unique, and that auction start occurs before auction end
+		// Add validations to ensure auction start occurs before auction end
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
 		var end = new Date(endDate)
-		Auction.create({
-			name: req.body.name,
-			startClock: start,
-			endClock: end,
-			pin: req.body.pin
-		}, function(err, result){
-			if (err){
+		//May eventually want to develop another schema that keeps track of all of the unique pins that have not been used between 1000 and 9999, and then pull from there
+		Global.findOne({}, function(err, global){
+			console.log(global)
+			if(err){
 				console.log(err)
 			}
-			else{
-				console.log(result)
-				res.redirect("/" + result._id + "/organizerMenu")
+			if (global.pins.length == 0){
+				console.log("Out of available pins!")
 			}
-		});
+			else{
+				randomPinIndex = parseInt(Math.floor(Math.random() * 9000))
+				randomPin = global.pins[randomPinIndex]
+				global.pins.splice(randomPinIndex, 1)
+
+				global.save(function(err,result){
+					if(err){
+						console.log(err)
+					}else{
+						Auction.create({
+							name: req.body.name,
+							startClock: start,
+							endClock: end,
+							pin: randomPin
+						}, function(err, result){
+							if (err){
+								console.log(err)
+							}
+							else{
+								console.log(result)
+								//Perhaps display pin to organizer on creation and/or auction menu page
+								res.redirect("/" + result._id + "/organizerMenu")
+							}
+						});
+					}
+				})
+			}
+		})
 	}
 	this.menu =function(req, res) {
 		res.render('organizerMenu', {admin: req.session.admin, auction: req.params.auctions, userName: req.session.userName })
