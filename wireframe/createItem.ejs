@@ -46,9 +46,9 @@
         <div id="donor" class="container">
           <h5>Donor Information</h5> 
           <p class="err"> Either donor's Last Name or Organization is required.</p>
-          <div id="lastname-checkbox-div">
+          <!--div id="lastname-checkbox-div">
             <input type="checkbox" name="donorLastCheck" onchange="toggleDonorLast()" id="donorLastCheck">&nbsp; Check if donor's last name is known<br>
-          </div>
+          </div-->
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="donorFirst" class="label-name">First Name</label>
@@ -56,15 +56,15 @@
             </div>
             <div class="form-group col-md-6">
               <label for="donorLast" class="label-name">Last Name</label>
-              <input type="text" name="donorLast" class="form-control" id="donorLast" disabled>
+              <input type="text" name="donorLast" class="form-control" id="donorLast">
             </div>         
         </div>
-        <div id="organization-checkbox-div">
+        <!--div id="organization-checkbox-div">
           <input type="checkbox" name="donorOrgCheck" id="donorOrgCheck" onchange="toggleDonorOrg()">&nbsp; Check if donor's organization is known<br>
-        </div> 
+        </div--> 
         <div class="form-group">
             <label for="donorOrg" class="label-name">Organization</label>
-            <input type="text" name="donorOrg" class="form-control" id="donorOrg" disabled >
+            <input type="text" name="donorOrg" class="form-control" id="donorOrg">
         </div> 
         <div class="form-group">
             <label for="donorDisplay" class="label-name">Display Donor (Defaults to Anonymous)</label>
@@ -123,19 +123,20 @@
           required: true,
           minlength: 4
         },
-        donorLastCheck: { 
-          required: false //function() { return $('#donorOrgCheck').is(':unchecked'); }
-        },
-        donorOrgCheck: {
-          required: function() { return $('#donorLastCheck').is(':unchecked'); }
-        },
+        //donorLastCheck: { 
+        //  required: false //function() { return $('#donorOrgCheck').is(':unchecked'); }
+        //},
+        //donorOrgCheck: {
+        //  required: function() { return $('#donorLastCheck').is(':unchecked'); }
+        //},
         donorLast: {
           minlength: 2, 
-          required: function() { return $('#donorLastCheck').is(':checked'); }
+          required: false //function() { return $('#donorLastCheck').is(':checked'); }
         },
         donorOrg: {
           minlength: 3, 
-          required: function() { return $('#donorOrgCheck').is(':checked'); }
+          //required: function() { return $('#donorOrgCheck').is(':checked'); }
+          required: function() { return $('#donorLast').val().length == 0; }
         }
       },
       errorPlacement: function(error, element) {
@@ -154,6 +155,9 @@
         },
         donorOrgCheck: {
           required: 'Please check at least one of the checkboxes'
+        },
+        donorOrg: {
+          required: "Since Last Name is empty, Organization is required!"
         }
       }
     });
@@ -162,7 +166,7 @@
       url = window.location.href;
       //window.location.replace('http://localhost:8000/5b2599257dec60c361d22417/items/new');
       window.location.replace(url.replace('?true', ''));
-      alert('that was a success')
+      alert('Form submitted suceesfuly.');
     }
     </script>
   </body>
