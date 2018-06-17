@@ -1,0 +1,22 @@
+body {
+    color: #404040 !important;
+    
+}
+.err {
+    color: #003d79;
+    font-size: 0.8rem; 
+}
+label.error {
+    color: #99004d;
+    font-size: 0.8rem; 
+}
+.label-name {
+    margin-top: 15px; 
+    line-height:.7rem; 
+}
+#donor {
+    background-color: #eef3f6;
+    padding: 20px; 
+    border-radius: 5px; 
+    margin-bottom: 20px; 
+}
