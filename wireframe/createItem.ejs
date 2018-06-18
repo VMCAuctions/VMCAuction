@@ -2,23 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Create Item</title>
+    <title>Add Item</title>
     <link rel="stylesheet" href="/css/createItem.css">
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
             
     <script>
-      function toggleDonorLast() {
-        $('#donorLast')[0].disabled = $('#donorLastCheck').is(':unchecked');
-      }
-      function toggleDonorOrg() {
-        $('#donorOrg')[0].disabled = $('#donorOrgCheck').is(':unchecked');
-      }
       $(document).ready(function() {
         validator.resetForm();
       });
     </script>
+
   </head>
 
   <body>
@@ -28,48 +23,45 @@
       <%- include('header') -%>
     <%}%>
     <div class="container mt-4">
-      <h2>Create Items</h2>
+      <h2>Add a New Item</h2>
       <div class="row">
-        <div class="col err">
+        <div class="col err-info">
           The fields marked with (*) are required.
         </div>
       </div>
       <form action="/<%=auction%>/items" id="itemsForm" method="post">
         <!-- Item input group -->
         <div class="form-group">
-          <label for="itemName" class="label-name">Item Name*</label>
+          <label for="itemName" class="label-name space">Item Name*</label>
           <input id="itemName" type="text" name="itemName" class="form-control" >
         </div>
         <!-- End Item Input -->
 
         <!-- Donor Input Row -->
         <div id="donor" class="container">
-          <h5>Donor Information</h5> 
-          <p class="err"> Either donor's Last Name or Organization is required.</p>
-          <!--div id="lastname-checkbox-div">
-            <input type="checkbox" name="donorLastCheck" onchange="toggleDonorLast()" id="donorLastCheck">&nbsp; Check if donor's last name is known<br>
-          </div-->
+            <h5>Donor Information</h5> 
+            <p class="err-info"> Either donor's Last Name or Organization is required.</p>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="donorFirst" class="label-name">First Name</label>
+                <input type="text" name="donorFirst" class="form-control" id="donorFirst">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="donorLast" class="label-name">Last Name</label>
+                <input type="text" name="donorLast" class="form-control" id="donorLast">
+              </div>         
+            </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="donorFirst" class="label-name">First Name</label>
-              <input type="text" name="donorFirst" class="form-control" id="donorFirst">
-            </div>
+                <label for="donorOrg" class="label-name">Organization</label>
+                <input type="text" name="donorOrg" class="form-control" id="donorOrg">
+            </div> 
             <div class="form-group col-md-6">
-              <label for="donorLast" class="label-name">Last Name</label>
-              <input type="text" name="donorLast" class="form-control" id="donorLast">
-            </div>         
-        </div>
-        <!--div id="organization-checkbox-div">
-          <input type="checkbox" name="donorOrgCheck" id="donorOrgCheck" onchange="toggleDonorOrg()">&nbsp; Check if donor's organization is known<br>
-        </div--> 
-        <div class="form-group">
-            <label for="donorOrg" class="label-name">Organization</label>
-            <input type="text" name="donorOrg" class="form-control" id="donorOrg">
-        </div> 
-        <div class="form-group">
-            <label for="donorDisplay" class="label-name">Display Donor (Defaults to Anonymous)</label>
-            <input placeholder="Anonymous" type="text" name="donorDisplay" class="form-control" id="donorDisplay">
-        </div>
+                <label for="donorDisplay" class="label-name">Display Donor (Defaults to Anonymous)</label>
+                <input placeholder="Anonymous" type="text" name="donorDisplay" class="form-control" id="donorDisplay">
+            </div>
+          </div>  
+
         </div>
         <!-- End Donor Input -->
 
@@ -100,12 +92,11 @@
           <textarea name="itemRestriction" class="form-control" rows="3"></textarea>
         </div>
 
-        <input type="submit" name="" value="Submit" class="btn btn-primary">
+        <input type="submit" name="" value="Submit" class="btn btn-primary btn-submit">
       </form>
-      
     </div>
-    <script>
 
+    <script>
     var validator = $("#itemsForm").validate({
       rules: {
         itemName: {
@@ -123,50 +114,26 @@
           required: true,
           minlength: 4
         },
-        //donorLastCheck: { 
-        //  required: false //function() { return $('#donorOrgCheck').is(':unchecked'); }
-        //},
-        //donorOrgCheck: {
-        //  required: function() { return $('#donorLastCheck').is(':unchecked'); }
-        //},
         donorLast: {
           minlength: 2, 
-          required: false //function() { return $('#donorLastCheck').is(':checked'); }
-        },
+          required: false 
+        },  
         donorOrg: {
           minlength: 3, 
-          //required: function() { return $('#donorOrgCheck').is(':checked'); }
           required: function() { return $('#donorLast').val().length == 0; }
         }
       },
-      errorPlacement: function(error, element) {
-        console.log(element);
-        if (element.attr("name") == "donorOrgCheck") {
-          error.insertAfter("#organization-checkbox-div");
-        } else if (element.attr("name") == "donorLastCheck") {
-          error.insertAfter("#lastname-checkbox-div");
-        } else {
-          error.insertAfter(element);
-        }
-      },
       messages: {
-        donorLastCheck: {
-          required: 'Please check at least one of the checkboxes'
-        },
-        donorOrgCheck: {
-          required: 'Please check at least one of the checkboxes'
-        },
         donorOrg: {
-          required: "Since Last Name is empty, Organization is required!"
+          required: "If Last Name is empty, Organization is required!"
         }
       }
     });
     validator.form();
     if (window.location.search.substring(1) === 'true') {
       url = window.location.href;
-      //window.location.replace('http://localhost:8000/5b2599257dec60c361d22417/items/new');
       window.location.replace(url.replace('?true', ''));
-      alert('Form submitted suceesfuly.');
+      alert('Form submitted succesfully.');
     }
     </script>
   </body>
