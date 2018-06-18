@@ -1,22 +1,40 @@
 body {
-    color: #404040 !important;
-    
+    color: #404040 !important;  
 }
-.err {
-    color: #003d79;
+.err-info {
+    color: #719949;
     font-size: 0.8rem; 
+    margin-top: -0.3rem;
 }
 label.error {
     color: #99004d;
-    font-size: 0.8rem; 
+    font-size: 0.9rem; 
 }
 .label-name {
     margin-top: 15px; 
     line-height:.7rem; 
 }
 #donor {
-    background-color: #eef3f6;
+    background-color: #f2f2f2;
     padding: 20px; 
     border-radius: 5px; 
-    margin-bottom: 20px; 
+    margin: 20px 0px 10px 0px ; 
+}
+.space {
+    margin-top: 30px; 
+}
+.btn-submit {
+	color: #fff;
+	background-color: #719949 !important;
+    border: 1px solid #719949 !important; 
+    width: 135px;
+    margin: 0.2rem 0px; 
+}
+.btn-submit:hover{
+    background-color: #668a42 !important;
+    border: 1px solid #668a42 !important;
+}
+.btn-submit:active {
+    background-color: #668a42 !important;
+    border: 1px solid #668a42 !important;
 }
