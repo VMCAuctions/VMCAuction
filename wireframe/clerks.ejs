@@ -4,7 +4,7 @@
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Login | VMCF Silent Auction </title>
+		<title> Clerk Login | VMCF Silent Auction </title>
 
 		<!-- Bootstrap -->
 
@@ -29,18 +29,13 @@
 							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid signin-img" alt="Responsive logo">
 							<form class="login-form">
 									<div class="form-group">
-										<label for="userName">User Name</label>
-										<input class="form-control" type="text" name="userName" id="userName" value required>
+										<label for="pin">Auction Pin</label>
+										<input class="form-control" type="text" name="pin" id="pin" value required>
 									</div>
-									<div class="form-group">
-										<label for="password">Password</label>
-										<input class="form-control" type="password" name="password" id="password"  >
-									</div>
-
 									<button type="submit" id="submit" class="btn login-btn btn-lg">Log In</button>
 							</form>
 							<div class="question">
-								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> | <a href="/users/register">Create a new account</a> <br> <a href="/clerk/login">Volunteering as an auction clerk?</a>
+								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> | <a href="/users/register">Create a new account</a><br><a href="/users/login">Login for bidding account</a>
 							</div>
 						</div>
 					</div>
@@ -51,28 +46,19 @@
 
 		<script type="text/javascript">
 			$('#submit').click(function(event){
-				console.log('start');
+        console.log("entered pin function")
 				event.preventDefault();
-				console.log("wow");
 				$.ajax({
 					type: "POST",
-					url: 'http://localhost:8000/users/checklogin',
-					data: {"userName":$('#userName').val(), "password":$('#password').val()},
+					url: 'http://localhost:8000/clerk/pin',
+					data: {"pin":$('#pin').val()},
 					success: function(data){
 						console.log('ho');
 						if(data.match == false){
-							alert('username and password do not match')
+							alert('Please enter a valid pin.')
 						} else {
-							console.log("data.auction", data.auction)
-							if (!data.auction){
-								//This will direct to the landing page for admins, which is yet to be built
-								//For testing purposes, plugged in an auction id below
-								window.location.replace('/auctions/main')
-							}
-							else{
-								window.location.replace('/' + data.auction + '/packages')
-							}
-						}
+							window.location.replace('/' + data.auctions + '/users')
+					  }
 					}
 				})
 			});

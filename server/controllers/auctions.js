@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js');
+	Global = require('../models/global.js');
 
 function AuctionsController() {
   	this.index = function(req, res) {
@@ -49,23 +50,48 @@ function AuctionsController() {
 	this.create = function(req, res){
 		// console.log("req.body.startClockDate is", req.body.startClockDate)
 		// console.log("req.body.startClockTime is", req.body.startClockTime)
+		// Add validations to ensure auction start occurs before auction end
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
 		var end = new Date(endDate)
-		Auction.create({
-			name: req.body.name,
-			startClock: start,
-			endClock: end
-		}, function(err, result){
-			if (err){
+		//May eventually want to develop another schema that keeps track of all of the unique pins that have not been used between 1000 and 9999, and then pull from there
+		Global.findOne({}, function(err, global){
+			console.log(global)
+			if(err){
 				console.log(err)
 			}
-			else{
-				console.log(result)
-				res.redirect("/" + result._id + "/organizerMenu")
+			if (global.pins.length == 0){
+				console.log("Out of available pins!")
 			}
-		});
+			else{
+				randomPinIndex = parseInt(Math.floor(Math.random() * 9000))
+				randomPin = global.pins[randomPinIndex]
+				global.pins.splice(randomPinIndex, 1)
+
+				global.save(function(err,result){
+					if(err){
+						console.log(err)
+					}else{
+						Auction.create({
+							name: req.body.name,
+							startClock: start,
+							endClock: end,
+							pin: randomPin
+						}, function(err, result){
+							if (err){
+								console.log(err)
+							}
+							else{
+								console.log(result)
+								//Perhaps display pin to organizer on creation and/or auction menu page
+								res.redirect("/" + result._id + "/organizerMenu")
+							}
+						});
+					}
+				})
+			}
+		})
 	}
 	this.menu =function(req, res) {
 		res.render('organizerMenu', {admin: req.session.admin, auction: req.params.auctions, userName: req.session.userName })
@@ -91,6 +117,26 @@ function AuctionsController() {
 						//Redirect to organizer menu
 					}
 				})
+			}
+		})
+	}
+
+	this.pinEntry = function(req, res) {
+		res.render("clerks")
+	}
+
+	this.pinCheck = function(req, res) {
+		//Make a check on auction entry that verifies that pin is unique
+		Auction.findOne({pin: req.body.pin}, function(err, auction){
+			if(err){
+				console.log(err)
+			}else if(!auction){
+				res.json({match: false})
+			}else{
+				req.session.userName = "Clerk"
+				//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
+				req.session.admin = 1
+				res.json({match: true, auctions:auction._id})
 			}
 		})
 	}
