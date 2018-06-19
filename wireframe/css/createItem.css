@@ -2,13 +2,13 @@ body {
     color: #404040 !important;  
 }
 .err-info {
-    color: #719949;
+    color: #719949; 
     font-size: 0.8rem; 
     margin-top: -0.3rem;
 }
 label.error {
     color: #99004d;
-    font-size: 0.9rem; 
+    font-size: 0.8rem; 
 }
 .label-name {
     margin-top: 15px; 
