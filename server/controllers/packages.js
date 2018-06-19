@@ -131,7 +131,7 @@ this.new = function(req,res){
 		  return res.json(false)
     }
     Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-  	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, _auctions: req.params.auctions
+		value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, restrictions: req.body.packageRestrictions, _auctions: req.params.auctions
 		}, function(err, package){
 			if(err){
 				console.log(err);
