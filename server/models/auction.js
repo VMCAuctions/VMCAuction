@@ -12,6 +12,7 @@ var auctionSchema = new Schema({
 	colors: {type: String},
 	//picture would hold the picture associated with the auction
 	picture: {type: String},
+	pin: {type: String},
   _packages: [{type: Number, ref: 'Package'}],
   _items: [{type: Number, ref: 'Item'}],
   _users: {type: Schema.Types.ObjectId, ref: 'User'}

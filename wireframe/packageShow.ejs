@@ -70,15 +70,17 @@
 
 			<% if (!userName) {%>
 				<a href='/users/login'>Login</a>
-			<%}else{%>
+			<%}else if(userName !== "Clerk"){%>
 				<input id="submitButton" type='submit' value='Place Bid'>
 			<%}%>
 
 
-			  </form>
+		  </form>
+      <% if(userName && userName !== "Clerk"){%>
         <button type="button" name="Custom" id="custom">Custom Bid</button>
-        <%var flag = false%>
-        <%if(userName){%>
+      <% } %>
+      <%var flag = false%>
+      <%if(userName && userName !== "Clerk"){%>
         <% for (i in user._packages){%>
           <% if (package._id == user._packages[i]){%>
             <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
@@ -89,7 +91,7 @@
         <%if (flag == false){%>
           <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
         <%}%>
-        <%}%>
+      <%}%>
       <% if (admin === true) { %>
 				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
 					<input type='text' value='' placeholder='username of bidder' name='user'>
@@ -101,7 +103,8 @@
 		<div>
 			<h5>Items In Package</h5>
 			<% for (var i = 0; i < package._items.length; i++) {%>
-				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donorDisplay %></p>
+        <p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donorDisplay %></p>
+        <p><strong>Restrictions:</strong> <%= package._items[i].restrictions %></p>
 			<%}%>
 		</div>
     <script>
