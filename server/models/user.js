@@ -18,7 +18,7 @@ var userSchema = new Schema({
 	password: {type: String, required: true},
 	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	_packages: [{type: Number, ref: 'Package'}],
-	admin: {type: Boolean}
+	admin: {type: Number}
 })
 
 
