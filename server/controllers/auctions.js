@@ -99,7 +99,7 @@ function AuctionsController() {
 				console.log(err)
 			} else {
 			    console.log('auction details', auctionDetails)
-				res.render('organizerMenu', {admin: req.session.admin, auction: req.params.auctions, auctionDetails: auctionDetails, userName: req.session.userName })
+				res.render('organizerMenu', {page: 'organizerMenu', admin: req.session.admin, auction: req.params.auctions, auctionDetails: auctionDetails, userName: req.session.userName })
 			}
 		})
 	}

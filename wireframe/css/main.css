@@ -1,23 +1,29 @@
 /* Style sheet for the Organizer's main landing page */
 body {
-	color: #595959 !important;
+	color: #404040 !important;
 }
 
 /* Organizer's Header styles 
 -------------------------------------------------------------- */
-.nav-img {
-	height: 30px;
-	padding-right: 20px; 
+.brand {
+    font-family: 'Lato', sans-serif !important;
+    font-size: 1.2rem; 
+    color: #ffffff !important; 
+    font-weight: 500; 
+    letter-spacing: .1rem; 
+    padding-left: 10px; 
+}
+.dash-home{
+	padding-left: 20px; 
 }
 .btn-logout {	
-	border: solid 1px #fff;
+	border: solid 2px #fff !important;
 	color: #fff !important;
 	padding: 3px 10px;  
 }
-
-a.btn-logout:hover {
+a.btn-logout:hover {!
 	background: #fff;
-	border: solid 1px #fff;
+	border: solid 2px #fff;
 	color: #003d79 !important;
 }
 /* Organizer's Dashboard styles 
