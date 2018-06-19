@@ -70,9 +70,15 @@
                 <br>
                 <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
                 <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
+                <p>Fair Market Value: <%= items[i].value %></p>
                 <%}%>
                 <%}%>
           </div>
+          </div>
+          <div class="form-group">
+            <label for="packageRestrictions">Package Restrictions</label>
+            <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="4" cols="40"></textarea>
           </div>
           <div class="form-group">
             <label for="totalValue">Total Value</label>
