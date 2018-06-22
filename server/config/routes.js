@@ -28,7 +28,6 @@ module.exports = function(app) {
 		items.removeItem(req, res)});
 
 
-
 	// PACKAGES //
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
@@ -134,6 +133,11 @@ module.exports = function(app) {
 		//Edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
+
+	app.get('/clerk/login', function(req, res){
+		auctions.pinEntry(req,res)});
+	app.post('/clerk/pin', function(req, res){
+		auctions.pinCheck(req,res)});
 
 
 

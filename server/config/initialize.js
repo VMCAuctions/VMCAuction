@@ -2,6 +2,10 @@ var Category = require('../models/category.js')
 var categories = require('../controllers/categories.js')
 var User = require('../models/user.js')
 var users = require('../controllers/users.js')
+var Global = require('../models/global.js')
+var globals = require('../controllers/globals.js')
+
+console.log("Hi Joey")
 
 Category.find({}, function(err, result){
   if (err){
@@ -12,7 +16,7 @@ Category.find({}, function(err, result){
     categories.initialize()
   }
   else{
-    console.log("not running")
+    console.log("not running categoriesinitialize")
   }
 })
 
@@ -26,6 +30,20 @@ User.find({}, function(err, result){
     users.initialize()
   }
   else{
-    console.log("not running")
+    console.log("not running usersinitialize")
+  }
+})
+
+
+Global.find({}, function(err, result){
+  if (err){
+    console.log(err)
+  }
+  else if (result.length === 0){
+    console.log("running globalinitialize")
+    globals.initialize()
+  }
+  else{
+    console.log("not running globalinitialize")
   }
 })
