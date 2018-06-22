@@ -5,6 +5,8 @@ var users = require('../controllers/users.js')
 var Global = require('../models/global.js')
 var globals = require('../controllers/globals.js')
 
+console.log("Hi Joey")
+
 Category.find({}, function(err, result){
   if (err){
     console.log(err)
