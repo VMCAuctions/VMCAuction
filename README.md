@@ -53,7 +53,6 @@ If `mongod` is giving an error, do the following:
 You're all set now and you can run `mongod` to start the Mongo server.
 
 
-
 On PC:
 `net start MongoDB`
 
@@ -64,7 +63,8 @@ cd server
 npm run dev
 ```
 
-Your browser will open up new tab for `https://localhost:8000/users/login`
+This command will open up new tab in your browser for: `https://localhost:8000/users/login`
+
 You may need to refresh the page if it didn't render immediately.
 
 ## Developing
