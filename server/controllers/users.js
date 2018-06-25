@@ -401,6 +401,15 @@ function UsersController(){
 		})
 	}
 
+	this.adminValidation = function(req, res) {
+		console.log("inside adminValidation")
+		if (req.session.admin != 2){
+			res.redirect('/' + req.session.auction + '/packages')
+			return false
+		}
+		return true
+	}
+
 }
 
 module.exports = new UsersController();
