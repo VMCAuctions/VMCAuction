@@ -16,7 +16,7 @@
       	<span class="navbar-toggler-icon"></span>
     	</button>
     	<div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">         
+        <ul class="navbar-nav mr-auto">
 					<span class="navbar-text brand">SILENT AUCTION CREATOR</span>
         </ul>
 				<!-- Right Top Navbar -->
@@ -49,9 +49,9 @@
               </li>
             <%}%>
         </ul>
-    	</div>  
-  	</div>      
-	</nav>  
+    	</div>
+  	</div>
+	</nav>
 
 <!-- Organizer's Seconday Navbar-->
 	<nav class="navbar navbar-expand-md navbar-dark nav-head">
@@ -76,9 +76,11 @@
               <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
             </li>
           <% } %>
-          <li class="li-marg">
-            <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Items</a>
-          </li>
+					<% if (admin === 2){ %>
+	          <li class="li-marg">
+	            <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Items</a>
+	          </li>
+					<% } %>
           <li class="li-marg">
             <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
           </li>
@@ -87,7 +89,6 @@
           </li>
         </ul>
       </div>
-		</div>	
+		</div>
   </nav>
 </header>
-

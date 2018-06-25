@@ -144,5 +144,9 @@ module.exports = function(app) {
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
+	//Added temporary redirect if no other routes are hit, which goes to login
+	app.get('*', function (req, res) {
+		res.redirect('/users/login')
+	})
 }
 // end of module.exports
