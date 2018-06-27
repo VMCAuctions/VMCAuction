@@ -1,13 +1,13 @@
 var mongoose = require('mongoose'),
 	Category = require('../models/category.js'),
-	users = require('../controllers/users.js')
+	globals = require('../controllers/globals.js')
 
 
 function CategoriesController(){
 
 	this.index = function(req,res){
 		console.log('CategoriesController index');
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			Category.find({}, function(err, categories) {
 		    	if(err) {
 		      		console.log(err);
@@ -23,7 +23,7 @@ function CategoriesController(){
 
 	this.create = function(req,res){
 		console.log('CategoriesController create');
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 		  Category.create({name: req.body.name},  function(err, result){
 		      if(err){
 		        console.log(err);

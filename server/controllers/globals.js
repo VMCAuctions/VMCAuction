@@ -16,6 +16,29 @@ function GlobalsController(){
       }
     })
   }
+	this.adminValidation = function(req, res) {
+		console.log("inside adminValidation")
+		if (req.session.admin != 2){
+			res.redirect('/' + req.session.auction + '/packages')
+			return false
+		}
+		return true
+	}
+	this.clerkValidation = function(req, res) {
+		if (req.session.admin == 0){
+			res.redirect('/' + req.session.auction + '/packages')
+			return false
+		}
+		return true
+	}
+	this.notClerkValidation = function(req, res) {
+		if (req.session.admin == 1){
+			res.redirect('/' + req.session.auction + '/packages')
+			return false
+		}
+		return true
+	}	
+
 }
 
 module.exports = new GlobalsController();
