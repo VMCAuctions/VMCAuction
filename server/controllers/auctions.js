@@ -5,18 +5,18 @@ var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js'),
 	Global = require('../models/global.js'),
-	users = require('../controllers/users.js')
+	globals = require('../controllers/globals.js')
 
 function AuctionsController() {
 	this.index = function(req, res) {
 		//Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			res.render("auctions", {admin: req.session.admin, userName: req.session.userName})
 		}
 	};
 	//organizer landing page
 	this.main = function(req, res) {
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			Auction.find({}, function(err, auctions) {
 				if (err) {
 				 	console.log(err);
@@ -56,7 +56,7 @@ function AuctionsController() {
 		// console.log("req.body.startClockTime is", req.body.startClockTime)
 		// Add validations to ensure auction start occurs before auction end
 
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 			var start = new Date(startDate)
 			var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
@@ -100,7 +100,7 @@ function AuctionsController() {
 		}
 	}
 	this.menu =function(req, res) {
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			Auction.findById(req.params.auctions, function(err, auctionDetails) {
 				if (err) {
 					console.log(err)
@@ -112,7 +112,7 @@ function AuctionsController() {
 		}
 	}
 	this.update = function(req, res) {
-		if (users.adminValidation(req, res)){
+		if (globals.adminValidation(req, res)){
 			var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 			var start = new Date(startDate)
 			var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
@@ -143,22 +143,21 @@ function AuctionsController() {
 	}
 
 	//This code is archived in case we ever go back to manually selecting pins for auctions; will probably be used for auction edit when the user selects a new pin
-
-	// this.pinCheck = function(req, res) {
-	// 	//Make a check on auction entry that verifies that pin is unique
-	// 	Auction.findOne({pin: req.body.pin}, function(err, auction){
-	// 		if(err){
-	// 			console.log(err)
-	// 		}else if(!auction){
-	// 			res.json({match: false})
-	// 		}else{
-	// 			req.session.userName = "Clerk"
-	// 			//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
-	// 			req.session.admin = 1
-	// 			res.json({match: true, auctions:auction._id})
-	// 		}
-	// 	})
-	// }
+	this.pinCheck = function(req, res) {
+		//Make a check on auction entry that verifies that pin is unique
+		Auction.findOne({pin: req.body.pin}, function(err, auction){
+			if(err){
+				console.log(err)
+			}else if(!auction){
+				res.json({match: false})
+			}else{
+				req.session.userName = "Clerk"
+				//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
+				req.session.admin = 1
+				res.json({match: true, auctions:auction._id})
+			}
+		})
+	}
 
 }
 
