@@ -51,20 +51,17 @@
 
 		<script type="text/javascript">
 			$('#submit').click(function(event){
-				console.log('start');
+				console.log('running login ajax script');
 				event.preventDefault();
-				console.log("wow");
 				$.ajax({
 					type: "POST",
 					url: 'http://localhost:8000/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
-						console.log('ho');
 						if(data.match == false){
 							alert('username and password do not match')
 						} else {
-							console.log("data.auction", data.auction)
-							if (!data.auction){
+							if (data.admin == 2){
 								//This will direct to the landing page for admins, which is yet to be built
 								//For testing purposes, plugged in an auction id below
 								window.location.replace('/auctions/main')

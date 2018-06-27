@@ -83,7 +83,7 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
+		res.render('login', {auction:req.session.auction})
 	};
 
 
@@ -214,7 +214,7 @@ function UsersController(){
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true, auction: user._auctions})
+						res.json({match: true, auction: user._auctions, admin:user.admin})
 					}else{
 						res.json({match: false})
 					}
