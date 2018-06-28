@@ -44,7 +44,7 @@ function PackagesController(){
 										}
 									}
 									console.log("req.session is", req.session)
-									res.render('packages', {packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
+									res.render('packages', {page: 'catalog', packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
 							}
 						})
 					}
@@ -112,7 +112,7 @@ this.new = function(req,res){
 						}
 						else {
 							console.log(itemsArray);
-							res.render('packageCreate', {categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 						console.log('PackagesController new');
 				})
@@ -131,7 +131,7 @@ this.new = function(req,res){
 		  return res.json(false)
     }
     Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-  	value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, _auctions: req.params.auctions
+		value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, restrictions: req.body.packageRestrictions, _auctions: req.params.auctions
 		}, function(err, package){
 			if(err){
 				console.log(err);

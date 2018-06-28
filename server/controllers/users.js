@@ -10,10 +10,10 @@ function UsersController(){
 		const validationArray = [
 			["firstName", 2, "first name"],
 			["lastName", 2, "last name"],
-			["streetAddress", 2, "street address"],
-			["city", 2, "city"],
-			["states", 2, "state"],
-			["zip", 5, "zip code"],
+			// ["streetAddress", 2, "street address"],
+			// ["city", 2, "city"],
+			// ["states", 2, "state"],
+			// ["zip", 5, "zip code"],
 			["phoneNumber", 10, "phone number"],
 			["password", 6, "password"]
 		];
@@ -52,7 +52,7 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('allUsers', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 						}
 					})
 			}else{
@@ -91,6 +91,7 @@ function UsersController(){
 
 	this.duplicate = function (req, res) {
 		let user = req.query.userName;
+		console.log(req.query)
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
@@ -123,29 +124,34 @@ function UsersController(){
 						if(err){
 							console.log(err)
 						}else{
-							var validation = registrationValidation(req.body)
-							// email regex validation
-							var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-							var unValidatedEmail = req.body.email;
-							var emailResult = unValidatedEmail.match(emailReg);
-							if (!emailResult){
-								validation += "Invalid email.\n"
-							}
+							// var validation = registrationValidation(req.body)
+							// // email regex validation
+							// var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+							// var unValidatedEmail = req.body.email;
+							// var emailResult = unValidatedEmail.match(emailReg);
+							// if (!emailResult){
+							// 	validation += "Invalid email.\n"
+							// }
 							// userName regex validation based on no spaces in userName
-							var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
-							var unValidateduserName = req.body.userName;
-							var userResult = unValidateduserName.match(userReg)
-							if(!userResult){
-								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
-							}
-							if(validation.length > 0){
-								res.json({validated: false, message: validation})
-								return;
-							}
+							// var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
+							// var unValidateduserName = req.body.userName;
+							// var userResult = unValidateduserName.match(userReg)
+							// if(!userResult){
+							// 	validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
+							// }
+							// if(validation.length > 0){
+							// 	res.json({validated: false, message: validation})
+							// 	return;
+							// }
 							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
-							//In the final product, this will be organizer, but keeping admin for legacy testing
-							var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
+							if (lowerUser === "organizer" || lowerUser === "admin"){
+								adminStatus = 2
+							}else{
+								adminStatus = 0
+							}
+							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
 							var linkedAuction = req.body.auctionName
 							if (adminStatus){
 								console.log("got in adminStatus")
@@ -156,7 +162,7 @@ function UsersController(){
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
-								email: req.body.email,
+								// email: req.body.email,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -233,7 +239,7 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
+						res.render('userPage', {page: 'myAccount', userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
 					}else{
 						res.redirect('/' + req.params.auctions  + '/packages')
 					}
@@ -390,7 +396,7 @@ function UsersController(){
 				zip: "55555",
 				_auctions: null,
 				password: hash,
-				admin: true
+				admin: 2
 			})
 		})
 	}
