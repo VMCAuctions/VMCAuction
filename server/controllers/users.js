@@ -52,7 +52,15 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {
+								page: 'supporters', 
+								users :users, 
+								cart: cart, 
+								packages: result, 
+								userName: req.session.userName, 
+								admin: req.session.admin, 
+								auction: req.params.auctions
+							})
 						}
 					})
 			}else{
@@ -67,7 +75,11 @@ function UsersController(){
 			if(err){
 				console.log(err)
 			}else if(req.session.admin){
-				res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
+				res.render('admin', {
+					users :users, 
+					userName: req.session.userName, 
+					admin: req.session.admin
+				})
 			}else{
 				res.redirect('/' + req.params.auctions  + '/packages')
 			}
@@ -78,13 +90,22 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
+		res.render('login', {
+			userName: req.session.userName, 
+			admin: req.session.admin, 
+			auction:req.session.auction
+		})
 	};
 
 
 	this.register = function(req,res){
 		Auction.find({}, function(err, auctions){
-			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+			res.render('user', {
+				userName: req.session.userName, 
+				admin: req.session.admin, 
+				auctions: auctions, 
+				auction:req.session.auction
+			})
 		})
 	};
 
@@ -239,7 +260,15 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {page: 'myAccount', userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
+						res.render('userPage', {
+							page: 'myAccount', 
+							userName: req.session.userName, 
+							admin: req.session.admin, 
+							user: user, 
+							cartTotal: cartTotal, 
+							cartArray: cartArray, 
+							auction: req.params.auctions
+						})
 					}else{
 						res.redirect('/' + req.params.auctions  + '/packages')
 					}
