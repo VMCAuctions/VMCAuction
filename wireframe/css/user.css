@@ -21,7 +21,7 @@ img.signin-img {
 h1, h2 {
 	text-align: center;
 	color: #003d79;
-	margin-bottom: 1.2rem;
+	margin-bottom: 0.9rem;
 }
 form.reg-form {
 	max-width: 600px;
@@ -45,6 +45,13 @@ button.regist-btn {
 	text-align: center;
 	margin: 1rem auto;
 	display: block;
+}
+.advice {
+	text-align: center;
+	margin: 1rem auto;
+	display: block;
+	color: #003d79; 
+	font-size: 0.9rem;
 }
 a {
 	color: #719949;
