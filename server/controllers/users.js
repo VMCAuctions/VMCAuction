@@ -108,6 +108,21 @@ function UsersController(){
 			})
 		})
 	};
+	
+	this.account = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else if(user.userName === req.session.userName){
+				res.render('userAccount', {
+					user: user,
+					admin: req.session.admin,
+				})
+			}else{
+				res.redirect('/users/login')
+			}
+		})
+	};
 
 
 	this.duplicate = function (req, res) {

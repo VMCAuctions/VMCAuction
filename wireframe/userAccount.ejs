@@ -2,18 +2,15 @@
 <html>
   	<head>
 		<meta charset="utf-8">
-		<title><%=user.userName%></title>
+		<title><%=user.firstName%>'s Account Page</title>
   	</head>
 	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
   	<body>
-		<%if(admin){%>
-			<%- include('adminHeader') -%>
-		<%}else{%>
-			<%- include('header') -%>
-		<%}%>
-    <h3><%=user.firstName%> Welcome to Your Account </h3>
+			<!-- TODO:need to create another header for this page -->
+			
+    <h3><%=user.firstName%>, Welcome to Your Account</h3>
 	<p>Here you can change your password and edit your personal information.</p>
 
     <div class="container regist-container">
@@ -27,53 +24,53 @@
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label for="firstName">First Name</label>
-										<input type="text" name="firstName" id="firstName" class="form-control">
+										<input type="text" name="firstName" id="firstName" class="form-control" readonly value=<%= user.firstName %>>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="lastName">Last Name</label>
-										<input type="text" name="lastName" id="lastName" class="form-control">
+										<input type="text" name="lastName" id="lastName" class="form-control"
+										readonly value=<%= user.lastName %>>
 									</div>
 								</div>
 								<div class="form-group">
 										<label for="phoneNumber">Cell Phone Number</label>
-										<input type="text" name="phoneNumber" id="phoneNumber" class="form-control"  >
+										<input type="text" name="phoneNumber" id="phoneNumber" class="form-control" readonly value=<%= user.phone %>>
 								</div>
 								<div class="form-group">
 									<label for="streetAddress">Address</label>
-									<input type="text" name="streetAddress" id="streetAddress" class="form-control">
+									<input type="text" name="streetAddress" id="streetAddress" class="form-control" readonly value=<%= user.streetAddress %>>
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label for="city">City</label>
-										<input type="text" name="city" id="city" class="form-control">
+										<input type="text" name="city" id="city" class="form-control" readonly value=<%= user.city %>>
 									</div>
 									<div class="form-group col-md-3">
 										<label for="states">State</label>
-										<input type="text" name="states" id="states" class="form-control">
+										<input type="text" name="states" id="states" class="form-control" readonly value=<%= user.states %>>
 									</div>
 									<div class="form-group col-md-3">
 										<label for="zip">Zip</label>
-										<input type="text" name="zip" id="zip" class="form-control">
+										<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= user.zip %>>
 									</div>
 								</div>	
 								<!- userName is non-editable -->
 								<div class="form-group">
 										<label for="userName">User Name*</label>
-										<input type="email" name="userName" id="userName" placeholder="Your email" class="form-control">
+										<input type="email" name="userName" id="userName" class="form-control" readonly value=<%= user.userName %>>
 								</div>
 								<div class="form-row">	
 									<div class="form-group col-md-6">
 										<label for="password">Old Password</label>
-										<input type="password" name="password" id="password" class="form-control">
+										<input type="password" name="password" id="password" class="form-control" readonly value=<%= user.password %>>
 									</div>
 									<div class="form-group col-md-6">
 										<label for="confirm">New Password</label>
-										<input type="password" name="newPassword" id="newPassword" class="form-control" >
+										<input type="password" name="newPassword" id="newPassword" class="form-control" readonly>
 									</div>
-									
 								</div>
+								<!-- TODO: need to write a function for this button - when user clicks on it - need to remove the readonly attribute from the editable fields so that they become editable. and button's text should become 'Submit'. When user makes changes and clicks Submit - changes should go to db and button's text should become Edit again. -->
 								<button type="submit" class="btn regist-btn btn-lg">Edit</button>
-								<button type="submit" class="btn regist-btn btn-lg">Submit</button>
 							</form>
 							
 						</div><!-- End card-body-->

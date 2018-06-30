@@ -41,14 +41,14 @@
             <a class="nav-link" href="/<%=auction%>/users/<%=userName%>"><%=user.firstName%>'s Watching List</a>
           </h3>
           <h3>
-            <a class="nav-link" href="#"><%=user.firstName%>'s Account</a>
+            <a class="nav-link" href="/users/account/<%=userName%>"><%=user.firstName%>'s Account</a>
           </h3>
           <h3>
-            <a class="nav-link" href='/users/logout'>Logout</a>
+            <a class="nav-link" href="/users/logout">Logout</a>
           </h3>
         <%}else{%>
           <h3>
-            <a class="nav-link" href='/users/login'>Login</a>
+            <a class="nav-link" href="/users/login">Login</a>
           </h3>
           <h3>
             <a class="nav-link" href="/users/register">Register </a>
