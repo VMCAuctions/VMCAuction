@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%=user.userName%></title>
+    <title><%=user.userName%>'s Watching List</title>
   </head>
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -14,7 +14,7 @@
       <%- include('header') -%>
     <%}%>
     <h3><%=user.firstName%>'s Watching List</h3>
-    <p>you can rearange the order from most to least interested to suit your needs by draging them</p>
+    <p>you can rearrange the order from most to least interested to suit your needs by draging them</p>
     <table>
       <thead>
         <th>Package Name</th>

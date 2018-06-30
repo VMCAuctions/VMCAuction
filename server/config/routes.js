@@ -79,6 +79,11 @@ module.exports = function(app) {
 	// get the login form
 	app.get('/users/login', function(req,res){
 		users.login(req,res)});
+		
+	//get the user account page	
+	app.get('/users/account/:userName', function(req,res){
+		users.account(req,res)});
+	
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
