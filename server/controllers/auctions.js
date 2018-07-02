@@ -110,7 +110,7 @@ function AuctionsController() {
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
 		var end = new Date(endDate)
-		Auction.findById(req.body.auctions, function(err, auction){
+		Auction.findById(req.params.auctions, function(err, auction){
 			if(err){
 				console.log(err)
 			}
