@@ -131,7 +131,7 @@ module.exports = function(app) {
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)})
 		//Edits the auction on the backend
-	app.post('/:auctions/update', function(req,res){
+	app.post('/auctions/update', function(req,res){
 		auctions.update(req, res)})
 
 	app.get('/clerk/login', function(req, res){
