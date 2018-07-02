@@ -104,8 +104,8 @@ function AuctionsController() {
 		})
 	}
 	this.update = function(req, res) {
-		console.log("req.body is", req.body)
-		console.log("we are in the update function")
+		// console.log("req.body is", req.body)
+		// console.log("we are in the update function")
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
@@ -118,19 +118,18 @@ function AuctionsController() {
 				auction.name = req.body.name || auction.name;
 				auction.startClock = start || auction.startClock;
 				auction.endClock = end || auction.endClock;
-				console.log("req.body.startClockDate is", req.body.startClockDate)
-				console.log("req.body.startClockTime is", req.body.startClockTime)
-				console.log("end is", end)
-				console.log("start is", start)
-				console.log("end is", end)
-				console.log("auction is", auction)
+				// console.log("req.body.startClockDate is", req.body.startClockDate)
+				// console.log("req.body.startClockTime is", req.body.startClockTime)
+				// console.log("end is", end)
+				// console.log("start is", start)
+				// console.log("end is", end)
+				// console.log("auction is", auction)
 				auction.save(function(err,result){
 					if(err){
 						console.log(err)
 					}
 					else{
-						return
-						//Redirect to organizer menu
+						res.redirect("/" + req.params.auctions + "/organizerMenu")
 					}
 				})
 			}
