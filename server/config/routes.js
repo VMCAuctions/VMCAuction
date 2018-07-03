@@ -130,7 +130,10 @@ module.exports = function(app) {
 		//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)})
-		//Edits the auction on the backend
+		//Renders the page to edit an auction
+	app.get('/:auctions/edit', function (req, res) {
+		auctions.edit(req, res)})
+		//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
 

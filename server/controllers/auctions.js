@@ -99,8 +99,30 @@ function AuctionsController() {
 				console.log(err)
 			} else {
 			    console.log('auction details', auctionDetails)
-				res.render('organizerMenu', {page: 'organizerMenu', admin: req.session.admin, auction: req.params.auctions, auctionDetails: auctionDetails, userName: req.session.userName })
+					//Not sure why 'organizerMenu' is being passed here in page)
+					res.render('organizerMenu', {page: 'organizerMenu', admin: req.session.admin, auction: req.params.auctions, auctionDetails: auctionDetails, userName: req.session.userName })
 			}
+		})
+	}
+	this.edit = function(req, res){
+		Auction.findById(req.params.auctions, function(err, auction){
+			stringStartClock = auction.startClock.toISOString()
+			stringEndClock = auction.endClock.toISOString()
+			console.log("stringStartClock is", stringStartClock)
+			startDate = stringStartClock.substring(0, 10)
+			startClock = stringStartClock.substring(11, 16)
+			console.log("startDate is", startDate)
+			console.log("startClock is", startClock)
+			endDate = stringEndClock.substring(0, 10)
+			endClock = stringEndClock.substring(11, 16)
+			// console.log("startDate conversion 1:" + auction.startClock.toDateString())
+			// console.log("startDate conversion 2:" + auction.startClock.getMonth())
+			// startClock
+			// startDate
+			// endClock
+			// endDate
+			console.log("type is", typeof(auction.startClock))
+			res.render("editAuction", {auctionDetails: auction, admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock})
 		})
 	}
 	this.update = function(req, res) {
