@@ -78,7 +78,7 @@
                 <%}%>
           </div>
           </div>
-          <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModal">
+          <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#exampleModal">
             Add More Items...
           </button>
           <div class="form-group">
@@ -94,11 +94,11 @@
           <!-- Button trigger modal -->
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+          <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Items</h5>
+                  <h5 class="modal-title">Items</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -115,15 +115,19 @@
                       </span>
                     </div>
                   </div><!-- /.col-lg-6 -->
-                  <%for (var i in items){%>
-                    <%if(!items[i].packaged){%>
-                      <br>
-                      <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-                      <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                      <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
-                      <p>Fair Market Value: <%= items[i].value %></p>
-                      <%}%>
-                      <%}%>
+                  <div class="row">
+                    <div class="col-md-10">
+                      <%for (var i in items){%>
+                        <%if(!items[i].packaged){%>
+                          <br>
+                          <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                          <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                          <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
+                          <p>Fair Market Value: <%= items[i].value %></p>
+                          <%}%>
+                          <%}%>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -136,6 +140,12 @@
     </div>
     <script>
       $(document).ready(function(){
+        $('.show-modal').click(function(){
+          $('#exampleModal').modal({
+            backdrop: 'static',
+            keyboard: false
+          })
+        })
 
         var total = 0;
         var checkedItems = {};
