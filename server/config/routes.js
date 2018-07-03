@@ -81,7 +81,7 @@ module.exports = function(app) {
 		users.login(req,res)});
 		
 	//get the user account page	
-	app.get('/users/account/:userName', function(req,res){
+	app.get('/:auctions/users/account/:userName', function (req, res) {
 		users.account(req,res)});
 	
 	// post the new user form and create that new user (Registration)

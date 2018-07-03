@@ -116,7 +116,16 @@ function UsersController(){
 			}else if(user.userName === req.session.userName){
 				res.render('userAccount', {
 					user: user,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					userName: user.userName,
+					phone: user.phoneNumber,
+					streetAddress: user.streetAddress,
+					city: user.city,
+					states: user.states,
+					zip: user.zip,
 					admin: req.session.admin,
+					auction: req.params.auctions
 				})
 			}else{
 				res.redirect('/users/login')
