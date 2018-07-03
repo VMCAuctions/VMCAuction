@@ -67,7 +67,8 @@
             <div class="row">
               <label for="">Items</label>
             </div>
-            <%for (var i in items){%>
+                                                          <!-- Commented for future reference -->
+            <!-- <%for (var i in items){%>
               <%if(!items[i].packaged){%>
                 <br>
                 <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
@@ -75,7 +76,9 @@
                 <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
                 <p>Fair Market Value: <%= items[i].value %></p>
                 <%}%>
-                <%}%>
+                <%}%> -->
+
+                                                          <!-- End reference Comment -->
           </div>
           </div>
           <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#exampleModal">
@@ -116,16 +119,41 @@
                     </div>
                   </div><!-- /.col-lg-6 -->
                   <div class="row">
-                    <div class="col-md-10">
-                      <%for (var i in items){%>
-                        <%if(!items[i].packaged){%>
-                          <br>
-                          <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-                          <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                          <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
-                          <p>Fair Market Value: <%= items[i].value %></p>
-                          <%}%>
-                          <%}%>
+                    <div class="col-md-12">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Select</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Restrictions</th>
+                            <th>Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <%for (var i in items){%>
+                            <%if(!items[i].packaged){%>
+                              <tr>
+                                <td>
+                                  <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                                </td>
+                                <td>
+                                  <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                                </td>
+                                <td>
+                                  <%=items[i]._category%>
+                                </td>
+                                <td>
+                                  <%= items[i].restrictions %>
+                                </td>
+                                <td>
+                                  <p><%= items[i].value %></p>
+                                </td>
+                              </tr>
+                              <%}%>
+                            <%}%>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
