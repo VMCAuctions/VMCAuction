@@ -1,0 +1,14 @@
+
+.nav-head {
+    background-color: #003d79;
+}
+.nav-org {
+    color: #ffffff !important;
+    font-size: 1.2rem; 
+}
+a.nav-org:hover {
+    color: #b3d9ff !important;
+    background-color: #004d99;
+}
+.li-marg {
+    padding-right: 1.5rem; 
