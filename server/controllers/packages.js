@@ -43,17 +43,25 @@ function PackagesController(){
 											nonfeatured.push(packages[i]);
 										}
 									}
-									console.log("req.session is", req.session)
-									res.render('packages', {
-										page: 'catalog', 
-										packages: packages, 
-										admin: req.session.admin, 
-										userName: req.session.userName, 
-										user:user, 
-										categories: categories, 
-										featured: featured, 
-										nonfeatured: nonfeatured, 
-										auction: req.params.auctions})
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										console.log("req.session is", req.session)
+										res.render('packages', {
+											page: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
 							}
 						})
 					}
@@ -207,14 +215,22 @@ this.new = function(req,res){
 							ourBids = true;
 							lastBid = package.bids[package.bids.length -1 ].bidAmount
 						}
-						res.render('packageShow',{
-							package:package, 
-							userName: req.session.userName, 
-							admin: req.session.admin, 
-							user:user, 
-							ourBids: ourBids, 
-							lastBid: lastBid, 
-							auction: req.params.auctions})
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								res.render('packageShow', {
+									package: package,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									user: user,
+									ourBids: ourBids,
+									lastBid: lastBid,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}
+						})
 					}
 				})
 			}
