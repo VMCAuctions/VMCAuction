@@ -49,12 +49,12 @@ a.btn-logout:hover {
 	color: #fff; 
 }
 a.dash-link { 
-	color: #99004d;
-	decoration: none; 
+	color: #3399ff;
+	text-decoration: none; 
 }
 a.dash-link:hover {
-	color: #719949 !important;
-	decoration: none !important; 
+	color: #99004d !important;
+	text-decoration: none !important; 
 }
 
 /* Organizer's Sticky footer styles - to be moved to its own component

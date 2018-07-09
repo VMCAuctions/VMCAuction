@@ -61,6 +61,7 @@ function ItemsController(){
 			_category: req.body.category, 
 			donorFirst: req.body.donorFirst, 
 			donorLast: req.body.donorLast, 
+			donorOrg: req.body.donorOrg,
 			donorDisplay: req.body.donorDisplay, 
 			restrictions: req.body.itemRestriction, 
 			value: req.body.fairMarketValue, 
