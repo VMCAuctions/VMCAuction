@@ -108,6 +108,38 @@ function UsersController(){
 			})
 		})
 	};
+	
+	this.account = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else if(user.userName === req.session.userName){
+				Auction.findById(req.params.auctions, function (err, auctionDetails) {
+					if (err) {
+						console.log(err)
+					} else {
+						console.log("req.session is", req.session)
+						res.render('userAccount', {
+							user: user,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							userName: user.userName,
+							phone: user.phoneNumber,
+							streetAddress: user.streetAddress,
+							city: user.city,
+							states: user.states,
+							zip: user.zip,
+							admin: req.session.admin,
+							auction: req.params.auctions,
+							auctionDetails: auctionDetails,
+						})
+					}
+				})
+			}else{
+				res.redirect('/users/login')
+			}
+		})
+	};
 
 
 	this.duplicate = function (req, res) {
@@ -260,14 +292,22 @@ function UsersController(){
 					if(err){
 						console.log(err)
 					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {
-							page: 'myAccount', 
-							userName: req.session.userName, 
-							admin: req.session.admin, 
-							user: user, 
-							cartTotal: cartTotal, 
-							cartArray: cartArray, 
-							auction: req.params.auctions
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								console.log("req.session is", req.session)
+								res.render('userPage', {
+									page: 'myAccount',
+									userName: req.session.userName,
+									admin: req.session.admin,
+									user: user,
+									cartTotal: cartTotal,
+									cartArray: cartArray,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}
 						})
 					}else{
 						res.redirect('/' + req.params.auctions  + '/packages')
