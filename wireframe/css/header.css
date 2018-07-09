@@ -5,6 +5,7 @@
 .nav-org {
     color: #ffffff !important;
     font-size: 1.2rem; 
+    padding-right: 0 !important;
 }
 a.nav-org:hover {
     color: #b3d9ff !important;
@@ -12,3 +13,116 @@ a.nav-org:hover {
 }
 .li-marg {
     padding-right: 1.5rem; 
+}
+
+/* Countdown Clock */
+
+.timer {
+    margin: 0;
+    background-color: #003d79;
+    color: #fff;
+    text-align: center;
+    font-size: 1.2em;
+    font-family: 'Century Gothic Bold', sans-serif;
+}
+
+.mobile-clock .timer {
+    font-size: 14px;
+}
+
+span {
+    padding: 1px;
+    font: bold 18px 'Droid Sans', Arial, sans-serif;
+    text-align: center;
+    color: #111;
+    background-color: #ddd;
+    background-image: -webkit-linear-gradient(top, #bbb, #eee); 
+    background-image:    -moz-linear-gradient(top, #bbb, #eee);
+    background-image:     -ms-linear-gradient(top, #bbb, #eee);
+    background-image:      -o-linear-gradient(top, #bbb, #eee);
+    border-radius: 3px;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.7);
+}
+
+.desktop-clock {
+    height: 28px;
+    padding-right: 18px;
+}
+
+/* 
+  Device = Desktops, Higher Resolution Desktops
+*/
+
+@media (min-width: 1281px) {
+  .desktop-clock {
+      display: block;
+  }
+  .mobile-clock {
+      display: none;
+  }
+}
+
+/* 
+  Device = Laptops, Desktops
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .desktop-clock {
+      display: block;
+  }
+  .mobile-clock {
+      display: none;
+  }
+}
+
+/* 
+  Device = Tablets, iPads (portrait)
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .desktop-clock {
+      display: block;
+  }
+  .mobile-clock {
+      display: none;
+  }
+}
+
+/* 
+  Device = Tablets, iPads (landscape)
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .desktop-clock {
+      display: block;
+  }
+  .mobile-clock {
+      display: none;
+  }
+}
+
+/* 
+  Device = Low Resolution Tablets, Mobiles (Landscape)
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .desktop-clock {
+      display: none;
+  }
+  .mobile-clock {
+      display: block;
+  }
+}
+
+/* 
+  Device = Most Smartphones (Portrait)
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .desktop-clock {
+      display: none;
+  }
+  .mobile-clock {
+      display: block;
+  }
+}
