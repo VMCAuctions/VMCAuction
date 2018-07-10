@@ -59,6 +59,27 @@
 										<label for="zip">Zip</label>
 										<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= zip %>>
 									</div>
+									
+<!-- these fields visible to admin only								 -->
+<%if(admin){%>
+	<form class="reg-form" id="registrationForm" method="" action="">
+		<h4>This can be done by Admin only!</h4>
+			<div class="form-row">
+			<div class="form-group col-md-6">
+				<!-- <label for="password">New Password</label> -->
+				<input type="password" name="newPass" id="newPass" class="form-control" placeholder="new password">
+			</div>
+			<div class="form-group col-md-6">
+				<!-- <label for="confirm">Confirm Password</label> -->
+				<input type="password" name="confirmPass" id="confirmPass" class="form-control" placeholder="confirm new password">
+			</div>
+			<div class="form-group col-md-6">
+				<button type="submit" id="changePassBtn" class="btn btn-primary">Change</button>
+			</div>
+		</div>	
+	</form>
+<%}%>
+									
 								</div>	
 								
 								<div>
@@ -99,7 +120,7 @@
 									</div>
 				</div><!-- End card-body-->
 								
-						<!-- these fields visible to admin only								 -->
+						<!-- these fields visible to admin only								
 	<%if(admin){%>
 							<form class="reg-form" id="registrationForm" method = "post" action=""> 
 								<p>Admin only can see these:</p>
@@ -115,7 +136,7 @@
 								</div>
 								<button type="submit" class="btn btn-lg">Save</button>
 							</form>
-<%}%>
+<%}%> -->
 							
 							
 							

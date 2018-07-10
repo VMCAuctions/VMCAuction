@@ -34,7 +34,7 @@
             <%if(userName){%>
               <% if (admin === 2){ %>
                 <li class="li-marg">
-                  <a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/<%=userName%>"><%=userName%>'s Account  </a>
+                  <a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"><%=userName%>'s Account  </a>
                 </li>
               <% } %>
               <li>
