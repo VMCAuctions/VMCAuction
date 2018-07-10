@@ -130,7 +130,7 @@
                         <tbody>
                           <%for (var i in items){%>
                             <%if(!items[i].packaged){%>
-                              <tr>
+                              <tr class="itemRow">
                                 <td>
                                   <input class="" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
                                 </td>
@@ -226,6 +226,13 @@
           alert('that was a success')
         }
       })
+
+      $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".itemRow").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+      });
     </script>
   </body>
 </html>
