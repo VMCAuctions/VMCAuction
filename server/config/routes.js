@@ -32,6 +32,9 @@ module.exports = function(app) {
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
+	// show package register
+	app.get('/:auctions/packages/list', function(req, res) {
+		packages.list(req, res)});
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
