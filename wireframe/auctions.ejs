@@ -4,6 +4,7 @@
     <!-- Bootstrap -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/auctions.css">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -16,31 +17,33 @@
   </head>
   <body>
     <div class="container mt-4">
-      <h3>Create Auction</h3>
+      <h2 class="mb-4">Create New Auction</h2>
       <form action="/auctions" method="post">
         <div class="form-group">
-          <label for="name">Auction Name</label>
+          <label for="name" class="mb-1">Auction Name</label>
           <input type="text" name="name" id="name" class="form-control" value="">
         </div>
-
-        <div class="form-group">
-          <label for="startClockDate">Start Date</label>
-          <input type="date" name="startClockDate" id="startClockDate" class="form-control" value="">
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="startClockDate" class="mb-1">Start Date</label>
+            <input type="date" name="startClockDate" id="startClockDate" class="form-control" value="">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="startClockTime" class="mb-1">Start Time</label>
+            <input type="time" name="startClockTime" id="startClockTime" class="form-control" value="">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="endClockDate" class="mb-1">End Date</label>
+            <input type="date" name="endClockDate" id="endClockDate" class="form-control" value="">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="endClockTime" class="mb-1">End Time</label>
+            <input type="time" name="endClockTime" id="endClockTime" class="form-control" value="">
+          </div>
         </div>
-
         <div class="form-group">
-          <label for="startClockTime">Start Time</label>
-          <input type="time" name="startClockTime" id="startClockTime" class="form-control" value="">
-        </div>
-
-        <div class="form-group">
-          <label for="endClockDate">End Date</label>
-          <input type="date" name="endClockDate" id="endClockDate" class="form-control" value="">
-        </div>
-
-        <div class="form-group">
-          <label for="endClockTime">End Time</label>
-          <input type="time" name="endClockTime" id="endClockTime" class="form-control" value="">
+          <label for="auctionDescription" class="mb-1">Auction Description</label>
+          <textarea name="auctionDescription" id="auctionDescription" class="form-control" rows="10" value=""></textarea>
         </div>
 
         <div class="form-group">
