@@ -10,10 +10,10 @@ function UsersController(){
 		const validationArray = [
 			["firstName", 2, "first name"],
 			["lastName", 2, "last name"],
-			["streetAddress", 2, "street address"],
-			["city", 2, "city"],
-			["states", 2, "state"],
-			["zip", 5, "zip code"],
+			// ["streetAddress", 2, "street address"],
+			// ["city", 2, "city"],
+			// ["states", 2, "state"],
+			// ["zip", 5, "zip code"],
 			["phoneNumber", 10, "phone number"],
 			["password", 6, "password"]
 		];
@@ -52,7 +52,15 @@ function UsersController(){
 								}
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
-							res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							res.render('allUsers', {
+								page: 'supporters', 
+								users :users, 
+								cart: cart, 
+								packages: result, 
+								userName: req.session.userName, 
+								admin: req.session.admin, 
+								auction: req.params.auctions
+							})
 						}
 					})
 			}else{
@@ -67,7 +75,11 @@ function UsersController(){
 			if(err){
 				console.log(err)
 			}else if(req.session.admin){
-				res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
+				res.render('admin', {
+					users :users, 
+					userName: req.session.userName, 
+					admin: req.session.admin
+				})
 			}else{
 				res.redirect('/' + req.params.auctions  + '/packages')
 			}
@@ -78,13 +90,54 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
+		res.render('login', {
+			userName: req.session.userName, 
+			admin: req.session.admin, 
+			auction:req.session.auction
+		})
 	};
 
 
 	this.register = function(req,res){
 		Auction.find({}, function(err, auctions){
-			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+			res.render('user', {
+				userName: req.session.userName, 
+				admin: req.session.admin, 
+				auctions: auctions, 
+				auction:req.session.auction
+			})
+		})
+	};
+	
+	this.showAccount = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else if(user.userName === req.session.userName){
+				Auction.findById(req.params.auctions, function (err, auctionDetails) {
+					if (err) {
+						console.log(err)
+					} else {
+						console.log("req.session is", req.session)
+						res.render('userAccount', {
+							user: user,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							userName: user.userName,
+							phone: user.phoneNumber,
+							streetAddress: user.streetAddress,
+							city: user.city,
+							states: user.states,
+							zip: user.zip,
+							admin: req.session.admin,
+							auction: req.params.auctions,
+							auctionDetails: auctionDetails,
+						})
+					}
+				})
+			}else{
+				res.redirect('/users/login')
+			}
 		})
 	};
 
@@ -124,26 +177,6 @@ function UsersController(){
 						if(err){
 							console.log(err)
 						}else{
-							var validation = registrationValidation(req.body)
-							// email regex validation
-							var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-							var unValidatedEmail = req.body.email;
-							var emailResult = unValidatedEmail.match(emailReg);
-							if (!emailResult){
-								validation += "Invalid email.\n"
-							}
-							// userName regex validation based on no spaces in userName
-							var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
-							var unValidateduserName = req.body.userName;
-							var userResult = unValidateduserName.match(userReg)
-							if(!userResult){
-								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
-							}
-							if(validation.length > 0){
-								res.json({validated: false, message: validation})
-								return;
-							}
-							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
 							if (lowerUser === "organizer" || lowerUser === "admin"){
@@ -162,7 +195,7 @@ function UsersController(){
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
-								email: req.body.email,
+								// email: req.body.email,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -218,44 +251,63 @@ function UsersController(){
 		})
 	}
 
-
-	this.show = function(req,res){
-		console.log('UsersController show');
-		var cartArray = []
-		var cartTotal = 0
-		Package.find({_auctions: req.params.auctions}, function(err, result){
-			if (err){
-				console.log(err)
-			}else{
-				for (var i = 0; i < result.length; i++){
-					if (result[i].bids.length > 0){
-						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-							cartArray.push(result[i])
-							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
-						}
-					}
-				}
-				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-					if(err){
-						console.log(err)
-					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {page: 'myAccount', userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
-					}else{
-						res.redirect('/' + req.params.auctions  + '/packages')
-					}
-				})
-			}
-		})
-	};
-
+	//this function has been replaced by this.showAccount above, not sure if it's still needed?
+	// this.show = function(req,res){
+	// 	console.log('UsersController show');
+	// 	var cartArray = []
+	// 	var cartTotal = 0
+	// 	Package.find({_auctions: req.params.auctions}, function(err, result){
+	// 		if (err){
+	// 			console.log(err)
+	// 		}else{
+	// 			for (var i = 0; i < result.length; i++){
+	// 				if (result[i].bids.length > 0){
+	// 					if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+	// 						cartArray.push(result[i])
+	// 						cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+	// 					}
+	// 				}
+	// 			}
+	// 			User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+	// 				if(err){
+	// 					console.log(err)
+	// 				}else if (user.userName === req.session.userName | req.session.admin === true){
+	// 					Auction.findById(req.params.auctions, function (err, auctionDetails) {
+	// 						if (err) {
+	// 							console.log(err)
+	// 						} else {
+	// 							console.log("req.session is", req.session)
+	// 							res.render('userPage', {
+	// 								page: 'myAccount',
+	// 								userName: req.session.userName,
+	// 								admin: req.session.admin,
+	// 								user: user,
+	// 								cartTotal: cartTotal,
+	// 								cartArray: cartArray,
+	// 								auction: req.params.auctions,
+	// 								auctionDetails: auctionDetails,
+	// 							})
+	// 						}
+	// 					})
+	// 				}else{
+	// 					res.redirect('/' + req.params.auctions  + '/packages')
+	// 				}
+	// 			})
+	// 		}
+	// 	})
+	// };
+	
+	
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
   this.update = function(req,res){
-		console.log('UsersController update');
-		User.findById(req.params.id ,  function(err, user){
-			if (err){
-				console.log(err)
-			}else {
-				//this will eventually allow users and admins to edit their info
-			}
+		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
+			User.findOneAndUpdate({
+				userName: req.session.userName
+			}, {
+				password: req.body.newPass
+			}).then(function(res){
+				console.log('changed pass')
+			})
 		})
 	}
 

@@ -33,6 +33,7 @@ Create a directory titled VMC, clone the git repository into that folder, switch
 mkdir VMC
 cd VMC
 git clone https://github.com/VMCAuctions/VMCAuction.git
+cd VMCAuctions
 git checkout -b develop origin/develop
 cd server
 npm install
