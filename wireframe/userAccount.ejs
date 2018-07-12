@@ -15,110 +15,134 @@
 		<%}%>
 						
     <h3><%=user.firstName%>, Welcome to Your Account</h3>
-	<p>Here is your personal information.</p>
+		<p>Here is your personal information.</p>
 
-    <div class="container regist-container">
-			<div class="row">
-				<!-- <div class="col"></div>  this column is for equal space on the margins -->
-				<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
-					<div class="card regist-card">
-						<div class="card-body">
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label for="firstName">First Name</label>
-										<input type="text" name="firstName" id="firstName" class="form-control" readonly value=<%= firstName %>>
-									</div>
-									<div class="form-group col-md-6">
-										<label for="lastName">Last Name</label>
-										<input type="text" name="lastName" id="lastName" class="form-control"
+  <div class="container regist-container">
+		<div class="row">
+			<!-- <div class="col"></div>  this column is for equal space on the margins -->
+			<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
+				<div class="card regist-card" id="user-info" data=<%= userName%>>
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group col-md-6">
+								<label for="firstName">First Name</label>
+								<input type="text" name="firstName" id="firstName" class="form-control" readonly value=<%= firstName %>>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="lastName">Last Name</label>
+								<input type="text" name="lastName" id="lastName" class="form-control"
 										readonly value=<%= lastName %>>
-									</div>
+							</div>
+						</div>
+							<div class="form-group">
+								<label for="userName">Email</label>
+								<input type="email" name="userName" id="userName" class="form-control" readonly value=<%= userName %>>
+							</div>
+							<div class="form-group">
+								<label for="phoneNumber">Cell Phone Number</label>
+								<input type="text" name="phoneNumber" id="phoneNumber" class="form-control" readonly value=<%= phone %>>
+							</div>
+							<div class="form-group">
+								<label for="streetAddress">Address</label>
+								<input type="text" name="streetAddress" id="streetAddress" class="form-control" readonly value=<%= streetAddress %>>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="city">City</label>
+									<input type="text" name="city" id="city" class="form-control" readonly value=<%= city %>>
 								</div>
-								<div class="form-group">
-									<label for="userName">Email</label>
-									<input type="email" name="userName" id="userName" class="form-control" readonly value=<%= userName %>>
-								</div>
-								<div class="form-group">
-										<label for="phoneNumber">Cell Phone Number</label>
-										<input type="text" name="phoneNumber" id="phoneNumber" class="form-control" readonly value=<%= phone %>>
-								</div>
-								<div class="form-group">
-									<label for="streetAddress">Address</label>
-									<input type="text" name="streetAddress" id="streetAddress" class="form-control" readonly value=<%= streetAddress %>>
-								</div>
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label for="city">City</label>
-										<input type="text" name="city" id="city" class="form-control" readonly value=<%= city %>>
-									</div>
-									<div class="form-group col-md-3">
-										<label for="states">State</label>
-										<input type="text" name="states" id="states" class="form-control" readonly value=<%= states %>>
-									</div>
-									<div class="form-group col-md-3">
-										<label for="zip">Zip</label>
-										<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= zip %>>
-									</div>
-								</div>	
-								
-								<div>
-									<p>Here is what you've won:</p>
-									<div class="table-responsive">
-										<table class="table">
-											<tr>
-												<th>Item</th>
-												<th>Description</th>
-												<th>Your bid</th>
-											</tr>
-											<tr>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								
-								<div>
-									<p>Here is what you paid for:</p>
-									<div class="table-responsive">
-										<table class="table">
-											<tr>
-												<th>Item</th>
-												<th>Description</th>
-												<th>Amount</th>
-											</tr>
-											<tr>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-										</table>
-										</div>
-										</div>
-									</div>
-				</div><!-- End card-body-->
-								
-						<!-- these fields visible to admin only								 -->
-	<%if(admin){%>
-							<form class="reg-form" id="registrationForm" method = "post" action=""> 
-								<p>Admin only can see these:</p>
-								<div class="form-row">	
-									<div class="form-group col-md-6">
-										<label for="password">New Password</label>
-										<input type="password" name="password" id="password" class="form-control">
-									</div>
-									<div class="form-group col-md-6">
-										<label for="confirm">Confirm Password</label>
-										<input type="password" name="newPassword" id="newPassword" class="form-control">
-									</div>
-								</div>
-								<button type="submit" class="btn btn-lg">Save</button>
-							</form>
-<%}%>
+							<div class="form-group col-md-3">
+								<label for="states">State</label>
+								<input type="text" name="states" id="states" class="form-control" readonly value=<%= states %>>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="zip">Zip</label>
+								<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= zip %>>
+							</div>
+						</div>		
 							
-							
-							
-						
-  </body>
+<!-- these fields visible to admin only								 -->
+		<%if(admin){%>
+			<form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>">
+				<h6>This can be done by Admin only!</h6>
+					<div class="form-row">
+					<div class="form-group col-md-6">
+						<input type="password" name="newPass" id="newPass" class="form-control" placeholder="new password" required readonly>
+					</div>
+					<div class="form-group col-md-6">
+						<input type="password" name="confirmPass" id="confirmPass" class="form-control" placeholder="confirm new password" required readonly>
+					</div>
+					<div class="form-group col-md-6">
+						<button type="submit" id="changePassBtn" class="btn btn-primary" disabled>Change Password</button>
+					</div>
+				</div>	
+			</form>
+		<%}%>
+									
+		<div>
+			<p>Here is what you've won:</p>
+			<div class="table-responsive">
+				<table class="table">
+					<tr>
+						<th>Item</th>
+						<th>Description</th>
+						<th>Your bid</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+								
+		<div>
+			<p>Here is what you paid for:</p>
+			<div class="table-responsive">
+				<table class="table">
+					<tr>
+						<th>Item</th>
+						<th>Description</th>
+						<th>Amount</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+				</div>
+				</div>
+			</div>
+</div><!-- End card-body-->
+		
+	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
+		<script type="text/javascript">
+			$('#changePassBtn').click(function(event){
+				event.preventDefault();
+				
+				let userName = $('#user-info').attr("data");
+				let newPass = $('#newPass').val();
+				let confirmPass = $('#confirmPass').val();
+				 
+				if(newPass === confirmPass){
+					console.log('matched')
+					$.ajax({
+						type: "POST",
+						contentType: "application/json",
+						headers: {"X-HTTP-Method-Override": "PUT"},
+ 						url: "/<%=auction%>/users/account/<%=userName%>",
+						data: JSON.stringify({password: newPass}),
+						success: function(data){
+							console.log('changed');
+						}
+					})
+				} else {
+					alert('values for password and confirmation should match!')
+				}
+			});
+		</script>
+	</body>
 </html>
+
