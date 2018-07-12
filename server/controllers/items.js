@@ -17,7 +17,14 @@ function ItemsController(){
 								console.log(err);
 								res.status(500).send('Failed to Load Items');
 						}else{
-							res.render('items', {page:'items', items: items, admin: req.session.admin, userName: req.session.userName, categories: categories, auction: req.params.auctions})
+							res.render('items', {
+								page:'items', 
+								items: items, 
+								admin: req.session.admin, 
+								userName: req.session.userName, 
+								categories: categories, 
+								auction: req.params.auctions
+							})
 						}
 				})
 			}
@@ -32,7 +39,13 @@ function ItemsController(){
 	      		res.status(500).send('Failed to Load Items');
 	    	}else{
 					if(req.session.admin){
-						res.render('createItem', {page:'addItem', categories: categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+						res.render('createItem', {
+							page:'addItem', 
+							categories: categories, 
+							userName: req.session.userName, 
+							admin: req.session.admin, 
+							auction: req.params.auctions
+						})
 					}else{
 						res.redirect('/' + req.params.auctions + '/packages')
 					}
@@ -42,8 +55,20 @@ function ItemsController(){
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');
-    Item.create({name: req.body.itemName, description: req.body.itemDescription,
-      _category: req.body.category, donorFirst: req.body.donorFirst, donorLast: req.body.donorLast, donorDisplay: req.body.donorDisplay, restrictions: req.body.itemRestriction, value: req.body.fairMarketValue, packaged: false, priority: req.body.priority, _auctions: req.params.auctions},  function(err, result){
+    Item.create({
+			name: req.body.itemName, 
+			description: req.body.itemDescription,
+			_category: req.body.category, 
+			donorFirst: req.body.donorFirst, 
+			donorLast: req.body.donorLast, 
+			donorOrg: req.body.donorOrg,
+			donorDisplay: req.body.donorDisplay, 
+			restrictions: req.body.itemRestriction, 
+			value: req.body.fairMarketValue, 
+			packaged: false, 
+			priority: req.body.priority, 
+			_auctions: req.params.auctions
+		},  function(err, result){
       if(err){
         console.log(err);
         res.status(500).send('Failed to Create Item');
@@ -65,7 +90,13 @@ function ItemsController(){
 					  console.log(err);
 					  res.status(500).send('Failed to Load Items');
 					}else if(req.session.admin){
-						res.render('itemEdit', {item:result, categories:categories, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions});
+						res.render('itemEdit', {
+							item:result, 
+							categories:categories, 
+							userName: req.session.userName, 
+							admin: req.session.admin, 
+							auction: req.params.auctions
+						});
 					}else{
 						res.redirect('/' + req.params.auctions + '/packages')
 					}

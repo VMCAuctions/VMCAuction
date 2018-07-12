@@ -100,8 +100,12 @@ function AuctionsController() {
 				console.log(err)
 			} else {
 			    console.log('auction details', auctionDetails)
-					//Not sure why 'organizerMenu' is being passed here in page)
-					res.render('organizerMenu', {page: 'organizerMenu', admin: req.session.admin, auction: req.params.auctions, auctionDetails: auctionDetails, userName: req.session.userName })
+				res.render('organizerMenu', {
+					page: 'organizerMenu', 
+					admin: req.session.admin, 
+					auction: req.params.auctions, 
+					auctionDetails: auctionDetails, 
+					userName: req.session.userName })
 			}
 		})
 	}

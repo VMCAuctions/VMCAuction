@@ -2,21 +2,17 @@
 <html>
 
 <head>
-
-  <!-- <link rel="stylesheet" type="text/css" href="./css/style.css" > -->
-
   <meta charset="utf-8">
+  <title>Donated Item Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="/css/item.css" >
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <title>
-    Item List
-  </title>
-
 </head>
 
 <body>
@@ -26,70 +22,99 @@
       <%- include('header') -%>
       <%}%>
 
-
-      <input type='search' id='keyword' placeholder="Keyword Search">
-      <select name='category' id='category'>
-        <% for(var c in categories) {%>
-          <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-        <%}%>
-        <option value="">Reset</option>
-      </select>
-      <div class="container">
-        <h1 class="my-2">Item Report</h1>
+  <div class="container-fluid item-container">
+    <h2>Donated Items</h2>
+      <div id="search-container">
+        <!-- Find items by keyword -->
+        <div id="search-keyword">
+          <label for "keyword">Search by keyword:</label>
+          <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+        </div>
+        
+        <!-- Find all items in a category-->
+        <div id="search-category">
+            <label for "category">Search by category:</label>
+            <select class="form-control" name="category" id="category">
+              <option value="">All Categories</option>
+              <% for(var c in categories) {%>
+                <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+              <%}%>
+            </select>
+        </div>
+      </div>
+      
+      <!-- Item Table -->
         <div class="table-responsive-md ">
-          <table class="table table-striped table-bordered">
+          <table class="table table-striped table-bordered item-table">
             <thead >
               <tr>
-                <% if (admin) { %>
-                  <th scope="col">Actions</th>
-                  <%} %>
                   <th scope="col">Item Number</th>
                   <th scope="col">Item Name</th>
                   <th scope="col">Package</th>
                   <th scope="col">Category</th>
-                  <th scope="col">Fair Market Value</th>
+                  <th scope="col" class="item-val">Fair Market Value</th>
                   <th scope="col">Item Description</th>
-                  <th scope="col">Donor</th>
                   <th scope="col">Item Restriction</th>
+                  <th scope="col">Donor Name</th>
+                  <th scope="col">Donor Organization</th>
+                  <th scope="col">Donor Display</th>
+                  <% if (admin) { %>
+                    <th scope="col">Actions</th>
+                  <% } %>
                 </tr>
               </thead>
               <tbody>
                 <% for (var i in items){%>
-
                   <tr class="itemRow">
-                    <% if(admin){ %>
-                      <td><a href='/<%=auction%>/items/<%=items[i]._id%>'><button>Edit</button></a>|<a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><button>Delete</button></a></td>
-                      <%}%>
                       <td><%= items[i]._id%></td>
                       <td><%= items[i].name%></td>
                       <% if (items[i].packaged) {%>
-                        <td> <a href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
+                        <td> <a class="pkg-link" href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
                       <%}else{%>
                         <td></td>
                       <%}%>
                       <td><%= items[i]._category%></td>
-                      <td><%= items[i].value%></td>
-                      <td><%= items[i].description%></td>
-                      <td><%= items[i].donorDisplay%></td>
+                      <td class="item-val"><%= items[i].value%></td>
+                      <td><%= items[i].description%></tdc>
                       <td><%= items[i].restrictions%></td>
-                    </tr>
-                    <%}%>
-                  </tbody>
-                </table>
-              <script type="text/javascript">
-              $("#keyword").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $(".itemRow").filter(function() {
-                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                  });
-              });
+                      <td><%= items[i].donorFirst%> <%= items[i].donorLast%></td>
+                      <td><%= items[i].donorOrg%></td>
+                      <td><%= items[i].donorDisplay%></td>
+                      <% if(admin){ %>
+                        <td>
+                          <a href='/<%=auction%>/items/<%=items[i]._id%>'><i class="fas fa-edit item-edit"></i></a>
+                          <a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt item-delete"></i></a>
+                        </td>
+                      <%}%>
+                </tr>
+              <%}%>
+            </tbody>
+          </table>
+  </div> <!-- End main page container-->
 
-            $("select[name='category']").change( function() {
-                var value = $(this).val().toLowerCase();
-                $(".itemRow").filter(function(){
-                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                })
-            });
-              </script>
-          </body>
-        </html>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      console.log("Ready!");
+      $("#keyword").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        if (value == '') {
+          $(".itemRow").show();
+        } else {
+          $(".itemRow").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+          });
+        }
+      });
+
+      $("select[name='category']").change( function() {
+        var value = $(this).val().toLowerCase();
+        $(".itemRow").filter(function(){
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+      })
+
+    });        
+  </script>
+</body>
+</html>
+     
