@@ -32,6 +32,9 @@ module.exports = function(app) {
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
+	// show package register
+	app.get('/:auctions/packages/list', function(req, res) {
+		packages.list(req, res)});
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
@@ -79,6 +82,11 @@ module.exports = function(app) {
 	// get the login form
 	app.get('/users/login', function(req,res){
 		users.login(req,res)});
+		
+	//get the user account page	
+	app.get('/:auctions/users/account/:userName', function (req, res) {
+		users.account(req,res)});
+	
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
