@@ -13,7 +13,7 @@
 		<%}else{%>
 			<%- include('header') -%>
 		<%}%>
-						
+
     <h3><%=user.firstName%>, Welcome to Your Account</h3>
 		<p>Here is your personal information.</p>
 
@@ -59,8 +59,8 @@
 								<label for="zip">Zip</label>
 								<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= zip %>>
 							</div>
-						</div>		
-							
+						</div>
+
 <!-- these fields visible to admin only								 -->
 		<%if(admin){%>
 			<form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>">
@@ -75,57 +75,60 @@
 					<div class="form-group col-md-6">
 						<button type="submit" id="changePassBtn" class="btn btn-primary" disabled>Change Password</button>
 					</div>
-				</div>	
+				</div>
 			</form>
 		<%}%>
-									
-		<div>
-			<p>Here is what you've won:</p>
-			<div class="table-responsive">
-				<table class="table">
-					<tr>
-						<th>Item</th>
-						<th>Description</th>
-						<th>Your bid</th>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-								
-		<div>
-			<p>Here is what you paid for:</p>
-			<div class="table-responsive">
-				<table class="table">
-					<tr>
-						<th>Item</th>
-						<th>Description</th>
-						<th>Amount</th>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
-				</div>
-				</div>
-			</div>
+
+    <%if(admin == 0){%>
+  		<div>
+  			<p>Here is what you've won:</p>
+  			<div class="table-responsive">
+  				<table class="table">
+  					<tr>
+  						<th>Item</th>
+  						<th>Description</th>
+  						<th>Your bid</th>
+  					</tr>
+  					<tr>
+  						<td></td>
+  						<td></td>
+  						<td></td>
+  					</tr>
+  				</table>
+  			</div>
+  		</div>
+
+  		<div>
+  			<p>Here is what you paid for:</p>
+  			<div class="table-responsive">
+  				<table class="table">
+  					<tr>
+  						<th>Item</th>
+  						<th>Description</th>
+  						<th>Amount</th>
+  					</tr>
+  					<tr>
+  						<td></td>
+  						<td></td>
+  						<td></td>
+  					</tr>
+  				</table>
+  				</div>
+  				</div>
+  			</div>
+	  <%}%>
 </div><!-- End card-body-->
-		
+
+
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">
 			$('#changePassBtn').click(function(event){
 				event.preventDefault();
-				
+
 				let userName = $('#user-info').attr("data");
 				let newPass = $('#newPass').val();
 				let confirmPass = $('#confirmPass').val();
-				 
+
 				if(newPass === confirmPass){
 					console.log('matched')
 					$.ajax({
@@ -145,4 +148,3 @@
 		</script>
 	</body>
 </html>
-
