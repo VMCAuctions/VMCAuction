@@ -102,11 +102,11 @@ module.exports = function(app) {
 	// 	users.show(req,res)});
 	
 	//update organizer's data - TODO!
-	app.put('/:auctions/users/account/:userName', function(req, res){
+	app.post('/:auctions/users/account/:userName', function(req, res){
 		users.update(req, res)});
 	
 	// update a specific user (profile/info)- this function might be replaced by the one above
-	app.post('/:auctions/users/:id(\d+)', function(req,res){
+	app.put('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
 		
 	// parse through admin changes before update

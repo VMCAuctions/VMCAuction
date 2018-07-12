@@ -177,26 +177,6 @@ function UsersController(){
 						if(err){
 							console.log(err)
 						}else{
-							// var validation = registrationValidation(req.body)
-							// // email regex validation
-							// var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-							// var unValidatedEmail = req.body.email;
-							// var emailResult = unValidatedEmail.match(emailReg);
-							// if (!emailResult){
-							// 	validation += "Invalid email.\n"
-							// }
-							// userName regex validation based on no spaces in userName
-							// var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
-							// var unValidateduserName = req.body.userName;
-							// var userResult = unValidateduserName.match(userReg)
-							// if(!userResult){
-							// 	validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
-							// }
-							// if(validation.length > 0){
-							// 	res.json({validated: false, message: validation})
-							// 	return;
-							// }
-							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
 							if (lowerUser === "organizer" || lowerUser === "admin"){
@@ -271,7 +251,7 @@ function UsersController(){
 		})
 	}
 
-	//this function has been replaced by this.showAccount above, not sure if it's still needed
+	//this function has been replaced by this.showAccount above, not sure if it's still needed?
 	// this.show = function(req,res){
 	// 	console.log('UsersController show');
 	// 	var cartArray = []
@@ -316,21 +296,18 @@ function UsersController(){
 	// 		}
 	// 	})
 	// };
-
+	
+	
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
   this.update = function(req,res){
-		var newPass = req.body.newPass;
-		var confirmPass = req.body.confirmPass;
-		User.findOneAndUpdate({userName: req.params.userName}).exec(function(err, user, newPass, confirmPass){
-			if(err){
-				console.log(err)
-			}else if(newPass !== confirmPass){
-				//show message to user that they don't match
-			}else {
-				//update user password in db
-				$set: {
-					password: newPass
-				}
-			}
+		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
+			User.findOneAndUpdate({
+				userName: req.session.userName
+			}, {
+				password: req.body.newPass
+			}).then(function(res){
+				console.log('changed pass')
+			})
 		})
 	}
 
