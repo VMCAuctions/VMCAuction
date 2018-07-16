@@ -53,12 +53,12 @@ function UsersController(){
 								cart[users[i].userName]={'packages': packages, 'total': total };
 							}
 							res.render('allUsers', {
-								page: 'supporters', 
-								users :users, 
-								cart: cart, 
-								packages: result, 
-								userName: req.session.userName, 
-								admin: req.session.admin, 
+								page: 'supporters',
+								users :users,
+								cart: cart,
+								packages: result,
+								userName: req.session.userName,
+								admin: req.session.admin,
 								auction: req.params.auctions
 							})
 						}
@@ -76,8 +76,8 @@ function UsersController(){
 				console.log(err)
 			}else if(req.session.admin){
 				res.render('admin', {
-					users :users, 
-					userName: req.session.userName, 
+					users :users,
+					userName: req.session.userName,
 					admin: req.session.admin
 				})
 			}else{
@@ -91,8 +91,8 @@ function UsersController(){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
 		res.render('login', {
-			userName: req.session.userName, 
-			admin: req.session.admin, 
+			userName: req.session.userName,
+			admin: req.session.admin,
 			auction:req.session.auction
 		})
 	};
@@ -101,14 +101,15 @@ function UsersController(){
 	this.register = function(req,res){
 		Auction.find({}, function(err, auctions){
 			res.render('user', {
-				userName: req.session.userName, 
-				admin: req.session.admin, 
-				auctions: auctions, 
+				userName: req.session.userName,
+				admin: req.session.admin,
+				auctions: auctions,
 				auction:req.session.auction
 			})
 		})
 	};
-	
+
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
 	this.showAccount = function(req,res){
 		User.findOne({userName: req.params.userName}).exec( function(err, user){
 			if(err){
@@ -242,7 +243,7 @@ function UsersController(){
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true, auction: user._auctions})
+						res.json({match: true, admin: user.admin, auction: user._auctions})
 					}else{
 						res.json({match: false})
 					}
@@ -251,53 +252,53 @@ function UsersController(){
 		})
 	}
 
-	//this function has been replaced by this.showAccount above, not sure if it's still needed?
-	// this.show = function(req,res){
-	// 	console.log('UsersController show');
-	// 	var cartArray = []
-	// 	var cartTotal = 0
-	// 	Package.find({_auctions: req.params.auctions}, function(err, result){
-	// 		if (err){
-	// 			console.log(err)
-	// 		}else{
-	// 			for (var i = 0; i < result.length; i++){
-	// 				if (result[i].bids.length > 0){
-	// 					if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-	// 						cartArray.push(result[i])
-	// 						cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
-	// 					}
-	// 				}
-	// 			}
-	// 			User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-	// 				if(err){
-	// 					console.log(err)
-	// 				}else if (user.userName === req.session.userName | req.session.admin === true){
-	// 					Auction.findById(req.params.auctions, function (err, auctionDetails) {
-	// 						if (err) {
-	// 							console.log(err)
-	// 						} else {
-	// 							console.log("req.session is", req.session)
-	// 							res.render('userPage', {
-	// 								page: 'myAccount',
-	// 								userName: req.session.userName,
-	// 								admin: req.session.admin,
-	// 								user: user,
-	// 								cartTotal: cartTotal,
-	// 								cartArray: cartArray,
-	// 								auction: req.params.auctions,
-	// 								auctionDetails: auctionDetails,
-	// 							})
-	// 						}
-	// 					})
-	// 				}else{
-	// 					res.redirect('/' + req.params.auctions  + '/packages')
-	// 				}
-	// 			})
-	// 		}
-	// 	})
-	// };
-	
-	
+	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
+	this.show = function(req,res){
+		console.log('UsersController show');
+		var cartArray = []
+		var cartTotal = 0
+		Package.find({_auctions: req.params.auctions}, function(err, result){
+			if (err){
+				console.log(err)
+			}else{
+				for (var i = 0; i < result.length; i++){
+					if (result[i].bids.length > 0){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							cartArray.push(result[i])
+							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+						}
+					}
+				}
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
+						console.log(err)
+					}else if (user.userName === req.session.userName | req.session.admin === true){
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								console.log("req.session is", req.session)
+								res.render('userPage', {
+									page: 'myAccount',
+									userName: req.session.userName,
+									admin: req.session.admin,
+									user: user,
+									cartTotal: cartTotal,
+									cartArray: cartArray,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}
+						})
+					}else{
+						res.redirect('/' + req.params.auctions  + '/packages')
+					}
+				})
+			}
+		})
+	};
+
+
 	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
   this.update = function(req,res){
 		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
