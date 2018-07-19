@@ -79,9 +79,9 @@
 			</form>
 		<%}%>
 
-    <%if(admin == 0){%>
+    <%if(admin == 0 || (admin >= 1 && user.userName != viewer)){%>
   		<div>
-  			<p>Here is what you've won:</p>
+  			<p><%=user.firstName%>, here is what you've won:</p>
   			<div class="table-responsive">
   				<table class="table">
   					<tr>
