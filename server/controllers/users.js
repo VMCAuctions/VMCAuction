@@ -114,18 +114,18 @@ function UsersController(){
 			if(err){
 				console.log(err)
 			}else if(user.userName === req.session.userName){
+				// console.log('user found:', user)
 				Auction.findById(req.params.auctions, function (err, auctionDetails) {
 					if (err) {
 						console.log(err)
 					} else {
-						console.log("req.session is", req.session)
 						res.render('userAccount', {
 							user: user,
 							firstName: user.firstName,
 							lastName: user.lastName,
 							userName: user.userName,
-							phone: user.phoneNumber,
-							streetAddress: user.streetAddress,
+							phone: user.phone,
+							address: user.streetAddress,
 							city: user.city,
 							states: user.states,
 							zip: user.zip,
@@ -380,7 +380,7 @@ function UsersController(){
 
 
 	this.uninterested= function(req,res) {
-		console.log("in uniterested");
+		console.log("in uninterested");
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
@@ -442,7 +442,7 @@ function UsersController(){
 				lastName: "Ott",
 				phone: "555-555-5555",
 				email: "organizer@gmail.com",
-				streetAddress: "555 Organizer Street",
+				streetAddress: "123 Main Street",
 				city: "Sunnyvale",
 				states: "CA",
 				zip: "55555",
