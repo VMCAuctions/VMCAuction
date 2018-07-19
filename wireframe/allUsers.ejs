@@ -26,7 +26,7 @@
 
       <% for (var u in users) {%>
         <tr>
-          <td><a href="/<%=auction%>/users/<%= users[u].userName %>"><%= users[u].userName %></a></td>
+          <td><a href="/<%=auction%>/users/account/<%= users[u].userName %>"><%= users[u].userName %></a></td>
           <td id="<%=users[u].userName + 'winning'%>"><%=cart[users[u].userName].packages.length%></td>
           <td id="<%=users[u].userName + 'total'%>">$<%=cart[users[u].userName].total%></td>
         </tr>
