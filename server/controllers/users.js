@@ -114,13 +114,14 @@ function UsersController(){
 		User.findOne({userName: req.params.userName}).exec( function(err, user){
 			if(err){
 				console.log(err)
-			}else if(user.userName === req.session.userName){
+			}else if(user.userName === req.session.userName || req.session.admin >= 1){
 				Auction.findById(req.params.auctions, function (err, auctionDetails) {
 					if (err) {
 						console.log(err)
 					} else {
 						console.log("req.session is", req.session)
 						res.render('userAccount', {
+							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
 							user: user,
 							firstName: user.firstName,
 							lastName: user.lastName,
@@ -132,6 +133,7 @@ function UsersController(){
 							zip: user.zip,
 							admin: req.session.admin,
 							auction: req.params.auctions,
+							viewer: req.session.userName,
 							auctionDetails: auctionDetails,
 						})
 					}
@@ -158,6 +160,7 @@ function UsersController(){
 	};
 
 
+	//Might want to restrict some usernames, such as "organizer/admin or clerk"
 	this.create = function(req,res){
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
