@@ -22,7 +22,7 @@ var packageSchema = new Schema({
 	// {bidAmount: 50, name: yarik }
 	photo: String,
 	restrictions: { type: String }
-}, { timestamps: true });
+}, { timestamps: true, usePushEach: true });
 
 packageSchema.plugin(autoIncrement.plugin, {model: 'Package', startAt: 100});
 
