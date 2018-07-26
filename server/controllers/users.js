@@ -54,7 +54,7 @@ function UsersController(){
 							}
 							res.render('allUsers', {
 								page: 'supporters',
-								users :users,
+								users: users,
 								cart: cart,
 								packages: result,
 								userName: req.session.userName,
