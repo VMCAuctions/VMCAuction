@@ -14,6 +14,15 @@ module.exports = function(app) {
 	// get the new item form
 	app.get('/:auctions/items/new', function(req,res){
 		items.new(req,res)});
+
+	//adding items from csv page
+	app.get('/:auctions/items/populate', function(req, res){
+		items.populatePage(req, res)});
+	//actually adding items from csv
+	app.post('/:auctions/items/populate', function(req, res){
+		console.log("in items.populate route")
+		items.populate(req, res)});
+
 	// post the new item form and create that new item
 	app.post('/:auctions/items', function(req,res){
 		items.create(req,res)});
