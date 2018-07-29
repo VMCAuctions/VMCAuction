@@ -177,6 +177,17 @@ function ItemsController(){
 			})
 		}
 	}
+	this.populatePage = function(req, res){
+		//May need to add validation checks so that only admins can see
+		console.log("reached this.populatePage")
+		res.render('itemPopulator', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions})
+	}
+	this.populate = function(req, res){
+		//May need to add validation checks so that only admins can see
+		//This is where the code, that actually populates from the CSV, will be placed
+		console.log("reached this.populate")
+		res.redirect('/' + req.params.auctions + '/items/populate')
+	}
 }
 
 module.exports = new ItemsController();

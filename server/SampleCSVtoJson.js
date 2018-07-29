@@ -41,6 +41,9 @@
 //      console.log("result", result)
 // })
 
+require('./config/mongoose.js');
+var Item = require('./models/item.js')
+
 const csvFilePath="2018 Gala Auction Item Tracker - 2018 Auction Item Tracker.csv"
 const csv=require('csvtojson')
 
@@ -62,16 +65,16 @@ csv()
      empty row: items is empty and items is empty
      */
 
-     //Will eventually use wizard to match up csv columns with necessary fields; that is, the second value in these pairs will be req.body...
+     //Will eventually use wizard to match up csv columns with necessary fields; that is, the second value in these pairs will be req.body, and the third is the field in the DB...
      columns = [
-       ["itemNameColumn", "Item Name"],
-       ["itemDescriptionColumn", "Item Description"],
-       ["itemCategoryColumn", "Category"],
-       ["itemValueColumn", "Value"],
-       ["itemDonorColumn", "Donor"]
+       ["itemNameColumn", "Item Name", "name", null],
+       ["itemDescriptionColumn", "Item Description", "description", null],
+       ["itemCategoryColumn", "Category", "_category", null],
+       ["itemValueColumn", "Value", "value", "number"],
      ]
+     //["itemDonorColumn", "Donor"]
 
-     //Might want to make a third field in above columns array that matches item property name exactly, or potentially urn the whole thing into a hash map instead
+
 
      //Make a validation checking that all of the fields match, then push all errors to an array and send that back if they don't
 
@@ -80,13 +83,67 @@ csv()
      //When we actually get to the creation of auction items, will need to pipe in the auction id from req.params and include that with each item
 
 
-     result = []
-     for (var i = 0; i < jsonObj.length; i++){
-       currentItem = {}
-       for (var j = 0; j < columns.length; j++){
-         currentItem[columns[j][0]] = jsonObj[i][columns[j][1]]
+
+     //First, check if all of the columns the user specified are in the first json object of the json object array (just have to check the first because they should all be the same).  If they aren't, do not populate any items and print an error message instead.
+     errorString = ""
+     for (index in columns){
+       if (!jsonObj[0].hasOwnProperty(columns[index][1])){
+         errorString += ("\n" + columns[index][1] + " is not a valid column in CSV.")
        }
-       result.push(currentItem)
      }
-     console.log("result", result)
+     if (errorString.length > 0){
+       console.log(errorString)
+     }
+     else{
+       result = []
+       errorList = ""
+       // for (var i = 0; i < jsonObj.length; i++){
+       // NOTE: Commented the above out because some CSV rows don't have values, which is stopping generation of all items
+       for (var i = 0; i < jsonObj.length; i++){
+         validItem = true
+         currentItem = {}
+         //Note: Columns are all mandatory, but may want to have another data structure to handle optional data and still have the document be created when those fields are blank
+         for (var j = 0; j < columns.length; j++){
+           toAdd = jsonObj[i][columns[j][1]]
+           if (toAdd == ""){
+             validItem = false
+             break
+           }
+           //Changing string of value to number
+           if (columns[j][3] == "number"){
+             convertedNumber = parseInt(toAdd)
+             if (isNaN(convertedNumber)){
+               validItem = false
+               break
+             }
+             currentItem[columns[j][2]] = convertedNumber
+           }
+           else{
+             currentItem[columns[j][2]] = toAdd
+           }
+         }
+         if (validItem === true){
+           //Adding in auction id manually, for testing
+           currentItem["_auctions"] = "5b5690e7ccd903c0107588d8"
+           // console.log("currentItem", currentItem)
+           Item.create(currentItem,  function(err, result){
+             if(err){
+               console.log(err);
+             }else{
+               // console.log("current item made", currentItem)
+             }
+           });
+         }
+         else{
+           errorList += "row " + (i + 2) + "\n"
+         }
+         // console.log(currentItem)
+       }
+       if (errorList.length > 0){
+         console.log("The following rows failed validation:\n" + errorList)
+       }
+     }
+     //   result.push(currentItem)
+     // }
+     // console.log("result", result)
 })
