@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <title>Populate from CSV</title>
+  </head>
+  <body>
+    <%if(admin){%>
+    <%- include('adminHeader') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
+    <div class="container mt-4">
+      <h3>Populate from CSV</h3>
+      <form action="/<%=auction%>/items/populate" method="post">
+        <div class="form-group">
+          <label for="itemNameColumn">Item Name Column</label>
+          <input type="text" name="itemNameColumn" id="itemNameColumn" class="form-control" value="">
+        </div>
+
+        <div class="form-group">
+          <label for="itemDescriptionColumn">Item Description Column</label>
+          <input type="text" name="itemDescriptionColumn" id="itemDescriptionColumn" class="form-control" value="">
+        </div>
+
+        <div class="form-group">
+          <label for="itemCategoryColumn">Item Category Column</label>
+          <input type="text" name="itemCategoryColumn" id="itemCategoryColumn" class="form-control" value="">
+        </div>
+
+        <div class="form-group">
+          <label for="itemValueColumn">item Value Column</label>
+          <input type="text" name="itemValueColumn" id="itemValueColumn" class="form-control" value="">
+        </div>
+
+        <div class="form-group">
+          <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
