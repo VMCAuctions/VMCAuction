@@ -87,6 +87,7 @@
           <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
             Add More Items...
           </button>
+
           <div class="form-group">
             <label for="packageRestrictions">Package Restrictions</label>
             <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="4" cols="40"></textarea>
@@ -104,6 +105,9 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Search by Category: </h5>
+                  <div id="search-keyword">
+                    <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                  </div>
                   <select class="btn btn-secondary" name='category' id='category'>
                     <option value="">All Categories</option>
                     <% for(var c in categories) {%>
@@ -232,6 +236,17 @@
           $(".itemRow").filter(function(){
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           })
+      });
+
+      $("#keyword").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        if (value == '') {
+          $(".itemRow").show();
+        } else {
+          $(".itemRow").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+          });
+        }
       });
     </script>
   </body>
