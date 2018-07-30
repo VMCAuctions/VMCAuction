@@ -58,16 +58,9 @@ csv()
      * ]
      */
 
-     //Three cases:
-     /**
-     new package: item# is full and items is full
-     new item: items is empty but items is full
-     empty row: items is empty and items is empty
-     */
-
      //Will eventually use wizard to match up csv columns with necessary fields; that is, the second value in these pairs will be req.body, and the third is the field in the DB...
      columns = [
-       ["itemNameColumn", "Item Name", "name", null],
+       ["itemNameColumn", "itemNameColumn", "name", null],
        ["itemDescriptionColumn", "Item Description", "description", null],
        ["itemCategoryColumn", "Category", "_category", null],
        ["itemValueColumn", "Value", "value", "number"],
@@ -123,8 +116,9 @@ csv()
            }
          }
          if (validItem === true){
+           console.log("req.session.auction", req.session.auction)
            //Adding in auction id manually, for testing
-           currentItem["_auctions"] = "5b5690e7ccd903c0107588d8"
+           currentItem["_auctions"] = req.session.auction
            // console.log("currentItem", currentItem)
            Item.create(currentItem,  function(err, result){
              if(err){
