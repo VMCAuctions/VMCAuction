@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js');
 	globals = require('../controllers/globals.js')
+const csv=require('csvtojson')
 
 function ItemsController(){
 
@@ -186,6 +187,107 @@ function ItemsController(){
 		//May need to add validation checks so that only admins can see
 		//This is where the code, that actually populates from the CSV, will be placed
 		console.log("reached this.populate")
+
+		const csvFilePath="2018 Gala Auction Item Tracker - 2018 Auction Item Tracker.csv"
+
+		csv()
+		.fromFile(csvFilePath)
+		.then((jsonObj)=>{
+		    // console.log(jsonObj);
+		    /**
+		     * [
+		     * 	{a:"1", b:"2", c:"3"},
+		     * 	{a:"4", b:"5". c:"6"}
+		     * ]
+		     */
+
+		     //Will eventually use wizard to match up csv columns with necessary fields; that is, the second value in these pairs will be req.body, and the third is the field in the DB...
+		     // columns = [
+		     //   ["itemNameColumn", "Item Name", "name", null],
+		     //   ["itemDescriptionColumn", "Item Description", "description", null],
+		     //   ["itemCategoryColumn", "Category", "_category", null],
+		     //   ["itemValueColumn", "Value", "value", "number"],
+		     // ]
+		     //["itemDonorColumn", "Donor"]
+
+				 columns = [
+					 ["itemNameColumn", req.body.itemNameColumn, "name", null],
+					 ["itemDescriptionColumn", req.body.itemDescriptionColumn, "description", null],
+					 ["itemCategoryColumn", req.body.itemCategoryColumn, "_category", null],
+					 ["itemValueColumn", req.body.itemValueColumn, "value", "number"],
+				 ]
+
+		     //Make a validation checking that all of the fields match, then push all errors to an array and send that back if they don't
+
+		     //The CSV file needs to be in a standardized format to populate correctly; I can't tell the computer where to put each piece of information if there's no systematic ordering of that data (e.g., donor column should be broken into donor first, donor last, and organization, and not have just a few entries that have more than one donor); also, not sure what to do about restrictions and priority as they have no columns
+
+		     //When we actually get to the creation of auction items, will need to pipe in the auction id from req.params and include that with each item
+
+
+
+		     //First, check if all of the columns the user specified are in the first json object of the json object array (just have to check the first because they should all be the same).  If they aren't, do not populate any items and print an error message instead.
+		     errorString = ""
+		     for (index in columns){
+		       if (!jsonObj[0].hasOwnProperty(columns[index][1])){
+		         errorString += ("\n" + columns[index][1] + " is not a valid column in CSV.")
+		       }
+		     }
+		     if (errorString.length > 0){
+		       console.log(errorString)
+		     }
+		     else{
+		       result = []
+		       errorList = ""
+		       // for (var i = 0; i < jsonObj.length; i++){
+		       // NOTE: Commented the above out because some CSV rows don't have values, which is stopping generation of all items
+		       for (var i = 0; i < jsonObj.length; i++){
+		         validItem = true
+		         currentItem = {}
+		         //Note: Columns are all mandatory, but may want to have another data structure to handle optional data and still have the document be created when those fields are blank
+		         for (var j = 0; j < columns.length; j++){
+		           toAdd = jsonObj[i][columns[j][1]]
+		           if (toAdd == ""){
+		             validItem = false
+		             break
+		           }
+		           //Changing string of value to number
+		           if (columns[j][3] == "number"){
+		             convertedNumber = parseInt(toAdd)
+		             if (isNaN(convertedNumber)){
+		               validItem = false
+		               break
+		             }
+		             currentItem[columns[j][2]] = convertedNumber
+		           }
+		           else{
+		             currentItem[columns[j][2]] = toAdd
+		           }
+		         }
+		         if (validItem === true){
+		           //Adding in auction id manually, for testing
+		           currentItem["_auctions"] = "5b5690e7ccd903c0107588d8"
+		           // console.log("currentItem", currentItem)
+		           Item.create(currentItem,  function(err, result){
+		             if(err){
+		               console.log(err);
+		             }else{
+		               // console.log("current item made", currentItem)
+		             }
+		           });
+		         }
+		         else{
+		           errorList += "row " + (i + 2) + "\n"
+		         }
+		         // console.log(currentItem)
+		       }
+		       if (errorList.length > 0){
+		         console.log("The following rows failed validation:\n" + errorList)
+		       }
+		     }
+		     //   result.push(currentItem)
+		     // }
+		     // console.log("result", result)
+		})
 		res.redirect('/' + req.params.auctions + '/items/populate')
 	}
 }
