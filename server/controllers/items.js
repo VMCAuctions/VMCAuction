@@ -233,9 +233,13 @@ function ItemsController(){
 		       }
 		     }
 		     if (errorString.length > 0){
+					 console.log("errorString > 0")
 		       console.log(errorString)
+					 res.json({status:false, message:errorString, admin: req.session.admin, auction: req.session.auction})
+					 return
 		     }
 		     else{
+					 console.log("errorString == 0")
 		       result = []
 		       errorList = ""
 		       // for (var i = 0; i < jsonObj.length; i++){
@@ -281,14 +285,19 @@ function ItemsController(){
 		         // console.log(currentItem)
 		       }
 		       if (errorList.length > 0){
-		         console.log("The following rows failed validation:\n" + errorList)
+						 console.log("The following rows failed validation:\n" + errorList)
+						 res.json({status:true, message:"The following rows failed validation:\n" + errorList, admin: req.session.admin, auction: req.session.auction})
+						 return
 		       }
+					 else{
+						 res.json({status:true, message:"All rows passed validation!", auction: req.session.auction, admin: req.session.admin})
+						 return
+					 }
 		     }
 		     //   result.push(currentItem)
 		     // }
 		     // console.log("result", result)
 		})
-		res.redirect('/' + req.params.auctions + '/items/populate')
 	}
 }
 
