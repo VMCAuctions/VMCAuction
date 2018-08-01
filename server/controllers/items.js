@@ -210,11 +210,23 @@ function ItemsController(){
 		     // ]
 		     //["itemDonorColumn", "Donor"]
 
-				 columns = [
+				 console.log("req.body", req.body)
+
+				 mandatoryColumns = [
 					 ["itemNameColumn", req.body.itemNameColumn, "name", null],
 					 ["itemDescriptionColumn", req.body.itemDescriptionColumn, "description", null],
-					 ["itemCategoryColumn", req.body.itemCategoryColumn, "_category", null],
 					 ["itemValueColumn", req.body.itemValueColumn, "value", "number"],
+				 ]
+				 //Need to add special logic for donor last or donor organization being required
+				 mandatoryDonorColumns = [
+					 ["itemDonorLastColumn", req.body.itemDonorLastColumn, "donorLast", null],
+					 ["itemDonorOrgColumn", req.body.itemDonorOrgColumn, "donorOrg", null],
+				 ]
+				 optionalColumns = [
+ 					 ["itemCategoryColumn", req.body.itemCategoryColumn, "_category", null],
+					 ["itemRestrictionsColumn", req.body.itemRestrictionsColumn, "restrictions", null],
+					 ["itemDonorFirstColumn", req.body.itemDonorFirstColumn, "donorFirst", null],
+					 ["itemDonorDisplayColumn", req.body.itemDonorDisplayColumn, "donorDisplay", null],
 				 ]
 
 		     //Make a validation checking that all of the fields match, then push all errors to an array and send that back if they don't
@@ -227,9 +239,9 @@ function ItemsController(){
 
 		     //First, check if all of the columns the user specified are in the first json object of the json object array (just have to check the first because they should all be the same).  If they aren't, do not populate any items and print an error message instead.
 		     errorString = ""
-		     for (index in columns){
-		       if (!jsonObj[0].hasOwnProperty(columns[index][1])){
-		         errorString += ("\n" + columns[index][1] + " is not a valid column in CSV.")
+		     for (index in mandatoryColumns){
+		       if (!jsonObj[0].hasOwnProperty(mandatoryColumns[index][1])){
+		         errorString += ("\n" + mandatoryColumns[index][1] + " is not a valid column in CSV.")
 		       }
 		     }
 		     if (errorString.length > 0){
@@ -248,23 +260,23 @@ function ItemsController(){
 		         validItem = true
 		         currentItem = {}
 		         //Note: Columns are all mandatory, but may want to have another data structure to handle optional data and still have the document be created when those fields are blank
-		         for (var j = 0; j < columns.length; j++){
-		           toAdd = jsonObj[i][columns[j][1]]
+		         for (var j = 0; j < mandatoryColumns.length; j++){
+		           toAdd = jsonObj[i][mandatoryColumns[j][1]]
 		           if (toAdd == ""){
 		             validItem = false
 		             break
 		           }
 		           //Changing string of value to number
-		           if (columns[j][3] == "number"){
+		           if (mandatoryColumns[j][3] == "number"){
 		             convertedNumber = parseInt(toAdd)
 		             if (isNaN(convertedNumber)){
 		               validItem = false
 		               break
 		             }
-		             currentItem[columns[j][2]] = convertedNumber
+		             currentItem[mandatoryColumns[j][2]] = convertedNumber
 		           }
 		           else{
-		             currentItem[columns[j][2]] = toAdd
+		             currentItem[mandatoryColumns[j][2]] = toAdd
 		           }
 		         }
 		         if (validItem === true){
