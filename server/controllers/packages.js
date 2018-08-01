@@ -118,7 +118,7 @@ this.new = function(req,res){
 								console.log(itemsArray);
 								res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 							}
-							console.log('PackagesController new');
+							console.log('PackagesController new =>');
 					})
 				}
 		})
