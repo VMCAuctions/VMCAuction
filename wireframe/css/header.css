@@ -30,7 +30,7 @@ a.nav-org:hover {
     font-size: 14px;
 }
 
-span {
+.clock-numbers {
     padding: 1px;
     font: bold 18px 'Droid Sans', Arial, sans-serif;
     text-align: center;

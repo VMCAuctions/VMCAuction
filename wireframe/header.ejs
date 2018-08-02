@@ -86,27 +86,27 @@
       
         if (days < 1) {
           desktopClock.innerHTML = `
-            <span id="hours">${hours}</span> Hours
-            <span id="minutes">${("0" + minutes).slice(-2)}</span> Minutes
-            <span id="seconds">${("0" + seconds).slice(-2)}</span> Seconds
+            <span class="clock-numbers">${hours}</span> Hours
+            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
            `
           mobileClock.innerHTML = `
-            <span id="hours">${hours}</span> Hours
-            <span id="minutes">${("0" + minutes).slice(-2)}</span> Minutes
-            <span id="seconds">${("0" + seconds).slice(-2)}</span> Seconds
+            <span class="clock-numbers">${hours}</span> Hours
+            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
            `  
         } else {
           desktopClock.innerHTML = `
-            <span id="days">${("0" + days).slice(-2)}</span> Days
-            <span id="hours">${("0" + hours).slice(-2)}</span> Hours
-            <span id="minutes">${("0" + minutes).slice(-2)}</span> Minutes
-            <span id="seconds">${("0" + seconds).slice(-2)}</span> Seconds
+            <span class="clock-numbers">${days}</span> Days
+            <span class="clock-numbers">${("0" + hours).slice(-2)}</span> Hours
+            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
           `
           mobileClock.innerHTML = `
-            <span id="days">${("0" + days).slice(-2)}</span> D
-            <span id="hours">${("0" + hours).slice(-2)}</span> H
-            <span id="minutes">${("0" + minutes).slice(-2)}</span> M
-            <span id="seconds">${("0" + seconds).slice(-2)}</span> S
+            <span class="clock-numbers">${days}</span> D
+            <span class="clock-numbers">${("0" + hours).slice(-2)}</span> H
+            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> M
+            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> S
           `
         }
       } else {

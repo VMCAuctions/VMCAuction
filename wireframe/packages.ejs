@@ -138,7 +138,7 @@
       <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
     <p class="card-text">Category: <%=packages[n]._category%></p>
-    <p>STARTING BID: <%=packages[n].amount%></p>
+    <p>Value:<%=packages[n].value%></p>
     <%if(packages[n].bids[packages[n].bids.length-1]){%>
     <p>Current Bid:
       <span class='currentBid<%=packages[n]._id%>'>
@@ -148,7 +148,7 @@
       </span>
     </p>
     <%}else{%>
-      <p>Current Bid:None (By: Nobody)</p>
+      <p>Current Bid:<%=packages[n].value%></p>
     <%}%>
     <p>Restrictions: <%=packages[n].restrictions%></p>
     </div>
