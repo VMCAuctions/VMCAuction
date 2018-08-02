@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "sudo NODE_ENV=production node server.js",
+    "dev": "open http://localhost:8000/users/login & nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +20,7 @@
     "http": "0.0.0",
     "jquery-validation": "^1.17.0",
     "jsdom-global": "^3.0.2",
+    "merge-descriptors": "^1.0.1",
     "mongodb": "^3.0.1",
     "mongoose": "^4.10.8",
     "mongoose-auto-increment": "^5.0.1",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "jsdom": "11.7.0",
-    "jsdom-global": "3.0.2"
+    "jsdom-global": "3.0.2",
+    "nodemon": "^1.17.5"
   }
 }

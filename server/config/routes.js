@@ -32,6 +32,9 @@ module.exports = function(app) {
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
+	// show package register
+	app.get('/:auctions/packages/list', function(req, res) {
+		packages.list(req, res)});
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
@@ -79,11 +82,11 @@ module.exports = function(app) {
 	// get the login form
 	app.get('/users/login', function(req,res){
 		users.login(req,res)});
-		
-	//get the user account page	
+
+	//get the user account page
 	app.get('/:auctions/users/account/:userName', function (req,res) {
 		users.showAccount(req,res)});
-	
+
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
@@ -97,18 +100,18 @@ module.exports = function(app) {
 	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
-	// get the page of a specific user - this route has been replaced by auctions/users/account/username (line 83), can delete the commented lines below
-	// app.get('/:auctions/users/:userName', function(req,res){
-	// 	users.show(req,res)});
-	
+	// get the watchlist page of a specific user
+	app.get('/:auctions/users/:userName', function(req,res){
+		users.show(req,res)});
+
 	//update organizer's data - TODO!
 	app.post('/:auctions/users/account/:userName', function(req, res){
 		users.update(req, res)});
-	
+
 	// update a specific user (profile/info)- this function might be replaced by the one above
 	app.put('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
-		
+
 	// parse through admin changes before update
 	app.post('/users/admin', function(req,res){
 		users.adminChange(req,res)});
@@ -141,7 +144,10 @@ module.exports = function(app) {
 		//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)})
-		//Edits the auction on the backend
+		//Renders the page to edit an auction
+	app.get('/:auctions/edit', function (req, res) {
+		auctions.edit(req, res)})
+		//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
 

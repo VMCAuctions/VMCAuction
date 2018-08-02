@@ -7,9 +7,6 @@
     letter-spacing: .1rem; 
     padding-left: 10px; 
 }
-.nav-top {
-    height: 67px;
-}
 .top-link {
     color: #003d79 !important;
     font-weight: 500; 
@@ -45,9 +42,6 @@ a.btn-logout:hover {
     border: solid 2px #99004d !important; 
 }
 .li-marg {
-    padding-right: 1.5rem; 
-}
-.li-margLeft {
-    padding-left: 1.5rem; 
+    padding-right: 1.2rem; 
 }
 

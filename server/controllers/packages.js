@@ -70,6 +70,46 @@ function PackagesController(){
 		})
 	};
 
+	this.list = function (req, res) {
+		console.log('PackagesController list');
+		if (!req.session.userName) {
+			req.session.auction = req.params.auctions
+		}
+		var user
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, result) {
+					if (err) {
+						console.log(err)
+					} else {
+						user = result
+						
+						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _id: 'ascending' }).exec(function (err, packages) {
+							if (err) {
+								console.log('Package Register Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
+							} else {
+								console.log("req.session is", req.session)
+								res.render('packageRegister', {
+									page: 'register',
+									packages: packages,
+									admin: req.session.admin,
+									userName: req.session.userName,
+									user: user,
+									auction: req.params.auctions,
+									categories: categories,
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+	};
 
 	this.edit = function(req,res){
 		console.log('PackagesController new');
