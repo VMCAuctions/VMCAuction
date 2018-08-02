@@ -107,7 +107,7 @@
         <p><strong>Restrictions:</strong> <%= package._items[i].restrictions %></p>
 			<%}%>
 		</div>
-    <script>
+    <script type="text/javascript">
 
       $('#custom').click(function () {
 
@@ -116,21 +116,21 @@
           if (<%=ourBids%>===true) {
 
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
           $('#bidAmount').val(null);
         }else{
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + ' or higer'});
+                                  'placeholder': customPlaceholder + ' or higher'});
           $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
             $('#bidAmount').attr({'readonly': 'readonly',
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
             $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
         }else{
           $('#bidAmount').attr({'readonly': 'readonly',
-                              'placeholder': customPlaceholder + ' or higer'});
+                              'placeholder': customPlaceholder + ' or higher'});
 
           $('#bidAmount').val(customPlaceholder)
         }
@@ -157,7 +157,9 @@
 			if(cancelBidConfirm === false){
 				return false;
 			}
-		})
+    })
+    
+    
     </script>
 
 	</body>
