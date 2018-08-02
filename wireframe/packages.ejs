@@ -137,13 +137,12 @@
     <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
     <p class="card-text"><b>Category:</b> <%=packages[n]._category%></p>
-    <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
+    <p><b>Value:</b> <%=packages[n].value%></p>
     <%if(packages[n].bids[packages[n].bids.length-1]){%>
-    <p ><b>Current Bid:</b> <span class='currentBid<%=packages[n]._id%>'><%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></p>
+    <p><b>Current Bid:</b> <span class='currentBid<%=packages[n]._id%>'><%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></p>
     <%}else{%>
-      <p><b>Current Bid:</b> None (By: Nobody)</p>
+      <p><b>Current Bid:</b> <%=packages[n].value%></p>
     <%}%>
-    <p><b>Restrictions:</b> <%=packages[n].restrictions%></p>
     </div>
     <%if(userName  && userName !== "Clerk"){%>
       <% var flag = false %>
