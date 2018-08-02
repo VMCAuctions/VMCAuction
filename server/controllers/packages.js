@@ -31,7 +31,7 @@ function PackagesController(){
 									res.status(500).send('Failed to Load Packages');
 									console.error();
 							}else {
-									console.log('this is user again', user)
+									// console.log('this is user again', user)
 									var featured = [];
 									var nonfeatured = [];
 									for (var i = 0; i < packages.length; i++){

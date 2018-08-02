@@ -26,38 +26,38 @@
 						<div class="form-row">
 							<div class="form-group col-md-6">
 								<label for="firstName">First Name</label>
-								<input type="text" name="firstName" id="firstName" class="form-control" readonly value=<%= firstName %>>
+								<input type="text" name="firstName" class="form-control" readonly value="<%= firstName %>">
 							</div>
 							<div class="form-group col-md-6">
 								<label for="lastName">Last Name</label>
-								<input type="text" name="lastName" id="lastName" class="form-control"
-										readonly value=<%= lastName %>>
+								<input type="text" name="lastName" class="form-control" readonly value="<%= lastName %>">
 							</div>
 						</div>
 							<div class="form-group">
-								<label for="userName">Email</label>
-								<input type="email" name="userName" id="userName" class="form-control" readonly value=<%= userName %>>
+								<label for="userName">Email/Username</label>
+								<input type="email" name="userName" class="form-control" readonly value="<%= userName %>">
 							</div>
 							<div class="form-group">
 								<label for="phoneNumber">Cell Phone Number</label>
-								<input type="text" name="phoneNumber" id="phoneNumber" class="form-control" readonly value=<%= phone %>>
+								<input type="tel" name="phone" class="form-control" readonly value="<%= phone %>">
 							</div>
 							<div class="form-group">
 								<label for="streetAddress">Address</label>
-								<input type="text" name="streetAddress" id="streetAddress" class="form-control" readonly value=<%= streetAddress %>>
+								<input type="text" name="address" class="form-control" 
+								readonly value="<%= address %>">
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="city">City</label>
-									<input type="text" name="city" id="city" class="form-control" readonly value=<%= city %>>
+									<input type="text" name="city" class="form-control" readonly value="<%= city %>">
 								</div>
 							<div class="form-group col-md-3">
 								<label for="states">State</label>
-								<input type="text" name="states" id="states" class="form-control" readonly value=<%= states %>>
+								<input type="text" name="states" class="form-control" readonly value="<%= states %>">
 							</div>
 							<div class="form-group col-md-3">
 								<label for="zip">Zip</label>
-								<input type="text" name="zip" id="zip" class="form-control" readonly value=<%= zip %>>
+								<input type="text" name="zip" class="form-control" readonly value="<%= zip %>">
 							</div>
 						</div>
 
@@ -67,10 +67,10 @@
 				<h6>This can be done by Admin only!</h6>
 					<div class="form-row">
 					<div class="form-group col-md-6">
-						<input type="password" name="newPass" id="newPass" class="form-control" placeholder="new password" required readonly>
+						<input type="password" name="newPass" class="form-control" placeholder="new password" required readonly>
 					</div>
 					<div class="form-group col-md-6">
-						<input type="password" name="confirmPass" id="confirmPass" class="form-control" placeholder="confirm new password" required readonly>
+						<input type="password" name="confirmPass" class="form-control" placeholder="confirm new password" required readonly>
 					</div>
 					<div class="form-group col-md-6">
 						<button type="submit" id="changePassBtn" class="btn btn-primary" disabled>Change Password</button>
