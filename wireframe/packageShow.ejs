@@ -14,7 +14,7 @@
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
           if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
-  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
+  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
   					event.preventDefault();
   					// replace replaceWith val maybe??
           }
@@ -55,12 +55,17 @@
 		<div>
 
 			<% if (package.bids.length == 0) {%>
-				<h3 id ='currentBid'>Current Bid: None by: nobody</h3>
+				<p id ='currentBid'>Current Bid: None by: nobody</p>
 			<%} else {%>
-				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> by: <%= package.bids[package.bids.length-1].name%>  </h3>
+				<p id ='currentBid'>
+          Current Bid: 
+          <%= package.bids[package.bids.length-1].bidAmount%>
+          <!-- by: <%= package.bids[package.bids.length-1].name%>   -->
+          by: <%= user.firstName.charAt(0) %>. <%= user.lastName %>  
+        </p>
 			<%}%>
 
-			<h3>Next Bid:</h3>
+			<p>Next Bid:</p>
 			<form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
 				<% if (package.bids == false) {%>
 					<input id='bidAmount' readonly value='<%= package.amount%>'>
@@ -112,7 +117,6 @@
       $('#custom').click(function () {
 
         if ($('#bidAmount').attr('readonly') === 'readonly'){
-
           if (<%=ourBids%>===true) {
 
           $('#bidAmount').attr({'readonly': false,

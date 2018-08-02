@@ -150,7 +150,10 @@ module.exports = function(app) {
 		//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
-
+		// Deletes auction
+	app.get('/:auctions/remove', function(req, res) {
+		auctions.deleteAuction(req, res)});
+		
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
