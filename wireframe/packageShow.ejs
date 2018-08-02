@@ -112,33 +112,31 @@
         <p><strong>Restrictions:</strong> <%= package._items[i].restrictions %></p>
 			<%}%>
 		</div>
-    <script>
+    <script type="text/javascript">
 
       $('#custom').click(function () {
 
         if ($('#bidAmount').attr('readonly') === 'readonly'){
           if (<%=ourBids%>===true) {
-            $('#bidAmount').attr({
-              'readonly': false,
-              'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
-              $('#bidAmount').val(null);
-          }else{
-            $('#bidAmount').attr({
-              'readonly': false,
-              'placeholder': customPlaceholder + ' or higer'});
-              $('#bidAmount').val(null);
+
+          $('#bidAmount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
+          $('#bidAmount').val(null);
+        }else{
+          $('#bidAmount').attr({'readonly': false,
+                                  'placeholder': customPlaceholder + ' or higher'});
+          $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
-            $('#bidAmount').attr({
-              'readonly': 'readonly',
-              'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
-              $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
-          }else{
-            $('#bidAmount').attr({
-              'readonly': 'readonly',
-              'placeholder': customPlaceholder + ' or higer'});
-              $('#bidAmount').val(customPlaceholder)
+            $('#bidAmount').attr({'readonly': 'readonly',
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
+            $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
+        }else{
+          $('#bidAmount').attr({'readonly': 'readonly',
+                              'placeholder': customPlaceholder + ' or higher'});
+
+          $('#bidAmount').val(customPlaceholder)
         }
       }
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
@@ -163,7 +161,9 @@
 			if(cancelBidConfirm === false){
 				return false;
 			}
-		})
+    })
+    
+    
     </script>
 
 	</body>
