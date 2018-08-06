@@ -213,20 +213,20 @@ function ItemsController(){
 				 console.log("req.body", req.body)
 
 				 mandatoryColumns = [
-					 ["itemNameColumn", req.body.itemNameColumn, "name", null],
-					 ["itemDescriptionColumn", req.body.itemDescriptionColumn, "description", null],
-					 ["itemValueColumn", req.body.itemValueColumn, "value", "number"],
+					 ["Item Name", req.body.itemNameColumn, "name", null],
+					 ["Item Description", req.body.itemDescriptionColumn, "description", null],
+					 ["Fair Market Value", req.body.itemValueColumn, "value", "number"],
 				 ]
 				 //Need to add special logic for donor last or donor organization being required
 				 mandatoryDonorColumns = [
-					 ["itemDonorLastColumn", req.body.itemDonorLastColumn, "donorLast", null],
-					 ["itemDonorOrgColumn", req.body.itemDonorOrgColumn, "donorOrg", null],
+					 ["Donor Last Name", req.body.itemDonorLastColumn, "donorLast", null],
+					 ["Donor Organization", req.body.itemDonorOrgColumn, "donorOrg", null],
 				 ]
 				 optionalColumns = [
- 					 ["itemCategoryColumn", req.body.itemCategoryColumn, "_category", null],
-					 ["itemRestrictionsColumn", req.body.itemRestrictionsColumn, "restrictions", null],
-					 ["itemDonorFirstColumn", req.body.itemDonorFirstColumn, "donorFirst", null],
-					 ["itemDonorDisplayColumn", req.body.itemDonorDisplayColumn, "donorDisplay", null],
+ 					 ["Category", req.body.itemCategoryColumn, "_category", null],
+					 ["Item Restriction", req.body.itemRestrictionsColumn, "restrictions", null],
+					 ["Donor First Name", req.body.itemDonorFirstColumn, "donorFirst", null],
+					 ["Display Donor", req.body.itemDonorDisplayColumn, "donorDisplay", null],
 				 ]
 
 		     //Make a validation checking that all of the fields match, then push all errors to an array and send that back if they don't
@@ -241,15 +241,39 @@ function ItemsController(){
 		     errorString = ""
 		     for (index in mandatoryColumns){
 		       if (!jsonObj[0].hasOwnProperty(mandatoryColumns[index][1])){
-		         errorString += ("\n" + mandatoryColumns[index][1] + " is not a valid column in CSV.")
+						 if (mandatoryColumns[index][1] == ""){
+							 errorString += ("\n" + mandatoryColumns[index][0] + " is a required field, but no value was specified.")
+						 }
+						 else{
+	 		         errorString += ("\n" + mandatoryColumns[index][0] + " is required, but the specified column, " + mandatoryColumns[index][1] + ", is not a valid column in CSV.")
+						 }
 		       }
 		     }
+				 donorFlag = false
+				 mandatoryDonorColumnNames = ""
+				 mandatoryDonorColumnEntries = ""
+				 for (index in mandatoryDonorColumns){
+					 mandatoryDonorColumnNames += (", " + mandatoryDonorColumns[index][0])
+					 if (mandatoryDonorColumns[index][1] == ""){
+						 mandatoryDonorColumnEntries += (", <blank>")
+					 }
+					 else{
+	 					 mandatoryDonorColumnEntries += (", " + mandatoryDonorColumns[index][1])
+					 }
+					 if (jsonObj[0].hasOwnProperty(mandatoryDonorColumns[index][1])){
+						 donorFlag = true
+					 }
+				 }
+				 if (donorFlag == false){
+					 errorString += ("\nOne of the following columns is required" + mandatoryDonorColumnNames + ", but the following entries" + mandatoryDonorColumnEntries + ", are not valid columns in CSV.")
+				 }
 		     if (errorString.length > 0){
 					 console.log("errorString > 0")
 		       console.log(errorString)
 					 res.json({status:false, message:errorString, admin: req.session.admin, auction: req.session.auction})
 					 return
 		     }
+				 //The above code is all validations; the below code only runs when all validations are met
 		     else{
 					 console.log("errorString == 0")
 		       result = []
@@ -279,25 +303,43 @@ function ItemsController(){
 		             currentItem[mandatoryColumns[j][2]] = toAdd
 		           }
 		         }
-		         if (validItem === true){
-		           //Adding in auction id manually, for testing
-		           currentItem["_auctions"] = "5b5690e7ccd903c0107588d8"
-		           // console.log("currentItem", currentItem)
-		           Item.create(currentItem,  function(err, result){
-		             if(err){
-		               console.log(err);
-		             }else{
-		               // console.log("current item made", currentItem)
-		             }
-		           });
-		         }
+						 if (validItem == true){
+							 for (var j = 0; j < mandatoryDonorColumns.length; j++){
+								 //Ideally, the below comparison should only be done once, not for each item
+								 if (jsonObj[0].hasOwnProperty(mandatoryDonorColumns[j][1])){
+									 toAdd = jsonObj[i][mandatoryDonorColumns[j][1]]
+									 if (toAdd != ""){
+										 currentItem[mandatoryDonorColumns[j][2]] = toAdd
+									 }
+								 }
+							 }
+							 for (var j = 0; j < optionalColumns.length; j++){
+								 //Ideally, the below comparison should only be done once, not for each item
+								 if (jsonObj[0].hasOwnProperty(optionalColumns[j][1])){
+									 toAdd = jsonObj[i][optionalColumns[j][1]]
+									 if (toAdd != ""){
+										 currentItem[optionalColumns[j][2]] = toAdd
+									 }
+								 }
+							 }
+
+							 currentItem["_auctions"] = req.params.auctions
+							 // console.log("currentItem", currentItem)
+							 Item.create(currentItem,  function(err, result){
+								 if(err){
+									 console.log(err);
+								 }else{
+									 // console.log("current item made", currentItem)
+								 }
+							 });
+						 }
 		         else{
 		           errorList += "row " + (i + 2) + "\n"
 		         }
 		         // console.log(currentItem)
 		       }
 		       if (errorList.length > 0){
-						 console.log("The following rows failed validation:\n" + errorList)
+						 // console.log("The following rows failed validation:\n" + errorList)
 						 res.json({status:true, message:"The following rows failed validation:\n" + errorList, admin: req.session.admin, auction: req.session.auction})
 						 return
 		       }
