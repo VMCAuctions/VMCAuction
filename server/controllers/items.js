@@ -193,6 +193,7 @@ function ItemsController(){
 		csv()
 		.fromFile(csvFilePath)
 		.then((jsonObj)=>{
+				// This jsonObj is a list of json objects, with each json object having the column name as a key and the entry of the row for that column as its value, illustrated below
 		    // console.log(jsonObj);
 		    /**
 		     * [
@@ -200,15 +201,6 @@ function ItemsController(){
 		     * 	{a:"4", b:"5". c:"6"}
 		     * ]
 		     */
-
-		     //Will eventually use wizard to match up csv columns with necessary fields; that is, the second value in these pairs will be req.body, and the third is the field in the DB...
-		     // columns = [
-		     //   ["itemNameColumn", "Item Name", "name", null],
-		     //   ["itemDescriptionColumn", "Item Description", "description", null],
-		     //   ["itemCategoryColumn", "Category", "_category", null],
-		     //   ["itemValueColumn", "Value", "value", "number"],
-		     // ]
-		     //["itemDonorColumn", "Donor"]
 
 				 console.log("req.body", req.body)
 
@@ -229,13 +221,7 @@ function ItemsController(){
 					 ["Display Donor", req.body.itemDonorDisplayColumn, "donorDisplay", null],
 				 ]
 
-		     //Make a validation checking that all of the fields match, then push all errors to an array and send that back if they don't
-
 		     //The CSV file needs to be in a standardized format to populate correctly; I can't tell the computer where to put each piece of information if there's no systematic ordering of that data (e.g., donor column should be broken into donor first, donor last, and organization, and not have just a few entries that have more than one donor); also, not sure what to do about restrictions and priority as they have no columns
-
-		     //When we actually get to the creation of auction items, will need to pipe in the auction id from req.params and include that with each item
-
-
 
 		     //First, check if all of the columns the user specified are in the first json object of the json object array (just have to check the first because they should all be the same).  If they aren't, do not populate any items and print an error message instead.
 		     errorString = ""
@@ -249,6 +235,8 @@ function ItemsController(){
 						 }
 		       }
 		     }
+				 //All mandatory columns must be valid, so they're not held onto inside of validColumns.  However, for every other column that isn't necessarily required, we'll hold onto it in here so that we know to check if upon item creation.
+				 validDonorColumns = []
 				 donorFlag = false
 				 mandatoryDonorColumnNames = ""
 				 mandatoryDonorColumnEntries = ""
@@ -262,28 +250,33 @@ function ItemsController(){
 					 }
 					 if (jsonObj[0].hasOwnProperty(mandatoryDonorColumns[index][1])){
 						 donorFlag = true
+						 validDonorColumns.push(mandatoryDonorColumns[index])
 					 }
 				 }
 				 if (donorFlag == false){
 					 errorString += ("\nOne of the following columns is required" + mandatoryDonorColumnNames + ", but the following entries" + mandatoryDonorColumnEntries + ", are not valid columns in CSV.")
 				 }
 		     if (errorString.length > 0){
-					 console.log("errorString > 0")
-		       console.log(errorString)
 					 res.json({status:false, message:errorString, admin: req.session.admin, auction: req.session.auction})
 					 return
 		     }
 				 //The above code is all validations; the below code only runs when all validations are met
 		     else{
-					 console.log("errorString == 0")
+					 //We have already iterated through mandatoryDonorColumns, but we still need to iterate through the optional columns and add the necessary ones to validOptionalColumns, so that way we only look to add these optional columns after validation for each row is completed
+					 validOptionalColumns = []
+					 for (index in optionalColumns){
+						 if (jsonObj[0].hasOwnProperty(optionalColumns[index][1])){
+							 validOptionalColumns.push(optionalColumns[index])
+						 }
+					 }
+
 		       result = []
 		       errorList = ""
-		       // for (var i = 0; i < jsonObj.length; i++){
-		       // NOTE: Commented the above out because some CSV rows don't have values, which is stopping generation of all items
+					 //May need to eventually employ more strict of validations than just saying that it's not empty, or maybe use MongoDB's built-in validations and add to the error list when the MongoDB command fails
 		       for (var i = 0; i < jsonObj.length; i++){
 		         validItem = true
 		         currentItem = {}
-		         //Note: Columns are all mandatory, but may want to have another data structure to handle optional data and still have the document be created when those fields are blank
+						 //If any of the mandatory columns are not filled in, we update validItem to be false because we know it's invalid
 		         for (var j = 0; j < mandatoryColumns.length; j++){
 		           toAdd = jsonObj[i][mandatoryColumns[j][1]]
 		           if (toAdd == ""){
@@ -303,40 +296,38 @@ function ItemsController(){
 		             currentItem[mandatoryColumns[j][2]] = toAdd
 		           }
 		         }
+						 donorValid = false
 						 if (validItem == true){
-							 for (var j = 0; j < mandatoryDonorColumns.length; j++){
-								 //Ideally, the below comparison should only be done once, not for each item
-								 if (jsonObj[0].hasOwnProperty(mandatoryDonorColumns[j][1])){
-									 toAdd = jsonObj[i][mandatoryDonorColumns[j][1]]
-									 if (toAdd != ""){
-										 currentItem[mandatoryDonorColumns[j][2]] = toAdd
-									 }
+							 //Verifying that, out of the donor columns that had valid entries in the CSV, that at least one of them was not blank; if all are blank, then it's invalid
+							 for (var k = 0; k < validDonorColumns.length; k++){
+								 toAdd = jsonObj[i][validDonorColumns[k][1]]
+								 if (toAdd != ""){
+									 currentItem[validDonorColumns[k][2]] = toAdd
+									 donorValid = true
 								 }
 							 }
-							 for (var j = 0; j < optionalColumns.length; j++){
-								 //Ideally, the below comparison should only be done once, not for each item
-								 if (jsonObj[0].hasOwnProperty(optionalColumns[j][1])){
-									 toAdd = jsonObj[i][optionalColumns[j][1]]
-									 if (toAdd != ""){
-										 currentItem[optionalColumns[j][2]] = toAdd
-									 }
+						 }
+						 //Only if both the mandatory and donor requirements are met do we add the optional columns and actually create the item; otherwise, we add the item entry to our error list
+						 if (validItem == true && donorValid == true){
+							 for (var j = 0; j < validOptionalColumns.length; j++){
+								 toAdd = jsonObj[i][validOptionalColumns[j][1]]
+								 if (toAdd != ""){
+									 currentItem[validOptionalColumns[j][2]] = toAdd
 								 }
 							 }
-
 							 currentItem["_auctions"] = req.params.auctions
 							 // console.log("currentItem", currentItem)
 							 Item.create(currentItem,  function(err, result){
 								 if(err){
 									 console.log(err);
 								 }else{
-									 // console.log("current item made", currentItem)
+									 // console.log(result)
 								 }
 							 });
 						 }
 		         else{
 		           errorList += "row " + (i + 2) + "\n"
 		         }
-		         // console.log(currentItem)
 		       }
 		       if (errorList.length > 0){
 						 // console.log("The following rows failed validation:\n" + errorList)
@@ -348,9 +339,6 @@ function ItemsController(){
 						 return
 					 }
 		     }
-		     //   result.push(currentItem)
-		     // }
-		     // console.log("result", result)
 		})
 	}
 }
