@@ -1,11 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Kameron');
 
+/* Common styles 
+-------------------------------------------------------------- */
 body {
-  font-family: 'Roboto', sans-serif !important;
-  color: #404040 !important;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #595959 !important;
 }
 
+/* Organizer's Menu table style
+-------------------------------------------------------------- */
 td:hover {
   background-color: #ffffff;
 }
