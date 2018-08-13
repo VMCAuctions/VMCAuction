@@ -1,25 +1,20 @@
 /* Style sheet for the Organizer's main landing page */
-body {
-	color: #404040 !important;
-}
 
 /* Organizer's Header styles 
 -------------------------------------------------------------- */
-.brand {
-    font-family: 'Lato', sans-serif !important;
-    font-size: 1.2rem; 
-    color: #ffffff !important; 
-    font-weight: 500; 
-    letter-spacing: .1rem; 
-    padding-left: 10px; 
+.brand-white{
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
+	font-size: 1.75rem !important;
+	color: #fff !important;
 }
 .dash-home{
 	padding-left: 20px; 
 }
 .btn-logout {	
-	border: solid 2px #fff !important;
+	border: solid 1px #fff !important;
 	color: #fff !important;
 	padding: 3px 10px;  
+	font-weight: 300 !important;
 }
 a.btn-logout:hover {
 	background: #fff;
@@ -31,7 +26,7 @@ a.btn-logout:hover {
 .jumbo-head {
 	text-align: center;
 	color: #003d79;
-	font-family: Lato, sans-serif;
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
 	font-size: 24px; 
 }
 .main-card {
