@@ -142,12 +142,13 @@ function AuctionsController() {
 			else{
 				res.render("event", {auctionDetails: auction, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock, pin: auction.pin})
 			}
-		})	
-	}	
-		
+		})
+	}
+
 	this.update = function(req, res) {
 		// console.log("req.body is", req.body)
 		// console.log("we are in the update function")
+		console.log("in this.update")
 		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
 		var start = new Date(startDate)
 		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
@@ -160,7 +161,7 @@ function AuctionsController() {
 				auction.name = req.body.name || auction.name;
 				auction.startClock = start || auction.startClock;
 				auction.endClock = end || auction.endClock;
-				auction.subtitle = req.body.subtitle; 
+				auction.subtitle = req.body.subtitle;
 				auction.venue = req.body.venue;
 				auction.description = req.body.description;
 				console.log(req.body.pin)
@@ -280,6 +281,6 @@ function AuctionsController() {
 	}
 }
 
-	
+
 
 module.exports = new AuctionsController();
