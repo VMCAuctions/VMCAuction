@@ -249,6 +249,16 @@ function AuctionsController() {
 		})
 	}
 
+	this.deleteAuction = function(req, res) {
+		Auction.remove({ _id: req.params.auctions}, function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				res.redirect('/auctions/main')
+			}
+		})
+	}
+
 	this.pinEntry = function(req, res) {
 		res.render("clerks")
 	}
