@@ -2,7 +2,8 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Package = require('../models/package.js'),
-	Auction = require('../models/auction.js');
+	Auction = require('../models/auction.js'),
+	globals = require('../controllers/globals.js')
 
 function UsersController(){
 
@@ -30,43 +31,37 @@ function UsersController(){
 
 	this.index = function(req,res){
 		console.log('UsersController index');
-		var cart = {}
-		User.find({_auctions: req.params.auctions}, function(err, users ){
-			if(err){
-				console.log(err)
-			}else if(req.session.admin){
-					Package.find({_auctions: req.params.auctions}, function(err, result){
-						if (err){
-							console.log(err)
-						}else{
-							for (var i = 0; i < users.length; i++) {
-								var packages = []
-								var total = 0
-								for (var j = 0; j < result.length; j++) {
-									if (result[j].bids[result[j].bids.length-1]){
-										if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
-											packages.push(result[j])
-											total +=result[j].bids[result[j].bids.length-1].bidAmount
+		if (globals.clerkValidation(req, res)){
+			var cart = {}
+			User.find({_auctions: req.params.auctions}, function(err, users ){
+				if(err){
+					console.log(err)
+				}else if(req.session.admin){
+						Package.find({_auctions: req.params.auctions}, function(err, result){
+							if (err){
+								console.log(err)
+							}else{
+								for (var i = 0; i < users.length; i++) {
+									var packages = []
+									var total = 0
+									for (var j = 0; j < result.length; j++) {
+										if (result[j].bids[result[j].bids.length-1]){
+											if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
+												packages.push(result[j])
+												total +=result[j].bids[result[j].bids.length-1].bidAmount
+											}
 										}
 									}
+									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								cart[users[i].userName]={'packages': packages, 'total': total };
+								res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 							}
-							res.render('allUsers', {
-								page: 'supporters',
-								users: users,
-								cart: cart,
-								packages: result,
-								userName: req.session.userName,
-								admin: req.session.admin,
-								auction: req.params.auctions
-							})
-						}
-					})
-			}else{
-				res.redirect('/' + req.params.auctions  + '/packages')
-			}
-		})
+						})
+				}else{
+					res.redirect('/' + req.params.auctions  + '/packages')
+				}
+			})
+		}
 	};
 
 	this.admin = function(req,res){
@@ -245,7 +240,7 @@ function UsersController(){
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true, admin: user.admin, auction: user._auctions})
+						res.json({match: true, auction: user._auctions, admin:user.admin})
 					}else{
 						res.json({match: false})
 					}
@@ -257,45 +252,46 @@ function UsersController(){
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
 		console.log('UsersController show');
-		var cartArray = []
-		var cartTotal = 0
-		Package.find({_auctions: req.params.auctions}, function(err, result){
-			if (err){
-				console.log(err)
-			}else{
-				for (var i = 0; i < result.length; i++){
-					if (result[i].bids.length > 0){
-						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-							cartArray.push(result[i])
-							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+		if (globals.notClerkValidation(req, res)){
+			var cartArray = []
+			var cartTotal = 0
+			Package.find({_auctions: req.params.auctions}, function(err, result){
+				if (err){
+					console.log(err)
+				}else{
+					for (var i = 0; i < result.length; i++){
+						if (result[i].bids.length > 0){
+							if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+								cartArray.push(result[i])
+								cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
+							}
 						}
 					}
-				}
-				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-					if(err){
-						console.log(err)
-					}else if (user.userName === req.session.userName | req.session.admin === true){
-						Auction.findById(req.params.auctions, function (err, auctionDetails) {
-							if (err) {
-								console.log(err)
-							} else {
-								console.log("req.session is", req.session)
-								res.render('userPage', {
-									page: 'myAccount',
-									userName: req.session.userName,
-									admin: req.session.admin,
-									user: user,
-									cartTotal: cartTotal,
-									cartArray: cartArray,
-									auction: req.params.auctions,
-									auctionDetails: auctionDetails,
-								})
-							}
-						})
-					}else{
-						res.redirect('/' + req.params.auctions  + '/packages')
-					}
-				})
+          User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+            if(err){
+              console.log(err)
+            }else if (user.userName === req.session.userName | req.session.admin === true){
+              Auction.findById(req.params.auctions, function (err, auctionDetails) {
+                if (err) {
+                  console.log(err)
+                } else {
+                  console.log("req.session is", req.session)
+                  res.render('userPage', {
+                    page: 'myAccount',
+                    userName: req.session.userName,
+                    admin: req.session.admin,
+                    user: user,
+                    cartTotal: cartTotal,
+                    cartArray: cartArray,
+                    auction: req.params.auctions,
+                    auctionDetails: auctionDetails,
+                  })
+                }
+              })
+            }else{
+              res.redirect('/' + req.params.auctions  + '/packages')
+            }
+          })
 			}
 		})
 	};
@@ -316,11 +312,12 @@ function UsersController(){
 
 
 	this.adminChange = function(req,res){
-		console.log('UsersController admin change')
-		//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
-		console.log("req.body is", req.body)
+		if (globals.adminValidation(req, res)){
+			console.log('UsersController admin change')
+			//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
+			console.log("req.body is", req.body)
 
-		console.log("req.body.keys() is", Object.keys(req.body))
+			console.log("req.body.keys() is", Object.keys(req.body))
 
 			User.find({_id: Object.keys(req.body)}, function(err, users){
 				if (err){
@@ -343,7 +340,7 @@ function UsersController(){
 					res.redirect('/users/admin')
 				}
 			})
-
+		}
 	};
 
 
@@ -354,31 +351,33 @@ function UsersController(){
 
 
 	this.interested = function(req, res) {
-		console.log("Interested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
-			if (err) {
-				console.log(err);
-			}else {
-				let flag = false
-				for (var i = 0; i < user._packages.length; i++) {
-					if (user._packages[i] == req.params.id) {
-						flag = true;
-						break
+		if (globals.notClerkValidation(req, res)){
+			console.log("Interested");
+			User.findOne({userName: req.session.userName}, function(err, user) {
+				if (err) {
+					console.log(err);
+				}else {
+					let flag = false
+					for (var i = 0; i < user._packages.length; i++) {
+						if (user._packages[i] == req.params.id) {
+							flag = true;
+							break
+						}
+					}
+					if (flag === false) {
+						user._packages.push(req.params.id);
+						user.save(function(err, result) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}else{
+						flag = false;
 					}
 				}
-				if (flag === false) {
-					user._packages.push(req.params.id);
-					user.save(function(err, result) {
-						if (err) {
-							console.log(err);
-						}
-					});
-				}else{
-					flag = false;
-				}
-			}
-			res.redirect('/' + req.params.auctions  + '/packages')
-		})
+				res.redirect('/' + req.params.auctions  + '/packages')
+			})
+		}
 	};
 
 
@@ -398,43 +397,48 @@ function UsersController(){
 						})
 						break
 					}
-				}
-			};
-			res.redirect('/' + req.params.auctions  + '/packages')
-		})
+				};
+				res.redirect('/' + req.params.auctions  + '/packages')
+			})
+		}
 	};
 
 
 	this.updateList = function(req,res){
-		User.findById(req.params.userId,function(err,user){
-			if (err){
-				console.log(err)
-			}else{
-				var updatedList = req.params.result.split(',')
-				for(let i = 0; i < updatedList.length; i++){
-					updatedList[i] = parseInt(updatedList[i])
-				}
-				user._packages = updatedList
-				user.save(function(err,result){
-					if(err){
-						console.log(err)
-					}else{
-						console.log(result)
+		if (globals.notClerkValidation(req, res)){
+			User.findById(req.params.userId,function(err,user){
+				if (err){
+					console.log(err)
+				}else{
+					var updatedList = req.params.result.split(',')
+					for(let i = 0; i < updatedList.length; i++){
+						updatedList[i] = parseInt(updatedList[i])
 					}
-				})
-			}
-		})
+					user._packages = updatedList
+					user.save(function(err,result){
+						if(err){
+							console.log(err)
+						}else{
+							console.log(result)
+						}
+					})
+				}
+			})
+		}
 	}
 
+	//I don't think this has been implemented yet
 	this.delete = function(req, res){
-		User.remove({userName: req.params.user}, function(err, result){
-			if (err){
-				console.log(err)
-			}
-			else{
-				res.redirect("/users/register")
-			}
-		})
+		if (globals.adminValidation(req, res)){
+			User.remove({userName: req.params.user}, function(err, result){
+				if (err){
+					console.log(err)
+				}
+				else{
+					res.redirect("/users/register")
+				}
+			})
+		}
 	}
 
 	this.initialize = function(req, res) {
@@ -455,6 +459,16 @@ function UsersController(){
 			})
 		})
 	}
+
+	//This has been moved to global controller
+	// this.adminValidation = function(req, res) {
+	// 	console.log("inside adminValidation")
+	// 	if (req.session.admin != 2){
+	// 		res.redirect('/' + req.session.auction + '/packages')
+	// 		return false
+	// 	}
+	// 	return true
+	// }
 
 }
 

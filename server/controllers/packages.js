@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js'),
-	Auction = require('../models/auction.js');
+	Auction = require('../models/auction.js'),
+	globals = require('../controllers/globals.js')
 var ObjectId = require('mongodb').ObjectId;
 
 function PackagesController(){
@@ -113,81 +114,72 @@ function PackagesController(){
 
 	this.edit = function(req,res){
 		console.log('PackagesController new');
-		var categoryArray = [];
-		var itemsArray = [];
-		var total = 0;
-		Package.findById(req.params.id).populate("_items").exec(function(err,result){
-			if(err){
-				console.log(err);
-			}
-			else{
-				Category.find({}, function(err, categories) {
-						if(err) {
-								console.log(err);
-								res.status(500).send('Failed to Load Items');
-						}
-						else {
-							Item.find({_auctions: req.params.auctions}, function(err, items) {
-								if(err) {
-										console.log(err);
-										res.status(500).send('Failed to Load Items');
-								}
-								else {
-									console.log(total);
-									for(let i = 0; i<items.length; i++){
-										 if(!items[i].packaged){
-											 itemsArray.push(items[i]);
-											 console.log(itemsArray);
-									 	}
+		if (globals.adminValidation(req, res)){
+			var categoryArray = [];
+			var itemsArray = [];
+			var total = 0;
+			Package.findById(req.params.id).populate("_items").exec(function(err,result){
+				if(err){
+					console.log(err);
+				}
+				else{
+					Category.find({}, function(err, categories) {
+							if(err) {
+									console.log(err);
+									res.status(500).send('Failed to Load Items');
+							}
+							else {
+								Item.find({_auctions: req.params.auctions}, function(err, items) {
+									if(err) {
+											console.log(err);
+											res.status(500).send('Failed to Load Items');
 									}
-									 for(let i = 0; i < result._items.length; i++){
-										total += result._items[i].value;
-									 	console.log(result._items[i]);
-									 }
-									console.log("result is", result)
-									res.render('packageEdit', {
-										package: result,
-										categories: categories,
-										items: itemsArray,
-										total: total,
-										userName: req.session.userName,
-										admin: req.session.admin,
-										auction: req.params.auctions})
-								}
-							})
-						}
-				})
-			}
-		})
+									else {
+										console.log(total);
+										for(let i = 0; i<items.length; i++){
+											 if(!items[i].packaged){
+												 itemsArray.push(items[i]);
+												 console.log(itemsArray);
+										 	}
+										}
+										 for(let i = 0; i < result._items.length; i++){
+											total += result._items[i].value;
+										 	console.log(result._items[i]);
+										 }
+										console.log("result is", result)
+										res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+									}
+								})
+							}
+					})
+				}
+			})
+		}
 	}
 
 this.new = function(req,res){
-	var itemsArray = [];
-	Item.find({_auctions: req.params.auctions}, function(err, items) {
-			if(err) {
-					console.log(err);
-					res.status(500).send('Failed to Load Items');
-			}
-			else {
-				Category.find({}, function(err, categories) {
-						if(err) {
-								console.log(err);
-								res.status(500).send('Failed to Load Items');
-						}
-						else {
-							console.log(itemsArray);
-							res.render('packageCreate', {
-								page: 'createPackage',
-								categories: categories,
-								items: items,
-								userName: req.session.userName,
-								admin: req.session.admin,
-								auction: req.params.auctions})
-						}
-						console.log('PackagesController new');
-				})
-			}
-	})
+	if (globals.adminValidation(req, res)){
+		var itemsArray = [];
+		Item.find({_auctions: req.params.auctions}, function(err, items) {
+				if(err) {
+						console.log(err);
+						res.status(500).send('Failed to Load Items');
+				}
+				else {
+					Category.find({}, function(err, categories) {
+							if(err) {
+									console.log(err);
+									res.status(500).send('Failed to Load Items');
+							}
+							else {
+								console.log(itemsArray);
+								res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+							}
+							console.log('PackagesController new =>');
+					})
+				}
+		})
+	}
 }
 
 	//post method that creats packages
@@ -279,134 +271,140 @@ this.new = function(req,res){
 
 	this.update = function(req,res){
 		console.log('PackagesController update');
-		Package.findById(req.params.id, function (err, package) {
-			console.log(package);
-		    if (err) {
-		        res.status(500).send(err);
-		    }else {
-						Item.find({_id: package._items}, function(err, items) {
-							if (err) {
-								console.log(err);
-							}else{
-								for (var i = 0; i < items.length; i++) {
-									//Setting all of the items to unpackaged, just in case they are removed and not put back into the package
-									//Items that remain in the package will be repackaged below
-									items[i].packaged = false;
-									items[i]._package = null;
-									items[i].save()
+		if (globals.adminValidation(req, res)){
+			Package.findById(req.params.id, function (err, package) {
+				console.log(package);
+			    if (err) {
+			        res.status(500).send(err);
+			    }else {
+							Item.find({_id: package._items}, function(err, items) {
+								if (err) {
+									console.log(err);
+								}else{
+									for (var i = 0; i < items.length; i++) {
+										//Setting all of the items to unpackaged, just in case they are removed and not put back into the package
+										//Items that remain in the package will be repackaged below
+										items[i].packaged = false;
+										items[i]._package = null;
+										items[i].save()
+									}
 								}
-							}
-						})
-		        // Update each attribute with value that was submitted in the body of the request
-		        // If that attribute isn't in the request body, default back to whatever it was before.
-		        package.name = req.body.packageName || package.name;
-		        package.description = req.body.packageDescription || package.description;
-		        package.bids[0] = req.body.openingBid || package.bids[0];
-		        package.value = req.body.totalValue || package.value;
-		        package.bidIncrement = req.body.increments || package.bidIncrement;
-		        package._category = req.body.category || package._category;
-						package.priority = req.body.priority || package.priority;
-						package._items = req.body.selectedItems;
-		        package.save(function (err, package) {
-		            if (err) {
-                    console.log(err)
-		                res.status(500).send(err)
-		            }else{
-		    					for(let i = 0; i < package._items.length; i++ ){
-										Item.findOne({_id: package._items[i]} , function(err, item){
-											item.packaged = true;
-											item._package = package.id;
-											item.save(function (err){
-												if (err){
-													console.log(err)
-												}else{
-													console.log('item should  be packaged', item.packaged);
-												}
+							})
+			        // Update each attribute with value that was submitted in the body of the request
+			        // If that attribute isn't in the request body, default back to whatever it was before.
+			        package.name = req.body.packageName || package.name;
+			        package.description = req.body.packageDescription || package.description;
+			        package.bids[0] = req.body.openingBid || package.bids[0];
+			        package.value = req.body.totalValue || package.value;
+			        package.bidIncrement = req.body.increments || package.bidIncrement;
+			        package._category = req.body.category || package._category;
+							package.priority = req.body.priority || package.priority;
+							package._items = req.body.selectedItems;
+			        package.save(function (err, package) {
+			            if (err) {
+	                    console.log(err)
+			                res.status(500).send(err)
+			            }else{
+			    					for(let i = 0; i < package._items.length; i++ ){
+											Item.findOne({_id: package._items[i]} , function(err, item){
+												item.packaged = true;
+												item._package = package.id;
+												item.save(function (err){
+													if (err){
+														console.log(err)
+													}else{
+														console.log('item should  be packaged', item.packaged);
+													}
+												})
 											})
-										})
-		    					}
-									res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
-		           }
-		       });
-		    }
-		});
+			    					}
+										res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+			           }
+			       });
+			    }
+			});
+		}
 	}
 
 	this.removePackage = function(req, res){
-		console.log('in remove package')
-		Package.findOne({_id: req.params.id}, function(err, package){
-			if(err){
-				console.log(err)
-			}else{
-					//everything in the User.find will probably never be used
-					//this searches all users and removes package from their watchlist
-					//it should only happen if an in the middle of an auction if item is reported as stolen
-					//or provider of service suddenly goes out of buisness
-					User.find({_auctions: req.params.auctions}, function(err, users){
-						if(err){
-							console.log(err)
-						}else{
-							for(var k= 0; k< users; k++ ){
-								for (var i = 0; i < users[k]._package.length; i++) {
-									if(package._id === users[k]._packages[i]){
-										users[k]._packages.splice(i,1)
+		if (globals.adminValidation(req, res)){
+			console.log('in remove package')
+			Package.findOne({_id: req.params.id}, function(err, package){
+				if(err){
+					console.log(err)
+				}else{
+						//everything in the User.find will probably never be used
+						//this searches all users and removes package from their watchlist
+						//it should only happen if an in the middle of an auction if item is reported as stolen
+						//or provider of service suddenly goes out of buisness
+						User.find({_auctions: req.params.auctions}, function(err, users){
+							if(err){
+								console.log(err)
+							}else{
+								for(var k= 0; k< users; k++ ){
+									for (var i = 0; i < users[k]._package.length; i++) {
+										if(package._id === users[k]._packages[i]){
+											users[k]._packages.splice(i,1)
+										}
 									}
 								}
-							}
-							if (users[k]) {
-								users[k].save(function(err,result){
-									if(err){
+								if (users[k]) {
+									users[k].save(function(err,result){
+										if(err){
+											console.log(err)
+											res.status(500).send(err)
+										}
+									})
+								}
+								Auction.findById(package._auctions, function(err, auction){
+									if (err){
 										console.log(err)
-										res.status(500).send(err)
+									}
+									else{
+										auction._packages.splice(auction._packages.indexOf(package._auctions), 1)
 									}
 								})
 							}
-							Auction.findById(package._auctions, function(err, auction){
-								if (err){
-									console.log(err)
-								}
-								else{
-									auction._packages.splice(auction._packages.indexOf(package._auctions), 1)
-								}
-							})
-						}
-					})
-				for(var i = 0; i < package._items.length; i++){
-					Item.update({_id: package._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
+						})
+					for(var i = 0; i < package._items.length; i++){
+						Item.update({_id: package._items[i]}, {$set: {packaged: false, _package: null}}, function(err, result){
+							if(err){
+								console.log(err)
+							}
+						});
+					}
+					Package.remove({_id: req.params.id}, function(err, package){
 						if(err){
 							console.log(err)
+						}else{
+							res.redirect('/' + req.params.auctions  + '/packages');
 						}
-					});
+					})
 				}
-				Package.remove({_id: req.params.id}, function(err, package){
-					if(err){
-						console.log(err)
-					}else{
-						res.redirect('/' + req.params.auctions  + '/packages');
-					}
-				})
-			}
-		})
+			})
+		}
 	}
 
 
 	this.featured = function(req, res) {
-		Package.findById(req.params.id, function(err, package) {
-			if(err){
-				console.log(err);
-			}else if (package.featured === true) {
-				package.featured = false;
-			}else{
-				package.featured = true;
-			}
-			package.save()
-			res.redirect('/' + req.params.auctions  + '/packages')
-		})
+		if (globals.adminValidation(req, res)){
+			Package.findById(req.params.id, function(err, package) {
+				if(err){
+					console.log(err);
+				}else if (package.featured === true) {
+					package.featured = false;
+				}else{
+					package.featured = true;
+				}
+				package.save()
+				res.redirect('/' + req.params.auctions  + '/packages')
+			})
+		}
 	}
 
 
 	this.cancelBid = function(req,res){
-		if(req.session.admin){
+		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function(err,package){
 				if(err){
 					console.log(err)
@@ -448,6 +446,7 @@ this.new = function(req,res){
 			})
 		})
 	}
+
 
 
 }
