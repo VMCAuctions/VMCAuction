@@ -43,7 +43,6 @@ function AuctionsController() {
 					})
 				}
 			});
-		// Only for testing purposes, when don't yet have access as admin
 		}
 		else{
 			res.redirect('/' + req.session.auction + '/packages')
@@ -78,6 +77,10 @@ function AuctionsController() {
 					}else{
 						Auction.create({
 							name: req.body.name,
+							subtitle: req.body.subtitle,
+							welcomeMessage: req.body.welcomeMessage,
+							description:req.body.description,
+							venue:req.body.venue,
 							startClock: start,
 							endClock: end,
 							pin: randomPin
@@ -125,6 +128,23 @@ function AuctionsController() {
 			res.render("editAuction", {auctionDetails: auction, admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock, pin: auction.pin})
 		})
 	}
+	this.event = function(req, res) {
+		Auction.findById(req.params.auctions, function(err, auction) {
+			stringStartClock = auction.startClock.toISOString()
+			stringEndClock = auction.endClock.toISOString()
+			startDate = stringStartClock.substring(0, 10)
+			startClock = stringStartClock.substring(11, 16)
+			endDate = stringEndClock.substring(0, 10)
+			endClock = stringEndClock.substring(11, 16)
+			if(err){
+				console.log(err);
+			}
+			else{
+				res.render("event", {auctionDetails: auction, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock, pin: auction.pin})
+			}
+		})	
+	}	
+		
 	this.update = function(req, res) {
 		// console.log("req.body is", req.body)
 		// console.log("we are in the update function")
@@ -140,6 +160,9 @@ function AuctionsController() {
 				auction.name = req.body.name || auction.name;
 				auction.startClock = start || auction.startClock;
 				auction.endClock = end || auction.endClock;
+				auction.subtitle = req.body.subtitle; 
+				auction.venue = req.body.venue;
+				auction.description = req.body.description;
 				console.log(req.body.pin)
 
 				newPin = req.body.pin
@@ -255,8 +278,8 @@ function AuctionsController() {
 			}
 		})
 	}
-
 }
 
+	
 
 module.exports = new AuctionsController();

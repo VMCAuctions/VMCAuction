@@ -3,7 +3,10 @@
   <head>
     <!-- Bootstrap -->
     <meta charset="utf-8">
+    <title>Edit an Auction</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/css/style.css" >
+		<link rel="stylesheet" type="text/css" href="/css/auctions.css" >
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -17,45 +20,57 @@
         crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-      <title>Edit an Auction</title>
+  </head>
   <%- include('adminHeader') -%>
   <body>
     <div class="container mt-4">
       <div class="form-header">
-        <h3>Edit Auction</h3>
+        <h2 class="mb-3">Edit Auction</h2>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Delete Auction</button>
       </div>
       <form action="/<%=auction%>/update" method="post">
         <div class="form-group">
-          <label for="name">Auction Name</label>
+          <label for="name" class="label-name">Auction Name</label>
           <input type="text" name="name" id="name" class="form-control" value="<%=auctionDetails.name%>">
         </div>
-
         <div class="form-group">
-          <label for="startClockDate">Start Date</label>
-          <input type="date" name="startClockDate" id="startClockDate" class="form-control" value="<%=startDate%>">
-        </div>
-
-        <div class="form-group">
-          <label for="startClockTime">Start Time</label>
-          <input type="time" name="startClockTime" id="startClockTime" class="form-control" value="<%=startClock%>">
-        </div>
-
-        <div class="form-group">
-          <label for="endClockDate">End Date</label>
-          <input type="date" name="endClockDate" id="endClockDate" class="form-control" value="<%=endDate%>">
-        </div>
-
-        <div class="form-group">
-          <label for="endClockTime">End Time</label>
-          <input type="time" name="endClockTime" id="endClockTime" class="form-control" value="<%=endClock%>">
-        </div>
-
-        <div class="form-group">
-          <label for="pin">Auction Pin</label>
+          <label for="pin" class="label-name">Auction Pin</label>
           <input type="number" name="pin" id="pin" class="form-control" value="<%=pin%>">
         </div>
-
+        <div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="startClockDate" class="label-name">Start Date</label>
+						<input type="date" name="startClockDate" id="startClockDate" class="form-control" value="<%=startDate%>">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="startClockTime" class="label-name">Start Time</label>
+						<input type="time" name="startClockTime" id="startClockTime" class="form-control" value="<%=startClock%>">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="endClockDate" class="label-name">End Date</label>
+						<input type="date" name="endClockDate" id="endClockDate" class="form-control" value="<%=endDate%>">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="endClockTime" class="label-name">End Time</label>
+						<input type="time" name="endClockTime" id="endClockTime" class="form-control" value="<%=endClock%>">
+					</div>
+        </div> 
+        <div class="form-group">
+					<label for="venue" class="label-name">Venue</label>
+					<textarea name="venue" id="venue" class="form-control" rows="1"><%= auctionDetails.venue %></textarea>
+				</div> 
+				<div class="form-group">
+					<label for="subtitle" class="label-name">Subtitle/Tagline</label>
+					<textarea name="subtitle" id="subtitle" class="form-control" rows="1"><%= auctionDetails.subtitle %></textarea>
+				</div>
+				<div class="form-group">
+					<label for="welcomeMessage" class="label-name">Welcome Message</label>
+					<textarea name="welcomeMessage" id="welcomeMessage" class="form-control" rows="3"><%= auctionDetails.welcomeMessage %></textarea>
+				</div>
+				<div class="form-group">
+					<label for="description" class="label-name">Description</label>
+					<textarea name="description" id="description" class="form-control" rows="5"><%= auctionDetails.description %></textarea>
+				</div>
         <div id="myModal" class="modal fade">
           <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -76,7 +91,6 @@
             </div>
           </div>
         </div>
-
         <div class="form-group">
           <input type="submit" name="submit" value="Submit" class="btn btn-primary">
         </div>
