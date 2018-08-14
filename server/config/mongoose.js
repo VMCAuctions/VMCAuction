@@ -27,7 +27,7 @@ var mongoose      = require('mongoose'),
     // dbURI         = 'mongodb://localhost/POTR_DEV2' || '127.0.0.1:27017',
 
     //Note to Self: Switching to Dev3 for temporary testing purposes
-    dbURI         = 'mongodb://localhost/POTR_DEV3',
+    dbURI         = 'mongodb://localhost/POTR_DEV2',
 
     // require auto-increment for simple, readable ID's
     autoIncrement = require('mongoose-auto-increment');
