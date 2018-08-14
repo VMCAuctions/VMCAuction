@@ -36,24 +36,24 @@ function ItemsController(){
 
 	this.new = function(req,res){
 		Category.find({}, function(err, categories) {
-	    	if(err) {
-	      		console.log(err);
-	      		res.status(500).send('Failed to Load Items');
-	    	}else{
-					if(req.session.admin){
-						res.render('createItem', {
-							page:'addItem',
-							categories: categories,
-							userName: req.session.userName,
-							admin: req.session.admin,
-							auction: req.params.auctions
-						})
-					}else{
-						res.redirect('/' + req.params.auctions + '/packages')
-					}
+    	if(err) {
+      		console.log(err);
+      		res.status(500).send('Failed to Load Items');
+    	}else{
+				if(req.session.admin){
+					res.render('createItem', {
+						page:'addItem',
+						categories: categories,
+						userName: req.session.userName,
+						admin: req.session.admin,
+						auction: req.params.auctions
+					})
+				}else{
+					res.redirect('/' + req.params.auctions + '/packages')
+				}
 			console.log('ItemsController new');
-			});
-		}
+			};
+		})
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');

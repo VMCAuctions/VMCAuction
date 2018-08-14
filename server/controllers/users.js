@@ -252,46 +252,45 @@ function UsersController(){
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
 		console.log('UsersController show');
-		if (globals.notClerkValidation(req, res)){
-			var cartArray = []
-			var cartTotal = 0
-			Package.find({_auctions: req.params.auctions}, function(err, result){
-				if (err){
-					console.log(err)
-				}else{
-					for (var i = 0; i < result.length; i++){
-						if (result[i].bids.length > 0){
-							if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-								cartArray.push(result[i])
-								cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
-							}
+		var cartArray = []
+		var cartTotal = 0
+		Package.find({_auctions: req.params.auctions}, function(err, result){
+			if (err){
+				console.log(err)
+			}else{
+				for (var i = 0; i < result.length; i++){
+					if (result[i].bids.length > 0){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+							cartArray.push(result[i])
+							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}
-          User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-            if(err){
-              console.log(err)
-            }else if (user.userName === req.session.userName | req.session.admin === true){
-              Auction.findById(req.params.auctions, function (err, auctionDetails) {
-                if (err) {
-                  console.log(err)
-                } else {
-                  console.log("req.session is", req.session)
-                  res.render('userPage', {
-                    page: 'myAccount',
-                    userName: req.session.userName,
-                    admin: req.session.admin,
-                    user: user,
-                    cartTotal: cartTotal,
-                    cartArray: cartArray,
-                    auction: req.params.auctions,
-                    auctionDetails: auctionDetails,
-                  })
-                }
-              })
-            }else{
-              res.redirect('/' + req.params.auctions  + '/packages')
-            }
-          })
+				}
+        User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+          if(err){
+            console.log(err)
+          }else if (user.userName === req.session.userName | req.session.admin === true){
+            Auction.findById(req.params.auctions, function (err, auctionDetails) {
+              if (err) {
+                console.log(err)
+              } else {
+                console.log("req.session is", req.session)
+                res.render('userPage', {
+                  page: 'myAccount',
+                  userName: req.session.userName,
+                  admin: req.session.admin,
+                  user: user,
+                  cartTotal: cartTotal,
+                  cartArray: cartArray,
+                  auction: req.params.auctions,
+                  auctionDetails: auctionDetails,
+                })
+              }
+            })
+          }else{
+            res.redirect('/' + req.params.auctions  + '/packages')
+          }
+        })
 			}
 		})
 	};
@@ -399,8 +398,8 @@ function UsersController(){
 					}
 				};
 				res.redirect('/' + req.params.auctions  + '/packages')
-			})
-		}
+			}
+		})
 	};
 
 
