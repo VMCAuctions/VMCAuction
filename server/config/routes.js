@@ -29,6 +29,9 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
+	//Modifying the featured status and priority of an item
+	app.get('/packages/priority/:id/:featured/:priority', function(req, res){
+		packages.priority(req, res)});
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
@@ -146,14 +149,16 @@ module.exports = function(app) {
 		auctions.menu(req, res)});
 	//Renders the page to edit an auction
 	app.get('/:auctions/edit', function (req, res) {
-		auctions.edit(req, res)});
-	//Actually edits the auction on the backend
-	app.post('/:auctions/update', function(req,res) {
-		auctions.update(req, res)});
+		auctions.edit(req, res)})
+		//Actually edits the auction on the backend
+	app.post('/:auctions/update', function(req,res){
+		auctions.update(req, res)})
+		// Deletes auction
+	app.get('/:auctions/remove', function(req, res) {
+		auctions.deleteAuction(req, res)});
 	//Event landing page the supporters will see; has links to supporter login and registration
 	app.get('/:auctions/event', function(req, res) { 
 		auctions.event(req, res)});
-		
 
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
