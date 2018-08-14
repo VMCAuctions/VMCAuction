@@ -1,17 +1,11 @@
 /* Style sheet for the Organizer's main landing page */
-body {
-	color: #404040 !important;
-}
 
 /* Organizer's Header styles 
 -------------------------------------------------------------- */
-.brand {
-    font-family: 'Lato', sans-serif !important;
-    font-size: 1.2rem; 
-    color: #ffffff !important; 
-    font-weight: 500; 
-    letter-spacing: .1rem; 
-    padding-left: 10px; 
+.brand-white{
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
+	font-size: 1.75rem !important;
+	color: #fff !important;
 }
 .dash-home{
 	padding-left: 20px; 
@@ -20,6 +14,7 @@ body {
 	border: solid 2px #fff !important;
 	color: #fff !important;
 	padding: 3px 10px;  
+	font-weight: 500 !important;
 }
 a.btn-logout:hover {
 	background: #fff;
@@ -31,7 +26,7 @@ a.btn-logout:hover {
 .jumbo-head {
 	text-align: center;
 	color: #003d79;
-	font-family: Lato, sans-serif;
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
 	font-size: 24px; 
 }
 .main-card {
@@ -44,16 +39,16 @@ a.btn-logout:hover {
 	color: #fff; 
 }
 .btn-create:hover {
-	background: #99004d !important;
-	border: solid 1px #99004d !important;
-	color: #fff; 
+	color: #fff !important;
+  	background-color: #436b1d !important;
+  	border: solid 2px #436b1d !important; 
 }
 a.dash-link { 
 	color: #3399ff;
 	text-decoration: none; 
 }
 a.dash-link:hover {
-	color: #99004d !important;
+	color: #4567a8 !important;
 	text-decoration: none !important; 
 }
 

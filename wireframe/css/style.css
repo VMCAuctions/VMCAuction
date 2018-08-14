@@ -1,17 +1,30 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url('https://fonts.googleapis.com/css?family=Lato');
 
+@import url('https://fonts.googleapis.com/css?family=Kameron');
+
+/* Common styles 
+-------------------------------------------------------------- */
 body {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: Arial, Helvetica, sans-serif;
   color: #404040 !important;
 }
+a:link { 
+	color: #3399ff !important;
+	text-decoration: none; 
+}
+a:hover {
+	color: #4567a8 !important;
+	text-decoration: none !important; 
+}
 
+
+/* Organizer's Menu table style
+-------------------------------------------------------------- */
 td:hover {
   background-color: #ffffff;
 }
 
 .table-hover>tbody>tr>.highlight:hover{
-  background-color: #f5f5f5!important; // Or any colour you
+  background-color: #f5f5f5!important; 
   cursor: pointer;
 }
 

@@ -135,19 +135,19 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//organizer's landing page (where the organizer selects what she wants to do)
+	//Organizer's landing page (where the organizer selects what she wants to do)
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
-	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
+	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
-		//Creating an auction
+	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-		//Renders the organizer menu page
+	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
-		auctions.menu(req, res)})
-		//Renders the page to edit an auction
+		auctions.menu(req, res)});
+	//Renders the page to edit an auction
 	app.get('/:auctions/edit', function (req, res) {
 		auctions.edit(req, res)})
 		//Actually edits the auction on the backend
@@ -156,6 +156,9 @@ module.exports = function(app) {
 		// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
+	//Event landing page the supporters will see; has links to supporter login and registration
+	app.get('/:auctions/event', function(req, res) { 
+		auctions.event(req, res)});
 
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
