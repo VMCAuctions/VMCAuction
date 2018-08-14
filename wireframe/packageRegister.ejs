@@ -12,8 +12,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
@@ -66,7 +65,7 @@
                         <th scope="col">Bid Increment</th>
                         <th scope="col">Featured</th>
                         <th scope="col">Priority</th>
-                        <% if (admin) { %>
+                        <% if (admin == 2) { %>
                             <th scope="col">Actions</th>
                         <% } %>
                     </tr>
@@ -89,12 +88,25 @@
                             <td class="package-val"><%= packages[i].value%></td>
                             <td class="package-val"><%= packages[i].amount%></td>
                             <td class="package-val"><%= packages[i].bidIncrement%></td>
-                            <td><%= packages[i].featured%></td>
-                            <td class="package-val"><%= packages[i].priority%></td>
-                            <% if(admin){ %>
-                                <td><a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit"></i></a>
-                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete"></i></a>
+                            <% if(admin == 2){ %>
+                                <!-- Need to find a way to make each input field different according to package, or have some way to distinguish based on which package is clicked to know to only update that package -->
+                                <form>
+                                  <td><select id="<%= packages[i].id%>Featured">
+                                    <option><%= packages[i].featured%></option>
+                                    <option><%= !packages[i].featured%></option>
+                                  </select></td>
+                                  <td class="package-val">
+                                    <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
+                                  </td>
+                                  <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
+                                </form>
+                                <td><button id="<%= packages[i].id%>" class="confirmChanges">C</button>
+                                  <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit"></i></a>
+                                  <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete"></i></a>
                                 </td>
+                            <%}else{%>
+                                <td><%= packages[i].featured%></td>
+                                <td class="package-val"><%= packages[i].priority%></td>
                             <%}%>
                         </tr>
                         <%}%>
@@ -123,8 +135,26 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 })
             })
+            //Need to think about how to keep priority numbers unique; may have to check on the backend, as frontend won't necessarily reflect the database due to changes via user input
+            //Perhaps add a warning on the frontend when id has been used or if the priority number exceeds 10
+            //Perhaps hide priority field if featured is false, then make sure to set priority field to None on the backend if featured is false
+            $('.confirmChanges').click(function(event){
+              event.preventDefault();
+              id = event.target.id
+              featured = $('#' + id + "Featured").val()
+              priority = $('#' + id + "Priority").val()
+              console.log("enteredConfirmChanges ajax call");
+              $.get(`http://localhost:8000/packages/priority/${id}/${featured}/${priority}`,function(data){
+                  if (data === true){
+                      alert(`Package ${id} saved successfully!`);
+                  }
+                  else{
+                      alert(`Error: Package ${id} not saved`);
+                  }
+              });
+            });
 
-        });        
+        });
     </script>
 </body>
 
