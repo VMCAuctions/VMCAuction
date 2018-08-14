@@ -1,15 +1,7 @@
 
-.brand {
-    font-family: 'Lato', sans-serif !important;
-    font-size: 1.2rem; 
-    color: #404040 !important; 
-    font-weight: 700; 
-    letter-spacing: .1rem; 
-    padding-left: 10px; 
-}
-.elizabid-brand{
+.brand{
     font-family: "Kameron", Georgia, "Times New Roman", serif;
-    font-size: 2.25rem !important;
+    font-size: 2rem !important;
     color: #003d79 !important;
     padding-left: 10px; 
   }
@@ -20,6 +12,7 @@
 a.top-link:hover {
     color: #99004d !important;
     background-color: #eef3f6;
+    height: 100%; 
 }
 .active1 {
     color: #99004d !important;
@@ -40,7 +33,6 @@ a.nav-org:hover {
 .btn-logout {
     border: solid 2px #003d79 !important; 
     color: #003d79 !important; 
-    font-weight: bold; 
 }
 a.btn-logout:hover {
     color: #fff !important;

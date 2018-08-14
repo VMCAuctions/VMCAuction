@@ -160,6 +160,9 @@ function AuctionsController() {
 				auction.name = req.body.name || auction.name;
 				auction.startClock = start || auction.startClock;
 				auction.endClock = end || auction.endClock;
+				auction.subtitle = req.body.subtitle; 
+				auction.venue = req.body.venue;
+				auction.description = req.body.description;
 				console.log(req.body.pin)
 
 				newPin = req.body.pin
