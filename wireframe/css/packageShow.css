@@ -1,0 +1,20 @@
+.card {
+  border: none !important;
+}
+
+.btn {
+  color: white;
+  background-color: #003d79;
+}
+
+.restrictions {
+  margin-top: 2em;
+}
+
+#submitButton {
+  margin-bottom: 0.5em;
+}
+
+#bidAmount {
+  padding: 0.3em;
+}
