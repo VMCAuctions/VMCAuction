@@ -185,9 +185,9 @@ function ItemsController(){
 	}
 	this.populate = function(req, res){
 		//May need to add validation checks so that only admins can see
-		//This is where the code, that actually populates from the CSV, will be placed
 		console.log("reached this.populate")
 
+		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
 		const csvFilePath="2018 Gala Auction Item Tracker - 2018 Auction Item Tracker.csv"
 
 		csv()
@@ -223,7 +223,7 @@ function ItemsController(){
 
 		     //The CSV file needs to be in a standardized format to populate correctly; I can't tell the computer where to put each piece of information if there's no systematic ordering of that data (e.g., donor column should be broken into donor first, donor last, and organization, and not have just a few entries that have more than one donor); also, not sure what to do about restrictions and priority as they have no columns
 
-		     //First, check if all of the columns the user specified are in the first json object of the json object array (just have to check the first because they should all be the same).  If they aren't, do not populate any items and print an error message instead.
+		     //Print an error message if there is no column in the csv that matches up with a required item field
 		     errorString = ""
 		     for (index in mandatoryColumns){
 		       if (!jsonObj[0].hasOwnProperty(mandatoryColumns[index][1])){
@@ -235,7 +235,6 @@ function ItemsController(){
 						 }
 		       }
 		     }
-				 //All mandatory columns must be valid, so they're not held onto inside of validColumns.  However, for every other column that isn't necessarily required, we'll hold onto it in here so that we know to check if upon item creation.
 				 validDonorColumns = []
 				 donorFlag = false
 				 mandatoryDonorColumnNames = ""
@@ -262,7 +261,6 @@ function ItemsController(){
 		     }
 				 //The above code is all validations; the below code only runs when all validations are met
 		     else{
-					 //We have already iterated through mandatoryDonorColumns, but we still need to iterate through the optional columns and add the necessary ones to validOptionalColumns, so that way we only look to add these optional columns after validation for each row is completed
 					 validOptionalColumns = []
 					 for (index in optionalColumns){
 						 if (jsonObj[0].hasOwnProperty(optionalColumns[index][1])){
@@ -276,7 +274,7 @@ function ItemsController(){
 		       for (var i = 0; i < jsonObj.length; i++){
 		         validItem = true
 		         currentItem = {}
-						 //If any of the mandatory columns are not filled in, we update validItem to be false because we know it's invalid
+						 //If any of the mandatory columns are not filled in, we update validItem to be false
 		         for (var j = 0; j < mandatoryColumns.length; j++){
 		           toAdd = jsonObj[i][mandatoryColumns[j][1]]
 		           if (toAdd == ""){
@@ -298,7 +296,7 @@ function ItemsController(){
 		         }
 						 donorValid = false
 						 if (validItem == true){
-							 //Verifying that, out of the donor columns that had valid entries in the CSV, that at least one of them was not blank; if all are blank, then it's invalid
+							 //If at least one required donor column is valid, then the item is still valid
 							 for (var k = 0; k < validDonorColumns.length; k++){
 								 toAdd = jsonObj[i][validDonorColumns[k][1]]
 								 if (toAdd != ""){
@@ -307,7 +305,7 @@ function ItemsController(){
 								 }
 							 }
 						 }
-						 //Only if both the mandatory and donor requirements are met do we add the optional columns and actually create the item; otherwise, we add the item entry to our error list
+						 //If the mandatory and donor requirements are not both met, then we do not need to add anything else to the item
 						 if (validItem == true && donorValid == true){
 							 for (var j = 0; j < validOptionalColumns.length; j++){
 								 toAdd = jsonObj[i][validOptionalColumns[j][1]]
@@ -316,7 +314,6 @@ function ItemsController(){
 								 }
 							 }
 							 currentItem["_auctions"] = req.params.auctions
-							 // console.log("currentItem", currentItem)
 							 Item.create(currentItem,  function(err, result){
 								 if(err){
 									 console.log(err);
@@ -330,7 +327,6 @@ function ItemsController(){
 		         }
 		       }
 		       if (errorList.length > 0){
-						 // console.log("The following rows failed validation:\n" + errorList)
 						 res.json({status:true, message:"The following rows failed validation:\n" + errorList, admin: req.session.admin, auction: req.session.auction})
 						 return
 		       }
