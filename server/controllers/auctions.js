@@ -44,7 +44,6 @@ function AuctionsController() {
 					})
 				}
 			});
-		// Only for testing purposes, when don't yet have access as admin
 		}
 		else{
 			res.redirect('/' + req.session.auction + '/packages')
@@ -111,31 +110,149 @@ function AuctionsController() {
 			})
 		}
 	}
+	this.edit = function(req, res){
+		Auction.findById(req.params.auctions, function(err, auction){
+			stringStartClock = auction.startClock.toISOString()
+			stringEndClock = auction.endClock.toISOString()
+			// console.log("stringStartClock is", stringStartClock)
+			startDate = stringStartClock.substring(0, 10)
+			startClock = stringStartClock.substring(11, 16)
+			// console.log("startDate is", startDate)
+			// console.log("startClock is", startClock)
+			endDate = stringEndClock.substring(0, 10)
+			endClock = stringEndClock.substring(11, 16)
+			res.render("editAuction", {auctionDetails: auction, admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock, pin: auction.pin})
+		})
+	}
+	this.event = function(req, res) {
+		Auction.findById(req.params.auctions, function(err, auction) {
+			stringStartClock = auction.startClock.toISOString()
+			stringEndClock = auction.endClock.toISOString()
+			startDate = stringStartClock.substring(0, 10)
+			startClock = stringStartClock.substring(11, 16)
+			endDate = stringEndClock.substring(0, 10)
+			endClock = stringEndClock.substring(11, 16)
+			if(err){
+				console.log(err);
+			}
+			else{
+				res.render("event", {auctionDetails: auction, auction: req.params.auctions, startDate: startDate, startClock: startClock, endDate: endDate, endClock: endClock, pin: auction.pin})
+			}
+		})	
+	}	
+		
 	this.update = function(req, res) {
-		if (globals.adminValidation(req, res)){
-			var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
-			var start = new Date(startDate)
-			var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
-			var end = new Date(endDate)
-			Auction.find({_id: req.params.auctions}, function(err, auction){
-				if(err){
-					console.log(err)
+		// console.log("req.body is", req.body)
+		// console.log("we are in the update function")
+		var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00"
+		var start = new Date(startDate)
+		var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00"
+		var end = new Date(endDate)
+		Auction.findById(req.params.auctions, function(err, auction){
+			if(err){
+				console.log(err)
+			}
+			else{
+				auction.name = req.body.name || auction.name;
+				auction.startClock = start || auction.startClock;
+				auction.endClock = end || auction.endClock;
+				auction.subtitle = req.body.subtitle; 
+				auction.venue = req.body.venue;
+				auction.description = req.body.description;
+				console.log(req.body.pin)
+
+				newPin = req.body.pin
+				newPinInt = parseInt(newPin)
+				if (newPin.length != 4 || newPinInt < 1000){
+					console.log("invalid pin")
+					return ("invalid pin", -1)
 				}
 				else{
-					auction.name = req.body.name || auction.name;
-					auction.startClock = start || auction.startClock;
-					auction.endClock = end || auction.endClock;
-					auction.save(function(err,result){
-						if(err){
+					console.log("pin is valid")
+					Global.findOne({}, function(err, result){
+						if (err){
+							console.log("hit err")
 							console.log(err)
 						}
 						else{
-							//Redirect to organizer menu
+							console.log("found auction")
+							availablePins = result.pins
+							pinBinarySearch = function(lowerBound, higherBound, pin){
+								midIndex = Math.floor(((higherBound - lowerBound) / 2) + lowerBound)
+								if (pin == availablePins[midIndex]){
+									return ["same", midIndex]
+								}
+								else if (higherBound - lowerBound <= 0){
+									if (availablePins[lowerBound] > pin){
+										// 5              4  [5] = index 0 [4, 5] 4 to go in index 0
+										return ["high", lowerBound]
+									}else{
+										// 4              5  [4] = index 0 [4, 5] 5 to go in index 1
+										return ["low", lowerBound]
+									}
+								}
+								else{
+									if (pin < availablePins[midIndex]){
+										return pinBinarySearch(lowerBound, midIndex - 1, pin)
+									}
+									else{
+										return pinBinarySearch(midIndex + 1, higherBound, pin)
+									}
+								}
+							}
+							console.log("running pinBinarySearch")
+							//Finding if new pin is available in global.pins; this is the previously defined newPinInt
+							available = pinBinarySearch(0, availablePins.length - 1, newPinInt)
+							console.log("available", available)
+							if (available[0] != "same"){
+								//Do not allow auction edit and return to edit auction page, probably with a message saying pin is unavailable
+								console.log("returning to edit page as pin is not available")
+								res.redirect("/" + req.params.auctions + "/organizerMenu")
+								return
+							}
+							//Removing new pin from global.pins array, as it will no longer be available
+							availablePins.splice(available[1], 1)
+							//Finding where to put the old pin associated with the auction, back into the global.pins array to keep things sorted
+							oldPin = parseInt(auction.pin)
+							replacing = pinBinarySearch(0, availablePins.length - 1, oldPin)
+							if (replacing[0] == "high"){
+								result.pins.splice(replacing[1],0,String(oldPin))
+							}
+							else{
+								result.pins.splice(replacing[1] + 1,0,String(oldPin))
+							}
+							auction.pin = req.body.pin
+							auction.save(function(err,auctionsave){
+								if(err){
+									console.log(err)
+								}
+								else{
+									result.save(function(err,result2){
+										if(err){
+											console.log(err)
+										}
+										else{
+											//Yay, everything is saved!!!
+											res.redirect("/" + req.params.auctions + "/organizerMenu")
+										}
+									})
+								}
+							})
 						}
 					})
 				}
-			})
-		}
+			}
+		})
+	}
+
+	this.deleteAuction = function(req, res) {
+		Auction.remove({ _id: req.params.auctions}, function(err, result) {
+			if (err) {
+				console.log(err);
+			} else {
+				res.redirect('/auctions/main')
+			}
+		})
 	}
 
 	this.pinEntry = function(req, res) {
@@ -158,8 +275,8 @@ function AuctionsController() {
 			}
 		})
 	}
-
 }
 
+	
 
 module.exports = new AuctionsController();

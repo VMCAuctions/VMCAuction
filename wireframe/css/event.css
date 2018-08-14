@@ -1,0 +1,125 @@
+
+body {
+  line-height: 1.8rem !important; 
+}
+.vmcf-brand {
+  height: 2.3rem;
+}
+.brand{
+  font-family: "Kameron", Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  color: #003d79;
+  padding-left: 10px; 
+}
+.btn-ctlg {
+  border: solid 2px #cc0066 !important;  
+  background-color: #cc0066 !important;
+  color: #fff !important;  
+  font-weight: 500; 
+  width: 180px; 
+}
+.btn-reg {
+  border: solid 2px #fff!important; 
+  color: #fff !important;
+  font-weight: 500; 
+  width: 180px; 
+  padding: 0.75rem 0 !important;  
+}
+.btn-nav-reg {
+  border: solid 2px #719949 !important; 
+  background-color: #719949 !important; 
+  color: #fff !important;
+  font-weight: 500; 
+  width: 90px; 
+}
+.btn-nav-login {
+  border: solid 2px #003d79 !important; 
+  color: #003d79 !important; 
+  font-weight: 500; 
+  width: 90px; 
+}
+a.btn-ctlg:hover {
+  color: #fff !important;
+  background-color: #99004d !important;
+  border: solid 2px #99004d !important; 
+}
+a.btn-reg:hover {
+  color: #1a1a1a !important;
+  font-weight: 500;
+  background-color: #a1ca76 !important;
+  border: solid 2px #a1ca76 !important; 
+}
+a.btn-nav-reg:hover {
+  color: #fff !important;
+  background-color: #436b1d !important;
+  border: solid 2px #436b1d !important; 
+}
+a.btn-nav-login:hover {
+  color: #fff !important;
+  background-color: #003d79 !important;
+  border: solid 2px #003d79 !important; 
+  color: #fff; 
+}
+.btn-centr{
+  margin: 0 auto; 
+  display: block;
+  
+}
+.header-img {
+  /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
+  /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
+  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_img.jpg"); 
+  background-blend-mode: multiply;
+  background-size: cover; 
+  opacity: .95;  
+  width: 100%; 
+  height: 450px; 
+}
+h1, h3 {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  margin: 0 auto; 
+  color: #fff !important;  
+  text-align:center;
+}
+h2 {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  color: #003d79 !important;
+  font-weight: 700 !important; 
+  font-size: 2rem !important; 
+}
+.header-info {
+  font-family: Arial, Helvetica, sans-serif; 
+  margin: 0 auto; 
+  color: #fff !important;  
+  font-size: 1.1rem; 
+  line-height: 1.9rem; 
+  text-align: center; 
+}
+.welcome-message {
+  font-size: 1.1rem;
+  font-weight: 700; 
+}
+hr {
+  display: block;
+  background-color: #a1ca76;
+  border-width:  2px !important;  
+}
+.btn-div {
+  text-align: center;
+  display: block;
+}
+/* FOOTER */
+.brand-footer {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 1.1rem;
+}
+.event-footer {
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f5f5f5;
+  border-top: .05rem solid #e1e1e1;
+}
+.event-footer p:last-child {
+  margin-bottom: 0;
+}

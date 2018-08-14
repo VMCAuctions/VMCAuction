@@ -28,7 +28,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-edit"></i> Edit Auction Details</td>
+          <td onClick="document.location='/<%=auction%>/edit'" class="highlight borderSide"><i class="fas fa-edit"></i> Edit Auction Details</td>
           <td onClick="document.location='/<%=auction%>/items/new'" class="highlight borderSide"><i class="fas fa-plus-circle"></i> Add Items</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-user-plus"></i> Add Supporters</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-chart-bar"></i> Auction Summary Report</td>
@@ -53,6 +53,7 @@
           <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide">Populate from CSV</td>
           <td class="borderSide"></td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-history"></i> Bid History By Package</td>
+          <td class="borderSide"></td>
         </tr>
         <tr>
           <td class="borderRight"></td>
@@ -64,16 +65,13 @@
       </tbody>
     </table>
     <div class="row text-center">
-      <div class="col-3">
-        <button type="button" class="btn btn-danger">Delete Auction</button>
-      </div>
-      <div class="col-3">
+      <div class="col-4">
         <button type="button" class="btn btn-success">Preview Event Page</button>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <button type="button" class="btn btn-info">Monitor Bidding</button>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <button type="button" class="btn btn-dark">Publish Auction</button>
       </div>
     </div>
