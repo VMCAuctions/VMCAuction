@@ -29,6 +29,9 @@ module.exports = function(app) {
 
 
 	// PACKAGES //
+	//Modifying the featured status and priority of an item
+	app.get('/packages/priority/:id/:featured/:priority', function(req, res){
+		packages.priority(req, res)});
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
@@ -153,7 +156,7 @@ module.exports = function(app) {
 		// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
-		
+
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
