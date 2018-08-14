@@ -1,6 +1,4 @@
-body {
-    color: #404040 !important;  
-}
+
 h2 {
     color: #003d79 !important; 
 }
@@ -16,10 +14,14 @@ h2 {
     margin: 0.2rem 0px; 
 }
 .btn-submit:hover{
-    background-color: #668a42 !important;
-    border: 1px solid #668a42 !important;
+    color: #fff;
+    background-color: #436b1d !important;
+    border: 1px solid #436b1d !important;
+    color: #fff;
 }
 .btn-submit:active {
-    background-color: #668a42 !important;
-    border: 1px solid #668a42 !important;
+    color: #fff;
+    background-color: #436b1d !important;
+    border: 1px solid #436b1d !important;
+    
 }

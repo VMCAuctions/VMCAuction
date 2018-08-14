@@ -11,10 +11,10 @@
 	padding-left: 20px; 
 }
 .btn-logout {	
-	border: solid 1px #fff !important;
+	border: solid 2px #fff !important;
 	color: #fff !important;
 	padding: 3px 10px;  
-	font-weight: 300 !important;
+	font-weight: 500 !important;
 }
 a.btn-logout:hover {
 	background: #fff;
@@ -39,16 +39,16 @@ a.btn-logout:hover {
 	color: #fff; 
 }
 .btn-create:hover {
-	background: #99004d !important;
-	border: solid 1px #99004d !important;
-	color: #fff; 
+	color: #fff !important;
+  	background-color: #436b1d !important;
+  	border: solid 2px #436b1d !important; 
 }
 a.dash-link { 
 	color: #3399ff;
 	text-decoration: none; 
 }
 a.dash-link:hover {
-	color: #99004d !important;
+	color: #4567a8 !important;
 	text-decoration: none !important; 
 }
 
