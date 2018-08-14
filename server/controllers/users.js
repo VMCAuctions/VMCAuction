@@ -11,10 +11,10 @@ function UsersController(){
 		const validationArray = [
 			["firstName", 2, "first name"],
 			["lastName", 2, "last name"],
-			["streetAddress", 2, "street address"],
-			["city", 2, "city"],
-			["states", 2, "state"],
-			["zip", 5, "zip code"],
+			// ["streetAddress", 2, "street address"],
+			// ["city", 2, "city"],
+			// ["states", 2, "state"],
+			// ["zip", 5, "zip code"],
 			["phoneNumber", 10, "phone number"],
 			["password", 6, "password"]
 		];
@@ -66,30 +66,75 @@ function UsersController(){
 
 	this.admin = function(req,res){
 		console.log('Admin change display');
-		if (globals.adminValidation(req, res)){
-			User.find({}, function(err, users ){
-				if(err){
-					console.log(err)
-				}else if(req.session.admin){
-					res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
-				}else{
-					res.redirect('/' + req.params.auctions  + '/packages')
-				}
-			})
-		}
+		User.find({}, function(err, users ){
+			if(err){
+				console.log(err)
+			}else if(req.session.admin){
+				res.render('admin', {
+					users :users,
+					userName: req.session.userName,
+					admin: req.session.admin
+				})
+			}else{
+				res.redirect('/' + req.params.auctions  + '/packages')
+			}
+		})
 	};
 
 
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {auction:req.session.auction})
+		res.render('login', {
+			userName: req.session.userName,
+			admin: req.session.admin,
+			auction:req.session.auction
+		})
 	};
 
 
 	this.register = function(req,res){
 		Auction.find({}, function(err, auctions){
-			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+			res.render('user', {
+				userName: req.session.userName,
+				admin: req.session.admin,
+				auctions: auctions,
+				auction:req.session.auction
+			})
+		})
+	};
+
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
+	this.showAccount = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else if(user.userName === req.session.userName || req.session.admin >= 1){
+				Auction.findById(req.params.auctions, function (err, auctionDetails) {
+					if (err) {
+						console.log(err)
+					} else {
+						res.render('userAccount', {
+							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
+							user: user,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							userName: user.userName,
+							phone: user.phone,
+							address: user.streetAddress,
+							city: user.city,
+							states: user.states,
+							zip: user.zip,
+							admin: req.session.admin,
+							auction: req.params.auctions,
+							viewer: req.session.userName,
+							auctionDetails: auctionDetails,
+						})
+					}
+				})
+			}else{
+				res.redirect('/users/login')
+			}
 		})
 	};
 
@@ -109,6 +154,7 @@ function UsersController(){
 	};
 
 
+	//Might want to restrict some usernames, such as "organizer/admin or clerk"
 	this.create = function(req,res){
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
@@ -129,26 +175,6 @@ function UsersController(){
 						if(err){
 							console.log(err)
 						}else{
-							var validation = registrationValidation(req.body)
-							// email regex validation
-							var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-							var unValidatedEmail = req.body.email;
-							var emailResult = unValidatedEmail.match(emailReg);
-							if (!emailResult){
-								validation += "Invalid email.\n"
-							}
-							// userName regex validation based on no spaces in userName
-							var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
-							var unValidateduserName = req.body.userName;
-							var userResult = unValidateduserName.match(userReg)
-							if(!userResult){
-								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
-							}
-							if(validation.length > 0){
-								res.json({validated: false, message: validation})
-								return;
-							}
-							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
 							if (lowerUser === "organizer" || lowerUser === "admin"){
@@ -167,7 +193,7 @@ function UsersController(){
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
-								email: req.body.email,
+								// email: req.body.email,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -223,7 +249,7 @@ function UsersController(){
 		})
 	}
 
-
+	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
 		console.log('UsersController show');
 		if (globals.notClerkValidation(req, res)){
@@ -241,29 +267,46 @@ function UsersController(){
 							}
 						}
 					}
-					User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-						if(err){
-							console.log(err)
-						}else if (user.userName === req.session.userName | req.session.admin === true){
-							res.render('userPage', {page: 'myAccount', userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
-						}else{
-							res.redirect('/' + req.params.auctions  + '/packages')
-						}
-					})
-				}
-			})
-		}
+          User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+            if(err){
+              console.log(err)
+            }else if (user.userName === req.session.userName | req.session.admin === true){
+              Auction.findById(req.params.auctions, function (err, auctionDetails) {
+                if (err) {
+                  console.log(err)
+                } else {
+                  console.log("req.session is", req.session)
+                  res.render('userPage', {
+                    page: 'myAccount',
+                    userName: req.session.userName,
+                    admin: req.session.admin,
+                    user: user,
+                    cartTotal: cartTotal,
+                    cartArray: cartArray,
+                    auction: req.params.auctions,
+                    auctionDetails: auctionDetails,
+                  })
+                }
+              })
+            }else{
+              res.redirect('/' + req.params.auctions  + '/packages')
+            }
+          })
+			}
+		})
 	};
 
-	//This has not been implemented yet
+
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
   this.update = function(req,res){
-		console.log('UsersController update');
-		User.findById(req.params.id ,  function(err, user){
-			if (err){
-				console.log(err)
-			}else {
-				//this will eventually allow users and admins to edit their info
-			}
+		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
+			User.findOneAndUpdate({
+				userName: req.session.userName
+			}, {
+				password: req.body.newPass
+			}).then(function(res){
+				console.log('changed pass')
+			})
 		})
 	}
 
@@ -339,22 +382,20 @@ function UsersController(){
 
 
 	this.uninterested= function(req,res) {
-		if (globals.notClerkValidation(req, res)){
-			console.log("in uniterested");
-			User.findOne({userName: req.session.userName}, function(err, user) {
-				if (err) {
-					console.log(err);
-				}else{
-					for (var i = 0; i < user._packages.length; i++) {
-						if (user._packages[i] == req.params.id) {
-							user._packages.splice(i,1)
-							user.save(function (err, result) {
-								if (err) {
-									console.log(err);
-								}
-							})
-							break
-						}
+		console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
 					}
 				};
 				res.redirect('/' + req.params.auctions  + '/packages')
@@ -408,7 +449,7 @@ function UsersController(){
 				lastName: "Ott",
 				phone: "555-555-5555",
 				email: "organizer@gmail.com",
-				streetAddress: "555 Organizer Street",
+				streetAddress: "123 Main Street",
 				city: "Sunnyvale",
 				states: "CA",
 				zip: "55555",

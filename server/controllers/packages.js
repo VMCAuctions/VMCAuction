@@ -32,7 +32,7 @@ function PackagesController(){
 									res.status(500).send('Failed to Load Packages');
 									console.error();
 							}else {
-									console.log('this is user again', user)
+									// console.log('this is user again', user)
 									var featured = [];
 									var nonfeatured = [];
 									for (var i = 0; i < packages.length; i++){
@@ -44,8 +44,25 @@ function PackagesController(){
 											nonfeatured.push(packages[i]);
 										}
 									}
-									console.log("req.session is", req.session)
-									res.render('packages', {page: 'catalog', packages: packages, admin: req.session.admin, userName: req.session.userName, user:user, categories: categories, featured: featured, nonfeatured: nonfeatured, auction: req.params.auctions})
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										console.log("req.session is", req.session)
+										res.render('packages', {
+											page: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
 							}
 						})
 					}
@@ -54,6 +71,46 @@ function PackagesController(){
 		})
 	};
 
+	this.list = function (req, res) {
+		console.log('PackagesController list');
+		if (!req.session.userName) {
+			req.session.auction = req.params.auctions
+		}
+		var user
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, result) {
+					if (err) {
+						console.log(err)
+					} else {
+						user = result
+
+						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _id: 'ascending' }).exec(function (err, packages) {
+							if (err) {
+								console.log('Package Register Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
+							} else {
+								console.log("req.session is", req.session)
+								res.render('packageRegister', {
+									page: 'register',
+									packages: packages,
+									admin: req.session.admin,
+									userName: req.session.userName,
+									user: user,
+									auction: req.params.auctions,
+									categories: categories,
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+	};
 
 	this.edit = function(req,res){
 		console.log('PackagesController new');
@@ -131,35 +188,42 @@ this.new = function(req,res){
 		console.log('selected items' ,req.body)
 		//following should never get triggered.
 		//front end validations should take care of it
-
-		if (globals.adminValidation(req, res)){
-			if (req.body.selectedItems.length == 0){
-	      console.log('reached empty item list')
-			  return res.json(false)
-	    }
-	    Package.create({name: req.body.packageName, _items: req.body.selectedItems, description: req.body.packageDescription,
-			value: req.body.totalValue, bidIncrement: req.body.increments, _category: req.body.category, bid: [], amount: req.body.openingBid, priority: req.body.priority, restrictions: req.body.packageRestrictions, _auctions: req.params.auctions
-			}, function(err, package){
-				if(err){
-					console.log(err);
-					return;
-			   }
-			   else{
-					 for(let i = 0; i < package._items.length; i++ ){
-							Item.findOne({_id: package._items[i]} , function(err, item){
-									item.packaged = true;
-									item._package = package._id;
-									item.save(function (err){
-										if (err){
-											console.log(err)
-										}
-									})
-							})
-						}
-						res.redirect('/' + req.params.auctions  + '/packages/new?true')
-				 }
-			});
-		}
+		if (req.body.selectedItems.length == 0){
+      console.log('reached empty item list')
+		  return res.json(false)
+    }
+    Package.create({
+			name: req.body.packageName,
+			_items: req.body.selectedItems,
+			description: req.body.packageDescription,
+			value: req.body.totalValue,
+			bidIncrement: req.body.increments,
+			_category: req.body.category,
+			bid: [],
+			amount: req.body.openingBid,
+			priority: req.body.priority,
+			restrictions: req.body.packageRestrictions,
+			_auctions: req.params.auctions
+		}, function(err, package){
+			if(err){
+				console.log(err);
+				return;
+		   }
+		   else{
+				 for(let i = 0; i < package._items.length; i++ ){
+						Item.findOne({_id: package._items[i]} , function(err, item){
+								item.packaged = true;
+								item._package = package._id;
+								item.save(function (err){
+									if (err){
+										console.log(err)
+									}
+								})
+						})
+					}
+					res.redirect('/' + req.params.auctions  + '/packages/new?true')
+			 }
+		});
 	};
 
 
@@ -183,7 +247,22 @@ this.new = function(req,res){
 							ourBids = true;
 							lastBid = package.bids[package.bids.length -1 ].bidAmount
 						}
-						res.render('packageShow',{package:package, userName: req.session.userName, admin: req.session.admin, user:user, ourBids: ourBids, lastBid: lastBid, auction: req.params.auctions})
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								res.render('packageShow', {
+									package: package,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									user: user,
+									ourBids: ourBids,
+									lastBid: lastBid,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}
+						})
 					}
 				})
 			}
@@ -349,6 +428,23 @@ this.new = function(req,res){
 		}else{
 			res.redirect('/packages')
 		}
+	}
+
+	this.priority = function(req,res){
+		//Might eventually want to remove priority if featured is false
+		Package.findById(req.params.id, function(err, result){
+			result.featured = req.params.featured
+			result.priority = req.params.priority
+			result.save(function(err){
+				if (err){
+					console.log(err)
+					res.json(false)
+				}
+				else{
+					res.json(true)
+				}
+			})
+		})
 	}
 
 
