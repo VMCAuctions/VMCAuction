@@ -201,7 +201,7 @@ this.new = function(req,res){
 			_category: req.body.category,
 			bid: [],
 			amount: req.body.openingBid,
-			priority: req.body.priority,
+			featured: req.body.featured,
 			restrictions: req.body.packageRestrictions,
 			_auctions: req.params.auctions
 		}, function(err, package){
