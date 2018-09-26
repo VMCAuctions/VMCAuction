@@ -21,22 +21,22 @@
     <h3>Edit Package</h3>
     <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post">
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Package Name</label>
+        <label class="col-sm-2 col-form-label">Package Name:</label>
         <input type="text" id='packageName' name="packageName" value="<%=package.name%>">
       </div>
 
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Package Description</label>
+        <label class="col-sm-2 col-form-label">Package Description:</label>
         <textarea id='packageDescription' name="packageDescription" rows="8" cols="40" value='<%=package.description%>'><%=package.description%></textarea>
       </div>
 
       <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Package Restriction</label>
+          <label class="col-sm-2 col-form-label">Package Restriction:</label>
           <textarea id='packageRestriction' name="packageRestriction" rows="8" cols="40" value='<%=package.restrictions%>'><%=package.restrictions%></textarea>
       </div>
       
       <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Category</label>
+          <label class="col-sm-2 col-form-label">Category:</label>
           <select id='category' name="category" >
             <option value="<%=package._category%>" ><%=package._category%></option>
             <% for (var c in categories){%>
@@ -51,17 +51,17 @@
       </div>
       
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Package Priority</label>
+        <label class="col-sm-2 col-form-label">Package Priority:</label>
         <input type="number" id='priority' name="priority" value="<%=package.priority%>">
       </div>
       
       <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Starting Bid</label>
+          <label class="col-sm-2 col-form-label">Starting Bid<:/label>
           <input type="number" id='openingBid' name="openingBid" value="<%=package.amount%>">
       </div>
 
       <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Bid Increment</label>
+          <label class="col-sm-2 col-form-label">Bid Increment:</label>
           <input type="number" id='increments' name="increments" value="<%=package.bidIncrement%>">
       </div>
       
@@ -89,23 +89,22 @@
       }
       </script>
 
-      <label>Items</label>
-      <div>
-        <%for (var j = 0; j < package._items.length; j++){%>
-          <br>
-          <%=package._items[j].name%>
-          <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" required value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">
-          <br>
-          <%=package._items[j].description%>
-          <br>
-          <%=package._items[j].restrictions%>
-          <%}%>
-        <%for (var i in items){%>
-        <br>
-        <%=items[i].name%>
-        <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" required value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-        <%}%>
-        <br>
+      <label>Item List:</label>
+      <div style="padding-left: 20px">
+          <%for (var j = 0; j < package._items.length; j++){%>
+            <%=package._items[j].name%>
+            <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" required value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">
+            <div style="padding-left: 10px">
+              <%=package._items[j].description%>
+              <br>
+              <%=package._items[j].restrictions%>
+            </div>
+            <%}%>
+          <%for (var i in items){%>
+            <%=items[i].name%>
+            <input type="checkbox" name="selectedItems" id="<%=items[i]._id%>" required value="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+            <br>
+            <%}%>
     </div>
 
       <div class="form-group row">
