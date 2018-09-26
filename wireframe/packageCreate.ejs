@@ -65,8 +65,10 @@
           <!-- need a read only feild with the current number selected -->
           <div class="alert alert-secondary">
           <div class="form-check">
-            <div class="row">
-              <label for="">Items</label>
+            <div>
+              <p>Items</p>
+              <ol id="itemList">
+              </ol>
             </div>
                                                           <!-- Commented for future reference -->
             <!-- <%for (var i in items){%>
@@ -156,7 +158,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save changes</button>
                 </div>
               </div>
             </div>
@@ -181,7 +183,7 @@
             total += value
             console.log("total is", total);
             checkedItems[id]= id;
-            console.log(checkedItems);
+            console.log("checkbox", checkbox);
           }
           else if (checkbox.checked === false) {
             total -= value
@@ -190,6 +192,22 @@
           }
           document.getElementById('totalValue').value = total
         }
+
+        updateList = function(items){
+          console.log(items)
+          var counter = 0
+          for (var i = 0; i < items.length; i++) {
+            var checkbox = document.getElementById(items[i]._id)
+            if (checkbox.checked === true){
+              $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+            }
+            else{
+              $(`#itemID${counter}`).remove()
+            }           
+            counter ++
+          }           
+        }
+
         var validator = $("#packageForm").validate({
           rules: {
             packageName: {
