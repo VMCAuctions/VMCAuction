@@ -49,27 +49,31 @@
                             <td>
                                 <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
                             </td>
-                            <td id='supporterLast'> <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
+                            <td id='supporterLast'>
+                                <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
                             </td>
                             <td id="<%=users[u].userName + 'winning'%>">
-                                <% for (var p in cart[users[u].userName].packages) {%>
-                                <%=cart[users[u].userName].packages[p]%>
-                                <%}%>
+                                <ul>
+                                    <% for (var p in cart[users[u].userName].packages) { %>
+                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %></li>
+                                    <% } %>
+                                </ul>
                             </td>
                             <td id="<%=users[u].userName + 'items'%>">
-                                <% for (var i in cart[users[u].userName].items) {%>
-                                <%=cart[users[u].userName].items[i]%>
-
-                                <%}%>
+                                <ul>
+                                    <% for (var i in cart[users[u].userName].items) { %>
+                                        <li><%= cart[users[u].userName].items[i]._id %>. <%= cart[users[u].userName].items[i].name  %></li>
+                                    <% } %>
+                                </ul>
                             </td>
                             <td id="<%=users[u].userName + 'total'%>">
-                                $<%=cart[users[u].userName].total%>
+                                $<%= cart[users[u].userName].total %>
                             </td>
                             <td>
                                 pdf file will go here
                             </td>
                         </tr>
-                    <%}%>
+                    <% } %>
                 </tbody>
             </table>
         </div>

@@ -307,10 +307,10 @@ function AuctionsController() {
                   for (var y = 0; y < result.length; y++) {
                     if (
                       result[y].bids[result[y].bids.length - 1].name ===
-                      users[x].userName
+                      users[x].firstName.charAt(0)+'. '+users[x].lastName
                     ) {
                       packages.push(result[y]);
-                      items.push(result[y]._items);
+                      items.push.apply(items,result[y]._items);
                       total +=
                         result[y].bids[result[y].bids.length - 1].bidAmount;
                     }
