@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Clerk's Dashboard
+        </title>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+            crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <%- include('adminHeader') -%>
+        <div class="container-fluid">
+            <h2>Clerk Dashboard</h2>
+            <div id="supporter-search">
+                <!-- Find supporters by last name -->
+                <div id="search-lastname">
+                    <label for="lastname">Search by Last Name</label>
+                    <input type="search" class="form-control search-input" id="lastname" placeholder="Last Name">
+                </div>
+            </div>
+            <table class="table table-striped table-bordered package-table">
+                <thead>
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Packages Won</th>
+                        <th scope="col">Items in Packages</th>
+                        <th scope="col">Total Spent</th>
+                        <th scope="col">Invoice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var u in users) {%>
+                        <tr class="packageRow">
+                            <td>
+                                <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
+                            </td>
+                            <td id='supporterLast'> <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
+                            </td>
+                            <td id="<%=users[u].userName + 'winning'%>">
+                                <% for (var p in cart[users[u].userName].packages) {%>
+                                <%=cart[users[u].userName].packages[p]%>
+                                <%}%>
+                            </td>
+                            <td id="<%=users[u].userName + 'items'%>">
+                                <% for (var i in cart[users[u].userName].items) {%>
+                                <%=cart[users[u].userName].items[i]%>
+
+                                <%}%>
+                            </td>
+                            <td id="<%=users[u].userName + 'total'%>">
+                                $<%=cart[users[u].userName].total%>
+                            </td>
+                            <td>
+                                pdf file will go here
+                            </td>
+                        </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        </div>
+        <script type="text/javascript">
+            var cart = <%-JSON.stringify(cart)%>;
+            var packages = <%-JSON.stringify(packages)%>;
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                console.log("Ready!");
+                $(".packageRow").hide();
+                $("#lastname").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    if (value == '') {
+                        $(".packageRow").hide();
+                    } else {
+                        $(".packageRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+            })
+        </script>
+    </body>
+</html>
