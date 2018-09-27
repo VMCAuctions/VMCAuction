@@ -185,26 +185,23 @@
             checkedItems[id]= id;
             console.log("checkbox", checkbox);
           }
-          else if (checkbox.checked === false) {
-            total -= value
-            delete checkedItems[id]
-            console.log(checkedItems)
-          }
           document.getElementById('totalValue').value = total
         }
 
         updateList = function(items){
-          console.log(items)
+          console.log("ITEMS: ", items)
           var counter = 0
           for (var i = 0; i < items.length; i++) {
-            var checkbox = document.getElementById(items[i]._id)
-            if (checkbox.checked === true){
-              $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+            console.log("items[i]", items[i]._id)
+            if(items[i].packaged === false){
+              var checkbox = document.getElementById(items[i]._id)
+              if (checkbox.checked === true){
+                $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+                counter ++
+              }else{
+                $(`#itemID${counter}`).remove()
+              }           
             }
-            else{
-              $(`#itemID${counter}`).remove()
-            }           
-            counter ++
           }           
         }
 
