@@ -15,10 +15,11 @@
   <%}%>
   <body>
     <div class="container">
+      <h1 class="text-center mt-3"><%= auctionDetails.name %></h1>
       <table id="orgMenu" class="table table-hover text-justify table-bordered mt-4">
       <thead>
         <tr>
-          <th scope="col">Set Up Auction</th>
+          <th scope="col">Edit Auction</th>
           <th scope="col">Create Catalog</th>
           <th scope="col">Register Supporters</th>
           <th scope="col">Reports</th>
@@ -27,32 +28,32 @@
       </thead>
       <tbody>
         <tr>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-cog"></i> Set Up Auction</td>
+          <td onClick="document.location='/<%=auction%>/edit'" class="highlight borderSide"><i class="fas fa-edit"></i> Edit Auction Details</td>
           <td onClick="document.location='/<%=auction%>/items/new'" class="highlight borderSide"><i class="fas fa-plus-circle"></i> Add Items</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-user-plus"></i> Add Supporters</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-chart-bar"></i> Auction Summary Report</td>
           <td onClick="document.location='/<%=auction%>/categories'" class="highlight borderSide"><i class="fas fa-list-ol"></i> Edit Categories</td>
         </tr>
         <tr>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-edit"></i> Edit Auction Details</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-clock"></i> Edit Auction Clock</td>
           <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight borderSide"><i class="fas fa-box-open"></i> Create packages</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-address-book"></i> View/Edit Supporters Registry</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-archive"></i> Package Summary</td>
           <td class="highlight borderSide" onClick="document.location='/users/admin'"><i class="fas fa-unlock-alt"></i> Admin Rights</td>
         </tr>
         <tr>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-clock"></i> Edit Auction Clock</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-envelope-square"></i> Create Email Invitation</td>
           <td onClick="document.location='/<%=auction%>/packages'" class="highlight borderSide"><i class="fas fa-th"></i> Preview Catalog</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-clipboard-list"></i> Create Email Distribution List</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-cubes"></i> Package Details</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-database"></i> Customize Data Fields</td>
         </tr>
         <tr>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-envelope-square"></i> Create Email Invitation</td>
           <td class="borderRight"></td>
-          <td class="noBorder"></td>
+          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide">Populate from CSV</td>
+          <td class="borderSide"></td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-history"></i> Bid History By Package</td>
-          <td class="noBorder"></td>
+          <td class="borderSide"></td>
         </tr>
         <tr>
           <td class="borderRight"></td>
@@ -64,16 +65,13 @@
       </tbody>
     </table>
     <div class="row text-center">
-      <div class="col-3">
-        <button type="button" class="btn btn-danger">Delete Auction</button>
+      <div class="col-4">
+        <a href="/<%=auction%>/event"><button id="previewEvent" type="button" class="btn btn-success">Preview Event Page</button></a>
       </div>
-      <div class="col-3">
-        <button type="button" class="btn btn-success">Preview Event Page</button>
-      </div>
-      <div class="col-3">
+      <div class="col-4">
         <button type="button" class="btn btn-info">Monitor Bidding</button>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <button type="button" class="btn btn-dark">Publish Auction</button>
       </div>
     </div>

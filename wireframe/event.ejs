@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+    <head>
+			<meta charset="utf-8">
+			<title>elizabid by VMFC | Welcome to the Auction Event</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" type="text/css" href="/css/style.css" >
+			<link rel="stylesheet" type="text/css" href="/css/event.css" >
+		
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+
+  	<body>
+
+		<!-- EVENT LANDING PAGE NAV BAR / The page is accesible by everyone, prior to login or registration -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row ">
+			<div class="brand py-2">elizabid |
+					<a href="https://vmcfoundation.org/"><img class="vmcf-brand" src="/VMCF_Logo_Blue_rgb.png"></a> 
+			</div>
+			<!-- Right Top Navbar -->
+			<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
+				<li class="mr-3">
+					<a class="nav-link  btn btn-ctlg" href="/<%=auction%>/packages">View Auction Catalog</a>
+				</li>
+				<li class="mr-3">
+					<a class="nav-link btn btn btn-nav-reg" href="/users/register"></i> Register</a> 
+				<li class="mr-3">
+					<a class="nav-link btn btn btn-nav-login" href="/users/login"> <i class="fas fa-lock"></i> Login</a>
+				</div>
+				</li>
+				</li>
+			</ul>
+		</nav>
+		
+		<!-- EVENT LANDING PAGE HEADER -->
+		<div class="jumbotron jumbotron-fluid header-img">
+			<div class="container display-header mt-5">
+				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
+				<p class="header-info"><%= startDate %>; <%= startClock %> pm Pacific Time</p>	
+				<p class="header-info"><%= auctionDetails.venue %></p>	
+				<div class="btn-div my-3">
+					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- EVENT LANDING PAGE TAGLINE, WELCOME MESSAGE AND DESCRIPTION -->
+		<div class="containner">
+			<div class="row">
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+				<div class="col-sm-12 col-md-8">
+					<div class="card-body">
+						<h2><%= auctionDetails.subtitle %></h2>
+						<hr class= "my-3">
+						<p class="welcome-message"><%= auctionDetails.welcomeMessage %></p>
+						<p><%= auctionDetails.description %></p>
+					</div>	
+				</div>	
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+		</div>
+
+		<!-- FEATURED PACKAGES SECTION-->
+		<div class="containner">
+			<div class="row">
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+				<div class="col-sm-12 col-md-8">
+					<div class="card-body">
+						<h2>Auction Featured Packages</h2>
+						<hr class= "my-3">
+						
+						<p class=py-5>TO DISPLAY FEATURED PACKAGES</p>
+
+						<!-- Section for "View Catalog" and "Register" buttons at the bottom of the page" -->
+					
+						<div class="btn-div my-3">
+							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
+						</div>
+
+					</div> <!--End of card-body holding Featured packages and buttons -->
+				</div>	
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+		</div>
+
+    <footer class="event-footer">
+
+		<p>
+		  <a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
+			<a href="#">Back to top</a>
+		</p>
+    </footer>
+	
+	
+    </head>
+    
+  </body>
+</html>

@@ -80,7 +80,7 @@
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
   </div>
-  <%if(userName){%>
+  <%if(userName && userName !== "Clerk"){%>
     <% var flag = false %>
     <ul class="list-group list-group-flush">
     <% for(var i = 0; i < user._packages.length; i++){ %>
@@ -101,7 +101,7 @@
         <!-- <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
       <%}%>
   <%}%>
-  <% if (admin){ %>
+  <% if (admin === 2){ %>
     <%if(featured[f].featured === true){%>
       <!-- <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a> -->
       <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Unfeature</li>
@@ -134,40 +134,51 @@
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body" >
     <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=packages[n]._id%>'">
-    <h5 class="card-title"><%=packages[n].name%></h5>
+    
+      <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
-    <p class="card-text"><b>Category:</b> <%=packages[n]._category%></p>
-    <p><b>STARTING BID:</b> <%=packages[n].amount%></p>
+    <p class="card-text">Category: <%=packages[n]._category%></p>
+    <p>Value:<%=packages[n].value%></p>
     <%if(packages[n].bids[packages[n].bids.length-1]){%>
-    <p ><b>Current Bid:</b> <span class='currentBid<%=packages[n]._id%>'><%=packages[n].bids[packages[n].bids.length-1].bidAmount%> (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></p>
+    <p>Current Bid:
+      <span class='currentBid<%=packages[n]._id%>'>
+        <%=packages[n].bids[packages[n].bids.length-1].bidAmount%> 
+        <!-- (By: <%= packages[n].bids[packages[n].bids.length-1].name%>) -->
+        (By: <%= user.firstName.charAt(0) %>. <%= user.lastName %>)
+      </span>
+    </p>
     <%}else{%>
-      <p><b>Current Bid:</b> None (By: Nobody)</p>
+      <p>Current Bid:<%=packages[n].value%></p>
     <%}%>
+    <p>Restrictions: <%=packages[n].restrictions%></p>
     </div>
-    <%if(userName){%>
+    <%if(userName  && userName !== "Clerk"){%>
       <% var flag = false %>
       <ul class="list-group list-group-flush">
       <% for(var i = 0; i < user._packages.length; i++){ %>
-      <% if(packages[n]._id == user._packages[i]) {%>
+        <% if(packages[n]._id == user._packages[i]) {%>
           <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
-        <% flag = true %>
-        <% break %>
+          <% flag = true %>
+          <% break %>
         <% } %>
-        <%}%>
-        <% if(flag === false) {%>
-            <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">
-              Add to Watchlist
-            </li>
-        <%}%>
+      <%}%>
+      <% if(flag === false) {%>
+          <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">
+            Add to Watchlist
+          </li>
+      <%}%>
     <%}%>
-    <% if (admin){ %>
+    <% if (admin === 2){ %>
       <%if(packages[n].featured === true){%>
         <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Unfeature</li>
         <%}else{%>
           <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Feature</li>
           <%}%>
-        <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li>
-        <li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+        <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin Rights</li>
+        <div class="dropdown-menu">
+          <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li>
+          <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-item" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+        </div>
       </ul>
     <%}%>
   </div>

@@ -20,8 +20,9 @@ var packageSchema = new Schema({
 	bidIncrement: {type: Number, required: true},
 	bids: {type: Array},
 	// {bidAmount: 50, name: yarik }
-	photo: String
-}, { timestamps: true });
+	photo: String,
+	restrictions: { type: String }
+}, { timestamps: true, usePushEach: true });
 
 packageSchema.plugin(autoIncrement.plugin, {model: 'Package', startAt: 100});
 

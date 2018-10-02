@@ -1,23 +1,24 @@
 /* Style sheet for the Organizer's main landing page */
-body {
-	color: #595959 !important;
-}
 
 /* Organizer's Header styles 
 -------------------------------------------------------------- */
-.nav-img {
-	height: 30px;
-	padding-right: 20px; 
+.brand-white{
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
+	font-size: 1.75rem !important;
+	color: #fff !important;
+}
+.dash-home{
+	padding-left: 20px; 
 }
 .btn-logout {	
-	border: solid 1px #fff;
+	border: solid 2px #fff !important;
 	color: #fff !important;
 	padding: 3px 10px;  
+	font-weight: 500 !important;
 }
-
 a.btn-logout:hover {
 	background: #fff;
-	border: solid 1px #fff;
+	border: solid 2px #fff;
 	color: #003d79 !important;
 }
 /* Organizer's Dashboard styles 
@@ -25,7 +26,7 @@ a.btn-logout:hover {
 .jumbo-head {
 	text-align: center;
 	color: #003d79;
-	font-family: Lato, sans-serif;
+	font-family: "Kameron", Georgia, "Times New Roman", serif;
 	font-size: 24px; 
 }
 .main-card {
@@ -38,17 +39,17 @@ a.btn-logout:hover {
 	color: #fff; 
 }
 .btn-create:hover {
-	background: #99004d !important;
-	border: solid 1px #99004d !important;
-	color: #fff; 
+	color: #fff !important;
+  	background-color: #436b1d !important;
+  	border: solid 2px #436b1d !important; 
 }
 a.dash-link { 
-	color: #99004d;
-	decoration: none; 
+	color: #3399ff;
+	text-decoration: none; 
 }
 a.dash-link:hover {
-	color: #719949 !important;
-	decoration: none !important; 
+	color: #4567a8 !important;
+	text-decoration: none !important; 
 }
 
 /* Organizer's Sticky footer styles - to be moved to its own component

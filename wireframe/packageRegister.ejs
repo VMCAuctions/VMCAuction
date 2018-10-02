@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Package Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/css/packageRegister.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <%if(admin){%>
+        <%- include('adminHeader') -%>
+    <%}else{%>
+        <%- include('header') -%>
+    <%}%>
+
+    <div class="container-fluid">
+        <h2>Package Register</h2>
+        <div id="search-container">
+            <!-- Find packages by keyword -->
+            <div id="search-keyword">
+                <label for "keyword">Search by keyword:</label>
+                <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+            </div>
+
+            <!-- Find all packages in a category-->
+            <div id="search-category">
+                <label for "category">Search by category:</label>
+                <select class="form-control" name="category" id="category">
+                    <option value="">All Categories</option>
+                    <% for(var c in categories) {%>
+                        <option value="<%=categories[c].name%>">
+                            <%=categories[c].name%>
+                        </option>
+                        <%}%>
+                </select>
+            </div>
+        </div>
+
+        <!-- Package Table -->
+        <div class="table-responsive-md ">
+            <table class="table table-striped table-bordered package-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Package Number</th>
+                        <th scope="col">Package Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Package Description</th>
+                        <th scope="col">Package Restriction</th>
+                        <th scope="col">Items</th>
+                        <th scope="col" class="package-val">Fair Market Value</th>
+                        <th scope="col">Starting Bid</th>
+                        <th scope="col">Bid Increment</th>
+                        <th scope="col">Featured</th>
+                        <th scope="col">Priority</th>
+                        <% if (admin == 2) { %>
+                            <th scope="col">Actions</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i in packages){%>
+                        <tr class="packageRow">
+                            <td class="package-val"><%= packages[i]._id%></td>
+                            <td><%= packages[i].name%></td>
+                            <td><%= packages[i]._category%></td>
+                            <td><%= packages[i].description%></td>
+                            <td><%= packages[i].restrictions%></td>
+                            <td>
+                                <ul>
+                                <% for (let item = 0; item < packages[i]._items.length; item++) { %>
+                                    <li><%= packages[i]._items[item].name %></li>
+                                <% } %>
+                                </ul>
+                            </td>
+                            <td class="package-val"><%= packages[i].value%></td>
+                            <td class="package-val"><%= packages[i].amount%></td>
+                            <td class="package-val"><%= packages[i].bidIncrement%></td>
+                            <% if(admin == 2){ %>
+                                <!-- Need to find a way to make each input field different according to package, or have some way to distinguish based on which package is clicked to know to only update that package -->
+                                <form>
+                                  <td><select id="<%= packages[i].id%>Featured">
+                                    <option><%= packages[i].featured%></option>
+                                    <option><%= !packages[i].featured%></option>
+                                  </select></td>
+                                  <td class="package-val">
+                                    <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
+                                  </td>
+                                  <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
+                                </form>
+                                <td><button id="<%= packages[i].id%>" class="confirmChanges">C</button>
+                                  <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit"></i></a>
+                                  <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete"></i></a>
+                                </td>
+                            <%}else{%>
+                                <td><%= packages[i].featured%></td>
+                                <td class="package-val"><%= packages[i].priority%></td>
+                            <%}%>
+                        </tr>
+                        <%}%>
+                </tbody>
+            </table>
+        </div>
+        <!-- End main page container-->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log("Ready!");
+            $("#keyword").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                if (value == '') {
+                    $(".packageRow").show();
+                } else {
+                    $(".packageRow").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                    });
+                }
+            });
+
+            $("select[name='category']").change(function () {
+                var value = $(this).val().toLowerCase();
+                $(".packageRow").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                })
+            })
+            //Need to think about how to keep priority numbers unique; may have to check on the backend, as frontend won't necessarily reflect the database due to changes via user input
+            //Perhaps add a warning on the frontend when id has been used or if the priority number exceeds 10
+            //Perhaps hide priority field if featured is false, then make sure to set priority field to None on the backend if featured is false
+            $('.confirmChanges').click(function(event){
+              event.preventDefault();
+              id = event.target.id
+              featured = $('#' + id + "Featured").val()
+              priority = $('#' + id + "Priority").val()
+              console.log("enteredConfirmChanges ajax call");
+              $.get(`http://localhost:8000/packages/priority/${id}/${featured}/${priority}`,function(data){
+                  if (data === true){
+                      alert(`Package ${id} saved successfully!`);
+                  }
+                  else{
+                      alert(`Error: Package ${id} not saved`);
+                  }
+              });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

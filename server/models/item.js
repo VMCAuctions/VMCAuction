@@ -10,8 +10,9 @@ var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4},
  _category: String,
- donorFirst: {type: String, required: true},
- donorLast: {type: String, required: true},
+ donorFirst: {type: String},
+ donorLast: {type: String},
+ donorOrg: {type: String},
  donorDisplay: {type: String, default:"Anonymous"},
  restrictions: {type: String},
  value: {type: Number, required: true},
@@ -20,7 +21,7 @@ var itemSchema = new Schema({
 _auctions: {type: Schema.Types.ObjectId, required:true, ref: 'Auction'},
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
-}, { timestamps: true });
+}, { timestamps: true, usePushEach: true });
 
 
 
