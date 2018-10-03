@@ -17,6 +17,21 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+
+        //If priority fields are meant to be unique, then can prepopulate something like a set with all priority values, and prevent users from switching to any preselected values; if they haven't been selected yet, update and add to the set
+
+          $(document).ready(function(){
+            <% for (i in packages){ %>
+              $("#<%= packages[i].id%>Featured").change(function(){
+                $("#<%= packages[i].id%>Priority").val("10")
+                $("#<%= packages[i].id%>Priority").toggle()
+              })
+            <%}%>
+          })
+
+        </script>
 </head>
 
 <body>
@@ -95,6 +110,7 @@
                 </thead>
                 <tbody>
                     <% for (var i in packages){%>
+
                         <tr class="packageRow">
                             <td class="package-val"><%= packages[i]._id%></td>
                             <td><%= packages[i].name%></td>
@@ -112,14 +128,17 @@
                             <td class="package-val"><%= packages[i].amount%></td>
                             <td class="package-val"><%= packages[i].bidIncrement%></td>
                             <% if(admin == 2){ %>
-                                <!-- Need to find a way to make each input field different according to package, or have some way to distinguish based on which package is clicked to know to only update that package -->
                                 <form>
                                   <td><select id="<%= packages[i].id%>Featured">
                                     <option><%= packages[i].featured%></option>
                                     <option><%= !packages[i].featured%></option>
                                   </select></td>
-                                  <td class="package-val">
-                                    <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
+                                  <td class="package-val" id="priority">
+                                    <% if (packages[i].featured == true){ %>
+                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
+                                    <% }else{ %>
+                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
+                                    <% } %>
                                   </td>
                                   <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>

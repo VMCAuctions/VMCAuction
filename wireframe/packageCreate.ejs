@@ -36,11 +36,13 @@
           </div>
         <!-- priority is asscending currently 0 would be at the top of the page -->
           
-          <div class="form-group row">
-            <div class="col-6">
-                <label for="priority">Feature Level*</label>
-                <input id="priority" type='number' name='priority' placeholder='Priority' class="form-control">
-            </div>
+        <div class="form-group">
+          <label for="featured">Featured?</label>
+          <select name='featured' id="featured" class="form-control">
+            <option value='false'>False</option>
+            <option value='true'>True</option>
+          </select>
+        </div>
 
             <div class="col-6">
                 <label for="">Category</label>
@@ -54,7 +56,6 @@
                   </select>
               </div>
           </div>
-          
           <div class="form-group row">
             <div class="col-6">
               <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid*" class="form-control">
@@ -240,11 +241,6 @@
               min: 5,
               step: 5
             },
-            priority: {
-              required: true,
-              number: true,
-              min: 0
-            }
           }
         });
         validator.form();
