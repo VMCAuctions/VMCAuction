@@ -2,12 +2,12 @@ body {
     color: #404040 !important;
    
 }
-
 h2 { 
     padding: 1.2rem 0;
     color: #003a70 !important;
 }
 
+  
 #search-keyword {
     width: 280px; 
     margin: 0 0.5rem 0 0 ;
@@ -25,14 +25,26 @@ label {
     font-weight: 400; 
 }
 
+.summary-table {
+    background-color: #a1ca76 !important;
+    font-size: 0.8rem; 
+    font-weight: 500;  
+   
+}
+
+td.summary-table {
+    height: 2.5rem !important; 
+    vertical-align: middle !important;
+}
+
 .package-table {
     font-size: 0.8rem; 
     margin-top: 1.3rem;    
 }
 
 th{
-    background-color: #ccc; 
-    color: #003a70;
+    background-color: #4567a8 !important; 
+    color: #fff;
 }
 
 th, td{
@@ -55,6 +67,13 @@ td li {
 td li:last-child {
     border-bottom: none;
 }
+
+.table-total {
+    background-color: #dbe2f0;
+    font-weight: 500; 
+    text-align: center;  
+}
+
 
 .package-edit {
     color: #719940;
