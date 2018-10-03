@@ -95,9 +95,19 @@ function PackagesController(){
 								console.error();
 							} else {
 								console.log("req.session is", req.session)
+								var sumMarketVal = 0;
+								var sumStartingBid = 0; 
+								for (let i=0; i < packages.length; i++) {
+									sumMarketVal += packages[i].value;
+									sumStartingBid += packages[i].amount;
+								}
+								console.log("Total Market Value:", sumMarketVal);
+								console.log("Total Starting Bid:", sumStartingBid);
 								res.render('packageRegister', {
 									page: 'register',
 									packages: packages,
+									sumMarketVal: sumMarketVal,
+									sumStartingBid: sumStartingBid,
 									admin: req.session.admin,
 									userName: req.session.userName,
 									user: user,

@@ -21,18 +21,21 @@
     <%}else{%>
       <%- include('header') -%>
     <%}%>
-    <div class="container mt-4">
-      <h3>Create Package</h3>
-      <form id="packageForm" action="/<%=auction%>/packages" method="post">
-        <div class="form-group">
-          <label for="packageName">Package Name</label>
-          <input type="text" name="packageName" id="packageName" class="form-control">
+    <div class="form-row space">
+        <div class="container mt-4">
+          <h2>Create Package</h2>
+          <div class="row">
+            <div class="col err-info">
+              The fields marked with (*) are required.
+            </div>
         </div>
-
-        <div class="form-group">
-          <label for="packageDescription">Package Description</label>
-          <textarea class="form-control" name="packageDescription" id="packageDescription" rows="8" cols="40"></textarea>
-        </div>
+        <form id="packageForm" action="/<%=auction%>/packages" method="post">
+          <div class="form-group">
+            <label for="packageName">Package Name*</label>
+            <input type="text" name="packageName" id="packageName" class="form-control">
+          </div>
+        <!-- priority is asscending currently 0 would be at the top of the page -->
+          
         <div class="form-group">
           <label for="featured">Featured?</label>
           <select name='featured' id="featured" class="form-control">
@@ -41,36 +44,35 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label for="">Category</label>
-          <select name="category" id="category" class="form-control">
-
-            <% for (var c in categories){%>
-              <!-- add radio and jquery to make only one catagory option apear
-              or Make a seperate page to creat catagories -->
-              <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-            <%}%>
-
-          </select>
-        </div>
+            <div class="col-6">
+                <label for="">Category</label>
+                <select name="category" id="category" class="form-control">
+    
+                  <% for (var c in categories){%>
+                    <!-- add radio and jquery to make only one catagory option apear
+                    or Make a seperate page to creat catagories -->
+                    <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+                    <%}%>
+                  </select>
+              </div>
+          </div>
           <div class="form-group row">
             <div class="col-6">
-              <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid" class="form-control">
+              <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid*" class="form-control">
             </div>
             <div class="col-6">
-              <input type="number" name="increments" id="increments" placeholder="increment" class="form-control">
+              <input type="number" name="increments" id="increments" placeholder="Increment*" class="form-control">
             </div>
-          </div>
-
-          <div class="form-group">
           </div>
 
           <!-- need a read only feild with the current number selected -->
           <div class="alert alert-secondary">
-          <div class="form-check">
-            <div class="row">
-              <label for="">Items</label>
-            </div>
+            <div class="form-check">
+              <div>
+                <p>Items</p>
+                <ol id="itemList">
+                </ol>
+              </div>
                                                           <!-- Commented for future reference -->
             <!-- <%for (var i in items){%>
               <%if(!items[i].packaged){%>
@@ -83,16 +85,22 @@
                 <%}%> -->
 
                                                           <!-- End reference Comment -->
-          </div>
+            </div>
           </div>
 
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
             Add More Items...
           </button>
+
+          <div class="form-group">
+              <label for="packageDescription">Package Description*</label>
+              <textarea class="form-control" name="packageDescription" id="packageDescription" rows="8" cols="40"></textarea>
+            </div>
+
           <div class="form-group">
             <label for="packageRestrictions">Package Restrictions</label>
-            <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="4" cols="40"></textarea>
+            <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="8" cols="40"></textarea>
           </div>
           <div class="form-group">
             <label for="totalValue">Total Value</label>
@@ -159,7 +167,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save changes</button>
                 </div>
               </div>
             </div>
@@ -184,15 +192,31 @@
             total += value
             console.log("total is", total);
             checkedItems[id]= id;
-            console.log(checkedItems);
-          }
-          else if (checkbox.checked === false) {
-            total -= value
-            delete checkedItems[id]
-            console.log(checkedItems)
+            console.log("checkbox", checkbox);
           }
           document.getElementById('totalValue').value = total
         }
+
+        updateList = function(items){
+          console.log("ITEMS: ", items)
+          var counter = 0
+          $('#itemList').html("")
+          for (var i = 0; i < items.length; i++) {
+            console.log("items[i]", items[i]._id)
+            if(items[i].packaged === false){
+              var checkbox = document.getElementById(items[i]._id)
+              if (checkbox.checked === true){
+                $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+                counter++
+                $('#packageDescription').append(items[i].name + ":" + "\n" + "\t" + counter + ". " + items[i].description + "\n")
+                $('#packageRestrictions').append(items[i].name + ":" + "\n" + "\t" + counter + ". " + items[i].restrictions + "\n")
+              }else{
+                $(`#itemID${counter}`).remove()
+              }           
+            }
+          }           
+        }
+
         var validator = $("#packageForm").validate({
           rules: {
             packageName: {
