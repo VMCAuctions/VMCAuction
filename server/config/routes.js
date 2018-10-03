@@ -166,7 +166,7 @@ module.exports = function(app) {
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
 	//Event landing page the supporters will see; has links to supporter login and registration
-	app.get('/:auctions/event', function(req, res) { 
+	app.get('/:auctions/event', function(req, res) {
 		auctions.event(req, res)});
 
 	app.get('/clerk/login', function(req, res){
