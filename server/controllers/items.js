@@ -57,14 +57,28 @@ function ItemsController(){
 	}
 	this.create = function(req,res){
 		console.log('ItemsController create');
+		console.log("donor display:", req.body.donorAnonymous);
+		let donorDisplay = "Anonymous";
+		if (!req.body.donorAnonymous) {
+			if (req.body.donorOrg ) {
+				donorDisplay = req.body.donorOrg; 	
+			} else {
+				if (req.body.donorFirst) {
+					donorDisplay = req.body.donorPrefix + " " + req.body.donorFirst.charAt(0).toUpperCase() + "." + " " + req.body.donorLast;
+				} else {
+					donorDisplay = req.body.donorPrefix + " " + req.body.donorLast;	
+				}		
+			}
+		}
     Item.create({
 			name: req.body.itemName,
 			description: req.body.itemDescription,
 			_category: req.body.category,
+			donorPrefix: req.body.donorPrefix,
 			donorFirst: req.body.donorFirst,
 			donorLast: req.body.donorLast,
 			donorOrg: req.body.donorOrg,
-			donorDisplay: req.body.donorDisplay,
+			donorDisplay: donorDisplay,
 			restrictions: req.body.itemRestriction,
 			value: req.body.fairMarketValue,
 			packaged: false,
