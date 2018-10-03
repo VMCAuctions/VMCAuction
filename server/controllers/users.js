@@ -54,7 +54,7 @@ function UsersController(){
 									}
 									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								res.render('allUsers', {page: 'supporters', users: users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+								res.render('allUsers', {page: 'supporters', users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 							}
 						})
 				}else{
