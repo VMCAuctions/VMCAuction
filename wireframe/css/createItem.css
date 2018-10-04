@@ -20,21 +20,18 @@ label.error {
     border-radius: 5px; 
     margin: 10px 0px; 
 }
-.space {
-    margin-top: 15px; 
+.custom-checkbox { 
+    width: 1.2em;
+    height: 1.2em;
 }
-.btn-submit {
+.btn-submit, btn-submit:visited {
 	color: #fff;
 	background-color: #719949 !important;
     border: 1px solid #719949 !important; 
     width: 135px;
     margin: 0.2rem 0px; 
 }
-.btn-submit:hover{
-    background-color: #668a42 !important;
-    border: 1px solid #668a42 !important;
-}
-.btn-submit:active {
+.btn-submit:hover, btn-submit:active{
     background-color: #668a42 !important;
     border: 1px solid #668a42 !important;
 }

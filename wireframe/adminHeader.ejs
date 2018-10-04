@@ -16,10 +16,12 @@
         <div class="brand">elizabid</div>
         	<!-- Right Top Navbar -->
           	<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
-				<% if (admin === 2) { %>
+				<% if (admin === 2){ %>
 					<li class="li-marg">
 					<a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'dashboard') { %> active1 <% } %>" href="/auctions/main">Dashboard</a>
 					</li>
+				<% } %>
+				<% if (admin === 2){ %>
 					<li class="li-marg">
 					<a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
 					</li>
@@ -66,21 +68,14 @@
 					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Items</a>
 				</li>
 				<li class="li-marg">
-                    <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Packages</a>
-                </li>
-                <% if (admin !== 1) { %>
+            <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Packages</a>
+        </li>
 				<li class="li-marg">
 					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
 				</li>
 				<li class="li-marg">
 					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporters</a>
 				</li>
-                <% } %>
-                <% if (admin === 1) { %>
-                <li class="li-marg">
-					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/clerkDash'>Supporters</a>
-				</li>
-                <% } %>
           </ul>
         </div>
     </nav>
