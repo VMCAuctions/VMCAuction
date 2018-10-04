@@ -305,15 +305,19 @@ function AuctionsController() {
                   var items = [];
                   var total = 0;
                   for (var y = 0; y < result.length; y++) {
-                    if (
-                      result[y].bids[result[y].bids.length - 1].name ===
-                      users[x].firstName.charAt(0)+'. '+users[x].lastName
-                    ) {
-                      packages.push(result[y]);
-                      items.push.apply(items,result[y]._items);
-                      total +=
-                        result[y].bids[result[y].bids.length - 1].bidAmount;
+                    console.log("result", result)
+                    if (result[y].bids.length > 0){
+                      if (
+                        result[y].bids[result[y].bids.length - 1].name ===
+                        users[x].firstName.charAt(0)+'. '+users[x].lastName
+                      ) {
+                        packages.push(result[y]);
+                        items.push.apply(items,result[y]._items);
+                        total +=
+                          result[y].bids[result[y].bids.length - 1].bidAmount;
+                      }
                     }
+
                   }
                   cart[users[x].userName] = {
                     packages: packages,
