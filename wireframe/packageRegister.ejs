@@ -68,8 +68,8 @@
                                 <%}%>
                         </select>
                     </div>
-                </div>    
-           
+                </div>
+
                 <!-- Display Totals section/column -->
                 <div class="col-md-6">
                     <div class="table-responsive">
@@ -79,14 +79,14 @@
                                     <td class="summary-table">TOTAL PACKAGES: <%= packages.length %> </td>
                                     <td class="summary-table">TOTAL ESTIMATED VALUE: <%= sumMarketVal %></td>
                                     <td class="summary-table">TOTAL STARTING BID: <%=sumStartingBid %></td>
-                                <tr>    
+                                <tr>
                             </tbody>
-                        </table>    
+                        </table>
                     </div>
-                </div>    
-             </div>   
+                </div>
+             </div>
          </div>   <!-- End of Search and Display Totals top section -->
-    
+
         <!-- Package Table -->
         <div >
             <table class="table table-striped table-bordered table-responsive-md package-table">
@@ -165,7 +165,7 @@
                             <td class="table-total"></td>
                             <td class="table-total"></td>
                             <td class="table-total"></td>
-                                   
+
                         </tr>
                 </tbody>
             </table>
@@ -201,13 +201,8 @@
               featured = $('#' + id + "Featured").val()
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
-              $.get(`http://localhost:8000/packages/priority/${id}/${featured}/${priority}`,function(data){
-                  if (data === true){
-                      alert(`Package ${id} saved successfully!`);
-                  }
-                  else{
-                      alert(`Error: Package ${id} not saved`);
-                  }
+              $.get(`http://localhost:8000/packages/priority/${id}/${featured}/${priority}`,function(message){
+                alert(message);
               });
             });
 
