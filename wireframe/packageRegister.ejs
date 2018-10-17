@@ -201,7 +201,7 @@
               featured = $('#' + id + "Featured").val()
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
-              $.get(`http://localhost:8000/packages/priority/${id}/${featured}/${priority}`,function(message){
+              $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
                 alert(message);
               });
             });
