@@ -39,7 +39,7 @@ module.exports = function(app) {
 
 	// PACKAGES //
 	//Modifying the featured status and priority of an item
-	app.get('/packages/priority/:id/:featured/:priority', function(req, res){
+	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
