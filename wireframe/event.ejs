@@ -40,10 +40,11 @@
 			<!-- Event Countdown Clock -->
 			<div class="container timer my-5">
 				<div class="row align-items-end justify-content-center mb-3">
+					
 					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
 						<!-- nested rows -->
 						<div class="row justify-content-center">
-							<div id="days" class="col align-self-center countdown-clock mr-2 pb-2">item1</div>
+							<div id="days" class="col align-self-center countdown-clock mr-2 pb-2"></div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col countdown-letters align-self-center mr-2">Days</div>
@@ -53,7 +54,7 @@
 					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
 						<!-- nested rows -->
 						<div class="row justify-content-center ">
-							<div id="hours" class="col align-self-center countdown-clock mr-2 pb-2">item2</div>
+							<div id="hours" class="col align-self-center countdown-clock mr-2 pb-2"></div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col countdown-letters align-self-center mr-2">Hours</div>
@@ -63,7 +64,7 @@
 					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
 						<!-- nested rows -->
 						<div class="row justify-content-center ">
-							<div id="minutes" class="col align-self-center countdown-clock mr-2 pb-2">item3</div>
+							<div id="minutes" class="col align-self-center countdown-clock mr-2 pb-2"></div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col countdown-letters align-self-center mr-2">Minutes</div>
@@ -73,7 +74,7 @@
 					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
 						<!-- nested rows -->
 						<div class="row justify-content-center">
-							<div id="seconds" class="col align-self-center countdown-clock mr-2 pb-2">item4</div>
+							<div id="seconds" class="col align-self-center countdown-clock mr-2 pb-2"></div>
 						</div>
 						<div class="row justify-content-center">
 							<div class="col countdown-letters align-self-center mr-2">Seconds</div>
@@ -84,9 +85,9 @@
 			
 			<!-- Event Info Display -->
 			<div class="container align-items-center mt-4">	
+				<div id="event-ended" class="message-end"><div>
 				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
-				
-				<p class="header-info"><%= auctionDetails.startClock %></p>	
+				<p class="header-info"> <%= startDateToDisplay %></p>	
 				<p class="header-info"><%= auctionDetails.venue %></p>	
 
 				<!-- invisible paragraph - just usiengthe id and data for the countdown clock -->
@@ -111,9 +112,11 @@
 					</div>	
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+			</div>	
 		</div>
 
 		<!-- FEATURED PACKAGES SECTION-->
+	
 		<div class="containner">
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
@@ -123,9 +126,7 @@
 						<hr class= "my-3">
 						
 						<% for (var p in packages) {%>
-							
-      							<p><%= packages[p].name %></p>
-							  
+      						<div><%= packages[p].name %></div>
     					<%}%>
 						
 						<div class="btn-div my-3">
@@ -136,7 +137,7 @@
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 		</div>
-
+	
     <footer class="container-fluid event-footer">
 		<p>
 		  	<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
@@ -154,33 +155,43 @@
 			let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
 			if (timeRemaining >= 0) {
-				// document.getElementById("countdown").innerHTML = `${days}D &nbsp; ${hours}H &nbsp; ${minutes}M &nbsp; ${seconds}S`;
-				
 				document.getElementById("days").innerHTML= `${days}`;
 				document.getElementById("hours").innerHTML= `${hours}`;
 				document.getElementById("minutes").innerHTML= `${minutes}`;
 				document.getElementById("seconds").innerHTML= `${seconds}`;
-				
+
+					// If less than one day
+					// if (days < 1 ) {
+						// 	document.getElementById("days").innerHTML= "";
+						// 	document.getElementsByClassName("countdown-letters")[0].innerHTML = "";
+						// 	document.getElementById("hours").innerHTML= `${hours}`;
+						// 	document.getElementById("minutes").innerHTML= `${minutes}`;
+						// 	document.getElementById("seconds").innerHTML= `${seconds}`;
+				    // }
+
+			//If the event has ended
 			} else {
 				document.getElementById("days").innerHTML= "";
 				document.getElementById("hours").innerHTML= "";
 				document.getElementById("minutes").innerHTML= "";
 				document.getElementById("seconds").innerHTML= "";
-				document.getElementById("countdown").innerHTML = "The event has ended."
+				document.getElementsByClassName("countdown-letters")[0].innerHTML = "";
+				document.getElementsByClassName("countdown-letters")[1].innerHTML = "";
+				document.getElementsByClassName("countdown-letters")[2].innerHTML = "";
+				document.getElementsByClassName("countdown-letters")[3].innerHTML = "";
+				document.getElementById("event-ended").innerText = "The event has ended!"
 			}
 		} 
 
 		var eventStart = document.getElementById("countdown");
 		var countDownDate = new Date(eventStart.innerText).getTime();
-		console.log(eventStart.innerText);
-		var day = eventStart.getDate(); 
-		console.log(day);  
+		// var countDownDate = new Date("October 18, 2018 10:13:00").getTime(); // Use this format to test for less that one day to the event
+		
+		//Call function Calculate to diplay immediately the time info, otherwise if only set Interval is used, it will take a few seconds to see the countdown clock 
 		Calculate();
-		var timer = setInterval(Calculate, 1000);
 
-
-
-
+		//setInterval will show the seconds chnaging
+		var timer = setInterval(Calculate, 1000);	
 
     </script>
   </body>

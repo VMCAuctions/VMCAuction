@@ -2,7 +2,7 @@
 var express = require("express");
 var app = express();
 var session = require('express-session');
-var secret = require('./config/secret.json')
+var secret = require('./config/secret.json');
 require('jsdom-global');
 
 var mongoose = require('mongoose'),
