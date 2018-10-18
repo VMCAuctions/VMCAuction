@@ -305,7 +305,7 @@ function AuctionsController() {
                   var items = [];
                   var total = 0;
                   for (var y = 0; y < result.length; y++) {
-                    console.log("result", result)
+                    //Not sure if we need this "if" statement for bids.length > 0; needs testing
                     if (result[y].bids.length > 0){
                       if (
                         result[y].bids[result[y].bids.length - 1].name ===

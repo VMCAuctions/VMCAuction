@@ -7,6 +7,11 @@
         </title>
         <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
+
+        <!-- pdfmake scripts -->
+        <!-- <script src='build/pdfmake.js'></script>
+        <script src='build/vfs_fonts.js'></script> -->
+
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
@@ -43,7 +48,7 @@
                         <th scope="col">Invoice</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="carts">
                     <% for (var u in users) {%>
                         <tr class="packageRow">
                             <td>
@@ -52,35 +57,39 @@
                             <td id='supporterLast'>
                                 <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
                             </td>
-                            <td id="<%=users[u].userName + 'winning'%>">
+                            <td id="<%= users[u].userName + 'winning' %>">
                                 <ul>
                                     <% for (var p in cart[users[u].userName].packages) { %>
-                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %></li>
+                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
+                                            $<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %></li>
                                     <% } %>
                                 </ul>
                             </td>
-                            <td id="<%=users[u].userName + 'items'%>">
+                            <td id="<%= users[u].userName + 'items' %>">
                                 <ul>
                                     <% for (var i in cart[users[u].userName].items) { %>
-                                        <li><%= cart[users[u].userName].items[i]._id %>. <%= cart[users[u].userName].items[i].name  %></li>
+                                        <li><%= cart[users[u].userName].items[i]._id %>. <%= cart[users[u].userName].items[i].name  %> $<%= cart[users[u].userName].items[i].value %></li>
                                     <% } %>
                                 </ul>
                             </td>
-                            <td id="<%=users[u].userName + 'total'%>">
+                            <td id="<%= users[u].userName + 'total' %>">
                                 $<%= cart[users[u].userName].total %>
                             </td>
                             <td>
-                                pdf file will go here
+                                <!-- <button type="button" id="<%= cart[users[u].userName] %>">PDF</button> -->
+                                <button type="button" name="button">PDF</button>
                             </td>
                         </tr>
                     <% } %>
                 </tbody>
             </table>
         </div>
+        <!-- json parse scripts -->
         <script type="text/javascript">
             var cart = <%-JSON.stringify(cart)%>;
             var packages = <%-JSON.stringify(packages)%>;
         </script>
+        <!-- search box scripts -->
         <script type="text/javascript">
             $(document).ready(function () {
                 console.log("Ready!");
@@ -96,6 +105,24 @@
                     };
                 });
             })
+        </script>
+        <!-- pdfmake scripts -->
+        <!-- <script type="text/javascript">
+            var parent = document.querySelector('#carts')
+            parent.addEventListener('click',createPDF,false)
+
+            function createPDF(e){
+                if(e.target !== e.currentTarget){
+                    var clicked = e.target.id
+                    genPDF(e.target.id)
+                }
+                e.stopPropagation()
+            }
+
+            function genPDF(cart){
+                var dofDef = { content: 'This is test data' }
+                pdfMake.createPdf(docDef).open()
+            } -->
         </script>
     </body>
 </html>
