@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
-    <head>
-			<meta charset="utf-8">
-			<title>elizabid by VMFC | Welcome to the Auction Event</title>
-			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-			<link rel="stylesheet" type="text/css" href="/css/style.css" >
-			<link rel="stylesheet" type="text/css" href="/css/event.css" >
-		
-			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-			<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<head>
+		<meta charset="utf-8">
+		<title>elizabid by VMFC | Welcome to the Auction Event</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="/css/style.css" >
+		<link rel="stylesheet" type="text/css" href="/css/event.css" >
+	
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
 
   	<body>
@@ -36,18 +36,70 @@
 		
 		<!-- EVENT LANDING PAGE HEADER -->
 		<div class="jumbotron jumbotron-fluid header-img">
-			<div class="container display-header mt-5">
+			
+			<!-- Event Countdown Clock -->
+			<div class="container timer my-5">
+				<div class="row align-items-end justify-content-center mb-3">
+					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
+						<!-- nested rows -->
+						<div class="row justify-content-center">
+							<div id="days" class="col align-self-center countdown-clock mr-2 pb-2">item1</div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col countdown-letters align-self-center mr-2">Days</div>
+						</div>
+					</div>
+
+					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
+						<!-- nested rows -->
+						<div class="row justify-content-center ">
+							<div id="hours" class="col align-self-center countdown-clock mr-2 pb-2">item2</div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col countdown-letters align-self-center mr-2">Hours</div>
+						</div>
+					</div>
+
+					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
+						<!-- nested rows -->
+						<div class="row justify-content-center ">
+							<div id="minutes" class="col align-self-center countdown-clock mr-2 pb-2">item3</div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col countdown-letters align-self-center mr-2">Minutes</div>
+						</div>
+					</div>
+
+					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 mr-2 align-self-center">
+						<!-- nested rows -->
+						<div class="row justify-content-center">
+							<div id="seconds" class="col align-self-center countdown-clock mr-2 pb-2">item4</div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="col countdown-letters align-self-center mr-2">Seconds</div>
+						</div>
+					</div>
+				<div>	
+			</div>	
+			
+			<!-- Event Info Display -->
+			<div class="container align-items-center mt-4">	
 				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
-				<p class="header-info"><%= startDate %>; <%= startClock %> pm Pacific Time</p>	
+				
+				<p class="header-info"><%= auctionDetails.startClock %></p>	
 				<p class="header-info"><%= auctionDetails.venue %></p>	
+
+				<!-- invisible paragraph - just usiengthe id and data for the countdown clock -->
+				<p id="countdown"> <%= auctionDetails.startClock %></p>
+
 				<div class="btn-div my-3">
-					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
-				</div>
+					<a class="btn btn-reg mt-5" href="/users/register">REGISTER NOW</a>
+				</div>			
 			</div>
 		</div>
 
-		<!-- EVENT LANDING PAGE TAGLINE, WELCOME MESSAGE AND DESCRIPTION -->
-		<div class="containner">
+		<!-- EVENT LANDING PAGE TAGLINE, WELCOME MESSAGE, AND DESCRIPTION -->
+		<div class="container">
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 				<div class="col-sm-12 col-md-8">
@@ -70,10 +122,12 @@
 						<h2>Auction Featured Packages</h2>
 						<hr class= "my-3">
 						
-						<p class=py-5>TO DISPLAY FEATURED PACKAGES</p>
-
-						<!-- Section for "View Catalog" and "Register" buttons at the bottom of the page" -->
-					
+						<% for (var p in packages) {%>
+							
+      							<p><%= packages[p].name %></p>
+							  
+    					<%}%>
+						
 						<div class="btn-div my-3">
 							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
 						</div>
@@ -83,16 +137,51 @@
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 		</div>
 
-    <footer class="event-footer">
-
+    <footer class="container-fluid event-footer">
 		<p>
-		  <a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
+		  	<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
 			<a href="#">Back to top</a>
 		</p>
     </footer>
 	
-	
-    </head>
-    
+	<script>
+		function Calculate() {
+			let now = new Date().getTime();
+			let timeRemaining = countDownDate - now; 
+			let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+			let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+			let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+			if (timeRemaining >= 0) {
+				// document.getElementById("countdown").innerHTML = `${days}D &nbsp; ${hours}H &nbsp; ${minutes}M &nbsp; ${seconds}S`;
+				
+				document.getElementById("days").innerHTML= `${days}`;
+				document.getElementById("hours").innerHTML= `${hours}`;
+				document.getElementById("minutes").innerHTML= `${minutes}`;
+				document.getElementById("seconds").innerHTML= `${seconds}`;
+				
+			} else {
+				document.getElementById("days").innerHTML= "";
+				document.getElementById("hours").innerHTML= "";
+				document.getElementById("minutes").innerHTML= "";
+				document.getElementById("seconds").innerHTML= "";
+				document.getElementById("countdown").innerHTML = "The event has ended."
+			}
+		} 
+
+		var eventStart = document.getElementById("countdown");
+		var countDownDate = new Date(eventStart.innerText).getTime();
+		console.log(eventStart.innerText);
+		var day = eventStart.getDate(); 
+		console.log(day);  
+		Calculate();
+		var timer = setInterval(Calculate, 1000);
+
+
+
+
+
+    </script>
   </body>
 </html>
