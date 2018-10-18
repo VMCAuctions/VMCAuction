@@ -95,9 +95,33 @@ function PackagesController(){
 								console.error();
 							} else {
 								console.log("req.session is", req.session)
+								let sumMarketVal = 0;
+								let sumStartingBid = 0;
+								let featured = [];
+								let nonFeatured = [];
+								for (let i=0; i < packages.length; i++) {
+									sumMarketVal += packages[i].value;
+									sumStartingBid += packages[i].amount;
+									if (packages[i].featured){
+										//currently, package priorities range from 1 to 10
+										featured[packages[i].priority - 1] = packages[i]
+									}else{
+										nonFeatured.push(packages[i])
+									}
+								}
+								sortedPackages = []
+								for (index in featured){
+									if (featured[index] != undefined){
+										sortedPackages.push(featured[index])
+									}
+								}
+								sortedPackages = sortedPackages.concat(nonFeatured)
+
 								res.render('packageRegister', {
 									page: 'register',
-									packages: packages,
+									packages: sortedPackages,
+									sumMarketVal: sumMarketVal,
+									sumStartingBid: sumStartingBid,
 									admin: req.session.admin,
 									userName: req.session.userName,
 									user: user,
@@ -201,7 +225,7 @@ this.new = function(req,res){
 			_category: req.body.category,
 			bid: [],
 			amount: req.body.openingBid,
-			priority: req.body.priority,
+			featured: req.body.featured,
 			restrictions: req.body.packageRestrictions,
 			_auctions: req.params.auctions
 		}, function(err, package){
@@ -431,23 +455,34 @@ this.new = function(req,res){
 	}
 
 	this.priority = function(req,res){
-		//Might eventually want to remove priority if featured is false
-		Package.findById(req.params.id, function(err, result){
-			result.featured = req.params.featured
-			result.priority = req.params.priority
-			result.save(function(err){
-				if (err){
-					console.log(err)
-					res.json(false)
-				}
-				else{
-					res.json(true)
-				}
-			})
+		//May be possible to not search priority for non-featured package
+		Package.findOne({"_auctions": req.params.auctions, "priority": req.params.priority}, function(err, copy){
+			if (copy != null && req.params.featured === "true"){
+				res.json(`Priority ${req.params.priority} is already in use.  Please choose a unique priority value.`)
+			}
+			else{
+				Package.findById(req.params.id, function(err, result){
+					result.featured = req.params.featured
+					if (req.params.featured === "true"){
+						result.priority = req.params.priority
+					}
+					else{
+						result.priority = -1
+					}
+					result.save(function(err){
+						if (err){
+							console.log(err)
+							res.json(`Error occurred while attempting to modify package id ${result._id}. Please try again.`)
+						}
+						else{
+							console.log("Successful package modification")
+							res.json(`Package id ${result._id} modified successfully!`)
+						}
+					})
+				})
+			}
 		})
 	}
-
-
-
 }
+
 module.exports = new PackagesController();

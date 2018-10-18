@@ -31,7 +31,7 @@
       </div>
       <form action="/<%=auction%>/items" id="itemsForm" method="post">
         <!-- Item input group -->
-        <div class="form-row space">
+        <div class="form-row mt-3">
           <div class="form-group col-md-4">
             <label for="itemName" class="label-name">Item Name*</label>
             <input id="itemName" type="text" name="itemName" class="form-control" >
@@ -55,27 +55,50 @@
         <div id="donor" class="container">
             <h5>Donor Information</h5> 
             <p class="err-info"> Either donor's Last Name or Organization is required.</p>
-            <div class="form-row space">
-              <div class="form-group col-md-6">
+            <div class="form-row mt-3">
+              <div class="form-group col-md-2">
+                <label for="donorPrefix" class="label-name">Prefix</label>
+                <select name="donorPrefix" class="form-control" id="donorPrefix">
+                  <option></option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Ms.">Ms.</option>
+                  <option value="Mrs.">Mrs.</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Mr. and Mrs.">Mr. and Mrs.</option>
+                  <option value="Dr.">Dr.</option>
+                  <option value="Dr. and Mrs.">Dr. and Mrs.</option>
+                  <option value="Mr. and Dr.">Mr. and Dr.</option>
+                  <option value="Hon.">Hon.</option>
+                  <option value="Hon. and Mrs.">Hon. and Mrs.</option>
+                  <option value="Mr. and Hon">Mr. and Hon.</option>
+                  <option value="Col.">Col.</option>
+                  <option value="Col. and Mrs.">Col. and Mrs.</option>
+                  <option value="Lt.">Lt.</option>
+                  <option value="Lt. and Mrs.">Lt. and Mrs.</option>
+                  <option value="Lt. Col.">Lt. Col.</option>
+                  <option value="Lt. Col. and Mrs.">Lt. Col. and Mrs.</option>
+                  <option value="Capt.">Capt.</option>
+                  <option value="Capt. and Mrs.">Capt. and Mrs.</option>
+                </select>  
+              </div>
+              <div class="form-group col-md-3">
                 <label for="donorFirst" class="label-name">First Name</label>
                 <input type="text" name="donorFirst" class="form-control" id="donorFirst">
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="donorLast" class="label-name">Last Name</label>
                 <input type="text" name="donorLast" class="form-control" id="donorLast">
-              </div>         
-            </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+              </div> 
+              <div class="form-group col-md-4">
                 <label for="donorOrg" class="label-name">Organization</label>
                 <input type="text" name="donorOrg" class="form-control" id="donorOrg">
-            </div> 
-            <div class="form-group col-md-6">
-                <label for="donorDisplay" class="label-name">Display Donor (Defaults to Anonymous)</label>
-                <input placeholder="Anonymous" type="text" name="donorDisplay" class="form-control" id="donorDisplay">
-            </div>
+              </div> 
+              <div class="form-row mt-1">        
+                  <div class="form-check ml-2">
+                      <input type="checkbox" name="donorAnonymous" value="Anonymous" class="form-check-input custom-checkbox" id="donorDisplay"> &nbsp Display Donor as Anonymous
+                  </div>
+              </div>    
           </div>  
-
         </div>
         <!-- End Donor Input -->
 
@@ -102,7 +125,7 @@
       rules: {
         itemName: {
           required: true,
-          minlength: 3
+          minlength: 4
         },
         category: {
           required: true
@@ -130,12 +153,14 @@
         }
       }
     });
+
     validator.form();
     if (window.location.search.substring(1) === 'true') {
       url = window.location.href;
       window.location.replace(url.replace('?true', ''));
       alert('Form submitted succesfully.');
     }
+    
     </script>
   </body>
 </html>
