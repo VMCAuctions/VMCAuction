@@ -130,15 +130,19 @@
                             <% if(admin == 2){ %>
                                 <form>
                                   <td><select id="<%= packages[i].id%>Featured">
-                                    <option><%= packages[i].featured%></option>
-                                    <option><%= !packages[i].featured%></option>
-                                  </select></td>
-                                  <td class="package-val" id="priority">
-                                    <% if (packages[i].featured == true){ %>
+                                  <% if (packages[i].featured == true){ %>
+                                      <option value = "<%= packages[i].featured%>">Yes</option>
+                                      <option value = "<%= !packages[i].featured%>">No</option>
+                                    </select></td>
+                                    <td class="package-val" id="priority">
                                       <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
-                                    <% }else{ %>
+                                  <% }else{ %>
+                                      <option value = "<%= packages[i].featured%>">No</option>
+                                      <option value = "<%= !packages[i].featured%>">Yes</option>
+                                    </select></td>
+                                    <td class="package-val" id="priority">
                                       <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
-                                    <% } %>
+                                  <% } %>
                                   </td>
                                   <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>
