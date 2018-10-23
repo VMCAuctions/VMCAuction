@@ -155,19 +155,27 @@ function AuctionsController() {
       if (err) {
         console.log(err);
       } else {
-        res.render("event", {
-          auctionDetails: auction,
-          auction: req.params.auctions,
-          startDate: startDate,
-          startClock: startClock,
-          endDate: endDate,
-          endClock: endClock,
-          pin: auction.pin
-        });
+        Package.find({ _auctions: req.params.auctions, featured: true}).sort({priority: 'ascending'}).exec(function (err, packages) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(packages);
+            res.render("event", {
+              auctionDetails: auction,
+              auction: req.params.auctions,
+              startDate: startDate,
+              startClock: startClock,
+              endDate: endDate,
+              endClock: endClock,
+              pin: auction.pin,  
+              packages: packages,
+            });
+          }
+        });     
       }
-    });
-  };
-
+    }); 
+  }; 
+    
   this.update = function(req, res) {
     // console.log("req.body is", req.body)
     // console.log("we are in the update function")

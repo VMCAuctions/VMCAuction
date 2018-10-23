@@ -1,6 +1,6 @@
 
 body {
-  line-height: 1.8rem !important; 
+  line-height: 1.7rem !important; 
 }
 .vmcf-brand {
   height: 2.3rem;
@@ -12,8 +12,8 @@ body {
   padding-left: 10px; 
 }
 .btn-ctlg {
-  border: solid 2px #cc0066 !important;  
-  background-color: #cc0066 !important;
+  border: solid 2px #99004d !important;  
+  background-color: #99004d !important;
   color: #fff !important;  
   font-weight: 500; 
   width: 180px; 
@@ -26,8 +26,8 @@ body {
   padding: 0.75rem 0 !important;  
 }
 .btn-nav-reg {
-  border: solid 2px #719949 !important; 
-  background-color: #719949 !important; 
+  border: solid 2px #4d9900 !important; 
+  background-color: #4d9900 !important; 
   color: #fff !important;
   font-weight: 500; 
   width: 90px; 
@@ -40,19 +40,19 @@ body {
 }
 a.btn-ctlg:hover {
   color: #fff !important;
-  background-color: #99004d !important;
-  border: solid 2px #99004d !important; 
+  background-color: #cc0066 !important;
+  border: solid 2px #cc0066 !important; 
 }
 a.btn-reg:hover {
-  color: #1a1a1a !important;
+  color: #000 !important;
   font-weight: 500;
-  background-color: #a1ca76 !important;
-  border: solid 2px #a1ca76 !important; 
+  background-color: #66cc00 !important;
+  border: solid 2px #66cc00 !important; 
 }
 a.btn-nav-reg:hover {
   color: #fff !important;
-  background-color: #436b1d !important;
-  border: solid 2px #436b1d !important; 
+  background-color: #66cc00 !important;
+  border: solid 2px #66cc00 !important; 
 }
 a.btn-nav-login:hover {
   color: #fff !important;
@@ -101,25 +101,59 @@ h2 {
 }
 hr {
   display: block;
-  background-color: #a1ca76;
-  border-width:  2px !important;  
+  background-color: #e3e8e3;
+  border-width:  1px !important;  
 }
 .btn-div {
   text-align: center;
-  display: block;
+  display: block; 
 }
+
+.featured-card {
+  height: 12rem;
+  background-color: #f8f9f8 !important;
+  border:solid 1px #f1f3f1 !important;  
+  box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+  -moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+  display: flex; 
+  flex-flow: row wrap; 
+  justify-content: start; 
+  align-content: center;  
+}
+
+.featured-img {
+  height: 75px;
+  align-self: flex-start; 
+}
+
+.featured-title {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 1.3rem; 
+  font-weight: 700; 
+}
+
+.featured-text {
+  font-size: 0.9rem;
+  line-height: 1.4rem; 
+  color: #737373; 
+}
+
 /* FOOTER */
 .brand-footer {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   font-size: 1.1rem;
 }
+
 .event-footer {
   padding: 2.5rem 0;
   color: #999;
   text-align: center;
-  background-color: #f5f5f5;
-  border-top: .05rem solid #e1e1e1;
+  background-color: #f1f3f1;
+  border-top: .05rem solid #e3e8e3;
 }
+
 .event-footer p:last-child {
   margin-bottom: 0;
 }
+

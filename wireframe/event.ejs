@@ -52,8 +52,7 @@
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 				<div class="col-sm-12 col-md-8">
 					<div class="card-body">
-						<h2><%= auctionDetails.subtitle %></h2>
-						<hr class= "my-3">
+						<h2><%= auctionDetails.subtitle %></h2>						
 						<p class="welcome-message"><%= auctionDetails.welcomeMessage %></p>
 						<p><%= auctionDetails.description %></p>
 					</div>	
@@ -68,13 +67,36 @@
 				<div class="col-sm-12 col-md-8">
 					<div class="card-body">
 						<h2>Auction Featured Packages</h2>
-						<hr class= "my-3">
+						<!-- <img src="../test_img.jpg" hight="100px" width="100px" alt="Auction package image"> -->
 						
-						<p class=py-5>TO DISPLAY FEATURED PACKAGES</p>
+						<% for (var i = 0; i < packages.length; i+=2) {%>
+							<div class="row">
+								<div class="col-sm-6 mt-4">
+									<div class="card featured-card">
+										<div class="card-body">
+											<h5 class="featured-title"><%= packages[i].name %></h5>
+											<p class="featured-text"><%= packages[i].description %></p>
 
+											<p><span class="featured-title">$<%= packages[i].amount %></span> <span class="featured-text">Opening Bid</span></p>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-6 mt-4">
+									<div class="card featured-card">
+									<div class="card-body">
+										<h5 class="featured-title"><%= packages[i+1].name %></h5>
+										<p class="featured-text"><%= packages[i].description %></p>
+										<p><span class="featured-title">$<%= packages[i].amount %></span> <span class="featured-text">Opening Bid</span></p>
+									</div>
+									</div>
+  						</div>
+
+							</div>
+						<%}%>
 						<!-- Section for "View Catalog" and "Register" buttons at the bottom of the page" -->
 					
-						<div class="btn-div my-3">
+						<div class="btn-div mt-5 mb-3">
 							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
 						</div>
 
