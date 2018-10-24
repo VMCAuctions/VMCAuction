@@ -44,7 +44,7 @@ a.btn-ctlg:hover {
   border: solid 2px #cc0066 !important; 
 }
 a.btn-reg:hover {
-  color: #000 !important;
+  color: #fff !important;
   font-weight: 500;
   background-color: #66cc00 !important;
   border: solid 2px #66cc00 !important; 
@@ -68,7 +68,7 @@ a.btn-nav-login:hover {
 .header-img {
   /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
   /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
-  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_img.jpg"); 
+  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg"); 
   background-blend-mode: multiply;
   background-size: cover; 
   opacity: .95;  
@@ -99,18 +99,15 @@ h2 {
   font-size: 1.1rem;
   font-weight: 700; 
 }
-hr {
-  display: block;
-  background-color: #e3e8e3;
-  border-width:  1px !important;  
-}
+
+
 .btn-div {
   text-align: center;
   display: block; 
 }
 
 .featured-card {
-  height: 12rem;
+  height: 14rem;
   background-color: #f8f9f8 !important;
   border:solid 1px #f1f3f1 !important;  
   box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
@@ -120,11 +117,18 @@ hr {
   flex-flow: row wrap; 
   justify-content: start; 
   align-content: center;  
+  position: relative; 
+  
 }
 
 .featured-img {
-  height: 75px;
-  align-self: flex-start; 
+  height: 100px;
+  display: block; 
+  align-self: flex-start;  
+}
+
+.featured-box {
+  display: inline-block; 
 }
 
 .featured-title {
@@ -133,11 +137,40 @@ hr {
   font-weight: 700; 
 }
 
+.featured-bid {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 1.2rem; 
+  font-weight: 900; 
+  color: #4d9900 !important;
+}
+
 .featured-text {
   font-size: 0.9rem;
   line-height: 1.4rem; 
   color: #737373; 
 }
+
+.featured-num {
+  width: 52p2px; 
+  background-color: #99004d;
+  color: #fff; 
+  font-size: 0.8rem ; 
+  font-weight: 500;  
+  position: absolute; 
+  padding: 10px; 
+  text-align: center;
+  top: 10px; 
+  left: 10px; 
+}
+
+hr {
+  display:block ;
+  border: none; 
+  height: 1px; 
+  background-color: #e3e8e3;
+  /* background-color: radial-gradient(#f8f9f8, #5e6e5e, #f8f9f8);   */
+  
+} 
 
 /* FOOTER */
 .brand-footer {

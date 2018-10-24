@@ -72,23 +72,52 @@
 						<% for (var i = 0; i < packages.length; i+=2) {%>
 							<div class="row">
 								<div class="col-sm-6 mt-4">
-									<div class="card featured-card">
+									<div class="card featured-card ">
 										<div class="card-body">
-											<h5 class="featured-title"><%= packages[i].name %></h5>
-											<p class="featured-text"><%= packages[i].description %></p>
 
-											<p><span class="featured-title">$<%= packages[i].amount %></span> <span class="featured-text">Opening Bid</span></p>
+											<div class="featured-num">
+													#<%= packages[i]._id%>
+											</div>
+											<div class="d-flex flex-row align-items-start">
+												<div>
+													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
+												</div>
+												<div>
+													<h5 class="featured-title"><%= packages[i].name %></h5>
+													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i].amount %></span></p>
+												</div>
+											</div>
+											<div d-flex flex-row align-items-start>
+												<hr>
+												<p class="featured-text mt-2"><%= packages[i].description %></p>
+											</div>		
+
 										</div>
 									</div>
 								</div>
 
 								<div class="col-sm-6 mt-4">
 									<div class="card featured-card">
-									<div class="card-body">
-										<h5 class="featured-title"><%= packages[i+1].name %></h5>
-										<p class="featured-text"><%= packages[i].description %></p>
-										<p><span class="featured-title">$<%= packages[i].amount %></span> <span class="featured-text">Opening Bid</span></p>
-									</div>
+										<div class="card-body">
+
+											<div class="d-flex flex-row align-items-start">
+												<div class="featured-num">
+													#<%= packages[i+1]._id%>
+												</div>
+												<div>
+													<img class="featured-img mr-3" src="/test_cuba_480.jpg">
+												</div>
+												<div>
+													<h5 class="featured-title"><%= packages[i+1].name %></h5>
+													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i+1].amount %></span></p>
+												</div>
+											</div>
+											<div d-flex flex-row align-items-start>
+												<hr>
+												<p class="featured-text mt-2"><%= packages[i+1].description %></p>
+											</div>	
+
+										</div>
 									</div>
   						</div>
 
