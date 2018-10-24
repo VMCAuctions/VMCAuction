@@ -6,6 +6,7 @@ var mongoose = require("mongoose"),
   Auction = require("../models/auction.js"),
   Global = require("../models/global.js"),
   globals = require("../controllers/globals.js");
+  var dateFormat = require('dateformat');
 
 function AuctionsController() {
   this.index = function(req, res) {
@@ -152,6 +153,7 @@ function AuctionsController() {
       startClock = stringStartClock.substring(11, 16);
       endDate = stringEndClock.substring(0, 10);
       endClock = stringEndClock.substring(11, 16);
+      startDateToDisplay = dateFormat(auction.startClock, "dddd, mmmm dS, yyyy, h:MM TT"); 
       if (err) {
         console.log(err);
       } else {
@@ -163,6 +165,7 @@ function AuctionsController() {
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
+              startDateToDisplay: startDateToDisplay,
               startDate: startDate,
               startClock: startClock,
               endDate: endDate,
