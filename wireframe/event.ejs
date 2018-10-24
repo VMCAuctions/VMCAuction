@@ -46,30 +46,32 @@
 			</div>
 		</div>
 
-		<!-- EVENT LANDING PAGE TAGLINE, WELCOME MESSAGE AND DESCRIPTION -->
-		<div class="containner">
+		<!-- CONTAINER FOR CONTENT -->
+		<div class="container-fluid">
+
+			<!-- EVENT LANDING PAGE, TAGLINE, WELCOME MESSAGE AND DESCRIPTION  -->
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-sm-12 col-md-8">
+				<div class="col-md-12 col-lg-10">
 					<div class="card-body">
 						<h2><%= auctionDetails.subtitle %></h2>						
-						<p class="welcome-message"><%= auctionDetails.welcomeMessage %></p>
+						<p class="welcome-message mt-4"><%= auctionDetails.welcomeMessage %></p>
 						<p><%= auctionDetails.description %></p>
 					</div>	
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-		</div>
+		
 
-		<!-- FEATURED PACKAGES SECTION-->
-		<div class="containner">
+			<!-- FEATURED PACKAGES SECTION-->
+		
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-sm-12 col-md-8">
+				<div class="col-md-12 col-lg-10">
 					<div class="card-body">
-						<h2>Auction Featured Packages</h2>
-						<!-- <img src="../test_img.jpg" hight="100px" width="100px" alt="Auction package image"> -->
+						<h2 class="mb-3">Auction Featured Packages</h2>
 						
 						<% for (var i = 0; i < packages.length; i+=2) {%>
+
 							<div class="row">
 								<div class="col-sm-6 mt-4">
 									<div class="card featured-card ">
@@ -78,7 +80,7 @@
 											<div class="featured-num">
 													#<%= packages[i]._id%>
 											</div>
-											<div class="d-flex flex-row align-items-start">
+											<div class="d-flex flex-row align-items-start flex-shrink-1">
 												<div>
 													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
 												</div>
@@ -100,7 +102,7 @@
 									<div class="card featured-card">
 										<div class="card-body">
 
-											<div class="d-flex flex-row align-items-start">
+											<div class="d-flex flex-row align-items-start flex-shrink-1">
 												<div class="featured-num">
 													#<%= packages[i+1]._id%>
 												</div>
@@ -115,35 +117,32 @@
 											<div d-flex flex-row align-items-start>
 												<hr>
 												<p class="featured-text mt-2"><%= packages[i+1].description %></p>
-											</div>	
+											</div>
 
 										</div>
 									</div>
-  						</div>
-
-							</div>
+  								</div>
+						
+						</div> <!-- End of row of featured packages -->
 						<%}%>
-						<!-- Section for "View Catalog" and "Register" buttons at the bottom of the page" -->
-					
-						<div class="btn-div mt-5 mb-3">
+
+						<!-- View Catalog Button -->
+						<div class="btn-div mt-5 mb-4">
 							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
 						</div>
 
-					</div> <!--End of card-body holding Featured packages and buttons -->
+					</div> <!-- end of card-body -->
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-		</div>
+			</div> <!-- End of row section holding Featured Packages -->
 
-    <footer class="event-footer">
-
-		<p>
-		  <a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
-			<a href="#">Back to top</a>
-		</p>
-    </footer>
-	
-	
-    </head>
+		<footer class="container-fluid event-footer">
+			
+				<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
+				<a href="#">Back to top</a>
+			
+		</footer>
+	</div> <!-- End of main container for content -->
     
   </body>
 </html>

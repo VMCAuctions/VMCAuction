@@ -79,14 +79,18 @@ h1, h3 {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   margin: 0 auto; 
   color: #fff !important;  
-  text-align:center;
+  text-align: center;
 }
 h2 {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   color: #003d79 !important;
   font-weight: 700 !important; 
-  font-size: 2rem !important; 
+  font-size: 2.4rem !important; 
+  margin: 0 auto; 
+  text-align: center; 
+  width: 85%;
 }
+
 .header-info {
   font-family: Arial, Helvetica, sans-serif; 
   margin: 0 auto; 
@@ -95,10 +99,15 @@ h2 {
   line-height: 1.9rem; 
   text-align: center; 
 }
+
 .welcome-message {
   font-size: 1.1rem;
   font-weight: 700; 
+  /* margin: 0 auto; 
+  text-align: center; 
+  width: 70%; */
 }
+
 
 
 .btn-div {
@@ -107,7 +116,7 @@ h2 {
 }
 
 .featured-card {
-  height: 14rem;
+  height: 15rem;
   background-color: #f8f9f8 !important;
   border:solid 1px #f1f3f1 !important;  
   box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
@@ -173,20 +182,12 @@ hr {
 } 
 
 /* FOOTER */
-.brand-footer {
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 1.1rem;
-}
 
 .event-footer {
   padding: 2.5rem 0;
-  color: #999;
   text-align: center;
   background-color: #f1f3f1;
   border-top: .05rem solid #e3e8e3;
 }
 
-.event-footer p:last-child {
-  margin-bottom: 0;
-}
 
