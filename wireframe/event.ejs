@@ -36,29 +36,20 @@
 		
 		<!-- EVENT LANDING PAGE HEADER -->
 		<div class="jumbotron jumbotron-fluid header-img">
-			<div class="d-flex flex-row justify-content-center align-items-ends">
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
-					<div id="item1" class="col text-center align-self-center clock-num">item1</div>
-				</div>
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
-					<div id="item2" class="col text-center align-self-center clock-num">item2</div>
-				</div>
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
-					<div id="item3" class="col text-center align-self-center clock-num">item3</div>
-				</div>
+
+			<!-- COUNTDOWN CLOCK -->
+			<div class="d-flex flex-row justify-content-center">
+				<div id="item1" class="text-center clock-num mr-2">item1</div>
+				<div id="item2" class="text-center clock-num mr-2">item2</div>
+				<div id="item3" class="text-center clock-num">item3</div>	
 			</div>
 			<div class="d-flex flex-row align-items-start justify-content-center">
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
-					<div id="item4" class="col text-center align-self-center clock-letters">item4</div>
-				</div>
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
-					<div id="item5" class="col text-center align-self-center clock-letters">item5</div>
-				</div>
-				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3  align-self-center">
-					<div id="item6" class="col text-center align-self-center clock-letters">item6</div>
-				</div>
+				<div id="item4" class="text-center clock-letters mr-2">item4</div>
+				<div id="item5" class="text-center clock-letters mr-2">item5</div>
+				<div id="item6" class="text-center clock-letters">item6</div>	
 			</div>		
 
+			<!-- AUCTION TITLE AND HEADER INFO -->
 			<div class="container display-header mt-5">
 				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
 				<p class="header-info"><%= startDateToDisplay %></p>	
@@ -71,12 +62,12 @@
 					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
 				</div>
 			</div>
-		</div> <!-- End Jumbotron -->
+		</div> <!-- End Header -->
 
-		<!-- CONTAINER FOR CONTENT -->
+		<!-- CONTAINER FOR CONTENT AND FEATURED PACKAGES-->
 		<div class="container-fluid">
 
-			<!-- EVENT LANDING PAGE, TAGLINE, WELCOME MESSAGE AND DESCRIPTION  -->
+			<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 				<div class="col-md-12 col-lg-9">
@@ -100,36 +91,36 @@
 						<% for (var i = 0; i < packages.length; i+=2) {%>
 
 							<div class="row">
-								<div class="col-sm-6 mt-4">
+								<div class="col-md-6 mt-4">
 									<div class="card featured-card ">
 										<div class="card-body">
 
 											<div class="featured-num">
 													#<%= packages[i]._id%>
 											</div>
-											<div class="d-flex flex-row align-items-start flex-shrink-1">
+											<div class="d-flex flex-row justify-content-start align-items-start">
 												<div>
 													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
 												</div>
 												<div>
-													<h5 class="featured-title"><%= packages[i].name %></h5>
+													<h6 class="featured-title"><%= packages[i].name %></h6>
 													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i].amount %></span></p>
 												</div>
 											</div>
-											<div d-flex flex-row align-items-start>
+											<div>
 												<hr>
-												<p class="featured-text mt-2"><%= packages[i].description %></p>
+												<p class="featured-text mt-2" style="max-height: 3rem;"><%= packages[i].description %></p>
 											</div>		
 
 										</div>
 									</div>
 								</div>
 
-								<div class="col-sm-6 mt-4">
+								<div class="col-md-6 mt-4">
 									<div class="card featured-card">
 										<div class="card-body">
 
-											<div class="d-flex flex-row align-items-start flex-shrink-1">
+											<div class="d-flex flex-row justify-content-start align-items-start">
 												<div class="featured-num">
 													#<%= packages[i+1]._id%>
 												</div>
@@ -141,8 +132,9 @@
 													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i+1].amount %></span></p>
 												</div>
 											</div>
-											<div d-flex flex-row align-items-start>
-												<hr>
+											
+											<div>
+												<hr>	
 												<p class="featured-text mt-2"><%= packages[i+1].description %></p>
 											</div>
 
@@ -162,15 +154,15 @@
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 			</div> <!-- End of row section holding Featured Packages -->
+		</div> <!-- End of container -->
 
-			<footer class="container-fluid event-footer">
+		<!-- FOOTER -->
+		<footer class="container-fluid event-footer">
 			
 				<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
 				<a href="#">Back to top</a>
 				
-			</footer>
-
-		</div> 
+		</footer>
 
 		<script>
 			function Calculate() {
@@ -215,7 +207,7 @@
 			var countDownDate = new Date(eventStart.innerText).getTime();
 
 			// Use the folowing format to test for less than one day to the event
-			// var countDownDate = new Date("October 24, 2018 22:13:00").getTime(); 
+			// var countDownDate = new Date("October 25, 2018 22:13:00").getTime(); 
 			
 			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
 			Calculate(); 
@@ -223,10 +215,7 @@
 			//setInterval will show the minutes/seconds changing
 			var timer = setInterval(Calculate, 1000);	
 
-
 		</script>
-
-
 
   	</body>
 </html>
