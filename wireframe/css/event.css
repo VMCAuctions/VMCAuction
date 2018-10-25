@@ -96,10 +96,10 @@ h2 {
 .header-info {
   margin: 0 auto; 
   color: #fff !important;  
-  font-size: 1.2rem; 
+  font-size: 1.1rem; 
   line-height: 2rem; 
   text-align: center; 
-  font-weight: 200;
+  font-weight: 200; 
 }
 
 .welcome-message {
@@ -213,8 +213,10 @@ hr {
   display: none;  
 }
 
-.event-message {
+#event-end {
   color: #f31;
-  font-size: 1.2rem; 
+  font-size: 1.6rem; 
+  text-align: center; 
   text-transform: uppercase;
+  letter-spacing: 0.2rem; 
 }

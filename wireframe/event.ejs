@@ -49,6 +49,8 @@
 				<div id="item6" class="text-center clock-letters">item6</div>	
 			</div>		
 
+			<div id="event-end"></div>
+
 			<!-- AUCTION TITLE AND HEADER INFO -->
 			<div class="container display-header mt-5">
 				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
@@ -200,6 +202,9 @@
 					document.getElementById("item4").innerText = "";
 					document.getElementById("item5").innerText = "";
 					document.getElementById("item6").innerText = "";
+					document.getElementById("item6").innerText = "";
+
+					document.getElementById("event-end").innerText = "This event has ended";
 				}
 			}
 			var eventStart = document.getElementById("event-start");
