@@ -85,7 +85,11 @@ function AuctionsController() {
                   name: req.body.name,
                   startClock: start,
                   endClock: end,
-                  pin: randomPin
+                  pin: randomPin,
+                  subtitle: req.body.subtitle,
+                  welcomeMessage: req.body.welcomeMessage,
+                  description: req.body.description,
+                  venue: req.body.venue
                 },
                 function(err, result) {
                   if (err) {
@@ -153,7 +157,7 @@ function AuctionsController() {
       startClock = stringStartClock.substring(11, 16);
       endDate = stringEndClock.substring(0, 10);
       endClock = stringEndClock.substring(11, 16);
-      startDateToDisplay = dateFormat(auction.startClock, "dddd, mmmm dS, yyyy, h:MM TT"); 
+      startDateToDisplay = dateFormat(auction.startClock, "dddd, mmmm dS, yyyy, h:MM TT");
       if (err) {
         console.log(err);
       } else {
@@ -170,15 +174,15 @@ function AuctionsController() {
               startClock: startClock,
               endDate: endDate,
               endClock: endClock,
-              pin: auction.pin,  
+              pin: auction.pin,
               packages: packages,
             });
           }
-        });     
+        });
       }
-    }); 
-  }; 
-    
+    });
+  };
+
   this.update = function(req, res) {
     // console.log("req.body is", req.body)
     // console.log("we are in the update function")
