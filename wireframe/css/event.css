@@ -63,8 +63,10 @@ a.btn-nav-login:hover {
 .btn-centr{
   margin: 0 auto; 
   display: block;
-  
 }
+
+/* HEADER AN AUCTION CONTENT */
+
 .header-img {
   /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
   /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
@@ -73,7 +75,7 @@ a.btn-nav-login:hover {
   background-size: cover; 
   opacity: .95;  
   width: 100%; 
-  height: 450px; 
+  height: 72vh;
 }
 h1, h3 {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
@@ -103,20 +105,17 @@ h2 {
 .welcome-message {
   font-size: 1.1rem;
   font-weight: 700; 
-  /* margin: 0 auto; 
-  text-align: center; 
-  width: 70%; */
 }
-
-
 
 .btn-div {
   text-align: center;
   display: block; 
 }
 
+/* FEATURED PACKAGES CARDS */
+
 .featured-card {
-  height: 15rem;
+  height: 16rem;
   background-color: #f8f9f8 !important;
   border:solid 1px #f1f3f1 !important;  
   box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
@@ -127,7 +126,6 @@ h2 {
   justify-content: start; 
   align-content: center;  
   position: relative; 
-  
 }
 
 .featured-img {
@@ -178,11 +176,9 @@ hr {
   height: 1px; 
   background-color: #e3e8e3;
   /* background-color: radial-gradient(#f8f9f8, #5e6e5e, #f8f9f8);   */
-  
 } 
 
 /* FOOTER */
-
 .event-footer {
   padding: 2.5rem 0;
   text-align: center;
@@ -191,3 +187,29 @@ hr {
 }
 
 
+/* COUNTDOWN CLOCK */
+
+.clock-num {
+  /* font-family: "Kameron", Georgia, "Times New Roman", serif !important;  */
+  color: #cce6ff;
+  font-size: 3.3rem;
+  font-weight: 400;
+  padding: 1rem 0;  
+  margin: auto;  
+}
+
+.clock-letters {
+  color: #cce6ff;
+  font-size: 0.8rem;
+  font-weight: 200; 
+  text-transform: uppercase;
+}
+#event-start {
+  display: none;  
+}
+
+.event-message {
+  color: #f31;
+  font-size: 1.2rem; 
+  text-transform: uppercase;
+}

@@ -36,15 +36,42 @@
 		
 		<!-- EVENT LANDING PAGE HEADER -->
 		<div class="jumbotron jumbotron-fluid header-img">
+			<div class="d-flex flex-row justify-content-center align-items-ends">
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
+					<div id="item1" class="col text-center align-self-center clock-num">item1</div>
+				</div>
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
+					<div id="item2" class="col text-center align-self-center clock-num">item2</div>
+				</div>
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
+					<div id="item3" class="col text-center align-self-center clock-num">item3</div>
+				</div>
+			</div>
+			<div class="d-flex flex-row align-items-start justify-content-center">
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
+					<div id="item4" class="col text-center align-self-center clock-letters">item4</div>
+				</div>
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3 align-self-center">
+					<div id="item5" class="col text-center align-self-center clock-letters">item5</div>
+				</div>
+				<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-3  align-self-center">
+					<div id="item6" class="col text-center align-self-center clock-letters">item6</div>
+				</div>
+			</div>		
+
 			<div class="container display-header mt-5">
 				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
 				<p class="header-info"><%= startDateToDisplay %></p>	
 				<p class="header-info"><%= auctionDetails.venue %></p>	
+
+				<!-- invisible paragraph - just using the id and data for the countdown clock -->
+				<p id="event-start"> <%= auctionDetails.startClock %></p>
+
 				<div class="btn-div my-3">
 					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
 				</div>
 			</div>
-		</div>
+		</div> <!-- End Jumbotron -->
 
 		<!-- CONTAINER FOR CONTENT -->
 		<div class="container-fluid">
@@ -52,7 +79,7 @@
 			<!-- EVENT LANDING PAGE, TAGLINE, WELCOME MESSAGE AND DESCRIPTION  -->
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-md-12 col-lg-10">
+				<div class="col-md-12 col-lg-9">
 					<div class="card-body">
 						<h2><%= auctionDetails.subtitle %></h2>						
 						<p class="welcome-message mt-4"><%= auctionDetails.welcomeMessage %></p>
@@ -60,13 +87,13 @@
 					</div>	
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-		
+			</div>
 
 			<!-- FEATURED PACKAGES SECTION-->
 		
 			<div class="row">
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-md-12 col-lg-10">
+				<div class="col-md-12 col-lg-9">
 					<div class="card-body">
 						<h2 class="mb-3">Auction Featured Packages</h2>
 						
@@ -136,13 +163,70 @@
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 			</div> <!-- End of row section holding Featured Packages -->
 
-		<footer class="container-fluid event-footer">
+			<footer class="container-fluid event-footer">
 			
 				<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
 				<a href="#">Back to top</a>
+				
+			</footer>
+
+		</div> 
+
+		<script>
+			function Calculate() {
+				let now = new Date().getTime();
+				let timeRemaining = countDownDate - now; 
+				console.log("time remaining:", timeRemaining);
+				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+				let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+				if (days > 1) {
+					document.getElementById("item1").innerText = `${days}`;
+					document.getElementById("item2").innerText = `${hours}`;
+					document.getElementById("item3").innerText =`${minutes}`;
+
+					document.getElementById("item4").innerText = "days";
+					document.getElementById("item5").innerText = "hours";
+					document.getElementById("item6").innerText = "minutes";	
+
+				} else if (timeRemaining >=0 && days <= 1) {
+					document.getElementById("item1").innerText = `${hours}`;
+					document.getElementById("item2").innerText = `${minutes}`;
+					document.getElementById("item3").innerText =`${seconds}`;
+
+					document.getElementById("item4").innerText = "hours";
+					document.getElementById("item5").innerText = "minutes";
+					document.getElementById("item6").innerText = "seconds";
+				
+				} else {
+					document.getElementById("item1").innerText = "";
+					document.getElementById("item2").innerText = "";
+					document.getElementById("item3").innerText = "";
+
+					document.getElementById("item4").innerText = "";
+					document.getElementById("item5").innerText = "";
+					document.getElementById("item6").innerText = "";
+				}
+			}
+			var eventStart = document.getElementById("event-start");
+			console.log(eventStart); 
+			var countDownDate = new Date(eventStart.innerText).getTime();
+
+			// Use the folowing format to test for less than one day to the event
+			// var countDownDate = new Date("October 24, 2018 22:13:00").getTime(); 
 			
-		</footer>
-	</div> <!-- End of main container for content -->
-    
-  </body>
+			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
+			Calculate(); 
+
+			//setInterval will show the minutes/seconds changing
+			var timer = setInterval(Calculate, 1000);	
+
+
+		</script>
+
+
+
+  	</body>
 </html>
