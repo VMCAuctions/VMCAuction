@@ -80,7 +80,7 @@
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
   </div>
-  <%if(userName && userName !== "Clerk"){%>
+  <!-- <%if(userName && userName !== "Clerk"){%> -->
     <% var flag = false %>
     <ul class="list-group list-group-flush">
     <% for(var i = 0; i < user._packages.length; i++){ %>
@@ -134,7 +134,7 @@
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body" >
     <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=packages[n]._id%>'">
-    
+
       <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
     <p class="card-text">Category: <%=packages[n]._category%></p>
@@ -142,9 +142,9 @@
     <%if(packages[n].bids[packages[n].bids.length-1]){%>
     <p>Current Bid:
       <span class='currentBid<%=packages[n]._id%>'>
-        <%=packages[n].bids[packages[n].bids.length-1].bidAmount%> 
-        <!-- (By: <%= packages[n].bids[packages[n].bids.length-1].name%>) -->
-        (By: <%= user.firstName.charAt(0) %>. <%= user.lastName %>)
+        <%=packages[n].bids[packages[n].bids.length-1].bidAmount%>
+        (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)
+        
       </span>
     </p>
     <%}else{%>

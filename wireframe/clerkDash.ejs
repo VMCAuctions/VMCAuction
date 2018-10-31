@@ -5,12 +5,13 @@
         <title>
             Clerk's Dashboard
         </title>
-        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-
         <!-- pdfmake scripts -->
-        <!-- <script src='build/pdfmake.js'></script>
-        <script src='build/vfs_fonts.js'></script> -->
+        <script src='/pdfmake/pdfmake.js'></script>
+        <script src='/pdfmake/vfs_fonts.js'></script>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!-- sockets -->
+        <script src="/socket.io/socket.io.js"></script>
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
@@ -29,7 +30,7 @@
     <body>
         <%- include('adminHeader') -%>
         <div class="container-fluid">
-            <h2>Clerk Dashboard</h2>
+            <h2>Supporters</h2>
             <div id="supporter-search">
                 <!-- Find supporters by last name -->
                 <div id="search-lastname">
@@ -43,7 +44,7 @@
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">Packages Won</th>
-                        <th scope="col">Items in Packages</th>
+                        <th scope="col">Package Descriptions</th>
                         <th scope="col">Total Spent</th>
                         <th scope="col">Invoice</th>
                     </tr>
@@ -65,10 +66,10 @@
                                     <% } %>
                                 </ul>
                             </td>
-                            <td id="<%= users[u].userName + 'items' %>">
+                            <td id="<%= users[u].userName + 'description' %>">
                                 <ul>
-                                    <% for (var i in cart[users[u].userName].items) { %>
-                                        <li><%= cart[users[u].userName].items[i]._id %>. <%= cart[users[u].userName].items[i].name  %> $<%= cart[users[u].userName].items[i].value %></li>
+                                    <% for (var p in cart[users[u].userName].packages) { %>
+                                        <li><%= cart[users[u].userName].packages[p].description %></li>
                                     <% } %>
                                 </ul>
                             </td>
@@ -76,8 +77,7 @@
                                 $<%= cart[users[u].userName].total %>
                             </td>
                             <td>
-                                <!-- <button type="button" id="<%= cart[users[u].userName] %>">PDF</button> -->
-                                <button type="button" name="button">PDF</button>
+                                <button type="button" class="pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">PDF</button>
                             </td>
                         </tr>
                     <% } %>
@@ -107,22 +107,55 @@
             })
         </script>
         <!-- pdfmake scripts -->
-        <!-- <script type="text/javascript">
-            var parent = document.querySelector('#carts')
-            parent.addEventListener('click',createPDF,false)
+        <script type="text/javascript">
+            $(".pdfBut").click(function(){
+                var firstName = $(this).data('first')
+                var lastName = $(this).data('last')
+                var userName = $(this).data('user')
+                var newCart = cart
 
-            function createPDF(e){
-                if(e.target !== e.currentTarget){
-                    var clicked = e.target.id
-                    genPDF(e.target.id)
+                function buildTable(crt) {
+                    tableData = []
+                    columns = ['_id','name','description','bids']
+                    tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+                    crt.forEach(function(row) {
+                        var rowData = []
+                        for(var x = 0; x < columns.length; x++) {
+                            if(x == columns.length - 1) {
+                                tmpBids = row.bids
+                                winBid = tmpBids[tmpBids.length - 1]
+                                winAmt = winBid.bidAmount
+                                rowData.push(winAmt)
+                            } else {
+                            rowData.push(row[columns[x]])
+                            }
+                        }
+                        tableData.push(rowData)
+                    })
+                    return tableData
                 }
-                e.stopPropagation()
-            }
 
-            function genPDF(cart){
-                var dofDef = { content: 'This is test data' }
+                docDef = {
+                    content: [
+                        { text: firstName + ' ' + lastName, style: 'header'},
+                        {
+                            table: {
+                            headerRows: 1,
+                            body: buildTable(newCart[userName].packages)
+                            }
+                        }
+                    ],
+                    styles: {
+                        header: {
+                            fontSize: 22,
+                            bold: true
+                        }
+                    }
+                }
                 pdfMake.createPdf(docDef).open()
-            } -->
+            })
+
+
         </script>
     </body>
 </html>
