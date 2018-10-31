@@ -94,7 +94,7 @@
 
 							<div class="row">
 								<div class="col-md-6 mt-4">
-									<div class="card featured-card ">
+									<div class="card featured-card">
 										<div class="card-body">
 
 											<div class="featured-num">
@@ -119,6 +119,9 @@
 								</div>
 
 								<div class="col-md-6 mt-4">
+
+								<% if (i+1 < packages.length) { %>
+
 									<div class="card featured-card">
 										<div class="card-body">
 
@@ -142,17 +145,18 @@
 
 										</div>
 									</div>
+								<% } %>
   								</div>
 						
 						</div> <!-- End of row of featured packages -->
-						<%}%>
+						<% } %>
 
 						<!-- View Catalog Button -->
 						<div class="btn-div mt-5 mb-4">
 							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
 						</div>
 
-					</div> <!-- end of card-body -->
+					</div> <!-- End of card-body -->
 				</div>	
 				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 			</div> <!-- End of row section holding Featured Packages -->
