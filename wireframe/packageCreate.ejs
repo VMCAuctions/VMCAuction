@@ -113,13 +113,22 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Search by Category: </h5>
-                  <select class="btn btn-secondary" name='category' id='category'>
-                    <option value="">All Categories</option>
-                    <% for(var c in categories) {%>
-                      <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-                    <%}%>
-                  </select>
+                    <div id="search-container">
+                      <!-- Find items by keyword -->
+                      <div id="search-keyword">
+                        <label for "keyword">Search by keyword:</label>
+                        <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                      </div>
+                    </div>
+                    <div id="search-category">
+                        <label for "category" >Search by category:</label>
+                        <select select class="form-control" name="category" id="category">
+                          <option value="">All Categories</option>
+                          <% for(var c in categories) {%>
+                            <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+                          <%}%>
+                        </select>
+                      </div>
                   <!-- <input type="text" class="form-control col-md-6" placeholder="Search for..."> -->
                 </div>
                 <div class="modal-body">
@@ -184,33 +193,46 @@
           })
         })
 
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          if (value == '') {
+            $(".itemRow").show();
+          } else {
+            $(".itemRow").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+            });
+          }
+        });
+
         var total = 0;
         var checkedItems = {};
         totalAdd = function(value, id){
           var checkbox = document.getElementById(id);
           if (checkbox.checked === true){
             total += value
-            console.log("total is", total);
-            checkedItems[id]= id;
-            console.log("checkbox", checkbox);
+          }else{
+            total -= value;
           }
           document.getElementById('totalValue').value = total
         }
 
         updateList = function(items){
-          console.log("ITEMS: ", items)
           var counter = 0
+          var test = "test"
           $('#itemList').html("")
           for (var i = 0; i < items.length; i++) {
-            console.log("items[i]", items[i]._id)
             if(items[i].packaged === false){
               var checkbox = document.getElementById(items[i]._id)
-              if (checkbox.checked === true){
+              if ((checkbox.checked === true)){
                 $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
                 counter++
-                $('#packageDescription').append(items[i].name + ":" + "\n" + "\t" + counter + ". " + items[i].description + "\n")
-                $('#packageRestrictions').append(items[i].name + ":" + "\n" + "\t" + counter + ". " + items[i].restrictions + "\n")
-              }else{
+                if((checkbox.checked === true) && (checkedItems.hasOwnProperty(items[i]._id) === false)){
+                  $('#packageDescription').append(items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n")
+                  $('#packageRestrictions').append(items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n")
+                  checkedItems[items[i]._id]= 1;
+                }
+              }
+              else if((checkbox.checked === false)){
                 $(`#itemID${counter}`).remove()
               }
             }
