@@ -9,6 +9,7 @@ const csv=require('csvtojson')
 function ItemsController(){
 
 	this.index = function(req,res){
+		console.log("We're making a new comment to commit")
 		console.log('ItemsController index');
 		Category.find({}, function (err, categories) {
 			if (err) {
@@ -61,13 +62,13 @@ function ItemsController(){
 		let donorDisplay = "Anonymous";
 		if (!req.body.donorAnonymous) {
 			if (req.body.donorOrg ) {
-				donorDisplay = req.body.donorOrg; 	
+				donorDisplay = req.body.donorOrg;
 			} else {
 				if (req.body.donorFirst) {
 					donorDisplay = req.body.donorPrefix + " " + req.body.donorFirst.charAt(0).toUpperCase() + "." + " " + req.body.donorLast;
 				} else {
-					donorDisplay = req.body.donorPrefix + " " + req.body.donorLast;	
-				}		
+					donorDisplay = req.body.donorPrefix + " " + req.body.donorLast;
+				}
 			}
 		}
     Item.create({
