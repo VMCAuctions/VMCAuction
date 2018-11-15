@@ -57,7 +57,7 @@
 
          <!-- Button trigger modal -->
          <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-          Add Items...
+          Add Items to Package/Edit Package
          </button>
 
           
@@ -112,15 +112,18 @@
               </div>
             </div>
 
-
-          <!-- <a href="/<%=auction%>/organizer-menu" class="btn btn-secondary">Back</a> -->
-          <!-- <input type="submit" name="submit" value="Submit" class="btn btn-primary"> -->
           <button type="submit" class="btn btn-primary create-package">Submit</button>
 
           <!-- Modal -->
           <div class="modal fade bd-example-modal-lg" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
+                
+                <div>
+                  <button type="button" class="close" data-dismiss="modal" id="modalX">
+                    &times;</button>
+                </div>
+
                 <div class="modal-header">
                     <div id="search-container">
                       <!-- Find items by keyword -->
@@ -138,7 +141,6 @@
                           <%}%>
                         </select>
                       </div>
-                  <!-- <input type="text" class="form-control col-md-6" placeholder="Search for..."> -->
                 </div>
                 <div class="modal-body">
                   <div class="col-lg-6">
@@ -148,7 +150,7 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th>Select</th>
+                            <th>Add/Remove</th>
                             <th>Name</th>
                             <th>Category</th>
                             <th>Restrictions</th>
@@ -183,8 +185,10 @@
                   </div>
                 </div>
                 <div class="modal-footer">
+                 
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save changes</button>
+                 
+                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
                 </div>
               </div>
             </div>
@@ -288,6 +292,9 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           })
       });
+
+  
+
     </script>
   </body>
 </html>
