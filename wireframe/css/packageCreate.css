@@ -11,3 +11,13 @@
 #modalX{
     padding: 15px 15px 0 0;
 }
+.package-info{
+    width: 100%;
+}
+.package-details{
+    width: 40%;
+    min-height: 50px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+}
