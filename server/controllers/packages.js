@@ -455,33 +455,38 @@ this.new = function(req,res){
 	}
 
 	this.priority = function(req,res){
-		//May be possible to not search priority for non-featured package
-		Package.findOne({"_auctions": req.params.auctions, "priority": req.params.priority}, function(err, copy){
-			if (copy != null && req.params.featured === "true"){
-				res.json(`Priority ${req.params.priority} is already in use.  Please choose a unique priority value.`)
-			}
-			else{
-				Package.findById(req.params.id, function(err, result){
-					result.featured = req.params.featured
-					if (req.params.featured === "true"){
-						result.priority = req.params.priority
-					}
-					else{
-						result.priority = -1
-					}
-					result.save(function(err){
-						if (err){
-							console.log(err)
-							res.json(`Error occurred while attempting to modify package id ${result._id}. Please try again.`)
+		if (req.params.priority < 1 || req.params.priority > 10){
+			res.json(`Priority ${req.params.priority} is invalid.  Please choose a unique priority value between 1 and 10.`)
+		}
+		else{
+			//May be possible to not search priority for non-featured package
+			Package.findOne({"_auctions": req.params.auctions, "priority": req.params.priority}, function(err, copy){
+				if (copy != null && req.params.featured === "true"){
+					res.json(`Priority ${req.params.priority} is already in use.  Please choose a unique priority value.`)
+				}
+				else{
+					Package.findById(req.params.id, function(err, result){
+						result.featured = req.params.featured
+						if (req.params.featured === "true"){
+							result.priority = req.params.priority
 						}
 						else{
-							console.log("Successful package modification")
-							res.json(`Package id ${result._id} modified successfully!`)
+							result.priority = -1
 						}
+						result.save(function(err){
+							if (err){
+								console.log(err)
+								res.json(`Error occurred while attempting to modify package id ${result._id}. Please try again.`)
+							}
+							else{
+								console.log("Successful package modification")
+								res.json(`Package id ${result._id} modified successfully!`)
+							}
+						})
 					})
-				})
-			}
-		})
+				}
+			})
+		}
 	}
 }
 
