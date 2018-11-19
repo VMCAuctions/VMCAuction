@@ -17,7 +17,7 @@ function PackagesController(){
 		var user
 		Category.find({}, function(err, categories) {
 			if(err) {
-					console.log(err);
+				console.log(err);
 			}
 			else {
 				User.findOne({userName:req.session.userName}, function(err, result){
