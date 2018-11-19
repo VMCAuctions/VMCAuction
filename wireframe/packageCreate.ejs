@@ -10,13 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
   </head>
-  <!-- <script>
-    	$(document).ready(function() {
-        validator.resetForm();
-      	});
-  </script> -->
   <body>
-    
+    <!-- <script>
+      function test(){
+        alert('hello')
+      }
+    </script> -->
     <%if(admin){%>
     <%- include('adminHeader') -%>
     <%}else{%>
@@ -26,7 +25,7 @@
         <h2>Create Package</h2>
         <div class="row">
             <div class="col err-info">
-              <small>The fields marked with (*) are required.</small>
+              The fields marked with (*) are required.
             </div>
         </div>
         <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post">
@@ -56,12 +55,14 @@
           </div>
         </div>
 
-         <!-- Button trigger modal -->
-         <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-          Add Items to Package/Edit Package
-         </button>
-
-          
+          <div class="form-group row">
+            <div class="col-6">
+              <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid*" class="form-control">
+            </div>
+            <div class="col-6">
+              <input type="number" name="increments" id="increments" placeholder="Increment*" class="form-control">
+            </div>
+          </div>
 
           <!-- need a read only feild with the current number selected -->
           <div class="alert alert-secondary">
@@ -71,7 +72,7 @@
                 <ol id="itemList">
                 </ol>
               </div>
-            <!-- Commented for future reference -->
+                                                          <!-- Commented for future reference -->
             <!-- <%for (var i in items){%>
               <%if(!items[i].packaged){%>
                 <br>
@@ -82,56 +83,35 @@
                 <%}%>
                 <%}%> -->
 
-              <!-- End reference Comment -->
+                                                          <!-- End reference Comment -->
             </div>
           </div>
 
-          <div class="package-info">
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+            Add More Items...
+          </button>
 
-          <div class="form-group package-info">
-              <span>Package Description*</span>
-              <div name="packageDescription" class="form-control package-details" id="packageDescription">
-              </div>
+          <div class="form-group">
+              <label for="packageDescription">Package Description*</label>
+              <textarea class="form-control" name="packageDescription" id="packageDescription" rows="8" cols="40"></textarea>
             </div>
 
-          <div class="form-group package-info">
-            <span>Package Restrictions</span>
-            <div name="packageRestrictions" class="form-control package-details" id="packageRestrictions">
-            </div>
+          <div class="form-group">
+            <label for="packageRestrictions">Package Restrictions</label>
+            <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="8" cols="40"></textarea>
           </div>
-          
-        </div>
-
-          <div class="form-group row">
-              <div class="col-4">
-                <label for="totalValue">Total Value</label>
-                <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
-              </div>
-
-              <div class="col-4">
-                <label for="openingBid">Opening Bid*</label>
-                <input type="number" name="openingBid" id="openingBid" class="form-control">
-              </div>
-              
-              <div class="col-4">
-                <label for="increments">Increment Amount*</label>
-                <input type="number" name="increments" id="increments" class="form-control">
-              </div>
-
+          <div class="form-group">
+            <label for="totalValue">Total Value</label>
+            <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
           </div>
-
-          <button type="submit" class="btn btn-primary create-package">Submit</button>
+          <a href="/<%=auction%>/organizer-menu" class="btn btn-secondary">Back</a>
+          <input type="submit" name="submit" value="Submit" class="btn btn-primary">
 
           <!-- Modal -->
           <div class="modal fade bd-example-modal-lg" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
-                
-                <div>
-                  <button type="button" class="close" data-dismiss="modal" id="modalX">
-                    &times;</button>
-                </div>
-
                 <div class="modal-header">
                     <div id="search-container">
                       <!-- Find items by keyword -->
@@ -149,6 +129,7 @@
                           <%}%>
                         </select>
                       </div>
+                  <!-- <input type="text" class="form-control col-md-6" placeholder="Search for..."> -->
                 </div>
                 <div class="modal-body">
                   <div class="col-lg-6">
@@ -158,7 +139,7 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th>Add/Remove</th>
+                            <th>Select</th>
                             <th>Name</th>
                             <th>Category</th>
                             <th>Restrictions</th>
@@ -193,10 +174,8 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                 
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 
-                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
+                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save changes</button>
                 </div>
               </div>
             </div>
@@ -286,9 +265,7 @@
             },
           }
         });
-
-        // validator.form();
-
+        validator.form();
         if (window.location.search.substring(1) == 'true') {
           alert('that was a success')
         }
@@ -300,9 +277,6 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
           })
       });
-
-  
-
     </script>
   </body>
 </html>
