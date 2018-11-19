@@ -18,8 +18,19 @@ body {
 	color: #404040;
 }
 
-h1, h2, h3 {
+h1 {
 	font-family: Kameron, serif; 
+	color: #003d79;
+} 
+
+h2 {
+	font-family: Lato, sans-serif; 
+	color: #4567a8;
+	font-weight: 700;  
+}
+
+h3, h4, h5 {
+	font-family: Lato, sans-serif; 
 	color: #003d79;
 }
 
@@ -60,6 +71,11 @@ a:hover {
 	line-height:.7rem; 
 }
 
+.form-inner {
+	font-size: 0.9rem; 
+	color: #999999;
+}
+
 /* Common Styles Buttons
 -------------------------------------------------------------- */
 .btn-submit {
@@ -89,9 +105,9 @@ a:hover {
 
 /* Organizer's Menu table style
 -------------------------------------------------------------- */
-td:hover {
+/* td:hover {
   background-color: #ffffff;
-}
+} */
 
 .table-hover>tbody>tr>.highlight:hover{
   background-color: #f5f5f5;

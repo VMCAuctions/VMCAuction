@@ -39,7 +39,7 @@
     <%}%>
 
     <div class="container-fluid">
-        <h2 class="my-3 ml-2">Package Register</h2>
+        <h2 class="my-4 ml-2">Package Register</h2>
 
         <!-- Top Search and Display Totals section -->
         <div class="container-fluid">
@@ -49,14 +49,14 @@
 
                     <!-- Find packages by keyword -->
                     <div id="search-keyword">
-                        <label for "keyword">Search by keyword:</label>
-                        <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                        <label for "keyword" class="label-name">Search by keyword:</label>
+                        <input class="form-control form-inner" type="search" id="keyword" placeholder="Keyword">
                     </div>
 
                     <!-- Find all packages in a category-->
                     <div id="search-category">
-                        <label for "category">Search by category:</label>
-                        <select class="form-control" name="category" id="category">
+                        <label for "category" class="label-name">Search by category:</label>
+                        <select class="form-control form-inner" name="category" id="category">
                             <option value="">All Categories</option>
                             <% for(var c in categories) {%>
                                 <option value="<%=categories[c].name%>">
@@ -73,9 +73,9 @@
                         <table class="table table-bordered table-sm summary-table mt-4">
                             <tbody>
                                 <tr>
-                                    <td class="summary-table">TOTAL PACKAGES: <%= packages.length %> </td>
-                                    <td class="summary-table">TOTAL ESTIMATED VALUE: <%= sumMarketVal %></td>
-                                    <td class="summary-table">TOTAL STARTING BID: <%=sumStartingBid %></td>
+                                    <td class="summary-table">Total Packages: &nbsp; <span class="summary-num"><%= packages.length %> </span></td>
+                                    <td class="summary-table">Total Estimated Market Value: &nbsp; <span class="summary-num"><%= sumMarketVal %></span></td>
+                                    <td class="summary-table">Total Starting Bids: &nbsp; <span class="summary-num"><%=sumStartingBid %></span></td>
                                 <tr>
                             </tbody>
                         </table>
@@ -153,21 +153,6 @@
                             <%}%>
                         </tr>
                         <%}%>
-                        <tr>
-                            <td class="table-total">TOTAL:</td>
-                            <td class="table-total"><%= packages.length %> packages</td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"><%= sumMarketVal %></td>
-                            <td class="table-total"><%=sumStartingBid %></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-
-                        </tr>
                 </tbody>
             </table>
         </div>
