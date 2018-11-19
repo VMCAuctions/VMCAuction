@@ -13,30 +13,38 @@ function CategoriesController(){
 		      		console.log(err);
 		    	}
 		    	else if(req.session.admin) {
-		        	res.render('categories', {page: 'addCategory', admin: req.session.admin, categories: categories, userName: req.session.userName, auction: req.params.auctions});
-		      }else{
-						res.redirect('/' + req.params.auctions + '/packages')
-					}
-	    })
+					console.log('categories.js render categories');
+		        	res.render('categories', {
+						page: 'addCategory',
+						admin: req.session.admin,
+						categories: categories,
+						userName: req.session.userName,
+						auction: req.params.auctions
+					});
+				}else{
+					res.redirect('/' + req.params.auctions + '/packages')
+				}
+			})
 		}
-    if (globals.adminValidation(req, res)){
-      Category.find({}, function(err, categories) {
-          if(err) {
-              console.log(err);
-          }
-          else if(req.session.admin) {
-              res.render('categories', {
-                page: 'addCategory', 
-                admin: req.session.admin, 
-                categories: categories, 
-                userName: req.session.userName, 
-                auction: req.params.auctions
-              });
-          }else{
-            res.redirect('/' + req.params.auctions + '/packages')
-          }
-        })
-    }
+
+		// if (globals.adminValidation(req, res)){
+		// 	Category.find({}, function(err, categories) {
+		// 		if(err) {
+		// 			console.log(err);
+		// 		}
+		// 		else if(req.session.admin) {
+		// 			res.render('categories', {
+		// 				page: 'addCategory', 
+		// 				admin: req.session.admin, 
+		// 				categories: categories, 
+		// 				userName: req.session.userName, 
+		// 				auction: req.params.auctions
+		// 			});
+		// 		}else{
+		// 			res.redirect('/' + req.params.auctions + '/packages')
+		// 		}
+		// 	})
+		// }
 	};
 
 	this.create = function(req,res){
@@ -46,8 +54,24 @@ function CategoriesController(){
 		      if(err){
 		        console.log(err);
 		      }else{
+				  console.log('categories.js cat.create')
 		        	res.redirect('/' + req.params.auctions + '/categories?true');
 		      }
+	    })
+		}
+	}
+
+	this.delete = function(req, res){
+
+		if (globals.adminValidation(req, res)){
+		  Category.remove({_id: req.params._id},  function(err, result){
+		    if(err){
+		        console.log(err);
+		    }else{
+				console.log('categories.js cat.delete')
+		    }
+			res.redirect('/' + req.params.auctions + '/categories?true');
+
 	    })
 		}
 	}

@@ -82,6 +82,10 @@ module.exports = function(app) {
 	app.post('/:auctions/categories', function(req,res){
 		categories.create(req,res)});
 
+	// delete a category
+	app.get('/:auctions/categories/:_id/delete', function(req,res){
+		categories.delete(req,res)});
+
 
 
 	// USERS //

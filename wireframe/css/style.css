@@ -147,6 +147,13 @@ th{
   vertical-align: middle;
 }
 
+ /* Bob R. for List of Categories */
+.categories-table-row {
+	
+	height: 40px !important;
+
+}
+
 /*td a{
   color:black;
   display:inline-block;
