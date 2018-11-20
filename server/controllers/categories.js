@@ -27,24 +27,6 @@ function CategoriesController(){
 			})
 		}
 
-		// if (globals.adminValidation(req, res)){
-		// 	Category.find({}, function(err, categories) {
-		// 		if(err) {
-		// 			console.log(err);
-		// 		}
-		// 		else if(req.session.admin) {
-		// 			res.render('categories', {
-		// 				page: 'addCategory', 
-		// 				admin: req.session.admin, 
-		// 				categories: categories, 
-		// 				userName: req.session.userName, 
-		// 				auction: req.params.auctions
-		// 			});
-		// 		}else{
-		// 			res.redirect('/' + req.params.auctions + '/packages')
-		// 		}
-		// 	})
-		// }
 	};
 
 	this.create = function(req,res){
