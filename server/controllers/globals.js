@@ -20,7 +20,17 @@ function GlobalsController(){
 		console.log("globals.js inside adminValidation. req.ses.admin = ",req.session.admin," req.ses = ",req.session)
 		if (req.session.admin != 2){
 
-			
+			//IMPORTANT - this code prevents being kicked out due to session.admin / session.auction = undefined errors
+			//REMOVE FOR PRODUCTION!!
+
+			req.session.admin = "2";
+			req.session.auction = "5beda68d6555a93bbc62ba32";
+
+			console.log("globals.js adminVal.  hard coded session data = req.ses.admin = ",req.session.admin," req.ses = ",req.session)
+
+			return true
+
+			//END
 
 			res.redirect('/' + req.session.auction + '/packages')
 			return false
