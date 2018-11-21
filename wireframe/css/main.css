@@ -1,80 +1,48 @@
-/* Style sheet for the Organizer's main landing page */
 
-/* Organizer's Header styles 
--------------------------------------------------------------- */
 .brand-white{
-	font-family: "Kameron", Georgia, "Times New Roman", serif;
-	font-size: 1.75rem !important;
-	color: #fff !important;
+	font-family: "Kameron", serif;
+	font-size: 1.75rem;
+	color: #fff;
 }
 .dash-home{
 	padding-left: 20px; 
 }
 .btn-logout {	
-	border: solid 2px #fff !important;
-	color: #fff !important;
+	border: solid 2px #fff;
+	color: #fff;
 	padding: 3px 10px;  
-	font-weight: 500 !important;
+	font-weight: 400;
 }
-a.btn-logout:hover {
+.btn-logout:hover {
 	background: #fff;
 	border: solid 2px #fff;
-	color: #003d79 !important;
+	color: #003d79;
 }
 /* Organizer's Dashboard styles 
 -------------------------------------------------------------- */
 .jumbo-head {
 	text-align: center;
+	/* background-color: #eef3f6  ; */
+	background-color: #edf1f8; 
+	font-size: 1.1rem; 	
 	color: #003d79;
-	font-family: "Kameron", Georgia, "Times New Roman", serif;
-	font-size: 24px; 
 }
-.main-card {
-    min-height: 250px; 
-    line-height: 2.5rem;
+.auction-list {
+	background-color: #edf1f8;
+	color:  #003d79; 
+
 }
 .btn-create {
-	background: #719949; 
-	border: solid 1px #719949;
+	background: #0080ff;
+	padding: 8px 12px; 
+	border:none; 
 	color: #fff; 
+	 
 }
 .btn-create:hover {
-	color: #fff !important;
-  	background-color: #436b1d !important;
-  	border: solid 2px #436b1d !important; 
-}
-a.dash-link { 
-	color: #3399ff;
-	text-decoration: none; 
-}
-a.dash-link:hover {
-	color: #4567a8 !important;
-	text-decoration: none !important; 
+	  background-color: #0055cb;
+	  color: #fff; 
 }
 
-/* Organizer's Sticky footer styles - to be moved to its own component
---------------------------------------------------------------------- */
-html {
-	position: relative;
-	min-height: 100%;
-}
-body {
-  	margin-bottom: 60px; /* Margin bottom by footer height */
-}
-.footer {
-	position: absolute;
-	bottom: 0; 
-	width: 100%;
-	height: 100px; /* Set the fixed height of the footer here */
-	line-height: 60px; /* Vertically center the text there */
-	background-color: #e3eaf0;
-	color: #003d79;
-	padding: 20px 10px; 
-}
-.footer-logo {
-	height: 65px; 
-	vertical-align: middle;
-	display: block; 
-}
-/*---------------------------------------------------------------- */
+
 

@@ -64,6 +64,27 @@ a:hover {
 	top: 40%;  
 }
 
+/* Common Page Styling (Create Auction, Edit Auction)
+-------------------------------------------------------------- */
+.mini-nav {
+	background-color: #00184c;
+	height: 6vh; 
+	position: relative;
+	padding: 0px; 
+	margin-bottom: 4rem; 
+}
+
+.mini-header {
+	background-color: #003d79;
+	color: #fff; 
+	height: 4rem; 
+	width: 100% ; 
+	padding: 1rem 3rem; 
+	display: block; 
+	position: absolute; 
+	top: 40%;  
+}
+
 /* Common Styles Forms
 -------------------------------------------------------------- */
 .label-name {
@@ -161,6 +182,13 @@ th{
 }
 .table > tbody > tr > td {
   vertical-align: middle;
+}
+
+ /* Bob R. for List of Categories */
+.categories-table-row {
+	
+	height: 40px !important;
+
 }
 
 /*td a{
