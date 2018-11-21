@@ -1,13 +1,15 @@
 .modal-dialog{
-    overflow-y: initial !important;
+    overflow-y: initial !important
 }
 .modal-body{
     height: 500px;
     overflow-y: auto;
 }
+
 .create-package{
     float: right;
 }
 #modalX{
     padding: 15px 15px 0 0;
 }
+
