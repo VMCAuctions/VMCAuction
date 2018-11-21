@@ -18,8 +18,19 @@ body {
 	color: #404040;
 }
 
-h1, h2, h3 {
+h1 {
 	font-family: Kameron, serif; 
+	color: #003d79;
+} 
+
+h2 {
+	font-family: Lato, sans-serif; 
+	color: #4567a8;
+	font-weight: 700;  
+}
+
+h3, h4, h5 {
+	font-family: Lato, sans-serif; 
 	color: #003d79;
 }
 
@@ -30,6 +41,27 @@ a:link {
 a:hover {
 	color: #0055cb;
 	text-decoration: none;
+}
+
+/* Common Page Styling (Create Auction, Edit Auction)
+-------------------------------------------------------------- */
+.mini-nav {
+	background-color: #00184c;
+	height: 6vh; 
+	position: relative;
+	padding: 0px; 
+	margin-bottom: 4rem; 
+}
+
+.mini-header {
+	background-color: #003d79;
+	color: #fff; 
+	height: 4rem; 
+	width: 100% ; 
+	padding: 1rem 3rem; 
+	display: block; 
+	position: absolute; 
+	top: 40%;  
 }
 
 /* Common Page Styling (Create Auction, Edit Auction)
@@ -65,6 +97,11 @@ a:hover {
 	color: #999999;
 }
 
+.search-inner {
+	font-size: 0.9rem; 
+	color: #737373;
+}
+
 /* Common Styles Buttons
 -------------------------------------------------------------- */
 .btn-submit {
@@ -94,9 +131,9 @@ a:hover {
 
 /* Organizer's Menu table style
 -------------------------------------------------------------- */
-td:hover {
+/* td:hover {
   background-color: #ffffff;
-}
+} */
 
 .table-hover>tbody>tr>.highlight:hover{
   background-color: #f5f5f5;
@@ -133,7 +170,7 @@ td:hover {
 }
 
 th {
-  width: 15%;
+  width: 10%;
 }
 
 td {

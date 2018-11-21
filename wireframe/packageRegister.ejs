@@ -3,22 +3,19 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Package Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="/css/packageRegister.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
+    <title>Package Register</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    <link rel="stylesheet" type="text/css" href="/css/packageRegister.css">
+  
+    <!-- Java Script -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-        <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script type="text/javascript">
 
         //If priority fields are meant to be unique, then can prepopulate something like a set with all priority values, and prevent users from switching to any preselected values; if they haven't been selected yet, update and add to the set
 
@@ -42,7 +39,7 @@
     <%}%>
 
     <div class="container-fluid">
-        <h2>Package Register</h2>
+        <h2 class="my-4 ml-2">Package Register</h2>
 
         <!-- Top Search and Display Totals section -->
         <div class="container-fluid">
@@ -52,14 +49,14 @@
 
                     <!-- Find packages by keyword -->
                     <div id="search-keyword">
-                        <label for "keyword">Search by keyword:</label>
-                        <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                        <label for "keyword" class="label-name">Search by keyword:</label>
+                        <input class="form-control search-inner" type="search" id="keyword" placeholder="Keyword">
                     </div>
 
                     <!-- Find all packages in a category-->
                     <div id="search-category">
-                        <label for "category">Search by category:</label>
-                        <select class="form-control" name="category" id="category">
+                        <label for "category" class="label-name">Search by category:</label>
+                        <select class="form-control search-inner" name="category" id="category">
                             <option value="">All Categories</option>
                             <% for(var c in categories) {%>
                                 <option value="<%=categories[c].name%>">
@@ -76,9 +73,9 @@
                         <table class="table table-bordered table-sm summary-table mt-4">
                             <tbody>
                                 <tr>
-                                    <td class="summary-table">TOTAL PACKAGES: <%= packages.length %> </td>
-                                    <td class="summary-table">TOTAL ESTIMATED VALUE: <%= sumMarketVal %></td>
-                                    <td class="summary-table">TOTAL STARTING BID: <%=sumStartingBid %></td>
+                                    <td class="summary-table">Total Packages: &nbsp; <span class="summary-num"><%= packages.length %> </span></td>
+                                    <td class="summary-table">Total Estimated Market Value: &nbsp; <span class="summary-num"><%= sumMarketVal %></span></td>
+                                    <td class="summary-table">Total Starting Bids: &nbsp; <span class="summary-num"><%=sumStartingBid %></span></td>
                                 <tr>
                             </tbody>
                         </table>
@@ -91,20 +88,20 @@
         <div >
             <table class="table table-striped table-bordered table-responsive-md package-table">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col">Package Number</th>
                         <th scope="col">Package Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Package Description</th>
                         <th scope="col">Package Restriction</th>
                         <th scope="col">Items</th>
-                        <th scope="col" class="package-val">Fair Market Value</th>
+                        <th scope="col">Fair Market Value</th>
                         <th scope="col">Starting Bid</th>
                         <th scope="col">Bid Increment</th>
                         <th scope="col">Featured</th>
                         <th scope="col">Priority</th>
                         <% if (admin == 2) { %>
-                            <th scope="col">Actions</th>
+                            <th class="actions" scope="col">Actions</th>
                         <% } %>
                     </tr>
                 </thead>
@@ -112,8 +109,8 @@
                     <% for (var i in packages){%>
 
                         <tr class="packageRow">
-                            <td class="package-val"><%= packages[i]._id%></td>
-                            <td><%= packages[i].name%></td>
+                            <td><%= packages[i]._id%></td>
+                            <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
                             <td><%= packages[i]._category%></td>
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
@@ -124,31 +121,33 @@
                                 <% } %>
                                 </ul>
                             </td>
-                            <td class="package-val"><%= packages[i].value%></td>
-                            <td class="package-val"><%= packages[i].amount%></td>
-                            <td class="package-val"><%= packages[i].bidIncrement%></td>
+                            <td class="text-center"><%= packages[i].value%></td>
+                            <td class="text-center"><%= packages[i].amount%></td>
+                            <td class="text-center"><%= packages[i].bidIncrement%></td>
                             <% if(admin == 2){ %>
                                 <form>
-                                  <td><select id="<%= packages[i].id%>Featured">
-                                  <% if (packages[i].featured == true){ %>
-                                      <option value = "<%= packages[i].featured%>">Yes</option>
-                                      <option value = "<%= !packages[i].featured%>">No</option>
+                                    <td class="text-center"><select class="input-featured" id="<%= packages[i].id%>Featured">
+                                    <% if (packages[i].featured == true){ %>
+                                        <option  value = "<%= packages[i].featured%>">Yes</option>
+                                        <option  value = "<%= !packages[i].featured%>">No</option>
                                     </select></td>
-                                    <td class="package-val" id="priority">
-                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
-                                  <% }else{ %>
-                                      <option value = "<%= packages[i].featured%>">No</option>
-                                      <option value = "<%= !packages[i].featured%>">Yes</option>
+                                    <td class="text-center" id="priority">
+                                        <input id="<%= packages[i].id%>Priority" class="input-featured" type="text" value="<%= packages[i].priority%>"></input>
+                                    <% }else{ %>
+                                        <option value = "<%= packages[i].featured%>">No</option>
+                                        <option value = "<%= !packages[i].featured%>">Yes</option>
                                     </select></td>
-                                    <td class="package-val" id="priority">
-                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
-                                  <% } %>
-                                  </td>
-                                  <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
+                                    <td class="text-center" id="priority">
+                                        <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
+                                    <% } %>
+                                    
+                                    </td>
+                                    <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>
-                                <td><button id="<%= packages[i].id%>" class="confirmChanges">C</button>
-                                  <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit"></i></a>
-                                  <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete"></i></a>
+                                <td class="text-center">
+                                    <button id="<%= packages[i].id%>" class="confirmChanges">Save Changes</button>
+                                    <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit mt-3"></i></a>
+                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete mt-3"></i></a>
                                 </td>
                             <%}else{%>
                                 <td><%= packages[i].featured%></td>
@@ -156,21 +155,6 @@
                             <%}%>
                         </tr>
                         <%}%>
-                        <tr>
-                            <td class="table-total">TOTAL:</td>
-                            <td class="table-total"><%= packages.length %> packages</td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"><%= sumMarketVal %></td>
-                            <td class="table-total"><%=sumStartingBid %></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-                            <td class="table-total"></td>
-
-                        </tr>
                 </tbody>
             </table>
         </div>
