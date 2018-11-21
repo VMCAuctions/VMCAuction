@@ -76,6 +76,11 @@ a:hover {
 	color: #999999;
 }
 
+.search-inner {
+	font-size: 0.9rem; 
+	color: #737373;
+}
+
 /* Common Styles Buttons
 -------------------------------------------------------------- */
 .btn-submit {
@@ -144,7 +149,7 @@ a:hover {
 }
 
 th {
-  width: 15%;
+  width: 10%;
 }
 
 td {

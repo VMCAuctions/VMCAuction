@@ -50,13 +50,13 @@
                     <!-- Find packages by keyword -->
                     <div id="search-keyword">
                         <label for "keyword" class="label-name">Search by keyword:</label>
-                        <input class="form-control form-inner" type="search" id="keyword" placeholder="Keyword">
+                        <input class="form-control search-inner" type="search" id="keyword" placeholder="Keyword">
                     </div>
 
                     <!-- Find all packages in a category-->
                     <div id="search-category">
                         <label for "category" class="label-name">Search by category:</label>
-                        <select class="form-control form-inner" name="category" id="category">
+                        <select class="form-control search-inner" name="category" id="category">
                             <option value="">All Categories</option>
                             <% for(var c in categories) {%>
                                 <option value="<%=categories[c].name%>">
@@ -88,20 +88,20 @@
         <div >
             <table class="table table-striped table-bordered table-responsive-md package-table">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col">Package Number</th>
                         <th scope="col">Package Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Package Description</th>
                         <th scope="col">Package Restriction</th>
                         <th scope="col">Items</th>
-                        <th scope="col" class="package-val">Fair Market Value</th>
+                        <th scope="col">Fair Market Value</th>
                         <th scope="col">Starting Bid</th>
                         <th scope="col">Bid Increment</th>
                         <th scope="col">Featured</th>
                         <th scope="col">Priority</th>
                         <% if (admin == 2) { %>
-                            <th scope="col">Actions</th>
+                            <th class="actions" scope="col">Actions</th>
                         <% } %>
                     </tr>
                 </thead>
@@ -109,8 +109,8 @@
                     <% for (var i in packages){%>
 
                         <tr class="packageRow">
-                            <td class="package-val"><%= packages[i]._id%></td>
-                            <td><%= packages[i].name%></td>
+                            <td><%= packages[i]._id%></td>
+                            <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
                             <td><%= packages[i]._category%></td>
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
@@ -121,31 +121,33 @@
                                 <% } %>
                                 </ul>
                             </td>
-                            <td class="package-val"><%= packages[i].value%></td>
-                            <td class="package-val"><%= packages[i].amount%></td>
-                            <td class="package-val"><%= packages[i].bidIncrement%></td>
+                            <td class="text-center"><%= packages[i].value%></td>
+                            <td class="text-center"><%= packages[i].amount%></td>
+                            <td class="text-center"><%= packages[i].bidIncrement%></td>
                             <% if(admin == 2){ %>
                                 <form>
-                                  <td><select id="<%= packages[i].id%>Featured">
-                                  <% if (packages[i].featured == true){ %>
-                                      <option value = "<%= packages[i].featured%>">Yes</option>
-                                      <option value = "<%= !packages[i].featured%>">No</option>
+                                    <td class="text-center"><select class="input-featured" id="<%= packages[i].id%>Featured">
+                                    <% if (packages[i].featured == true){ %>
+                                        <option  value = "<%= packages[i].featured%>">Yes</option>
+                                        <option  value = "<%= !packages[i].featured%>">No</option>
                                     </select></td>
-                                    <td class="package-val" id="priority">
-                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>"></input>
-                                  <% }else{ %>
-                                      <option value = "<%= packages[i].featured%>">No</option>
-                                      <option value = "<%= !packages[i].featured%>">Yes</option>
+                                    <td class="text-center" id="priority">
+                                        <input id="<%= packages[i].id%>Priority" class="input-featured" type="text" value="<%= packages[i].priority%>"></input>
+                                    <% }else{ %>
+                                        <option value = "<%= packages[i].featured%>">No</option>
+                                        <option value = "<%= !packages[i].featured%>">Yes</option>
                                     </select></td>
-                                    <td class="package-val" id="priority">
-                                      <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
-                                  <% } %>
-                                  </td>
-                                  <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
+                                    <td class="text-center" id="priority">
+                                        <input id="<%= packages[i].id%>Priority" type="text" value="<%= packages[i].priority%>" style="display:none;"></input>
+                                    <% } %>
+                                    
+                                    </td>
+                                    <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>
-                                <td><button id="<%= packages[i].id%>" class="confirmChanges">C</button>
-                                  <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit"></i></a>
-                                  <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete"></i></a>
+                                <td class="text-center">
+                                    <button id="<%= packages[i].id%>" class="confirmChanges">Save Changes</button>
+                                    <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit mt-3"></i></a>
+                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete mt-3"></i></a>
                                 </td>
                             <%}else{%>
                                 <td><%= packages[i].featured%></td>
