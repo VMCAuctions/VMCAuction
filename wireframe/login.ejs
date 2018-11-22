@@ -57,7 +57,7 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-					url: 'http://dv1.elizabid.com/users/checklogin',
+					url: 'users/checklogin',
 					// url: 'http://localhost:8000/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
@@ -72,7 +72,9 @@
 								window.location.replace('/' + data.auction + '/packages')
 							}
 						}
-					}
+					console.log('inside last ajax line');
+					},
+					
 				})
 				console.log('post ajax');
 			});
