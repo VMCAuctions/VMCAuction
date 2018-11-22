@@ -94,9 +94,11 @@ module.exports = function(app) {
 		users.index(req,res)});
 	// displaying the create user page
 	app.get('/users/register', function(req,res) {
+		console.log('routes.js users/register');
 		users.register(req,res)});
 	// get the login form
 	app.get('/users/login', function(req,res){
+		console.log('routes.js users/login');
 		users.login(req,res)});
 
 	//get the user account page
