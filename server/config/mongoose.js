@@ -27,7 +27,11 @@ var mongoose      = require('mongoose'),
     // dbURI         = 'mongodb://localhost/POTR_DEV2' || '127.0.0.1:27017',
 
     //Note to Self: Switching to Dev3 for temporary testing purposes
-    dbURI         = 'mongodb://dv1.elizabid.com/POTR_DEV2',
+
+	// from mLab MongoDB account - 3rd party mongodb hosting.  mlab.com/databases/elizabid
+	// account info:  user: rinebob  pw: 1Mlabpw
+	// db user login info:  user: organizer  pw:  1Elizabidpw
+    dbURI         = 'mongodb://organizer:1Elizabidpw@ds131814.mlab.com:31814/elizabid',
     // dbURI         = 'mongodb://localhost/POTR_DEV2',
 
     // require auto-increment for simple, readable ID's
