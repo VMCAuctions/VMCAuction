@@ -64,44 +64,33 @@ a:hover {
 	top: 40%;  
 }
 
-/* Common Page Styling (Create Auction, Edit Auction)
--------------------------------------------------------------- */
-.mini-nav {
-	background-color: #00184c;
-	height: 6vh; 
-	position: relative;
-	padding: 0px; 
-	margin-bottom: 4rem; 
-}
-
-.mini-header {
-	background-color: #003d79;
-	color: #fff; 
-	height: 4rem; 
-	width: 100% ; 
-	padding: 1rem 3rem; 
-	display: block; 
-	position: absolute; 
-	top: 40%;  
-}
-
 /* Common Styles Forms
 -------------------------------------------------------------- */
 .label-name {
-	font-size: 0.9rem; 
+	font-size: 0.9rem;
 	line-height:.7rem; 
 }
 
-.form-inner {
+input[type=text], select[name="category"], select[name="donorPrefix"] {
 	font-size: 0.9rem; 
-	color: #999999;
 }
 
-.search-inner {
-	font-size: 0.9rem; 
-	color: #737373;
+textarea {
+	font-size: 0.9rem !important;
 }
 
+/* Common Styles Validations and Error Messages
+-------------------------------------------------------------- */
+.err-info {
+	color: #4567a8; 
+	font-size: 0.8rem; 
+	margin-top: -0.3rem;
+}
+label.error {
+	color: #ff2719;
+	font-size: 0.8rem; 
+}
+ 
 /* Common Styles Buttons
 -------------------------------------------------------------- */
 .btn-submit {
@@ -109,7 +98,6 @@ a:hover {
 	color: #fff;
 	border: none;  
 	width: 135px;
-	margin: 1rem 0; 
 }
 
 .btn-submit:hover{
@@ -128,6 +116,22 @@ a:hover {
 	background-color: #6f8300;
 	color: #000; 
 }
+
+/* Specific to Add/Edit Item
+-------------------------------------------------------------- */
+
+#donor {
+	background-color: #f2f2f2;
+	padding: 15px; 
+	border-radius: 5px; 
+	margin: 5px 0px 15px 0px;  
+}
+
+.anonymous {
+	font-size: 0.9rem !important; 
+}
+
+
 
 /* Organizer's Menu table style
 -------------------------------------------------------------- */
