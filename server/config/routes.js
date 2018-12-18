@@ -109,7 +109,8 @@ module.exports = function(app) {
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
   	//Check login credentials
-	app.post('/users/checklogin', function(req,res){
+	// app.post('/users/checklogin', function(req,res){
+	app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	//Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
