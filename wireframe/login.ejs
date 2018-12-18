@@ -57,7 +57,7 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-					url: 'users/checklogin',
+					url: '/',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
 						console.log('data = ',data)

@@ -108,11 +108,16 @@ module.exports = function(app) {
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
+
+
   	//Check login credentials
 	// app.post('/users/checklogin', function(req,res){
 	app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	//Check if username is already in use
+  	
+	  
+	  
+	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
 	// logout a specific user
