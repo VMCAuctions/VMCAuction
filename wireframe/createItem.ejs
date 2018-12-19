@@ -3,7 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Add Item</title>
-    <link rel="stylesheet" href="/css/createItem.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    
+    <!-- Java Script -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
@@ -22,13 +28,11 @@
     <%}else{%>
       <%- include('header') -%>
     <%}%>
+    
     <div class="container mt-4">
       <h2>Add a New Item</h2>
-      <div class="row">
-        <div class="col err-info">
-          The fields marked with (*) are required.
-        </div>
-      </div>
+      <p class="err-info">The fields marked with (*) are required.</p>
+
       <form action="/<%=auction%>/items" id="itemsForm" method="post">
         <!-- Item input group -->
         <div class="form-row mt-3">
@@ -37,7 +41,7 @@
             <input id="itemName" type="text" name="itemName" class="form-control" >
           </div>
           <div class="form-group col-md-4">
-            <label for="category" class="label-name">Category</label>
+            <label for="category" class="label-name">Category*</label>
             <select id="category" class="custom-select" name="category">
               <% for (var c in categories){%>
                 <option selected value="<%=categories[c].name%>"><%=categories[c].name%></option>
@@ -95,7 +99,7 @@
               </div> 
               <div class="form-row mt-1">        
                   <div class="form-check ml-2">
-                      <input type="checkbox" name="donorAnonymous" value="Anonymous" class="form-check-input custom-checkbox" id="donorDisplay"> &nbsp Display Donor as Anonymous
+                      <input type="checkbox" name="donorAnonymous" value="Anonymous" class="form-check-input custom-checkbox" id="donorDisplay"> &nbsp <span class="anonymous"> Display Donor as Anonymous</span>
                   </div>
               </div>    
           </div>  
@@ -106,17 +110,17 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="itemDescription" class="label-name">Item Description*</label>
-            <textarea id="itemDescription" name="itemDescription" class="form-control" rows="3"></textarea>
+            <textarea id="itemDescription" name="itemDescription" class="form-control" rows="2"></textarea>
           </div>
 
           <div class="form-group col-md-6">
             <label for="itemRestriction" class="label-name">Item Restriction</label>
-            <textarea name="itemRestriction" class="form-control" rows="3"></textarea>
+            <textarea name="itemRestriction" class="form-control" rows="2"></textarea>
           </div>
         </div>
          <!-- End Item description and restrictions -->
          
-        <input type="submit" name="" value="Submit" class="btn btn-primary btn-submit">
+        <input type="submit" name="" value="Submit" class="btn btn-submit">
       </form>
     </div>
 
