@@ -114,7 +114,9 @@ label.error {
 
 .btn-long:hover{
 	background-color: #869b00;
+	padding: 8px 15px; 
 	color: #262626; 
+	border: none;  
 }
 
 .btn-back {
