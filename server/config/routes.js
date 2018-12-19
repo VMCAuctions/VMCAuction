@@ -94,9 +94,11 @@ module.exports = function(app) {
 		users.index(req,res)});
 	// displaying the create user page
 	app.get('/users/register', function(req,res) {
+		console.log('routes.js users/register');
 		users.register(req,res)});
 	// get the login form
 	app.get('/users/login', function(req,res){
+		console.log('routes.js users/login');
 		users.login(req,res)});
 
 	//get the user account page
@@ -106,10 +108,16 @@ module.exports = function(app) {
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
+
+
   	//Check login credentials
-	app.post('/users/checklogin', function(req,res){
+	// app.post('/users/checklogin', function(req,res){
+	app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	//Check if username is already in use
+  	
+	  
+	  
+	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
 	// logout a specific user
@@ -187,6 +195,7 @@ module.exports = function(app) {
 		packages.index(req,res)});
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
+		console.log('routes.js * route');
 		res.redirect('/users/login')
 	})
 }
