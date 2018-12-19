@@ -135,10 +135,12 @@ function ItemsController(){
 		        // Update each attribute with value that was submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        item.name = req.body.itemName || item.name;
-		        item.description = req.body.itemDescription || item.description;
+				item.description = req.body.itemDescription || item.description;
+				item.donorPrefix = req.body.donorPrefix || item.donorPrefix;
 		        item.donorFirst = req.body.donorFirst || item.donorFirst;
-						item.donorLast = req.body.donorLast || item.donorLast;
-						item.donorDisplay = req.body.donorDisplay || item.donorDisplay;
+				item.donorLast = req.body.donorLast || item.donorLast;
+				item.donorOrg  = req.body.donorOrg || item.donorOrg;
+				item.donorDisplay = req.body.donorDisplay || item.donorDisplay;
 		        item.restrictions = req.body.itemRestriction || item.restrictions;
 		        item.value = req.body.fairMarketValue || item.value;
 		        item._category = req.body.category || item._category;
