@@ -317,13 +317,15 @@ this.new = function(req,res){
 			        // Update each attribute with value that was submitted in the body of the request
 			        // If that attribute isn't in the request body, default back to whatever it was before.
 			        package.name = req.body.packageName || package.name;
-			        package.description = req.body.packageDescription || package.description;
-			        package.bids[0] = req.body.openingBid || package.bids[0];
-			        package.value = req.body.totalValue || package.value;
+					package.description = req.body.packageDescription || package.description;
+					package.restrictions = req.body.packageRestrictions || package.restrictions;
+					package.bids[0] = req.body.openingBid || package.bids[0];
+					package.value = req.body.totalValue || package.value;
+					package.amount = req.body.openingBid || package.amount;
 			        package.bidIncrement = req.body.increments || package.bidIncrement;
 			        package._category = req.body.category || package._category;
-							package.priority = req.body.priority || package.priority;
-							package._items = req.body.selectedItems;
+					package.priority = req.body.priority || package.priority;
+					package._items = req.body.selectedItems;
 			        package.save(function (err, package) {
 			            if (err) {
 	                    console.log(err)
