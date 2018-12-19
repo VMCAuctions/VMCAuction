@@ -202,88 +202,95 @@ function AuctionsController() {
         auction.subtitle = req.body.subtitle;
         auction.venue = req.body.venue;
         auction.description = req.body.description;
+        auction.welcomeMessage = req.body.welcomeMessage;
         console.log(req.body.pin);
+        auction.save()
+        res.redirect(
+        "/" + req.params.auctions + "/organizerMenu"
+        );
+        
+        // newPin = req.body.pin;
+        // newPinInt = parseInt(newPin);
+        // if (newPin.length != 4 || newPinInt < 1000) {
+        //   console.log("invalid pin");
+        //   return "invalid pin", -1;
+        // } else {
+        //   console.log("pin is valid");
+        //   Global.findOne({}, function(err, result) {
+        //     if (err) {
+        //       console.log("hit err");
+        //       console.log(err);
+        //     } else {
+        //       console.log("found auction");
+        //       availablePins = result.pins;
+        //       pinBinarySearch = function(lowerBound, higherBound, pin) {
+        //         midIndex = Math.floor(
+        //           (higherBound - lowerBound) / 2 + lowerBound
+        //         );
+        //         if (pin == availablePins[midIndex]) {
+        //           return ["same", midIndex];
+        //         } else if (higherBound - lowerBound <= 0) {
+        //           if (availablePins[lowerBound] > pin) {
+        //             // 5              4  [5] = index 0 [4, 5] 4 to go in index 0
+        //             return ["high", lowerBound];
+        //           } else {
+        //             // 4              5  [4] = index 0 [4, 5] 5 to go in index 1
+        //             return ["low", lowerBound];
+        //           }
+        //         } else {
+        //           if (pin < availablePins[midIndex]) {
+        //             return pinBinarySearch(lowerBound, midIndex - 1, pin);
+        //           } else {
+        //             return pinBinarySearch(midIndex + 1, higherBound, pin);
+        //           }
+        //         }
+        //       };
+        //       console.log("running pinBinarySearch");
+        //       //Finding if new pin is available in global.pins; this is the previously defined newPinInt
+        //       available = pinBinarySearch(
+        //         0,
+        //         availablePins.length - 1,
+        //         newPinInt
+        //       );
+        //       console.log("available", available);
+        //       if (available[0] != "same") {
+        //         //Do not allow auction edit and return to edit auction page, probably with a message saying pin is unavailable
+        //         console.log("returning to edit page as pin is not available");
+        //         res.redirect("/" + req.params.auctions + "/organizerMenu");
+        //         return;
+        //       }
+        //       //Removing new pin from global.pins array, as it will no longer be available
+        //       availablePins.splice(available[1], 1);
+        //       //Finding where to put the old pin associated with the auction, back into the global.pins array to keep things sorted
+        //       oldPin = parseInt(auction.pin);
+        //       replacing = pinBinarySearch(0, availablePins.length - 1, oldPin);
+        //       if (replacing[0] == "high") {
+        //         result.pins.splice(replacing[1], 0, String(oldPin));
+        //       } else {
+        //         result.pins.splice(replacing[1] + 1, 0, String(oldPin));
+        //       }
+        //       auction.pin = req.body.pin;
+        //       auction.save(function(err, auctionsave) {
+        //         if (err) {
+        //           console.log(err);
+        //         } else {
+        //           result.save(function(err, result2) {
+        //             if (err) {
+        //               console.log(err);
+        //             } else {
+        //               //Yay, everything is saved!!!
+        //               res.redirect(
+        //                 "/" + req.params.auctions + "/organizerMenu"
+        //               );
+        //             }
+        //           });
+        //         }
+        //       });
+        //     }
+        //   });
+        // }
 
-        newPin = req.body.pin;
-        newPinInt = parseInt(newPin);
-        if (newPin.length != 4 || newPinInt < 1000) {
-          console.log("invalid pin");
-          return "invalid pin", -1;
-        } else {
-          console.log("pin is valid");
-          Global.findOne({}, function(err, result) {
-            if (err) {
-              console.log("hit err");
-              console.log(err);
-            } else {
-              console.log("found auction");
-              availablePins = result.pins;
-              pinBinarySearch = function(lowerBound, higherBound, pin) {
-                midIndex = Math.floor(
-                  (higherBound - lowerBound) / 2 + lowerBound
-                );
-                if (pin == availablePins[midIndex]) {
-                  return ["same", midIndex];
-                } else if (higherBound - lowerBound <= 0) {
-                  if (availablePins[lowerBound] > pin) {
-                    // 5              4  [5] = index 0 [4, 5] 4 to go in index 0
-                    return ["high", lowerBound];
-                  } else {
-                    // 4              5  [4] = index 0 [4, 5] 5 to go in index 1
-                    return ["low", lowerBound];
-                  }
-                } else {
-                  if (pin < availablePins[midIndex]) {
-                    return pinBinarySearch(lowerBound, midIndex - 1, pin);
-                  } else {
-                    return pinBinarySearch(midIndex + 1, higherBound, pin);
-                  }
-                }
-              };
-              console.log("running pinBinarySearch");
-              //Finding if new pin is available in global.pins; this is the previously defined newPinInt
-              available = pinBinarySearch(
-                0,
-                availablePins.length - 1,
-                newPinInt
-              );
-              console.log("available", available);
-              if (available[0] != "same") {
-                //Do not allow auction edit and return to edit auction page, probably with a message saying pin is unavailable
-                console.log("returning to edit page as pin is not available");
-                res.redirect("/" + req.params.auctions + "/organizerMenu");
-                return;
-              }
-              //Removing new pin from global.pins array, as it will no longer be available
-              availablePins.splice(available[1], 1);
-              //Finding where to put the old pin associated with the auction, back into the global.pins array to keep things sorted
-              oldPin = parseInt(auction.pin);
-              replacing = pinBinarySearch(0, availablePins.length - 1, oldPin);
-              if (replacing[0] == "high") {
-                result.pins.splice(replacing[1], 0, String(oldPin));
-              } else {
-                result.pins.splice(replacing[1] + 1, 0, String(oldPin));
-              }
-              auction.pin = req.body.pin;
-              auction.save(function(err, auctionsave) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  result.save(function(err, result2) {
-                    if (err) {
-                      console.log(err);
-                    } else {
-                      //Yay, everything is saved!!!
-                      res.redirect(
-                        "/" + req.params.auctions + "/organizerMenu"
-                      );
-                    }
-                  });
-                }
-              });
-            }
-          });
-        }
+
       }
     });
   };
