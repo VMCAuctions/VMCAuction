@@ -111,8 +111,7 @@ module.exports = function(app) {
 
 
   	//Check login credentials
-	// app.post('/users/checklogin', function(req,res){
-	app.post('/checklogin', function(req,res){
+	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	
 	  
