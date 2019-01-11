@@ -57,7 +57,8 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-					url: 'http://dv1.elizabid.com/users/checklogin',
+					url: 'http://localhost:8000/users/checklogin',
+					// url: 'http://dv1.elizabid.com/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
 						console.log('data = ',data)
