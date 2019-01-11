@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-		<title>Package Show</title>
+    <title>Package Show</title>
+    <link rel="stylesheet" type="text/css" href="/css/packageShow.css">
 		<script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
@@ -14,7 +15,7 @@
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
           if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
-  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= userName %>', name: '<%= package.name %>' })
+  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
   					event.preventDefault();
   					// replace replaceWith val maybe??
           }
@@ -36,7 +37,7 @@
         })
 				}
 			)
-		</script>
+    </script>
   </head>
 
 	<body>
@@ -45,89 +46,92 @@
     <%}else{%>
       <%- include('header') -%>
     <%}%>
+    <div class="card">
 		<div>
-			<h3><%= package.name %> </h3>
-			<p>Package Description: <%= package.description %></p>
-			<p>Package Value: <%= package.value %></p>
-			<p>Starting Bid: <%= package.amount %></p>
-		</div>
+      <h3 class="card-header"><%= package.name %> </h3>
 
-		<div>
+      <div class="card-body">
+          <p> Package Description: <%= package.description %> </p>
+          <p> Package Value: <%= package.value %> </p>
+          <p> Starting Bid: <%= package.amount %> </p>
 
-			<% if (package.bids.length == 0) {%>
-				<h3 id ='currentBid'>Current Bid: None by: nobody</h3>
-			<%} else {%>
-				<h3 id ='currentBid'>Current Bid: <%= package.bids[package.bids.length-1].bidAmount%> by: <%= package.bids[package.bids.length-1].name%>  </h3>
-			<%}%>
+        <% if (package.bids.length == 0) {%>
+          <p id ='currentBid'>Current Bid: <%= package.value %></p>
+        <%} else {%>
+          <p id ='currentBid'>
+            Current Bid: 
+            <%= package.bids[package.bids.length-1].bidAmount%>
+            <!-- by: <%= package.bids[package.bids.length-1].name%>   -->
+            by: <%= user.firstName.charAt(0) %>. <%= user.lastName %>  
+          </p>
+        <%}%>
 
-			<h3>Next Bid:</h3>
-			<form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
-				<% if (package.bids == false) {%>
-					<input id='bidAmount' readonly value='<%= package.amount%>'>
-				<%} else {%>
-					<input id='bidAmount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bidIncrement %> '>
-				<%}%>
+          <p> Next Bid:</p>
+          <form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
+            <% if (package.bids == false) {%>
+              <input id='bidAmount' readonly value='<%= package.amount%>'>
+            <%} else {%>
+              <input id='bidAmount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bidIncrement %> '>
+            <%}%>
 
-			<% if (!userName) {%>
-				<a href='/users/login'>Login</a>
-			<%}else{%>
-				<input id="submitButton" type='submit' value='Place Bid'>
-			<%}%>
-
-
-			  </form>
-        <button type="button" name="Custom" id="custom">Custom Bid</button>
-        <%var flag = false%>
-        <%if(userName){%>
-        <% for (i in user._packages){%>
-          <% if (package._id == user._packages[i]){%>
-            <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button type="button" name="interested">Remove from Watchlist</button></a>
-            <%flag = true%>
-            <%break%>
+          <% if (!userName) {%>
+            <a href='/users/login'>Login</a>
+          <%}else if(userName !== "Clerk"){%>
+            <input class="btn" id="submitButton" type='submit' value='Place Bid'>
           <%}%>
-        <%}%>
-        <%if (flag == false){%>
-          <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" name="interested">Add to Watchlist</button></a>
-        <%}%>
-        <%}%>
-      <% if (admin === true) { %>
-				<form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
-					<input type='text' value='' placeholder='username of bidder' name='user'>
-					<input id='cancelBid' type='submit' value='Delete Bid'>
-				</form>
-        <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a>
-			<%}%>
-		</div>
-		<div>
-			<h5>Items In Package</h5>
-			<% for (var i = 0; i < package._items.length; i++) {%>
-				<p>Item Name: <%= package._items[i].name %> donated by: <%= package._items[i].donorDisplay %></p>
-			<%}%>
-		</div>
-    <script>
+
+
+          </form>
+          <% if(userName && userName !== "Clerk"){%>
+            <button class="btn" type="button" name="Custom" id="custom">Custom Bid</button>
+          <% } %>
+          <%var flag = false%>
+          <%if(userName && userName !== "Clerk"){%>
+            <% for (i in user._packages){%>
+              <% if (package._id == user._packages[i]){%>
+                <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button class="btn" type="button" name="interested">Remove from Watchlist</button></a>
+                <%flag = true%>
+                <%break%>
+              <%}%>
+            <%}%>
+            <%if (flag == false){%>
+              <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" class="btn" name="interested">Add to Watchlist</button></a>
+            <%}%>
+          <%}%>
+          <% if (admin === true) { %>
+            <form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
+              <input type='text' value='' placeholder='username of bidder' name='user'>
+              <input class='btn' id='cancelBid' type='submit' value='Delete Bid'>
+            </form>
+            <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a>
+          <%}%>
+            <p class="restrictions"> Package Restrictions: <%= package.restrictions %> </p>
+      </div>
+    </div>
+    </div>
+    <script type="text/javascript">
 
       $('#custom').click(function () {
 
         if ($('#bidAmount').attr('readonly') === 'readonly'){
-
           if (<%=ourBids%>===true) {
 
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
           $('#bidAmount').val(null);
         }else{
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + ' or higer'});
+                                  'placeholder': customPlaceholder + ' or higher'});
           $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
             $('#bidAmount').attr({'readonly': 'readonly',
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higer'});
+                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
             $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
         }else{
           $('#bidAmount').attr({'readonly': 'readonly',
-                              'placeholder': customPlaceholder + ' or higer'});
+                              'placeholder': customPlaceholder + ' or higher'});
 
           $('#bidAmount').val(customPlaceholder)
         }
@@ -154,7 +158,9 @@
 			if(cancelBidConfirm === false){
 				return false;
 			}
-		})
+    })
+    
+    
     </script>
 
 	</body>

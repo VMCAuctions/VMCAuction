@@ -4,11 +4,14 @@ var app = express();
 var session = require('express-session');
 var secret = require('./config/secret.json')
 require('jsdom-global');
+require("pdfmake/build/pdfmake.js");
+require("pdfmake/build/vfs_fonts.js");
 
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
+
 
 
 

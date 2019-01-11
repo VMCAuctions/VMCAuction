@@ -15,13 +15,14 @@ var packageSchema = new Schema({
 	_auctions: {type: Schema.Types.ObjectId, required: true, ref: 'Auction'},
 	value: {type: Number, required: true},  //prepopulated field with for item in package._items { value += item.value }
 	amount: {type: Number, required: true}, //starting bid
-	priority: {type: Number, required: true},
-	featured: {type: Boolean, default:false},
+	priority: {type: Number, default: -1}, //varies from 1 - 10, with 1 first
+	featured: {type: Boolean, required: true},
 	bidIncrement: {type: Number, required: true},
 	bids: {type: Array},
 	// {bidAmount: 50, name: yarik }
-	photo: String
-}, { timestamps: true });
+	photo: String,
+	restrictions: { type: String }
+}, { timestamps: true, usePushEach: true });
 
 packageSchema.plugin(autoIncrement.plugin, {model: 'Package', startAt: 100});
 

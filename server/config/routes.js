@@ -14,6 +14,15 @@ module.exports = function(app) {
 	// get the new item form
 	app.get('/:auctions/items/new', function(req,res){
 		items.new(req,res)});
+
+	//adding items from csv page
+	app.get('/:auctions/items/populate', function(req, res){
+		items.populatePage(req, res)});
+	//actually adding items from csv
+	app.post('/:auctions/items/populate', function(req, res){
+		console.log("in items.populate route")
+		items.populate(req, res)});
+
 	// post the new item form and create that new item
 	app.post('/:auctions/items', function(req,res){
 		items.create(req,res)});
@@ -28,11 +37,16 @@ module.exports = function(app) {
 		items.removeItem(req, res)});
 
 
-
 	// PACKAGES //
+	//Modifying the featured status and priority of an item
+	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
+		packages.priority(req, res)});
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
+	// show package register
+	app.get('/:auctions/packages/list', function(req, res) {
+		packages.list(req, res)});
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
@@ -68,6 +82,10 @@ module.exports = function(app) {
 	app.post('/:auctions/categories', function(req,res){
 		categories.create(req,res)});
 
+	// delete a category
+	app.get('/:auctions/categories/:_id/delete', function(req,res){
+		categories.delete(req,res)});
+
 
 
 	// USERS //
@@ -80,6 +98,11 @@ module.exports = function(app) {
 	// get the login form
 	app.get('/users/login', function(req,res){
 		users.login(req,res)});
+
+	//get the user account page
+	app.get('/:auctions/users/account/:userName', function (req,res) {
+		users.showAccount(req,res)});
+
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
@@ -87,18 +110,24 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 		users.checkLogin(req,res)});
   	//Check if username is already in use
-	app.get('/users/duplicate/', function(req, res) {
+	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
 	// logout a specific user
 	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
-	// get the page of a specific user
+	// get the watchlist page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){
 		users.show(req,res)});
-	// update a specific user (profile/info)
-	app.post('/:auctions/users/:id(\d+)', function(req,res){
+
+	//update organizer's data - TODO!
+	app.post('/:auctions/users/account/:userName', function(req, res){
+		users.update(req, res)});
+
+	// update a specific user (profile/info)- this function might be replaced by the one above
+	app.put('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
+
 	// parse through admin changes before update
 	app.post('/users/admin', function(req,res){
 		users.adminChange(req,res)});
@@ -119,26 +148,46 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//organizer's landing page (where the organizer selects what she wants to do)
+	//Organizer's landing page (where the organizer selects what she wants to do)
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
-	//admin selects what they want to do [Corina's comments: actually this is teh page with the new auction form]
+	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
-		//Creating an auction
+	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-		//Renders the organizer menu page
+	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
-		auctions.menu(req, res)})
-		//Edits the auction on the backend
+		auctions.menu(req, res)});
+	//Renders the page to edit an auction
+	app.get('/:auctions/edit', function (req, res) {
+		auctions.edit(req, res)})
+		//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
+		// Deletes auction
+	app.get('/:auctions/remove', function(req, res) {
+		auctions.deleteAuction(req, res)});
+	//Event landing page the supporters will see; has links to supporter login and registration
+	app.get('/:auctions/event', function(req, res) {
+		auctions.event(req, res)});
+	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
+	app.get('/:auctions/clerkDash', function(req,res) {
+		auctions.clerk(req,res)});
+	app.get('/clerk/login', function(req, res){
+		auctions.pinEntry(req,res)});
+	app.post('/clerk/pin', function(req, res){
+		auctions.pinCheck(req,res)});
 
 
 
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
+	//Added temporary redirect if no other routes are hit, which goes to login
+	app.get('*', function (req, res) {
+		res.redirect('/users/login')
+	})
 }
 // end of module.exports

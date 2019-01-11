@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%=user.userName%></title>
+    <title><%=user.userName%>'s Watch List</title>
   </head>
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -13,43 +13,45 @@
     <%}else{%>
       <%- include('header') -%>
     <%}%>
-    <h3><%=user.userName%>'s Page</h3>
-    <p>you can rearange the order from most to least interested to suit your needs by draging them</p>
-    <table>
-      <thead>
-        <th>Package Name</th>
-        <th>Who's Winning</th>
-        <th>Watchlist</th>
-      </thead>
+    <div class="container">
+      <h3>Your Watch List</h3>
+      <p>Favorite packages you're currently watching.</p> 
+      <p>You can rearrange the order from most to least favorite to suit your needs by dragging them.</p>
+      <table>
+        <thead>
+          <th>Package Name</th>
+          <th>Who's Winning</th>
+          <th>Watchlist</th>
+        </thead>
 
-      <tbody id='selections'>
-        <%for(let i =0; i<user._packages.length; i++){%>
-          <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
-          <% if(user._packages[i]) {%>
-          <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
-          <% if(user._packages[i].bids.length > 0) {%>
-            <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
+        <tbody id='selections'>
+          <%for(let i =0; i<user._packages.length; i++){%>
+            <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
+            <% if(user._packages[i]) {%>
+            <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
+            <% if(user._packages[i].bids.length > 0) {%>
+              <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
 
-                <td id = "<%=user._packages[i]._id%>">You!!!</td>
-            <%}else{%>
-                <td id = "<%=user._packages[i]._id%>"><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
+                  <td id = "<%=user._packages[i]._id%>">You!!!</td>
+              <%}else{%>
+                  <td id = "<%=user._packages[i]._id%>"><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
+                <%}%>
+              <%}else{%>
+                <td>No Bids Yet!</td>
               <%}%>
-            <%}else{%>
-              <td>No Bids Yet!</td>
             <%}%>
-          <%}%>
 
-          <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
-          </tr>
-          <%}%>
+            <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+            </tr>
+            <%}%>
 
-      </tbody>
-    </table>
-    <button id='update'>Update List Order</button>
-    <!--cant tell if pressing this button works or not on my phone-->
+        </tbody>
+      </table>
+      <button id='update'>Update List Order</button>
+      <!--cant tell if pressing this button works or not on my phone-->
 
-    <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
-
+      <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
+    </div> <!-- End of container -->
     <script>
     	var socket = io.connect('http://localhost:8000/');
       var cartTotal = <%=cartTotal%>

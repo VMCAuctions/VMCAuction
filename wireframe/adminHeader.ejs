@@ -1,88 +1,89 @@
 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 <!-- Bootstrap -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/adminHeader.css">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-<style>
-  .nav-img {
-    height: 30px;
-    padding-right: 20px;
-  }
-  a.btn-logout:hover {
-    color: #003d79 !important;
-}
-</style>
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <header>
+	<!-- Organizer's Top Navbar -->
+  	<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row">
+        <!-- Branding-->
+        <div class="brand">elizabid</div>
+        	<!-- Right Top Navbar -->
+          	<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
+				<% if (admin === 2) { %>
+					<li class="li-marg">
+					<a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'dashboard') { %> active1 <% } %>" href="/auctions/main">Dashboard</a>
+					</li>
+					<li class="li-marg">
+					<a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
+					</li>
+				<% } %>
+				<%if(userName){%>
+					<% if (admin === 2){ %>
+					<li class="li-marg">
+						<a class="nav-link top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"><%=userName%>'s Account  </a>
+					</li>
+					<% } %>
+					<li>
+						<a class="btn btn-outline-primary btn-logout" href="/users/logout">Logout</a>
+					</li>
+				<%}else{%>
+					<li>
+						<a class="nav-link top-link" href='/users/login'>Login</a>
+					</li>
+					<li>
+						<a class="nav-link top-link" href="/users/register">Register </a>
+					</li>
+				<%}%>
+			</ul>
+    </nav>
 
-<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #003d79">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="http://vmcfoundation.org"><img class="nav-img" src="/VMCF_Logo_Simple_White_web.png"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-            <li>
-              <a class="nav-link" href="/auctions/main">Dashboard</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="/<%=auction%>/organizerMenu">Organizer's Menu</a>
-            </li>
-            <li>
-              <a class="nav-link" href="/<%=auction%>/items">Items</a>
-            </li>
-            <li>
-              <a class="nav-link" href="/<%=auction%>/packages">Catalog</a>
-            </li>
-
-            <li>
-              <a class="nav-link" href='/<%=auction%>/users'>All Users</a>
-            </li>
-
-            <li>
-              <a class="nav-link" href='/<%=auction%>/categories'>Add Category</a>
-            </li>
-
-            <li>
-              <a class="nav-link" href="/<%=auction%>/items/new"> Add Item</a>
-            </li>
-
-            <li>
-              <a class="nav-link" href="/<%=auction%>/packages/new">Add Package</a>
-            </li>
-
-
-
-          </ul>
-          <!-- right navbar -->
-          <ul class="nav navbar-nav navbar-right">
-            <%if(userName){%>
-              <li>
-                <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%= userName%>  </a>
-              </li>
-
-              <li>
-                <a class="btn btn-outline-light btn-logout" href="/users/logout">Logout</a>
-              </li>
-            <%}else{%>
-              <li>
-                <a class="nav-link" href='/users/login'>Login</a>
-              </li>
-
-              <li>
-                <a class="nav-link" href="/users/register">Register </a>
-              </li>
-
-            <%}%>
+	<!-- Organizer's Secondary Navbar-->
+  	<nav class="navbar navbar-expand-md navbar-dark nav-head">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          	<span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          	<ul class="navbar-nav mr-auto">
+				<% if (admin === 2){ %>
+				<li class="li-marg">
+					<!-- "page" is a flag used to indicate the active web page -->
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Add Item</a>
+				</li>
+				<% } %>
+				<% if (admin === 2){ %>
+				<li class="li-marg">
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
+				</li>
+				<% } %>
+				<li class="li-marg">
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Items</a>
+				</li>
+				<li class="li-marg">
+                    <a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Packages</a>
+                </li>
+                <% if (admin !== 1) { %>
+				<li class="li-marg">
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
+				</li>
+				<li class="li-marg">
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporters</a>
+				</li>
+                <% } %>
+                <% if (admin === 1) { %>
+                <li class="li-marg">
+					<a class="nav-link nav-org <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/clerkDash'>Supporters</a>
+				</li>
+                <% } %>
           </ul>
         </div>
-      </div>
     </nav>
 </header>

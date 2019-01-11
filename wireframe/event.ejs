@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+    <head>
+			<meta charset="utf-8">
+			<title>elizabid by VMFC | Welcome to the Auction Event</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" type="text/css" href="/css/style.css" >
+			<link rel="stylesheet" type="text/css" href="/css/event.css" >
+		
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+
+  	<body>
+
+		<!-- EVENT LANDING PAGE NAV BAR / The page is accesible by everyone, prior to login or registration -->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row ">
+			<div class="brand py-2">elizabid |
+					<a href="https://vmcfoundation.org/"><img class="vmcf-brand" src="/VMCF_Logo_Blue_rgb.png"></a> 
+			</div>
+			<!-- Right Top Navbar -->
+			<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
+				<li class="mr-3">
+					<a class="nav-link  btn btn-ctlg" href="/<%=auction%>/packages">View Auction Catalog</a>
+				</li>
+				<li class="mr-3">
+					<a class="nav-link btn btn btn-nav-reg" href="/users/register"></i> Register</a> 
+				<li class="mr-3">
+					<a class="nav-link btn btn btn-nav-login" href="/users/login"> <i class="fas fa-lock"></i> Login</a>
+				</div>
+				</li>
+				</li>
+			</ul>
+		</nav>
+		
+		<!-- EVENT LANDING PAGE HEADER -->
+		<div class="jumbotron jumbotron-fluid header-img">
+
+			<!-- COUNTDOWN CLOCK -->
+			<div class="d-flex flex-row justify-content-center">
+				<div id="item1" class="text-center clock-num mr-2">item1</div>
+				<div id="item2" class="text-center clock-num mr-2">item2</div>
+				<div id="item3" class="text-center clock-num">item3</div>	
+			</div>
+			<div class="d-flex flex-row align-items-start justify-content-center">
+				<div id="item4" class="text-center clock-letters mr-2">item4</div>
+				<div id="item5" class="text-center clock-letters mr-2">item5</div>
+				<div id="item6" class="text-center clock-letters">item6</div>	
+			</div>		
+
+			<div id="event-end"></div>
+
+			<!-- AUCTION TITLE AND HEADER INFO -->
+			<div class="container display-header mt-5">
+				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
+				<p class="header-info"><%= startDateToDisplay %></p>	
+				<p class="header-info"><%= auctionDetails.venue %></p>	
+
+				<!-- invisible paragraph - just using the id and data for the countdown clock -->
+				<p id="event-start"> <%= auctionDetails.startClock %></p>
+
+				<div class="btn-div my-3">
+					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
+				</div>
+			</div>
+		</div> <!-- End Header -->
+
+		<!-- CONTAINER FOR CONTENT AND FEATURED PACKAGES-->
+		<div class="container-fluid">
+
+			<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
+			<div class="row">
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+				<div class="col-md-12 col-lg-9">
+					<div class="card-body">
+						<h2><%= auctionDetails.subtitle %></h2>						
+						<p class="welcome-message mt-4"><%= auctionDetails.welcomeMessage %></p>
+						<p><%= auctionDetails.description %></p>
+					</div>	
+				</div>	
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+			</div>
+
+			<!-- FEATURED PACKAGES SECTION-->
+		
+			<div class="row">
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+				<div class="col-md-12 col-lg-9">
+					<div class="card-body">
+						<h2 class="mb-3">Auction Featured Packages</h2>
+						
+						<% for (var i = 0; i < packages.length; i+=2) {%>
+
+							<div class="row">
+								<div class="col-md-6 mt-4">
+									<div class="card featured-card">
+										<div class="card-body">
+
+											<div class="featured-num">
+													#<%= packages[i]._id%>
+											</div>
+											<div class="d-flex flex-row justify-content-start align-items-start">
+												<div>
+													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
+												</div>
+												<div>
+													<h6 class="featured-title"><%= packages[i].name %></h6>
+													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i].amount %></span></p>
+												</div>
+											</div>
+											<div>
+												<hr>
+												<p class="featured-text mt-2" style="max-height: 3rem;"><%= packages[i].description %></p>
+											</div>		
+
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 mt-4">
+
+								<% if (i+1 < packages.length) { %>
+
+									<div class="card featured-card">
+										<div class="card-body">
+
+											<div class="d-flex flex-row justify-content-start align-items-start">
+												<div class="featured-num">
+													#<%= packages[i+1]._id%>
+												</div>
+												<div>
+													<img class="featured-img mr-3" src="/test_cuba_480.jpg">
+												</div>
+												<div>
+													<h5 class="featured-title"><%= packages[i+1].name %></h5>
+													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i+1].amount %></span></p>
+												</div>
+											</div>
+											
+											<div>
+												<hr>	
+												<p class="featured-text mt-2"><%= packages[i+1].description %></p>
+											</div>
+
+										</div>
+									</div>
+								<% } %>
+  								</div>
+						
+						</div> <!-- End of row of featured packages -->
+						<% } %>
+
+						<!-- View Catalog Button -->
+						<div class="btn-div mt-5 mb-4">
+							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
+						</div>
+
+					</div> <!-- End of card-body -->
+				</div>	
+				<div class="col"></div>  <!-- this column is for equal space on the margins -->
+			</div> <!-- End of row section holding Featured Packages -->
+		</div> <!-- End of container -->
+
+		<!-- FOOTER -->
+		<footer class="container-fluid event-footer">
+			
+				<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
+				<a href="#">Back to top</a>
+				
+		</footer>
+
+		<script>
+			function Calculate() {
+				let now = new Date().getTime();
+				let timeRemaining = countDownDate - now; 
+				console.log("time remaining:", timeRemaining);
+				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+				let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+				if (days > 1) {
+					document.getElementById("item1").innerText = `${days}`;
+					document.getElementById("item2").innerText = `${hours}`;
+					document.getElementById("item3").innerText =`${minutes}`;
+
+					document.getElementById("item4").innerText = "days";
+					document.getElementById("item5").innerText = "hours";
+					document.getElementById("item6").innerText = "minutes";	
+
+				} else if (timeRemaining >=0 && days <= 1) {
+					document.getElementById("item1").innerText = `${hours}`;
+					document.getElementById("item2").innerText = `${minutes}`;
+					document.getElementById("item3").innerText =`${seconds}`;
+
+					document.getElementById("item4").innerText = "hours";
+					document.getElementById("item5").innerText = "minutes";
+					document.getElementById("item6").innerText = "seconds";
+				
+				} else {
+					document.getElementById("item1").innerText = "";
+					document.getElementById("item2").innerText = "";
+					document.getElementById("item3").innerText = "";
+
+					document.getElementById("item4").innerText = "";
+					document.getElementById("item5").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("item6").innerText = "";
+
+					document.getElementById("event-end").innerText = "This event has ended";
+				}
+			}
+			var eventStart = document.getElementById("event-start");
+			console.log(eventStart); 
+			var countDownDate = new Date(eventStart.innerText).getTime();
+
+			// Use the folowing format to test for less than one day to the event
+			// var countDownDate = new Date("October 25, 2018 22:13:00").getTime(); 
+			
+			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
+			Calculate(); 
+
+			//setInterval will show the minutes/seconds changing
+			var timer = setInterval(Calculate, 1000);	
+
+		</script>
+
+  	</body>
+</html>

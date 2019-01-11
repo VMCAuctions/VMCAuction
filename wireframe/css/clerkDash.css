@@ -1,0 +1,81 @@
+body {
+  color: #404040 !important;
+}
+
+h2 {
+  padding: 1.2rem 0;
+  color: #003a70 !important;
+}
+
+#search-lastname {
+  width: 280px;
+  margin: 0 0.5rem 0 0;
+  display: inline-block;
+}
+label {
+  font-size: 0.9rem;
+  color: #003a70;
+  font-weight: 400;
+}
+
+.package-table {
+  font-size: 0.8rem;
+  margin-top: 1.3rem;
+}
+
+th {
+  background-color: #ccc;
+  color: #003a70;
+}
+
+th,
+td {
+  vertical-align: top !important;
+  padding: 0.4rem !important;
+}
+
+ul {
+  list-style: none inside;
+  margin: 0;
+  margin-bottom: 0 !important;
+  padding: 0;
+}
+
+td li {
+  padding: 0.2em 0;
+  border-bottom: solid silver 0.2px;
+}
+
+td li:last-child {
+  border-bottom: none;
+}
+
+.package-edit {
+  color: #719940;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.package-delete {
+  color: #fb3d10;
+  font-size: 1rem;
+}
+
+a:link,
+:visited {
+  color: #3399ff !important;
+}
+
+a:hover,
+:active {
+  color: #99004d !important;
+  text-decoration: none !important;
+}
+
+.package-val {
+  text-align: center;
+}
+
+/* .packageRow {
+  display: none;
+} */

@@ -2,7 +2,8 @@ var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Package = require('../models/package.js'),
-	Auction = require('../models/auction.js');
+	Auction = require('../models/auction.js'),
+	globals = require('../controllers/globals.js')
 
 function UsersController(){
 
@@ -10,10 +11,10 @@ function UsersController(){
 		const validationArray = [
 			["firstName", 2, "first name"],
 			["lastName", 2, "last name"],
-			["streetAddress", 2, "street address"],
-			["city", 2, "city"],
-			["states", 2, "state"],
-			["zip", 5, "zip code"],
+			// ["streetAddress", 2, "street address"],
+			// ["city", 2, "city"],
+			// ["states", 2, "state"],
+			// ["zip", 5, "zip code"],
 			["phoneNumber", 10, "phone number"],
 			["password", 6, "password"]
 		];
@@ -30,35 +31,37 @@ function UsersController(){
 
 	this.index = function(req,res){
 		console.log('UsersController index');
-		var cart = {}
-		User.find({_auctions: req.params.auctions}, function(err, users ){
-			if(err){
-				console.log(err)
-			}else if(req.session.admin){
-					Package.find({_auctions: req.params.auctions}, function(err, result){
-						if (err){
-							console.log(err)
-						}else{
-							for (var i = 0; i < users.length; i++) {
-								var packages = []
-								var total = 0
-								for (var j = 0; j < result.length; j++) {
-									if (result[j].bids[result[j].bids.length-1]){
-										if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
-											packages.push(result[j])
-											total +=result[j].bids[result[j].bids.length-1].bidAmount
+		if (globals.clerkValidation(req, res)){
+			var cart = {}
+			User.find({_auctions: req.params.auctions}, function(err, users ){
+				if(err){
+					console.log(err)
+				}else if(req.session.admin){
+						Package.find({_auctions: req.params.auctions}, function(err, result){
+							if (err){
+								console.log(err)
+							}else{
+								for (var i = 0; i < users.length; i++) {
+									var packages = []
+									var total = 0
+									for (var j = 0; j < result.length; j++) {
+										if (result[j].bids[result[j].bids.length-1]){
+											if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
+												packages.push(result[j])
+												total +=result[j].bids[result[j].bids.length-1].bidAmount
+											}
 										}
 									}
+									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								cart[users[i].userName]={'packages': packages, 'total': total };
+								res.render('allUsers', {page: 'supporters', users: users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 							}
-							res.render('allUsers', {users :users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
-						}
-					})
-			}else{
-				res.redirect('/' + req.params.auctions  + '/packages')
-			}
-		})
+						})
+				}else{
+					res.redirect('/' + req.params.auctions  + '/packages')
+				}
+			})
+		}
 	};
 
 	this.admin = function(req,res){
@@ -67,7 +70,11 @@ function UsersController(){
 			if(err){
 				console.log(err)
 			}else if(req.session.admin){
-				res.render('admin', {users :users, userName: req.session.userName, admin: req.session.admin})
+				res.render('admin', {
+					users :users,
+					userName: req.session.userName,
+					admin: req.session.admin
+				})
 			}else{
 				res.redirect('/' + req.params.auctions  + '/packages')
 			}
@@ -78,19 +85,63 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {userName: req.session.userName, admin: req.session.admin, auction:req.session.auction})
+		res.render('login', {
+			userName: req.session.userName,
+			admin: req.session.admin,
+			auction:req.session.auction
+		})
 	};
 
 
 	this.register = function(req,res){
 		Auction.find({}, function(err, auctions){
-			res.render('user', {userName: req.session.userName, admin: req.session.admin, auctions: auctions, auction:req.session.auction})
+			res.render('user', {
+				userName: req.session.userName,
+				admin: req.session.admin,
+				auctions: auctions,
+				auction:req.session.auction
+			})
+		})
+	};
+
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
+	this.showAccount = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else if(user.userName === req.session.userName || req.session.admin >= 1){
+				Auction.findById(req.params.auctions, function (err, auctionDetails) {
+					if (err) {
+						console.log(err)
+					} else {
+						res.render('userAccount', {
+							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
+							user: user,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							userName: user.userName,
+							phone: user.phone,
+							address: user.streetAddress,
+							city: user.city,
+							states: user.states,
+							zip: user.zip,
+							admin: req.session.admin,
+							auction: req.params.auctions,
+							viewer: req.session.userName,
+							auctionDetails: auctionDetails,
+						})
+					}
+				})
+			}else{
+				res.redirect('/users/login')
+			}
 		})
 	};
 
 
 	this.duplicate = function (req, res) {
 		let user = req.query.userName;
+		console.log(req.query)
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
@@ -103,6 +154,7 @@ function UsersController(){
 	};
 
 
+	//Might want to restrict some usernames, such as "organizer/admin or clerk"
 	this.create = function(req,res){
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
@@ -123,29 +175,14 @@ function UsersController(){
 						if(err){
 							console.log(err)
 						}else{
-							var validation = registrationValidation(req.body)
-							// email regex validation
-							var emailReg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-							var unValidatedEmail = req.body.email;
-							var emailResult = unValidatedEmail.match(emailReg);
-							if (!emailResult){
-								validation += "Invalid email.\n"
-							}
-							// userName regex validation based on no spaces in userName
-							var userReg = /^[a-zA-Z0-9\-_.]{5,25}$/;
-							var unValidateduserName = req.body.userName;
-							var userResult = unValidateduserName.match(userReg)
-							if(!userResult){
-								validation += 'Use letters, numbers, and -(dash) or _(underscore) ONLY; between 5-25 characters for userName.\n'
-							}
-							if(validation.length > 0){
-								res.json({validated: false, message: validation})
-								return;
-							}
-							//validation is ok, so hash the password and add to the database
 							var lowerUser = req.body.userName.toLowerCase();
-							//In the final product, this will be organizer, but keeping admin for legacy testing
-							var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
+							if (lowerUser === "organizer" || lowerUser === "admin"){
+								adminStatus = 2
+							}else{
+								adminStatus = 0
+							}
+							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
 							var linkedAuction = req.body.auctionName
 							if (adminStatus){
 								console.log("got in adminStatus")
@@ -156,7 +193,7 @@ function UsersController(){
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
-								email: req.body.email,
+								// email: req.body.email,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
 								states: req.body.states,
@@ -203,7 +240,7 @@ function UsersController(){
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
-						res.json({match: true, auction: user._auctions})
+						res.json({match: true, auction: user._auctions, admin:user.admin})
 					}else{
 						res.json({match: false})
 					}
@@ -212,7 +249,7 @@ function UsersController(){
 		})
 	}
 
-
+	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
 		console.log('UsersController show');
 		var cartArray = []
@@ -229,37 +266,57 @@ function UsersController(){
 						}
 					}
 				}
-				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-					if(err){
-						console.log(err)
-					}else if (user.userName === req.session.userName | req.session.admin === true){
-						res.render('userPage', {userName: req.session.userName, admin: req.session.admin, user: user, cartTotal: cartTotal, cartArray: cartArray, auction: req.params.auctions})
-					}else{
-						res.redirect('/' + req.params.auctions  + '/packages')
-					}
-				})
+        User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+          if(err){
+            console.log(err)
+          }else if (user.userName === req.session.userName | req.session.admin === true){
+            Auction.findById(req.params.auctions, function (err, auctionDetails) {
+              if (err) {
+                console.log(err)
+              } else {
+                console.log("req.session is", req.session)
+                res.render('userPage', {
+                  page: 'myAccount',
+                  userName: req.session.userName,
+                  admin: req.session.admin,
+                  user: user,
+                  cartTotal: cartTotal,
+                  cartArray: cartArray,
+                  auction: req.params.auctions,
+                  auctionDetails: auctionDetails,
+                })
+              }
+            })
+          }else{
+            res.redirect('/' + req.params.auctions  + '/packages')
+          }
+        })
 			}
 		})
 	};
 
+
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
   this.update = function(req,res){
-		console.log('UsersController update');
-		User.findById(req.params.id ,  function(err, user){
-			if (err){
-				console.log(err)
-			}else {
-				//this will eventually allow users and admins to edit their info
-			}
+		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
+			User.findOneAndUpdate({
+				userName: req.session.userName
+			}, {
+				password: req.body.newPass
+			}).then(function(res){
+				console.log('changed pass')
+			})
 		})
 	}
 
 
 	this.adminChange = function(req,res){
-		console.log('UsersController admin change')
-		//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
-		console.log("req.body is", req.body)
+		if (globals.adminValidation(req, res)){
+			console.log('UsersController admin change')
+			//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
+			console.log("req.body is", req.body)
 
-		console.log("req.body.keys() is", Object.keys(req.body))
+			console.log("req.body.keys() is", Object.keys(req.body))
 
 			User.find({_id: Object.keys(req.body)}, function(err, users){
 				if (err){
@@ -282,7 +339,7 @@ function UsersController(){
 					res.redirect('/users/admin')
 				}
 			})
-
+		}
 	};
 
 
@@ -293,36 +350,38 @@ function UsersController(){
 
 
 	this.interested = function(req, res) {
-		console.log("Interested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
-			if (err) {
-				console.log(err);
-			}else {
-				let flag = false
-				for (var i = 0; i < user._packages.length; i++) {
-					if (user._packages[i] == req.params.id) {
-						flag = true;
-						break
+		if (globals.notClerkValidation(req, res)){
+			console.log("Interested");
+			User.findOne({userName: req.session.userName}, function(err, user) {
+				if (err) {
+					console.log(err);
+				}else {
+					let flag = false
+					for (var i = 0; i < user._packages.length; i++) {
+						if (user._packages[i] == req.params.id) {
+							flag = true;
+							break
+						}
+					}
+					if (flag === false) {
+						user._packages.push(req.params.id);
+						user.save(function(err, result) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}else{
+						flag = false;
 					}
 				}
-				if (flag === false) {
-					user._packages.push(req.params.id);
-					user.save(function(err, result) {
-						if (err) {
-							console.log(err);
-						}
-					});
-				}else{
-					flag = false;
-				}
-			}
-			res.redirect('/' + req.params.auctions  + '/packages')
-		})
+				res.redirect('/' + req.params.auctions  + '/packages')
+			})
+		}
 	};
 
 
 	this.uninterested= function(req,res) {
-		console.log("in uniterested");
+		console.log("in uninterested");
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
@@ -337,43 +396,48 @@ function UsersController(){
 						})
 						break
 					}
-				}
-			};
-			res.redirect('/' + req.params.auctions  + '/packages')
+				};
+				res.redirect('/' + req.params.auctions  + '/packages')
+			}
 		})
 	};
 
 
 	this.updateList = function(req,res){
-		User.findById(req.params.userId,function(err,user){
-			if (err){
-				console.log(err)
-			}else{
-				var updatedList = req.params.result.split(',')
-				for(let i = 0; i < updatedList.length; i++){
-					updatedList[i] = parseInt(updatedList[i])
-				}
-				user._packages = updatedList
-				user.save(function(err,result){
-					if(err){
-						console.log(err)
-					}else{
-						console.log(result)
+		if (globals.notClerkValidation(req, res)){
+			User.findById(req.params.userId,function(err,user){
+				if (err){
+					console.log(err)
+				}else{
+					var updatedList = req.params.result.split(',')
+					for(let i = 0; i < updatedList.length; i++){
+						updatedList[i] = parseInt(updatedList[i])
 					}
-				})
-			}
-		})
+					user._packages = updatedList
+					user.save(function(err,result){
+						if(err){
+							console.log(err)
+						}else{
+							console.log(result)
+						}
+					})
+				}
+			})
+		}
 	}
 
+	//I don't think this has been implemented yet
 	this.delete = function(req, res){
-		User.remove({userName: req.params.user}, function(err, result){
-			if (err){
-				console.log(err)
-			}
-			else{
-				res.redirect("/users/register")
-			}
-		})
+		if (globals.adminValidation(req, res)){
+			User.remove({userName: req.params.user}, function(err, result){
+				if (err){
+					console.log(err)
+				}
+				else{
+					res.redirect("/users/register")
+				}
+			})
+		}
 	}
 
 	this.initialize = function(req, res) {
@@ -384,16 +448,26 @@ function UsersController(){
 				lastName: "Ott",
 				phone: "555-555-5555",
 				email: "organizer@gmail.com",
-				streetAddress: "555 Organizer Street",
+				streetAddress: "123 Main Street",
 				city: "Sunnyvale",
 				states: "CA",
 				zip: "55555",
 				_auctions: null,
 				password: hash,
-				admin: true
+				admin: 2
 			})
 		})
 	}
+
+	//This has been moved to global controller
+	// this.adminValidation = function(req, res) {
+	// 	console.log("inside adminValidation")
+	// 	if (req.session.admin != 2){
+	// 		res.redirect('/' + req.session.auction + '/packages')
+	// 		return false
+	// 	}
+	// 	return true
+	// }
 
 }
 

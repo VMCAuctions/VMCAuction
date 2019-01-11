@@ -1,51 +1,97 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <!-- Bootstrap -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  	<head>
+		<!-- Bootstrap -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"></script>
-    <title>Create an Auction</title>
-  </head>
-  <body>
-    <div class="container mt-4">
-      <h3>Create Auction</h3>
-      <form action="/auctions" method="post">
-        <div class="form-group">
-          <label for="name">Auction Name</label>
-          <input type="text" name="name" id="name" class="form-control" value="">
-        </div>
+		<!-- Bootstrap & CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/auctions.css">
+		<title>Create Auction</title>
 
-        <div class="form-group">
-          <label for="startClockDate">Start Date</label>
-          <input type="date" name="startClockDate" id="startClockDate" class="form-control" value="">
-        </div>
+		
+		<!-- JavaScript -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-        <div class="form-group">
-          <label for="startClockTime">Start Time</label>
-          <input type="time" name="startClockTime" id="startClockTime" class="form-control" value="">
-        </div>
+		
+  	</head>
+  	<body>
+	  	<div class="container-fluid mini-nav">
+		   <h3 class="mini-header">Create Auction</h3>
+		</div>  
 
-        <div class="form-group">
-          <label for="endClockDate">End Date</label>
-          <input type="date" name="endClockDate" id="endClockDate" class="form-control" value="">
-        </div>
+    	<div class="container mt-5">
+			<div class="mb-4">
+				<a href="auctions/main"> <i class="fa fa-angle-double-left"></i> Back to Dashboard </a>
+			</div>
+      		<form action="/auctions" method="post">
+			  	<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="name" class="label-name" >Auction Name</label>
+						<input type="text" name="name" id="name" class="form-control">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="venue" class="label-name">Venue</label>
+						<textarea name="venue" id="venue" class="form-control" rows="1"></textarea>
+					</div> 
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="startClockDate" class="label-name">Start Date</label>
+						<input type="date" name="startClockDate" id="startClockDate" class="form-control form-inner">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="startClockTime" class="label-name">Start Time</label>
+						<input type="time" name="startClockTime" id="startClockTime" class="form-control form-inner">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="endClockDate" class="label-name">End Date</label>
+						<input type="date" name="endClockDate" id="endClockDate" class="form-control form-inner">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="endClockTime" class="label-name">End Time</label>
+						<input type="time" name="endClockTime" id="endClockTime" class="form-control form-inner">
+					</div>
+				</div> 
+				
+				<div class="form-group">
+					<label for="subtitle" class="label-name">Subtitle/Tagline</label>
+					<textarea name="subtitle" id="subtitle" class="form-control" rows="1" ></textarea>
+				</div>
+				<div class="form-group">
+					<label for="welcomeMessage" class="label-name">Welcome Message</label>
+					<textarea name="welcomeMessage" id="welcomeMessage" class="form-control" rows="3"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="description" class="label-name">Description</label>
+					<textarea name="description" id="description" class="form-control" rows="5"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="headerImage" class="label-name text-black-50">Header Image</label>
+					<input type="text" name="headerImage" id="headerImage" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="auctionLogo" class="label-name text-black-50">Auction Logo</label>
+					<input type="text" name="auctionLogo" id="auctionLogo" class="form-control">
+				</div>
+	
+          		<input type="submit" name="submit" value="Submit" class="btn btn-submit">
+        
+      		</form>
+  		</div>
 
-        <div class="form-group">
-          <label for="endClockTime">End Time</label>
-          <input type="time" name="endClockTime" id="endClockTime" class="form-control" value="">
-        </div>
-
-        <div class="form-group">
-          <input type="submit" name="submit" value="Submit" class="btn btn-primary">
-        </div>
-    </div>
-  </body>
+		<script>
+        //     $('#form').submit(function(e) {
+        //         $('#messages').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+        //         $('#messages_content').html('<h4>MESSAGE HERE</h4>');
+        //         $('#modal').modal('show');
+        //         e.preventDefault();
+        //     });
+        </script>  
+  	</body>
 </html>
