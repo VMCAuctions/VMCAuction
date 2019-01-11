@@ -32,6 +32,6 @@
   "devDependencies": {
     "jsdom": "11.7.0",
     "jsdom-global": "3.0.2",
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.18.9"
   }
 }
