@@ -26,7 +26,11 @@
 			<% for(c in categories){ %>
 				<tr class="categories-table-row">
 				<td><%= categories[c].name %></td>
+
 				<td><a href="/<%= auction %>/categories/<%= categories[c]._id %>/delete"><i  class="far fa-trash-alt package-delete"></i></a></td>
+				<!-- Change auction._id to auction.name in URL -->
+				<!-- <td><a href="/<%= auction %>/categories/<%= categories[c]._id %>/delete"><i  class="far fa-trash-alt package-delete"></i></a></td> -->
+				
 				</tr>
 			<%}%>
 			</tbody>
@@ -34,7 +38,12 @@
 
 		<!-- Form - Add New Category -->
 
+		
 		<form action='/<%=auction%>/categories' method='post'>
+		<!-- Change auction._id to auction.name in URL -->
+		<!-- <form action='/<%=auction%>/categories' method='post'> -->
+
+
 			<div class="form-group row">
 				<div class="col-sm-10">
 					<input placeholder="Add New Category" type="text" name="name" id="categoryName" class="form-control" >

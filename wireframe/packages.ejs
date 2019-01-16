@@ -69,7 +69,13 @@
 
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body">
+
+
   <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=featured[f]._id%>'">
+  <!-- Change auction._id to auction.name in URL -->
+  <!-- <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=featured[f]._id%>'"> -->
+
+
   <h5 class="card-title"><%=featured[f].name%></h5>
   <!-- <a href="/<%=auction%>/packages/<%=featured[f]._id%>"><%=featured[f].name%></a> -->
   <p><b>Category:</b> <%=featured[f]._category%></p>
@@ -86,7 +92,13 @@
     <% for(var i = 0; i < user._packages.length; i++){ %>
       <% if(featured[f]._id == user._packages[i]) {%>
         <!--do this in ajax call instead-->
-        <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=featured[f]._id%>'">Remove from Watchlist</li>
+
+        
+		<li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=featured[f]._id%>'">Remove from Watchlist</li>
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=featured[f]._id%>'">Remove from Watchlist</li> -->
+
+
         <!-- <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
         <% flag = true %>
         <% break %>
@@ -95,7 +107,12 @@
 
       <% if(flag === false) {%>
         <!--do this in ajax call instead-->
+
         <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=featured[f]._id%>'">
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=featured[f]._id%>'"> -->
+
+
           Add to Watchlist
         </li>
         <!-- <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
@@ -104,13 +121,33 @@
   <% if (admin === 2){ %>
     <%if(featured[f].featured === true){%>
       <!-- <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Unfeature</button></a> -->
+
+
       <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Unfeature</li>
+	  <!-- Change auction._id to auction.name in URL -->
+      <!-- <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Unfeature</li> -->
+
+
       <%}else{%>
+
         <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Feature</li>
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=featured[f]._id%>'">Feature</li> -->
+
+
         <!-- <a href="/<%=auction%>/packages/featured/<%=featured[f]._id%>"><button>Feature</button></a> -->
         <%}%>
+
+		
         <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=featured[f]._id%>'">Edit</li>
-        <li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=featured[f]._id%>'">Delete</li>
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=featured[f]._id%>'">Edit</li> -->
+        
+		<li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=featured[f]._id%>'">Delete</li>
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item cardDelete btn btn-dark mb-1" onClick="document.location='/<%=auction%>/packages/remove/<%=featured[f]._id%>'">Delete</li> -->
+
+
       </ul>
     <!-- <a href='/<%=auction%>/packages/edit/<%=featured[f]._id%>'><button>Edit</button></a>
     <a href='/<%=auction%>/packages/remove/<%=featured[f]._id %>'><button>Delete</button></a> -->
@@ -133,7 +170,11 @@
   <div class="card cardMargin mb-3">
   <img class="card-img-top" src="/no-image.png" style="max-width:100%" alt="img">
   <div class="card-body" >
+
+
     <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=packages[n]._id%>'">
+	<!-- Change auction._id to auction.name in URL -->
+    <!-- <div class="cardHover" onClick="document.location='/<%=auction%>/packages/<%=packages[n]._id%>'"> -->
 
       <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
@@ -157,27 +198,51 @@
       <ul class="list-group list-group-flush">
       <% for(var i = 0; i < user._packages.length; i++){ %>
         <% if(packages[n]._id == user._packages[i]) {%>
+
           <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li>
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <li class="list-group-item cardListButton cardEdit btn mb-1" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</li> -->
+
+
           <% flag = true %>
           <% break %>
         <% } %>
       <%}%>
       <% if(flag === false) {%>
+
           <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <li class="list-group-item cardListButton cardWatch btn btn-primary mb-1" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'"> -->
+
             Add to Watchlist
           </li>
       <%}%>
     <%}%>
     <% if (admin === 2){ %>
       <%if(packages[n].featured === true){%>
+
         <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Unfeature</li>
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Unfeature</li> -->
+
         <%}else{%>
+
           <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Feature</li>
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <li class="list-group-item btn btn-success cardFeature mb-1" onClick="document.location='/<%=auction%>/packages/featured/<%=packages[n]._id%>'">Feature</li> -->
+
           <%}%>
         <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin Rights</li>
         <div class="dropdown-menu">
+
           <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li>
-          <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-item" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <li class="list-group-item btn cardEdit mb-1" onClick="document.location='/<%=auction%>/packages/edit/<%=packages[n]._id%>'">Edit</li> -->
+          
+		  <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-item" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li>
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <li class="list-group-item cardDelete btn btn-dark mb-1 dropdown-item" onClick="document.location='/<%=auction%>/packages/remove/<%=packages[n]._id%>'">Delete</li> -->
+		  
         </div>
       </ul>
     <%}%>

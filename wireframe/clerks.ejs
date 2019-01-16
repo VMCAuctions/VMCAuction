@@ -57,7 +57,12 @@
 						if(data.match == false){
 							alert('Please enter a valid pin.')
 						} else {
+
 							window.location.replace('/' + data.auctions + '/clerkDash')
+							
+							// Change auction._id to auction.name in URL
+							// window.location.replace('/' + data.auctions + '/clerkDash')
+							
 					  }
 					}
 				})

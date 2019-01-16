@@ -92,7 +92,11 @@
         event.preventDefault();
         $.ajax({
           type: "POST",
-          url: 'http://localhost:8000/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
+          
+		  url: 'http://localhost:8000/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
+		//   Change auction._id to auction.name in URL
+		//   url: 'http://localhost:8000/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
+
           "itemDonorFirstColumn":$('#donorFirst').val(),
           "itemDonorLastColumn":$('#donorLast').val(),
           "itemDonorOrgColumn":$('#donorOrg').val(),
@@ -110,7 +114,10 @@
                 alert(data.message)
               }
               else{
+
                 window.location.replace('/' + data.auction + '/packages')
+				// Change auction._id to auction.name in URL
+                // window.location.replace('/' + data.auction + '/packages')
               }
             }
           }

@@ -67,7 +67,11 @@
         <%}%>
 
           <p> Next Bid:</p>
+
           <form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
+		  <!-- Change auction._id to auction.name in URL -->
+          <!-- <form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'> -->
+
             <% if (package.bids == false) {%>
               <input id='bidAmount' readonly value='<%= package.amount%>'>
             <%} else {%>
@@ -89,21 +93,37 @@
           <%if(userName && userName !== "Clerk"){%>
             <% for (i in user._packages){%>
               <% if (package._id == user._packages[i]){%>
+
                 <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button class="btn" type="button" name="interested">Remove from Watchlist</button></a>
+				<!-- Change auction._id to auction.name in URL -->
+                <!-- <a href="/<%=auction%>/users/uninterested/<%= package._id %>"><button class="btn" type="button" name="interested">Remove from Watchlist</button></a> -->
+
                 <%flag = true%>
                 <%break%>
               <%}%>
             <%}%>
             <%if (flag == false){%>
+
               <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" class="btn" name="interested">Add to Watchlist</button></a>
+			  <!-- Change auction._id to auction.name in URL -->
+              <!-- <a href="/<%=auction%>/users/interested/<%= package._id %>"><button type="button" class="btn" name="interested">Add to Watchlist</button></a> -->
+
             <%}%>
           <%}%>
           <% if (admin === true) { %>
+
             <form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'>
+			<!-- Change auction._id to auction.name in URL -->
+            <!-- <form action="/<%=auction%>/packages/cancelbid/<%=package._id %>" method='POST'> -->
+
               <input type='text' value='' placeholder='username of bidder' name='user'>
               <input class='btn' id='cancelBid' type='submit' value='Delete Bid'>
             </form>
+
             <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a>
+			<!-- Change auction._id to auction.name in URL -->
+            <!-- <a href='/<%=auction%>/packages/edit/<%=package._id%>'><button>Edit</button></a> -->
+			
           <%}%>
             <p class="restrictions"> Package Restrictions: <%= package.restrictions %> </p>
       </div>

@@ -71,7 +71,10 @@
 								window.location.replace('/auctions/main')
 							}
 							else{
+
 								window.location.replace('/' + data.auction + '/packages')
+								// Change auction._id to auction.name in URL
+								// window.location.replace('/' + data.auction + '/packages')
 							}
 						}
 					console.log('inside last ajax line');

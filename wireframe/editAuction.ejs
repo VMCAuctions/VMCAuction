@@ -28,7 +28,12 @@
         <h2 class="mb-3">Edit Auction</h2>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Delete Auction</button>
       </div>
+
       <form action="/<%=auction%>/update" method="post">
+	  
+	  <!-- Change auction._id to auction.name in URL -->
+      <!-- <form action="/<%=auction%>/update" method="post"> -->
+
         <div class="form-group">
           <label for="name" class="label-name">Auction Name</label>
           <input type="text" name="name" id="name" class="form-control" value="<%=auctionDetails.name%>">
@@ -86,7 +91,11 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+
                 <a role="button" class="btn btn-danger" href="/<%=auction%>/remove">Delete</a>
+                <!-- Change auction._id to auction.name in URL -->
+				<!-- <a role="button" class="btn btn-danger" href="/<%=auction%>/remove">Delete</a> -->
+				
               </div>
             </div>
           </div>

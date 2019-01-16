@@ -19,7 +19,10 @@
       <% if (auction){ %>
         <ul class="navbar-nav mr-auto">
             <li class="li-marg">
+
               <a class="nav-link nav-org" href="/<%=auction%>/packages">Catalog</a>
+			  <!-- Change auction._id to auction.name in URL -->
+              <!-- <a class="nav-link nav-org" href="/<%=auction%>/packages">Catalog</a> -->
             </li>
         </ul>
       <%}%>
@@ -30,10 +33,18 @@
         <ul class="nav navbar-nav navbar-right">
           <%if(userName){%>
             <li class="li-marg">
+
               <a class="nav-link nav-org" href="/<%=auction%>/users/<%=userName%>">Watch List</a>
+			  <!-- Change auction._id to auction.name in URL -->
+              <!-- <a class="nav-link nav-org" href="/<%=auction%>/users/<%=userName%>">Watch List</a> -->
+
             </li>
             <li class="li-marg">
+
               <a class="nav-link nav-org" href="/<%=auction%>/users/account/<%=userName%>">Account</a>
+			  <!-- Change auction._id to auction.name in URL -->
+              <!-- <a class="nav-link nav-org" href="/<%=auction%>/users/account/<%=userName%>">Account</a> -->
+			  
             </li>
             <li class="li-marg">
               <a class="nav-link nav-org" href="/users/logout">Logout</a>

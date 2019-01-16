@@ -63,7 +63,11 @@
 
 <!-- these fields visible to admin only								 -->
 		<%if(admin){%>
+
 			<form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>">
+			<!-- Change auction._id to auction.name in URL -->
+			<!-- <form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>"> -->
+
 				<h6>This can be done by Admin only!</h6>
 					<div class="form-row">
 					<div class="form-group col-md-6">
@@ -135,7 +139,10 @@
 						type: "POST",
 						contentType: "application/json",
 						headers: {"X-HTTP-Method-Override": "PUT"},
+
  						url: "/<%=auction%>/users/account/<%=userName%>",
+						//  Change auction._id to auction.name in URL
+ 						// url: "/<%=auction%>/users/account/<%=userName%>",
 						data: JSON.stringify({password: newPass}),
 						success: function(data){
 							console.log('changed');

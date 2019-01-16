@@ -25,7 +25,11 @@
     <%}%>
     <div class="container mt-4">
       <h3 class="edit-package">Edit Package</h3>
+
       <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post">
+	  <!-- Change auction._id to auction.name in URL -->
+      <!-- <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post"> -->
+	  
         <!-- Row 1 -->
         <div class="form-row mt-3">
           <div class="form-group col-md-4">

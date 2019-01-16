@@ -26,6 +26,7 @@
     "mongodb": "^3.0.1",
     "mongoose": "^4.10.8",
     "mongoose-auto-increment": "^5.0.1",
+    "mongoose-unique-validator": "^2.0.2",
     "pdfmake": "^0.1.38",
     "socket.io": "^2.0.4"
   },

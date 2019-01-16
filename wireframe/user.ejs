@@ -46,7 +46,11 @@
 										<label for="auctionName">Select Auction</label>
 										<select class="form-control" name="auctionName" id="auctionName">
 											<% for (a in auctions) {%>
+
 												<option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
+												<!-- Change auction._id to auction.name in URL -->
+												<!-- <option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option> -->
+												
 											<% } %>
 										</select>
               					</div>

@@ -110,7 +110,11 @@
 
                         <tr class="packageRow">
                             <td><%= packages[i]._id%></td>
+
                             <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+							<!-- Change auction._id to auction.name in URL -->
+                            <!-- <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td> -->
+
                             <td><%= packages[i]._category%></td>
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
@@ -146,8 +150,15 @@
                                 </form>
                                 <td class="text-center">
                                     <button id="<%= packages[i].id%>" class="confirmChanges">Save Changes</button>
+
                                     <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit mt-3"></i></a>
-                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete mt-3"></i></a>
+									<!-- Change auction._id to auction.name in URL -->
+                                    <!-- <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit package-edit mt-3"></i></a> -->
+                                    
+									<a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete mt-3"></i></a>
+									<!-- Change auction._id to auction.name in URL -->
+                                    <!-- <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt package-delete mt-3"></i></a> -->
+
                                 </td>
                             <%}else{%>
                                 <td><%= packages[i].featured%></td>
@@ -189,7 +200,11 @@
               featured = $('#' + id + "Featured").val()
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
+
               $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+			// Change auction._id to auction.name in URL
+            //   $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+				
                 alert(message);
               });
             });

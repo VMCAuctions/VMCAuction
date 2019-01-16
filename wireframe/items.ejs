@@ -69,7 +69,11 @@
                       <td><%= items[i]._id%></td>
                       <td><%= items[i].name%></td>
                       <% if (items[i].packaged) {%>
+
                         <td> <a class="pkg-link" href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
+						<!-- Change auction._id to auction.name in URL -->
+                        <!-- <td> <a class="pkg-link" href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td> -->
+
                       <%}else{%>
                         <td></td>
                       <%}%>
@@ -82,8 +86,14 @@
                       <td><%= items[i].donorDisplay%></td>
                       <% if(admin){ %>
                         <td>
+
                           <a href='/<%=auction%>/items/<%=items[i]._id%>'><i class="fas fa-edit item-edit"></i></a>
-                          <a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt item-delete"></i></a>
+						  <!-- Change auction._id to auction.name in URL -->
+                          <!-- <a href='/<%=auction%>/items/<%=items[i]._id%>'><i class="fas fa-edit item-edit"></i></a> -->
+                          
+						  <a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt item-delete"></i></a>
+						  <!-- Change auction._id to auction.name in URL -->
+                          <!-- <a href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt item-delete"></i></a> -->
                         </td>
                       <%}%>
                 </tr>

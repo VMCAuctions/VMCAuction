@@ -4,8 +4,12 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
+// used on 'name' field to force uniqueness
+var uniqueValidator = require('mongoose-unique-validator');
+
 var auctionSchema = new Schema({
-	name: {type: String, required: true},
+	name: {type: String, required: true, unique: true },
+
 	//the subtitle or the tagline is the place for a catchy phrase for the auction
 	subtitle: {type: String},
 	welcomeMessage: {type: String},
@@ -20,9 +24,11 @@ var auctionSchema = new Schema({
 	//in case a logo or symbol image is used for an auction
 	auctionlogo: {type: String},
 	pin: {type: String},
-  _packages: [{type: Number, ref: 'Package'}],
-  _items: [{type: Number, ref: 'Item'}],
-  _users: {type: Schema.Types.ObjectId, ref: 'User'}
+	_packages: [{type: Number, ref: 'Package'}],
+	_items: [{type: Number, ref: 'Item'}],
+	_users: {type: Schema.Types.ObjectId, ref: 'User'}
 })
 
+// activates uniqueValidator plugin
+auctionSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('Auction', auctionSchema);

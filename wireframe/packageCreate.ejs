@@ -34,6 +34,9 @@
            <p class="err-info">The fields marked with (*) are required.</p>
 
         <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post">
+		<!-- Change auction._id to auction.name in URL -->
+        <!-- <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post"> -->
+		
         <div class="form-row">
           <div class="form-group col-6">
             <label for="packageName" class="label-name">Package Name*</label>

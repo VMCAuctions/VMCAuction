@@ -53,10 +53,17 @@
                     <% for (var u in users) {%>
                         <tr class="packageRow">
                             <td>
+
                                 <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
+								<!-- Change auction._id to auction.name in URL -->
+                                <!-- <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a> -->
+
                             </td>
                             <td id='supporterLast'>
+
                                 <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
+								<!-- Change auction._id to auction.name in URL -->
+                                <!-- <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a> -->
                             </td>
                             <td id="<%= users[u].userName + 'winning' %>">
                                 <ul>

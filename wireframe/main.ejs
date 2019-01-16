@@ -48,10 +48,16 @@
 			<div class="row">
 				<div class="col-sm">
 					<div class ="card border-0 m-4">
-						<h4 class="card-header auction-list"><i class="fas fa-hand-holding-usd"></i> &nbsp; Resume Auction</h4>												
+						<h4 class="card-header auction-list"><i class="fas fa-hand-holding-usd"></i> &nbsp; Resume Auction</h4>
 						<ul class="list-group list-group-flush">
 							<% for (var a in auctions) { %>
+							
 								<li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li>
+
+								<!-- changed 'auctions[a]._id' to 'auctions[a].name' to put auction name in URL instead of auction id -->
+								<!-- <li class="list-group-item"> <a href="/<%= auctions[a].name %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li> -->
+
+
 							<% } %>
 						</ul>						
 					</div>

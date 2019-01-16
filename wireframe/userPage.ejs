@@ -28,7 +28,11 @@
           <%for(let i =0; i<user._packages.length; i++){%>
             <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
             <% if(user._packages[i]) {%>
+
             <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
+			<!-- Change auction._id to auction.name in URL -->
+            <!-- <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td> -->
+
             <% if(user._packages[i].bids.length > 0) {%>
               <%if(user._packages[i].bids[user._packages[i].bids.length-1].name == user.userName){%>
 
@@ -42,6 +46,9 @@
             <%}%>
 
             <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+			<!-- Change auction._id to auction.name in URL -->
+            <!-- <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td> -->
+
             </tr>
             <%}%>
 
@@ -62,7 +69,11 @@
         var result = sortable.toArray()
         console.log(result)
         $.ajax({type: 'GET',
+
           url:'/<%=auction%>/users/updateList/' + result + '/' + userId
+		//   Change auction._id to auction.name in URL
+        //   url:'/<%=auction%>/users/updateList/' + result + '/' + userId
+
         })
       })
       socket.on("serverTalksBack", function(data){
@@ -84,12 +95,19 @@
         if(isDone){
           $("#selections").append(`
             <tr data-id= data.packId class='selection' style='cursor: move'>
+
             <td><a href="/<%=auction%>/packages/"` + data.packId + `">` + data.name + `</a></td>
+			// Change auction._id to auction.name in URL
+            // <td><a href="/<%=auction%>/packages/"` + data.packId + `">` + data.name + `</a></td>
+
             <td id = "` + data.packId + `">You!!!</td>
 
             <td><a href="/<%=auction%>/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
-            </tr>`
-          )
+			// Change auction._id to auction.name in URL
+            // <td><a href="/<%=auction%>/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+
+            </tr>
+          `)
           //Needs to add an entire new row to the table
         }
         <%for (var j = 0; j < cartArray.length; j++){%>
