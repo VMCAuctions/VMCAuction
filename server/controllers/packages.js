@@ -344,7 +344,9 @@ this.new = function(req,res){
 												})
 											})
 			    					}
-										res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+										// 1-17 Bug Fix List Item 7 Change redirect to Package Register
+										// res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+										res.redirect('/' + req.params.auctions  + '/packages/list' );
 			           }
 			       });
 			    }
