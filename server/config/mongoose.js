@@ -31,8 +31,8 @@ var mongoose      = require('mongoose'),
 	// from mLab MongoDB account - 3rd party mongodb hosting.  mlab.com/databases/elizabid
 	// account info:  user: rinebob  pw: 1Mlabpw
 	// db user login info:  user: organizer  pw:  1Elizabidpw
-    // dbURI         = 'mongodb://organizer:1Elizabidpw@ds131814.mlab.com:31814/elizabid',
-	dbURI         = 'mongodb://localhost/POTR_DEV2',
+    dbURI         = 'mongodb://organizer:1Elizabidpw@ds131814.mlab.com:31814/elizabid',
+	// dbURI         = 'mongodb://localhost/POTR_DEV2',
 
     // require auto-increment for simple, readable ID's
     autoIncrement = require('mongoose-auto-increment');
