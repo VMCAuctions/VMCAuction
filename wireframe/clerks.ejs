@@ -50,8 +50,8 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-					// url: 'http://localhost:8000/clerk/pin',
-					url: 'http://dv1.elizabid.com/clerk/pin',
+					url: 'http://localhost:8000/clerk/pin',
+					// url: 'http://dv1.elizabid.com/clerk/pin',
 					data: {"pin":$('#pin').val()},
 					success: function(data){
 						console.log('ho');
