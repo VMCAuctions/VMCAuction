@@ -405,7 +405,9 @@ this.new = function(req,res){
 						if(err){
 							console.log(err)
 						}else{
-							res.redirect('/' + req.params.auctions  + '/packages');
+							// res.redirect('/' + req.params.auctions  + '/packages');
+							// 1-17 Bug Fix List Item 45 change delete package redirect to packages register
+							res.redirect('/' + req.params.auctions  + '/packages/list');
 						}
 					})
 				}
