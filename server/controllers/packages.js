@@ -344,7 +344,9 @@ this.new = function(req,res){
 												})
 											})
 			    					}
-										res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+										// 1-17 Bug Fix List Item 7 Change redirect to Package Register
+										// res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+										res.redirect('/' + req.params.auctions  + '/packages/list' );
 			           }
 			       });
 			    }
@@ -403,7 +405,9 @@ this.new = function(req,res){
 						if(err){
 							console.log(err)
 						}else{
-							res.redirect('/' + req.params.auctions  + '/packages');
+							// res.redirect('/' + req.params.auctions  + '/packages');
+							// 1-17 Bug Fix List Item 45 change delete package redirect to packages register
+							res.redirect('/' + req.params.auctions  + '/packages/list');
 						}
 					})
 				}
