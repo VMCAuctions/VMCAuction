@@ -93,7 +93,7 @@
                         <th scope="col">Package Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Package Description</th>
-                        <th scope="col">Package Restriction</th>
+                        <th scope="col">Package Restrictions</th>
                         <th scope="col">Items</th>
                         <th scope="col">Fair Market Value</th>
                         <th scope="col">Starting Bid</th>
@@ -189,7 +189,9 @@
               featured = $('#' + id + "Featured").val()
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
+			  // 1-17 Bug Fix List Item 6 Insert deployed URL so 'Save Changes' button works on deployed version
               $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+            //   $.get(`http://dv1.elizabid.com/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
                 alert(message);
               });
             });

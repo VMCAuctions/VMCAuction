@@ -56,7 +56,9 @@
           <p> Starting Bid: <%= package.amount %> </p>
 
         <% if (package.bids.length == 0) {%>
-          <p id ='currentBid'>Current Bid: <%= package.value %></p>
+          <!-- <p id ='currentBid'>Current Bid: <%= package.value %></p> -->
+		  <!-- 1-17 Bug Fix List Item 22 Make opening current bid field default to package.amount instead of package value -->
+          <p id ='currentBid'>Current Bid: <%= package.amount %></p>
         <%} else {%>
           <p id ='currentBid'>
             Current Bid: 
@@ -65,6 +67,7 @@
             by: <%= user.firstName.charAt(0) %>. <%= user.lastName %>  
           </p>
         <%}%>
+		<p> Bid Increment: <%= package.bidIncrement %> </p>
 
           <p> Next Bid:</p>
           <form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>

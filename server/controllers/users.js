@@ -397,7 +397,9 @@ function UsersController(){
 						break
 					}
 				};
-				res.redirect('/' + req.params.auctions  + '/packages')
+				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
+				// res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 			}
 		})
 	};
