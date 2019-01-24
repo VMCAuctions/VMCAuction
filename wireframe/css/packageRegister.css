@@ -28,8 +28,8 @@ td.summary-table {
     vertical-align: middle !important;
 }
 
-.package-table {
-    font-size: 0.8rem; 
+#package-table {
+    font-size: 0.7rem; 
     margin-top: 1.3rem;    
 }
 
@@ -41,6 +41,22 @@ th{
 th, td{
     vertical-align: top !important; 
     padding: 0.4rem !important;
+}
+
+th.large-col{
+    width: 20%;
+}  
+
+th.medium-col {
+    width: 12%;
+}
+
+th.med-to-narrow-col {
+    width: 8%;
+}
+
+th.narrow-col {
+    width: 4%;
 }
 
 ul {
@@ -98,11 +114,11 @@ td li:last-child {
     border-radius: 4px; 
     text-align: center;
     color: #fff;
+    font-size: 0.7rem !important; 
 }
 
 .confirmChanges {
-    padding: 2px 6px; 
-    font-size: 0.8rem; 
+    padding: 2px 0.7rem; 
     background-color: #4567a8; 
     border-radius: 4px; 
     color:#fff;

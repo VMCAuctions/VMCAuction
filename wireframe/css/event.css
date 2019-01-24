@@ -115,7 +115,7 @@ h2 {
 /* FEATURED PACKAGES CARDS */
 
 .featured-card {
-  height: 16rem;
+  height: 15rem;
   background-color: #f8f9f8 !important;
   border:solid 1px #f1f3f1 !important;  
   box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
@@ -141,19 +141,19 @@ h2 {
 
 .featured-title {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 1.3rem; 
+  font-size: 1.1rem; 
   font-weight: 700; 
 }
 
 .featured-bid {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 1.2rem; 
+  font-size: 1.1rem; 
   font-weight: 900; 
   color: #4d9900 !important;
 }
 
 .featured-text {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1.4rem; 
   color: #737373; 
   
