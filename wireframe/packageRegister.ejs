@@ -112,7 +112,7 @@
                             <td><%= packages[i]._id%></td>
                             <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
                             <td><%= packages[i]._category%></td>
-                            <td><%= packages[i].description%></td>
+                            <td class="text-truncate" style="max-width: 300px;"><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
                             <td>
                                 <ul>

@@ -105,13 +105,13 @@
 													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
 												</div>
 												<div>
-													<h6 class="featured-title"><%= packages[i].name %></h6>
+													<h5 class="featured-title"><%= packages[i].name %></h5>
 													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i].amount %></span></p>
 												</div>
 											</div>
 											<div>
 												<hr>
-												<p class="featured-text mt-2" style="max-height: 3rem;"><%= packages[i].description %></p>
+												<p class="featured-text text-truncate mt-2" style="max-height: 6rem;"><%= packages[i].description %></p>
 											</div>		
 
 										</div>
@@ -139,8 +139,11 @@
 											</div>
 											
 											<div>
-												<hr>	
-												<p class="featured-text mt-2"><%= packages[i+1].description %></p>
+												<hr>
+				
+													
+													
+												<p class="featured-text text-truncate mt-2"><%= packages[i+1].description %></p>
 											</div>
 
 										</div>
