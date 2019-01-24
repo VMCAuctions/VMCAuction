@@ -10,45 +10,55 @@ var ObjectId = require('mongodb').ObjectId;
 function PackagesController(){
 
 	this.index = function(req,res){
-		console.log('PackagesController index');
+		console.log('++++++++++++++++++++++++ 100 packages.js.  PackagesController index');
+		console.log("++++++++++++++++++++++++ 101 packages.js.  req.session.userName = ",req.session.userName);
 		if (!req.session.userName){
 	  	req.session.auction = req.params.auctions
+		console.log("packages.js 102.  req.params = ",req.params);
+		console.log("packages.js 103.  req.session = ",req.session);
 		}
+		console.log("packages.js 102b.  req.params = ",req.params);
+		console.log("packages.js 103b.  req.session = ",req.session);
 		var user
 		Category.find({}, function(err, categories) {
 			if(err) {
-				console.log(err);
-			}
+				console.log("packages.js 120.  category.find err = ",err);
+			} 
 			else {
+				console.log("packages.js 121.  category.find categories = ",categories);
 				User.findOne({userName:req.session.userName}, function(err, result){
 					if(err){
 						console.log(err)
 					}else{
+						console.log("packages.js 122.  User.findOne result = ",result);
+						console.log("packages.js 123.  req.params = ",req.params);
 						user = result
 						// This is the method that finds all of the packages from the database
 						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
-									console.log('Package Index Error');
-									res.status(500).send('Failed to Load Packages');
-									console.error();
+								console.log('124 packages.js req.params = ',req.params);
+								console.log('125 packages.js Package Index Error. err = ',err);
+								res.status(500).send('128 packages.js.  Failed to Load Packages');
+									
 							}else {
-									// console.log('this is user again', user)
-									var featured = [];
-									var nonfeatured = [];
-									for (var i = 0; i < packages.length; i++){
-										if(packages[i].featured === true){
-											featured.push(packages[i]);
-										}
-										//Not actually using nonfeatured packages right now
-										else{
-											nonfeatured.push(packages[i]);
-										}
+								console.log('130 packages.js Package.find packages packages = ',packages);
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++){
+									if(packages[i].featured === true){
+										featured.push(packages[i]);
 									}
+									//Not actually using nonfeatured packages right now
+									else{
+										nonfeatured.push(packages[i]);
+									}
+								}
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
 									} else {
 										console.log("req.session is", req.session)
+										console.log("req.params is", req.params)
 										res.render('packages', {
 											page: 'catalog',
 											packages: packages,

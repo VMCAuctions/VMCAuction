@@ -71,6 +71,8 @@
 								window.location.replace('/auctions/main')
 							}
 							else{
+								console.log('200 login.ejs.  success data = ',data);
+								console.log("201 loading '/ + data.auction + /packages'");
 								window.location.replace('/' + data.auction + '/packages')
 							}
 						}

@@ -11,10 +11,12 @@
 
 		<script type='text/javascript'>
 			var socket = io.connect('http://localhost:8000/');
-      		var customPlaceholder = parseInt(<%=lastBid%>);
+			// var socket = io.connect('http://dv1.elizabid.com/');
+			var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-          if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
+				if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
+					console.log("100 packageShow.ejs.  user = ",user)
   					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
   					event.preventDefault();
   					// replace replaceWith val maybe??
