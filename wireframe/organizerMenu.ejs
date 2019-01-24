@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>Organizer Menu</title>
   </head>
   <%if(admin){%>
@@ -16,6 +16,7 @@
   <body>
     <div class="container">
       <h1 class="text-center mt-3"><%= auctionDetails.name %></h1>
+      <h4 class="text-center">(<%= auctionDetails.pin %>)</h4>
       <table id="orgMenu" class="table table-hover text-justify table-bordered mt-4">
       <thead>
         <tr>
@@ -50,7 +51,7 @@
         </tr>
         <tr>
           <td class="borderRight"></td>
-          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide">Populate from CSV</td>
+          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide"><i class="fas fa-file-import"></i> Import items from CSV</td>
           <td class="borderSide"></td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-history"></i> Bid History By Package</td>
           <td class="borderSide"></td>
