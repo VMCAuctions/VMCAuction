@@ -20,8 +20,8 @@ label {
     color: #003a70; 
     font-weight: 400; 
 }
-.item-table {
-    font-size: 0.8rem; 
+#item-table {
+    font-size: 0.7rem; 
     margin-top: 1.3rem;    
 }
 th{
@@ -31,7 +31,27 @@ th{
 th, td{
     vertical-align: top !important; 
     padding: 0.4rem !important;
+} 
+
+th.large-col{
+    width: 20%;
 }  
+
+th.medium-col {
+    width: 12%;
+}
+
+th.med-to-narrow-col {
+    width: 8%;
+}
+
+th.narrow-col {
+    width: 4%;
+}
+
+#item-table td{
+    height: 60px; 
+}
 .item-edit {
     color: #719940;
     font-size: 1rem; 
@@ -49,5 +69,5 @@ a:hover, :active {
     text-decoration: none !important; 
 }
 .item-val {
-    text-align: right;
+    text-align: center;
 }
