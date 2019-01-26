@@ -55,7 +55,7 @@
 
 		<script type="text/javascript">
 			$('#submit').click(function(event){
-				console.log('running login ajax script');
+				console.log('login.ejs 100 running login ajax script');
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -63,7 +63,7 @@
 					// url: 'http://dv1.elizabid.com/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
-						console.log('data = ',data)
+						console.log('login.ejs 110 data = ',data)
 						if(data.match == false){
 							alert('username and password do not match')
 						} else {

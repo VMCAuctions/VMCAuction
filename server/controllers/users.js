@@ -85,6 +85,7 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
+		console.log("users.js this.login 100.  req.session = ",req.session);
 		res.render('login', {
 			userName: req.session.userName,
 			admin: req.session.admin,
@@ -224,7 +225,8 @@ function UsersController(){
 
 
 	this.checkLogin = function(req, res){
-		console.log("users.js.  this.checkLogin");
+		console.log("users.js checkLogin 100.  req.body = ",req.body);
+		
 		var name = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
@@ -232,11 +234,12 @@ function UsersController(){
 			}else if(!user){
 				res.json({match: false})
 			}else if(user){
+				console.log("users.js checkLogin 105.  user = ",user);
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
 					if(err){
 						console.log(err)
 					}else if(match){
-						console.log("user._auctions", user._auctions)
+						console.log("users.js checkLogin 110.  user._auctions", user._auctions)
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
@@ -344,6 +347,7 @@ function UsersController(){
 
 
 	this.logout = function(req,res){
+		console.log("users.js this.logout 100.  invoking req.session.destroy and redirecting to /users/login")
 		req.session.destroy();
     res.redirect('/users/login')
 	};
