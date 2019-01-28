@@ -74,7 +74,8 @@ var User = require('./models/user.js');
 var svr = require('../server.js');
 console.log("100 Sockets.  svr = require server.js = ",svr)
 
-var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(svr);
 
 
 var allBidsBigObj = {
