@@ -5,8 +5,8 @@
     <title>Package Show</title>
     <link rel="stylesheet" type="text/css" href="/css/packageShow.css">
 		<!-- <script src="/socket.io/socket.io.js"></script> -->
-		<script src="./node_modules/socket.io/lib/socket.js"></script>
-		<!-- <script src="./server.js"></script> -->
+		<script src="../node_modules/socket.io/lib/socket.js"></script>
+		<script src="../server/server.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -17,31 +17,35 @@
 			var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
-				if(($("#bidAmount").val() >= <%= package.amount%> && <%=ourBids%> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true)){
-					console.log("100 packageShow.ejs.  user = ",user)
-  					socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
-  					event.preventDefault();
-  					// replace replaceWith val maybe??
-          }
+					console.log("packageShow.ejs 100 #SubmitButton script");
+					console.log("user = ",user," ourBids = ",ourBids," lastBid = ",lastBid);
+
+					if(($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids%> === true)){
+						console.log("100 packageShow.ejs.  user = ",user)
+						socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
+						event.preventDefault();
+						// replace replaceWith val maybe??
+					}
 
 				})
 
-        socket.on("serverTalksBack", function(data){
-          if (data.packId == <%= package._id %>) {
-            $('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-            $('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>)+" ' >")
-                  customPlaceholder = data.bid;
-          }
-        })
-        socket.on('buttonStateChannel', function(data){
-          if (data.packId == <%= package._id %>) {
-          console.log(data.button);
-          $('#submitButton').attr('disabled', data.button )
-        }
-        })
-				}
-			)
-    </script>
+				socket.on("serverTalksBack", function(data){
+					if (data.packId == <%= package._id %>) {
+						$('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
+						$('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>)+" ' >")
+						customPlaceholder = data.bid;
+					}
+				})
+
+				socket.on('buttonStateChannel', function(data){
+					if (data.packId == <%= package._id %>) {
+						console.log(data.button);
+						$('#submitButton').attr('disabled', data.button )
+					}
+				})
+			})
+
+		</script>
   </head>
 
 	<body>
