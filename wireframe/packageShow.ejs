@@ -12,6 +12,7 @@
 
 		<script type='text/javascript'>
 			var socket = io.connect('http://localhost:8000/');
+			// var socket = io.connect('http://dv1.elizabid.com/');
       		var customPlaceholder = parseInt(<%=lastBid%>);
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
