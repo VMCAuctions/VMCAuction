@@ -51,26 +51,26 @@ autoIncrement.initialize(connection);
 *  When successfully connected
 */
 mongoose.connection.on( 'connected', function () {
-  console.log( `mongoose.js 100 Mongoose default connection open to ${ dbURI }` );
+  console.log( `Mongoose default connection open to ${ dbURI }` );
 });
 /*
 *  If the connection throws an error
 */
 mongoose.connection.on( 'error', function ( err ) {
-  console.error( `mongoose.js 110 Mongoose default connection error: ${ err }` );
+  console.error( `Mongoose default connection error: ${ err }` );
 });
 /*
 *  When the connection is disconnected
 */
 mongoose.connection.on( 'disconnected', function () {
-  console.log( 'mongoose.js 120 Mongoose default connection disconnected' );
+  console.log( 'Mongoose default connection disconnected' );
 });
 /*
 *  If the Node process ends, close the Mongoose connection
 */
 process.on( 'SIGINT', function() {
   mongoose.connection.close( function () {
-    console.log( 'mongoose.js 130 Mongoose default connection disconnected through app termination' );
+    console.log( 'Mongoose default connection disconnected through app termination' );
     process.exit( 0 );
   });
 });
