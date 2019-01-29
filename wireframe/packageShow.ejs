@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Package Show</title>
     <link rel="stylesheet" type="text/css" href="/css/packageShow.css">
-		<!-- <script src="/socket.io/socket.io.js"></script> -->
-		<script src="../node_modules/socket.io/lib/socket.js"></script>
-		<script src="../server/server.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<!-- <script src="../node_modules/socket.io/lib/socket.js"></script> -->
+		<!-- <script src="../server/server.js"></script> -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -18,10 +18,10 @@
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
 					console.log("packageShow.ejs 100 #SubmitButton script");
-					console.log("user = ",user," ourBids = ",ourBids," lastBid = ",lastBid);
+					// console.log("user = ",user," ourBids = ",ourBids," lastBid = ",lastBid);
 
 					if(($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids%> === true)){
-						console.log("100 packageShow.ejs.  user = ",user)
+						// console.log("100 packageShow.ejs.  user = ",user)
 						socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
 						event.preventDefault();
 						// replace replaceWith val maybe??
