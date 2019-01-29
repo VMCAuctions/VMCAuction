@@ -10,45 +10,58 @@ var ObjectId = require('mongodb').ObjectId;
 function PackagesController(){
 
 	this.index = function(req,res){
-		console.log('PackagesController index');
+		console.log('++++++++++++++++++++++++ 100 packages.js this.index.  PackagesController index');
+		// console.log("++++++++++++++++++++++++ 101 packages.js this.index.  req.session.userName = ",req.session.userName);
 		if (!req.session.userName){
 	  	req.session.auction = req.params.auctions
+		// console.log("packages.js 102 this.index.  req.params = ",req.params);
+		// console.log("packages.js 103 this.index.  req.session = ",req.session);
 		}
+		// console.log("packages.js 102b this.index.  req.params = ",req.params);
+		// console.log("packages.js 103b this.index.  req.session = ",req.session);
 		var user
 		Category.find({}, function(err, categories) {
 			if(err) {
-				console.log(err);
-			}
+				// console.log("packages.js 120 this.index.  category.find err = ",err);
+			} 
 			else {
+				// console.log("packages.js 121 this.index.  category.find categories = ",categories);
 				User.findOne({userName:req.session.userName}, function(err, result){
 					if(err){
-						console.log(err)
+						console.log("packages.js 121.5 this.index User.findOne err.  err = ",err)
 					}else{
+						// console.log("packages.js 122 this.index.  User.findOne result = ",result);
+						console.log("packages.js 123 this.index.  req.params = ",req.params);
 						user = result
 						// This is the method that finds all of the packages from the database
 						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
-									console.log('Package Index Error');
-									res.status(500).send('Failed to Load Packages');
-									console.error();
+								// console.log('124 packages.js req.params = ',req.params);
+								console.log('125 packages.js this.index Package Index Error. err = ',err);
+								console.log('++++++++++++++++++++++++ 126 packages.js this.index end error message');
+								res.status(500).send('128 packages.js this.index.  Failed to Load Packages');
+									
 							}else {
-									// console.log('this is user again', user)
-									var featured = [];
-									var nonfeatured = [];
-									for (var i = 0; i < packages.length; i++){
-										if(packages[i].featured === true){
-											featured.push(packages[i]);
-										}
-										//Not actually using nonfeatured packages right now
-										else{
-											nonfeatured.push(packages[i]);
-										}
+								// console.log('packages.js 130 this.index Package.find packages packages = ',packages);
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++){
+									if(packages[i].featured === true){
+										featured.push(packages[i]);
 									}
+									//Not actually using nonfeatured packages right now
+									else{
+										nonfeatured.push(packages[i]);
+									}
+								}
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
-										console.log(err)
+										console.log("packages.js 134 this.index Auction.findbyId err.  err = ",err)
 									} else {
-										console.log("req.session is", req.session)
+										// console.log("packages.js 140 req.session = ", req.session)
+										// console.log("packages.js 141 req.params = ", req.params)
+										console.log("packages.js 142 this.index render packages.ejs")
+										
 										res.render('packages', {
 											page: 'catalog',
 											packages: packages,
@@ -61,6 +74,7 @@ function PackagesController(){
 											auction: req.params.auctions,
 											auctionDetails: auctionDetails,
 										})
+										// console.log("packages.js 145 this.index post render packages.ejs. res = ",res)
 									}
 								})
 							}
@@ -252,19 +266,20 @@ this.new = function(req,res){
 
 
 	this.show = function(req,res){
-		console.log('PackagesController show');
+		console.log('packages.js this.show 100 ++++++++++++++++++++++++++++++++++++++');
+		console.log('packages.js this.show 101 req.params = ',req.params);
 		var user
 		User.findOne({userName:req.session.userName}, function(err, result){
 			if(err){
-				console.log(err)
+				console.log("packages.js this.show 110 User.findOne err.  err = ",err)
 			}else{
 				user = result
 				Package.findById(req.params.id).populate("_items").exec(function(err,package){
 					if(err){
-						console.log(err);
+						console.log("packages.js this.show 112 Package.findById err.  err = ",err);
 					}
 					else{
-						console.log(package)
+						console.log("packages.js this.show 113 Package.findById package._id = ",package._id)
 						var ourBids = false
 						var lastBid = package.amount
 						if(package.bids.length > 0){
@@ -273,8 +288,10 @@ this.new = function(req,res){
 						}
 						Auction.findById(req.params.auctions, function (err, auctionDetails) {
 							if (err) {
-								console.log(err)
+								console.log("packages.js this.show 116 Auction.findById err.  err = ",err)
 							} else {
+								console.log("packages.js this.show 117 Auction.findById auctionDetails._id = ",auctionDetails._id)
+								console.log("render packageShow.ejs.  package._id = ",package._id)
 								res.render('packageShow', {
 									package: package,
 									userName: req.session.userName,
@@ -291,6 +308,7 @@ this.new = function(req,res){
 				})
 			}
 		})
+		console.log("packages.js this.show 130.  exiting this.show")
 	};
 
 	this.update = function(req,res){

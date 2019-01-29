@@ -55,7 +55,7 @@
 
 		<script type="text/javascript">
 			$('#submit').click(function(event){
-				console.log('running login ajax script');
+				console.log('login.ejs 100 running login ajax script');
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -65,7 +65,7 @@
 
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
-						console.log('data = ',data)
+						console.log('login.ejs 110 data = ',data)
 						if(data.match == false){
 							alert('username and password do not match')
 						} else {
@@ -73,6 +73,8 @@
 								window.location.replace('/auctions/main')
 							}
 							else{
+								console.log('200 login.ejs.  success data = ',data);
+								console.log("201 loading '/ + data.auction + /packages'");
 								window.location.replace('/' + data.auction + '/packages')
 							}
 						}
