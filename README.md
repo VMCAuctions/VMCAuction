@@ -34,7 +34,6 @@ mkdir VMC
 cd VMC
 git clone https://github.com/VMCAuctions/VMCAuction.git
 git checkout -b develop origin/develop
-cd server
 npm install
 ```
 
@@ -49,13 +48,12 @@ sudo mongod
 
 On PC:
 ```shell
-net start MongoDB
+mongod
 ```
 
 Navigate to where you cloned the git repository and run the following:
 
 ```shell
-cd server
 nodemon server.js
 ```
 
