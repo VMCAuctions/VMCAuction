@@ -41,28 +41,21 @@ module.exports = function(app) {
 	//Modifying the featured status and priority of an item
 	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
-	
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
-		console.log("routes.js :auctions/packages.  loading packages.index method")
 		packages.index(req,res)});
-	
 	// show package register
 	app.get('/:auctions/packages/list', function(req, res) {
 		packages.list(req, res)});
-	
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
-
 	// post the new package form and create the new package
 	app.post('/:auctions/packages', function(req,res){
 		packages.create(req,res)});
-	
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
 		packages.show(req,res)});
-	
 	// update a single package
 	app.post('/:auctions/packages/:id', function(req,res){
 		packages.update(req,res)});
@@ -99,12 +92,10 @@ module.exports = function(app) {
 	// get the index page of all users
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
-	
 	// displaying the create user page
 	app.get('/users/register', function(req,res) {
 		console.log('routes.js users/register');
 		users.register(req,res)});
-	
 	// get the login form
 	app.get('/users/login', function(req,res){
 		console.log('routes.js users/login');
@@ -123,13 +114,15 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	  
+  	
+	  
+	  
 	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
 	// logout a specific user
 	app.get('/users/logout', function(req,res){
-		console.log("routes.js users/logout 100.  logging out");
+		console.log("route out");
 		users.logout(req,res)});
 	// get the watchlist page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){

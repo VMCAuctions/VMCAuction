@@ -54,7 +54,6 @@ var server = app.listen(port, function() {
  console.log("listening on port "+port);
 })
 
-
 /////////////// SOCKETS /////////////////
 var Package = require('./server/models/package.js')
 var User = require('./server/models/user.js');
@@ -216,4 +215,5 @@ io.sockets.on('connection', function(socket){
 
 	socket.on("disconnect", () => console.log("Client disconnected"));
 })
+
 
