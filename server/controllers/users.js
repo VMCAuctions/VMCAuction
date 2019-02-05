@@ -159,23 +159,26 @@ function UsersController(){
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
-		console.log('UsersController create');
-		console.log(req.body)
+		console.log('160 users.js this.create.  req.params = ',req.params);
+		console.log('161 users.js this.create.  req.body = ',req.body);
+		
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
-				console.log(err)
+				console.log("164 users.js this.create.  err = ",err)
 			}
 			else if(duplicate){
-				console.log(duplicate);
+				console.log("165 users.js this.create.  duplicate = ",duplicate);
 			}else{
 				//start actual registration
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
-							console.log(err)
+							console.log("166 users.js this.create.  bcrypt err = ",err);
+							
 						}else{
 							var lowerUser = req.body.userName.toLowerCase();
+							console.log("167 users.js this.create bcrypt success.  lowerUser = ",lowerUser);
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
 							if (lowerUser === "organizer" || lowerUser === "admin"){
 								adminStatus = 2
@@ -183,9 +186,11 @@ function UsersController(){
 								adminStatus = 0
 							}
 							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+							console.log("168 users.js this.create bcrypt success.  adminStatus = ",adminStatus);
 							var linkedAuction = req.body.auctionName
+							console.log("168 users.js this.create bcrypt success.  linkedAuction = ",linkedAuction);
 							if (adminStatus){
-								console.log("got in adminStatus")
+								console.log("169 users.js this.create bcrypt success.  in adminstatus");
 								linkedAuction = null
 							}
 							User.create({

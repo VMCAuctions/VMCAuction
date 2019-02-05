@@ -41,9 +41,14 @@ module.exports = function(app) {
 	//Modifying the featured status and priority of an item
 	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
+
 	// show all packages
 	app.get('/:auctions/packages', function(req,res){
+		console.log("150 routes.js /:auctions/packages.  req.params = ",req.params)
+		console.log("151 routes.js /:auctions/packages.  req.body = ",req.body)
 		packages.index(req,res)});
+
+
 	// show package register
 	app.get('/:auctions/packages/list', function(req, res) {
 		packages.list(req, res)});
@@ -195,7 +200,7 @@ module.exports = function(app) {
 		packages.index(req,res)});
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
-		console.log('routes.js * route');
+		console.log('routes.js * route.  directs to /users/login');
 		res.redirect('/users/login')
 	})
 }

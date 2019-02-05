@@ -25,8 +25,8 @@ function AuctionsController() {
         if (err) {
           console.log(err);
         } else {
-          //for now the archivd auctions are hard code.
-          //later make an if statemtn hat checks if auction is in past
+          //for now the archived auctions are hard coded.
+          //later make an if statement hat checks if auction is in past
           //based on clock and todays Date
           //if in past push into archived auctions array
           //else push into current auctions and pass to front
@@ -34,7 +34,8 @@ function AuctionsController() {
             if (err) {
               console.log(err);
             } else {
-              console.log("user is", user);
+              console.log("120 auction.js this.main.  user is", user);
+              console.log("121 auction.js this.main.  auctions is",auctions);
               res.render("main", {
                 user: user,
                 auctions: auctions,
@@ -49,9 +50,14 @@ function AuctionsController() {
         }
       });
     } else {
+		// Supporter landing page
       res.redirect("/" + req.session.auction + "/packages");
+      
+	  // change auction._id to auction.name in route
+	//   res.redirect("/" + req.session.auctionName + "/packages");
     }
   };
+
   //Just used as an API for now
   this.create = function(req, res) {
     // console.log("req.body.startClockDate is", req.body.startClockDate)
@@ -95,9 +101,13 @@ function AuctionsController() {
                   if (err) {
                     console.log(err);
                   } else {
-                    console.log(result);
+                    console.log("160 auctions.js this.create.  result = ",result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
+
                     res.redirect("/" + result._id + "/organizerMenu");
+                    
+					// change auction._id to auction.name in route
+					// res.redirect("/" + result.name + "/organizerMenu");
                   }
                 }
               );
@@ -113,7 +123,8 @@ function AuctionsController() {
         if (err) {
           console.log(err);
         } else {
-          console.log("auction details", auctionDetails);
+          console.log("170 auctions.js Auction.findById.  auctionDetails = ", auctionDetails);
+          console.log("171 renders organizerMenu");
           res.render("organizerMenu", {
             page: "organizerMenu",
             admin: req.session.admin,

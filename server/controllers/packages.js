@@ -10,7 +10,8 @@ var ObjectId = require('mongodb').ObjectId;
 function PackagesController(){
 
 	this.index = function(req,res){
-		console.log('PackagesController index');
+		console.log('100 packages.js this.index.  req.params = ',req.params);
+		console.log('101 packages.js this.index.  req.body = ',req.body);
 		if (!req.session.userName){
 	  	req.session.auction = req.params.auctions
 		}
