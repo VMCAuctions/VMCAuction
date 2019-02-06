@@ -45,18 +45,29 @@ function AuctionsController() {
                   { name: "Las Vegas 2017 Donor Evening", _id: "1236" }
                 ]
               });
+
             }
           });
+
         }
       });
     } else {
 		// Supporter landing page
       res.redirect("/" + req.session.auction + "/packages");
       
-	  // change auction._id to auction.name in route
-	//   res.redirect("/" + req.session.auctionName + "/packages");
+	  // change auction._id to auction.urlStub in route
+	//   res.redirect("/" + req.session.urlStub + "/packages");
     }
   };
+
+	// this.createUrlStub = function(str){
+	// 	if (err) {
+	// 		console.log("148 auctions.js createUrlStub.  err = ",err)
+	// 	} else {
+
+	// 	}
+		
+	// })
 
   //Just used as an API for now
   this.create = function(req, res) {
@@ -65,13 +76,38 @@ function AuctionsController() {
     // Add validations to ensure auction start occurs before auction end
 
     if (globals.adminValidation(req, res)) {
+		console.log("150 auctions.js this.create.  req.params = ",req.params)
+		console.log("151 auctions.js this.create.  req.body = ",req.body)
       var startDate =
         req.body.startClockDate + "T" + req.body.startClockTime + ":00";
       var start = new Date(startDate);
       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
       var end = new Date(endDate);
+		
+		// URL STUB CREATOR FOR USE IN PATH URLS
+	  // converts 'name' to all lower case 
+	  var lowerName = req.body.name.toLowerCase();
+		// console.log("154 auctions.js this.create.  var lowerName = ",lowerName)
+
+		// converts spaces to dashes for use in URLStub
+		var urlStub = '';
+		for (var i = 0; i < lowerName.length; i++){
+			var code = lowerName.charCodeAt(i);
+			// console.log("155 auctions.js this.create.  var code = ",code)
+			if (code == 32){
+				code = 45;
+				urlStub += String.fromCharCode(code);
+				// console.log("156 auctions.js this.create.  lowerName letter (= s/b dash) = ",urlStub)
+			} else {
+				urlStub += lowerName.charAt(i);
+				// console.log("157 auctions.js this.create.  lowerName letter (=charAt i) = ",urlStub)
+			}
+			// console.log("158 auctions.js this.create. urlStub final = ",urlStub)
+
+		}
+
       Global.findOne({}, function(err, global) {
-        console.log(global);
+        // console.log(global);
         if (err) {
           console.log(err);
         }
@@ -86,9 +122,12 @@ function AuctionsController() {
             if (err) {
               console.log(err);
             } else {
+				
+				
               Auction.create(
                 {
                   name: req.body.name,
+				  urlStub: urlStub,
                   startClock: start,
                   endClock: end,
                   pin: randomPin,
@@ -104,10 +143,11 @@ function AuctionsController() {
                     console.log("160 auctions.js this.create.  result = ",result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
 
-                    res.redirect("/" + result._id + "/organizerMenu");
+                    // res.redirect("/" + result._id + "/organizerMenu");
                     
 					// change auction._id to auction.name in route
-					// res.redirect("/" + result.name + "/organizerMenu");
+                    res.redirect("/" + result.urlStub + "/organizerMenu");
+					
                   }
                 }
               );
@@ -119,11 +159,17 @@ function AuctionsController() {
   };
   this.menu = function(req, res) {
     if (globals.adminValidation(req, res)) {
-      Auction.findById(req.params.auctions, function(err, auctionDetails) {
+    //   console.log("170 auctions.js Auction.findById.  req.params = ", req.params);
+    //   Auction.findById(req.params.auctions, function(err, auctionDetails) {
+
+	
+      console.log("170 auctions.js this.menu Auction.findOne.  req.params = ", req.params);
+      Auction.findOne({ urlStub: req.params.auctions}, function(err, auctionDetails) {
         if (err) {
-          console.log(err);
+          console.log("171 auctions.js this.menu Auction.findOne.  err = ",err);
         } else {
-          console.log("170 auctions.js Auction.findById.  auctionDetails = ", auctionDetails);
+        //   console.log("170 auctions.js Auction.findById.  auctionDetails = ", auctionDetails);
+          console.log("170 auctions.js this.menu Auction.findOne.  auctionDetails = ", auctionDetails);
           console.log("171 renders organizerMenu");
           res.render("organizerMenu", {
             page: "organizerMenu",
@@ -137,7 +183,11 @@ function AuctionsController() {
     }
   };
   this.edit = function(req, res) {
-    Auction.findById(req.params.auctions, function(err, auction) {
+    // Auction.findById(req.params.auctions, function(err, auction) {
+
+	Auction.findOne({ urlStub: req.params.auctions}, function(err, auction) {
+
+
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       // console.log("stringStartClock is", stringStartClock)
@@ -161,7 +211,10 @@ function AuctionsController() {
     });
   };
   this.event = function(req, res) {
-    Auction.findById(req.params.auctions, function(err, auction) {
+    // Auction.findById(req.params.auctions, function(err, auction) {
+
+	Auction.findOne({ urlStub: req.params.auctions}, function(err, auction) {
+
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       startDate = stringStartClock.substring(0, 10);
@@ -203,7 +256,11 @@ function AuctionsController() {
     var start = new Date(startDate);
     var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
     var end = new Date(endDate);
-    Auction.findById(req.params.auctions, function(err, auction) {
+    
+	// Auction.findById(req.params.auctions, function(err, auction) {
+
+	Auction.findOne({ urlStub: req.params.auctions}, function(err, auction) {
+
       if (err) {
         console.log(err);
       } else {
@@ -224,7 +281,11 @@ function AuctionsController() {
   };
 
   this.deleteAuction = function(req, res) {
-    Auction.remove({ _id: req.params.auctions }, function(err, result) {
+    
+	// Auction.remove({ _id: req.params.auctions }, function(err, result) {
+
+	Auction.remove({ urlStub: req.params.auctions}, function(err, result) {
+
       if (err) {
         console.log(err);
       } else {

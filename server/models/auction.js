@@ -4,14 +4,18 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
+// COMMENTING OUT ALL MONGOOSE-UNIQUE-VALIDATOR CODE UNTIL ERROR RESOLVED
 // used on 'name' field to force uniqueness
-var uniqueValidator = require('mongoose-unique-validator');
+// var uniqueValidator = require('mongoose-unique-validator');
 
 var auctionSchema = new Schema({
-	name: {type: String, required: true, unique: true },
+	// name: {type: String, required: true, unique: true },
+	name: {type: String, required: true},
 
 	//the subtitle or the tagline is the place for a catchy phrase for the auction
 	subtitle: {type: String},
+	// auction name converted to lowercase and with dashes replacing spaces.  used for routes/URLs
+	urlStub: {type: String},
 	welcomeMessage: {type: String},
 	description: {type: String},
 	venue: {type: String},
@@ -30,5 +34,6 @@ var auctionSchema = new Schema({
 })
 
 // activates uniqueValidator plugin
-auctionSchema.plugin(uniqueValidator);
+// auctionSchema.plugin(uniqueValidator);
+
 module.exports = mongoose.model('Auction', auctionSchema);

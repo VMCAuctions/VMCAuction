@@ -170,8 +170,12 @@ module.exports = function(app) {
 	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
+
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
+		console.log("200 routes.js /:auctions/organizerMenu.  req.params = ",req.params)
+		console.log("201 routes.js /:auctions/organizerMenu.  req.body = ",req.body)
+		console.log("routes to auctions.menu")
 		auctions.menu(req, res)});
 	//Renders the page to edit an auction
 	app.get('/:auctions/edit', function (req, res) {

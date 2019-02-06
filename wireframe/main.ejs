@@ -52,10 +52,10 @@
 						<ul class="list-group list-group-flush">
 							<% for (var a in auctions) { %>
 							
-								<li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li>
+								<!-- <li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li> -->
 
 								<!-- changed 'auctions[a]._id' to 'auctions[a].name' to put auction name in URL instead of auction id -->
-								<!-- <li class="list-group-item"> <a href="/<%= auctions[a].name %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li> -->
+								<li class="list-group-item"> <a href="/<%= auctions[a].urlStub %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li>
 
 
 							<% } %>

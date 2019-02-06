@@ -30,7 +30,9 @@ function UsersController(){
 
 
 	this.index = function(req,res){
-		console.log('UsersController index');
+		console.log('100 users.js this.index.  req.params = ',req.params);
+		console.log('101 users.js this.index.  req.body = ',req.body);
+		console.log('102 users.js this.index.  req.session = ',req.session);
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
 			User.find({_auctions: req.params.auctions}, function(err, users ){
@@ -229,7 +231,9 @@ function UsersController(){
 
 
 	this.checkLogin = function(req, res){
-		console.log("in check login");
+		console.log("200 users.js this.checkLogin start.  req.params = ",req.params);
+		console.log("201 users.js this.checkLogin.  req.body = ",req.body);
+		console.log("202 users.js this.checkLogin.  req.session = ",req.session);
 		var name = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
@@ -245,6 +249,8 @@ function UsersController(){
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
+						console.log("206 users.js this.checkLogin post bcrypt.  req.session = ",req.session);
+						
 						res.json({match: true, auction: user._auctions, admin:user.admin})
 					}else{
 						res.json({match: false})

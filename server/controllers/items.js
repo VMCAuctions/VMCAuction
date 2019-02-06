@@ -9,7 +9,9 @@ const csv=require('csvtojson')
 function ItemsController(){
 
 	this.index = function(req,res){
-		console.log('ItemsController index');
+		console.log('100 items.js this.index.  req.params = ',req.params);
+		console.log('101 items.js this.index.  req.body = ',req.body);
+		console.log('102 items.js this.index.  req.session = ',req.session);
 		Category.find({}, function (err, categories) {
 			if (err) {
 				console.log(err);
@@ -51,12 +53,13 @@ function ItemsController(){
 				}else{
 					res.redirect('/' + req.params.auctions + '/packages')
 				}
-			console.log('ItemsController new');
 			};
 		})
 	}
 	this.create = function(req,res){
-		console.log('ItemsController create');
+		console.log('120 items.js this.create.  req.params = ',req.params);
+		console.log('121 items.js this.create.  req.body = ',req.body);
+		console.log('122 items.js this.create.  req.session = ',req.session);
 		console.log("donor display:", req.body.donorAnonymous);
 		let donorDisplay = "Anonymous";
 		if (!req.body.donorAnonymous) {
@@ -70,7 +73,7 @@ function ItemsController(){
 				}		
 			}
 		}
-    Item.create({
+		Item.create({
 			name: req.body.itemName,
 			description: req.body.itemDescription,
 			_category: req.body.category,

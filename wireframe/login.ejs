@@ -63,7 +63,7 @@
 					// url: 'http://dv1.elizabid.com/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
-						console.log('login.ejs #submit jquery.  data = ',data)
+						console.log('100 login.ejs #submit jquery.  data = ',data)
 						if(data.match == false){
 							alert('username and password do not match')
 						} else {
