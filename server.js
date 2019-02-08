@@ -57,16 +57,9 @@ var server = app.listen(port, function() {
 /////////////// SOCKETS /////////////////
 var Package = require('./server/models/package.js')
 var User = require('./server/models/user.js');
-// var Package = require('./models/package.js')
-// var User = require('./models/user.js');
 
-// var svr = require('../server.js');
-// console.log("100 Sockets.  svr = require server.js = ",svr)
 
 var io = require('socket.io').listen(server);
-// var io = require('socket.io').listen(svr);
-
-console.log("server.js 100. var io = ",io)
 
 
 var allBidsBigObj = {
