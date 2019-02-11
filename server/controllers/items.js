@@ -14,13 +14,14 @@ function ItemsController(){
 		console.log('102 items.js this.index.  req.session = ',req.session);
 		Category.find({}, function (err, categories) {
 			if (err) {
-				console.log(err);
+				console.log("104 items.js this.index category.find err = ",err);
 			}else{
 				Item.find({_auctions: req.params.auctions}).populate("_package").sort({_category:'ascending'}).exec(function(err, items){
 						if(err){
-								console.log(err);
+								console.log("105 items.js this.index.  Item.find err = ",err);
 								res.status(500).send('Failed to Load Items');
 						}else{
+							console.log("106 items.js this.index.  Item.find items = ",items);
 							res.render('items', {
 								page:'items',
 								items: items,
@@ -40,9 +41,12 @@ function ItemsController(){
 		Category.find({}, function(err, categories) {
     	if(err) {
       		console.log(err);
-      		res.status(500).send('Failed to Load Items');
+      		res.status(500).send('Failed to find categories');
     	}else{
 				if(req.session.admin){
+					console.log('110 items.js this.new.  req.params = ',req.params);
+					console.log('111 items.js this.new.  req.body = ',req.body);
+					console.log('112 items.js this.new.  req.session = ',req.session);
 					res.render('createItem', {
 						page:'addItem',
 						categories: categories,

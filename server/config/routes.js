@@ -13,6 +13,9 @@ module.exports = function(app) {
 		items.index(req,res)});
 	// get the new item form
 	app.get('/:auctions/items/new', function(req,res){
+		console.log("100 routes.js /:auctions/items/new.  req.params = ",req.params)
+		console.log("101 routes.js /:auctions/items/new.  req.body = ",req.body)
+		console.log("102 routes.js /:auctions/items/new.  req.session = ",req.session)
 		items.new(req,res)});
 
 	//adding items from csv page
