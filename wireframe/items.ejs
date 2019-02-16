@@ -26,17 +26,17 @@
       <%}%>
 
   <div class="container-fluid item-container">
-    <h2 class="my-1">Donated Items</h2>
+    <h2 class="my-4">Donated Items</h2>
       <div id="search-container">
         <!-- Find items by keyword -->
         <div id="search-keyword">
-          <label for "keyword">Search by keyword:</label>
-          <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+          <label for "keyword" class="label-search">Search by keyword:</label>
+          <input class="form-control" type="search" id="keyword" placeholder="Keyword">
         </div>
         
         <!-- Find all items in a category-->
         <div id="search-category">
-            <label for "category">Search by category:</label>
+            <label for "category" class="label-search">Search by category:</label>
             <select class="form-control" name="category" id="category">
               <option value="">All Categories</option>
               <% for(var c in categories) {%>
@@ -85,8 +85,8 @@
                       <td><%= items[i].donorDisplay%></td>
                       <% if(admin){ %>
                         <td>
-                          <a class="mb-1 mr-1" href='/<%=auction%>/items/<%=items[i]._id%>'><i class="fas fa-edit item-edit"></i></a>
-                          <a class="mb-1" href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt item-delete"></i></a>
+                          <a class="mb-1 mr-1" href='/<%=auction%>/items/<%=items[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
+                          <a class="mb-1" href='/<%=auction%>/items/remove/<%=items[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
                         </td>
                       <%}%>
                 </tr>
