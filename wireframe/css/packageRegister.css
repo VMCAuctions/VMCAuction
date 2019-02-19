@@ -95,15 +95,17 @@ td li:last-child {
     color: #4567a8 !important;
 }
 
-.confirm-priority {
+.confirmChanges {
     padding: 2px 0.7rem; 
-    background-color: #fff; 
+    background-color: ##dbe2f0; 
     border: 1px solid #4567a8;
     border-radius: 5px; 
     color: #4567a8;
+    font-size: 0.7rem; 
+    font-weight: 700 !important; 
 }
 
-.confirm-priority:hover {
+.confirmChanges:hover, .confirmChanges:active { 
     background-color: #4567a8; 
     border: 1px solid #4567a8;
     color: #fff;

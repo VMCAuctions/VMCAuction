@@ -47,6 +47,7 @@ a:hover {
 .pin {
 	color: #ff2719; 
 }
+
 /* Common Page Styling (Create Auction, Edit Auction)
 -------------------------------------------------------------- */
 .mini-nav {
@@ -73,7 +74,6 @@ a:hover {
 .label-name {
 	font-size: 0.9rem;
 	line-height: 0.7rem; 
-	color: #00184c; 
 }
 
 .label-search {
@@ -83,25 +83,25 @@ a:hover {
 }
 
 input[type=text], input[type=email], input[type=date], input[type=time], 
-input[type=number], input[type=search], input[type=password], input[type="tel"]
+input[type=number], input[type=search], input[type=password], 
 select[name="category"], select[name="donorPrefix"] {
 	font-size: 0.9rem; 
-	color: #666; 
+	color: #808080; 
 }
 
 input[type="text"].input-priority {
 	font-size: 0.7rem !important; 
-	color: #666; 
+	color: #808080; 
 }
 
 input[type="text"]::placeholder {
 	font-size: 0.9rem !important; 
-	color: #666; 
+	color: #808080; 
 }
 
 textarea {
 	font-size: 0.9rem !important;
-	color: #666 !important; 
+	color: #808080 !important; 
 }
 
 /* Common Styles Validations and Error Messages
