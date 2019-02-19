@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	  <title>Categories</title>
+	  
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -19,14 +21,14 @@
     <%- include('header') -%>
     <%}%>
     <div class="container">
-    	<h3>Item / Package Categories</h3>
+    	<h2 class="my-3">Item / Package Categories</h2>
 		<table class="table table-sm table-hover">
   
 			<tbody>
 			<% for(c in categories){ %>
 				<tr class="categories-table-row">
 				<td><%= categories[c].name %></td>
-				<td><a href="/<%= auction %>/categories/<%= categories[c]._id %>/delete"><i  class="far fa-trash-alt package-delete"></i></a></td>
+				<td><a href="/<%= auction %>/categories/<%= categories[c]._id %>/delete"><i  class="far fa-trash-alt to-delete"></i></a></td>
 				</tr>
 			<%}%>
 			</tbody>
@@ -37,10 +39,10 @@
 		<form action='/<%=auction%>/categories' method='post'>
 			<div class="form-group row">
 				<div class="col-sm-10">
-					<input placeholder="Add New Category" type="text" name="name" id="categoryName" class="form-control" >
+					<input placeholder="Insert New Category" type="text" name="name" id="categoryName" class="form-control" >
 				</div>
 			</div>
-			<input type='submit' value='Add New Category' class="btn btn-default">
+			<input type='submit' class="btn btn-add mt-1 mb-5" value='Add New Category' >
 		</form>
 
 	

@@ -3,10 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <title>Organizer Menu</title>
+
+   <!-- Bootstrap & CSS-->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/css/style.css" >
+
   </head>
   <%if(admin){%>
   <%- include('adminHeader') -%>
@@ -15,8 +18,8 @@
   <%}%>
   <body>
     <div class="container">
-      <h1 class="text-center mt-3"><%= auctionDetails.name %></h1>
-      <h4 class="text-center">(<%= auctionDetails.pin %>)</h4>
+      <h2 class="text-center mt-5"><a href="/<%=auction%>/event"><%= auctionDetails.name %></a></h2>
+      <p class="pin text-center">(Pin: <%= auctionDetails.pin %>)</p>
       <table id="orgMenu" class="table table-hover text-justify table-bordered mt-4">
       <thead>
         <tr>
@@ -29,32 +32,32 @@
       </thead>
       <tbody>
         <tr>
-          <td onClick="document.location='/<%=auction%>/edit'" class="highlight borderSide text-black-50"><i class="fas fa-edit"></i> Edit Auction Details</td>
-          <td onClick="document.location='/<%=auction%>/items/new'" class="highlight borderSide text-black-50"><i class="fas fa-plus-circle"></i> Add Items</td>
+          <td onClick="document.location='/<%=auction%>/event'" id="previewEvent" class="highlight borderSide"><i class="fas fa-tablet"></i> Preview Event Page</td>
+          <td onClick="document.location='/<%=auction%>/items/new'" class="highlight borderSide"><i class="fas fa-plus-circle"></i> Add Items</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-user-plus"></i> Add Supporters</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-chart-bar"></i> Auction Summary Report</td>
-          <td onClick="document.location='/<%=auction%>/categories'" class="highlight borderSide text-black-50"><i class="fas fa-list-ol"></i> Edit Categories</td>
+          <td onClick="document.location='/<%=auction%>/categories'" class="highlight borderSide"><i class="fas fa-list-ol"></i> Edit Categories</td>
+        </tr>
+        <tr>
+          <td onClick="document.location='/<%=auction%>/edit'" class="highlight borderSide"><i class="fas fa-edit"></i> Edit Auction Details</td>
+          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide"><i class="fas fa-file-import"></i> Import Items from CSV</td>
+          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide text-black-50"><i class="fas fa-users"></i> Import Users from CSV</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-archive"></i> Package Summary</td>
+          <td class="highlight borderSide text-black-50" onClick="document.location='/users/admin'"><i class="fas fa-unlock-alt"></i> Admin Rights</td>
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-clock"></i> Edit Auction Clock</td>
-          <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight borderSide text-black-50"><i class="fas fa-box-open"></i> Create packages</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-address-book"></i> View/Edit Supporters Registry</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-archive"></i> Package Summary</td>
-          <td class="highlight borderSide text-black-50" onClick="document.location='/users/admin'"><i class="fas fa-unlock-alt"></i> Admin Rights</td>
+          <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight borderSide"><i class="fas fa-box-open"></i> Create Packages</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-address-book"></i> View Supporters Registry</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-cubes"></i> Package Details</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-database"></i> Customize Data Fields</td>
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-envelope-square"></i> Create Email Invitation</td>
           <td onClick="document.location='/<%=auction%>/packages'" class="highlight borderSide text-black-50"><i class="fas fa-th"></i> Preview Catalog</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-clipboard-list"></i> Create Email Distribution List</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-cubes"></i> Package Details</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-database"></i> Customize Data Fields</td>
-        </tr>
-        <tr>
-          <td onClick="document.location='//<%=auction%>/event'" class="highlight borderSide text-black-50"><i class="fas fa-tablet"></i> Preview Auction</td>
-          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide text-black-50"><i class="fas fa-file-import"></i> Import items from CSV</td>
-          <td onClick="document.location='/<%=auction%>/items/populate'" class="highlight borderSide text-black-50"><i class="fas fa-users"></i> Import users from CSV</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-history"></i> Bid History By Package</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-sitemap"></i> Monitor Bidding</td>
+          <td class="highlight borderSide"></td>
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-paper-plane"></i> Publish Auction</td>
@@ -65,18 +68,7 @@
         </tr>
       </tbody>
     </table>
-    <!-- <div class="row text-center">
-      <div class="col-4">
-        <a href="/<%=auction%>/event"><button id="previewEvent" type="button" class="btn btn-success">Preview Event Page</button></a>
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-info">Monitor Bidding</button>
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-dark">Publish Auction</button>
-      </div>
-    </div> -->
-  </div>
+
   <script>
     $(document).ready(function(){
 

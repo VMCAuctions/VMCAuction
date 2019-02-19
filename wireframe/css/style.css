@@ -26,6 +26,7 @@ h1 {
 h2 {
 	font-family: Lato, sans-serif; 
 	color: #4567a8;
+	font-size: 1.9rem; 
 	font-weight: 700;  
 }
 
@@ -41,6 +42,10 @@ a:link {
 a:hover {
 	color: #0055cb;
 	text-decoration: none;
+}
+
+.pin {
+	color: #ff2719; 
 }
 
 /* Common Page Styling (Create Auction, Edit Auction)
@@ -68,15 +73,35 @@ a:hover {
 -------------------------------------------------------------- */
 .label-name {
 	font-size: 0.9rem;
-	line-height:.7rem; 
+	line-height: 0.7rem; 
 }
 
-input[type=text], select[name="category"], select[name="donorPrefix"] {
+.label-search {
 	font-size: 0.9rem; 
+	color: #4567a8; 
+	line-height: 0.7rem;   
+}
+
+input[type=text], input[type=email], input[type=date], input[type=time], 
+input[type=number], input[type=search], input[type=password], 
+select[name="category"], select[name="donorPrefix"] {
+	font-size: 0.9rem; 
+	color: #808080; 
+}
+
+input[type="text"].input-priority {
+	font-size: 0.7rem !important; 
+	color: #808080; 
+}
+
+input[type="text"]::placeholder {
+	font-size: 0.9rem !important; 
+	color: #808080; 
 }
 
 textarea {
 	font-size: 0.9rem !important;
+	color: #808080 !important; 
 }
 
 /* Common Styles Validations and Error Messages
@@ -97,14 +122,24 @@ label.error {
 	background-color: #0080ff; 
 	color: #fff;
 	border: none;  
-	width: 135px;
+	padding: 9px 15px; 
+	min-width: 155px;  
 }
 
-.btn-long {
+.btn-add {
 	background-color: #bacc14; 
 	color:#262626;
-	padding: 8px 15px; 
-	border: none;  
+	border: none;
+	padding: 9px 15px; 
+	min-width: 155px;  
+} 
+
+.btn-delete {
+	background-color: #ff2719; 
+	color:#fff;
+	border: none; 
+	padding: 9px 15px; 
+	min-width: 155px;   
 } 
 
 .btn-submit:hover{
@@ -112,18 +147,22 @@ label.error {
 	color: #fff; 
 }
 
-.btn-long:hover{
+.btn-delete:hover{
+	background-color: #c30000;
+	color: #fff; 
+}
+
+.btn-add:hover{
 	background-color: #869b00;
-	padding: 8px 15px; 
 	color: #262626; 
-	border: none;  
 }
 
 .btn-back {
 	background-color: #a2b209; 
 	color: #000;
 	border: none;  
-	width: 135px;
+	padding: 9px 15px; 
+	min-width: 155px; 
 }
 
 .btn-back:hover{
@@ -145,6 +184,16 @@ label.error {
 	font-size: 0.9rem !important; 
 }
 
+.to-edit {
+	color: #a2b209;
+	font-size: 1.1rem; 
+	margin-right: 0.5rem; 
+}
+
+.to-delete {
+	color: #ff2719;
+	font-size: 1.1rem;
+}
 
 
 /* Organizer's Menu table style
@@ -154,7 +203,8 @@ label.error {
 } */
 
 .table-hover>tbody>tr>.highlight:hover{
-  background-color: #f5f5f5;
+	background-color: #f5f5f5; 
+	color:#0080ff;
   cursor: pointer;
 }
 
@@ -192,21 +242,24 @@ th {
 }
 
 td {
-  height: 75px;
+  height: 70px;
 }
 
 th{
-  background-color: #EAEAEA;
+	/* background-color: #EAEAEA; */
+	background-color: #4567a8;
+	color: #fff;
+	font-size: 0.9rem; 
 }
+
 .table > tbody > tr > td {
-  vertical-align: middle;
+	vertical-align: middle;
+	font-size: 0.9rem; 
 }
 
  /* Bob R. for List of Categories */
 .categories-table-row {
-	
 	height: 40px !important;
-
 }
 
 /*td a{
