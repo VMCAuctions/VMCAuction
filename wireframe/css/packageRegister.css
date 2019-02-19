@@ -14,7 +14,7 @@
     background-color: #bacc14; 
     border-top: none !important; 
     border-bottom: none !important; 
-    font-size: 0.9rem; 
+    font-size: 0.9rem !important; 
     font-weight: 400;     
 }
 
@@ -92,23 +92,19 @@ td li:last-child {
     border: solid 1px #4567a8; 
     border-radius: 4px; 
     text-align: center; 
+    color: #4567a8 !important;
+}
+
+.confirm-priority {
+    padding: 2px 0.7rem; 
+    background-color: #fff; 
+    border: 1px solid #4567a8;
+    border-radius: 5px; 
     color: #4567a8;
 }
 
-.input-priority { 
-    width: 45px; 
-    height: 24px;
+.confirm-priority:hover {
     background-color: #4567a8; 
-    border: none; 
-    border-radius: 4px; 
-    text-align: center;
+    border: 1px solid #4567a8;
     color: #fff;
-    font-size: 0.7rem !important; 
-}
-
-.confirmChanges {
-    padding: 2px 0.7rem; 
-    background-color: #4567a8; 
-    border-radius: 4px; 
-    color:#fff;
 }

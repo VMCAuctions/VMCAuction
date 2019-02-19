@@ -138,14 +138,14 @@
                                         <option value = "<%= !packages[i].featured %>">Yes</option>
                                     </select></td>
                                     <td class="text-center" id="priority">
-                                        <input id="<%= packages[i].id%>Priority" class="input-priority" type="text" value="<%= packages[i].priority %>" style="display:none;"></input>
+                                        <input id="<%= packages[i].id%>Priority" class="input-featured" type="text" value="<%= packages[i].priority %>" style="display:none;"></input>
                                     <% } %>
                                     
                                     </td>
                                     <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>
                                 <td class="text-center">
-                                    <button id="<%= packages[i].id%>" class="confirmChanges mr-2 mb-3">Save Changes</button>
+                                    <button id="<%= packages[i].id%>" class="confirm-priority mr-2 mb-3">Save Changes</button>
                                     <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
                                     <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
                                 </td>

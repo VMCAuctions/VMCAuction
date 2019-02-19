@@ -26,6 +26,7 @@ h1 {
 h2 {
 	font-family: Lato, sans-serif; 
 	color: #4567a8;
+	font-size: 1.9rem; 
 	font-weight: 700;  
 }
 
@@ -72,22 +73,35 @@ a:hover {
 .label-name {
 	font-size: 0.9rem;
 	line-height: 0.7rem; 
+	color: #00184c; 
 }
 
 .label-search {
 	font-size: 0.9rem; 
-	color: #003d79; 
+	color: #4567a8; 
 	line-height: 0.7rem;   
 }
 
-input[type=text], input[type=date], input[type=time], input[type=number], input[type=search], select[name="category"], select[name="donorPrefix"] {
+input[type=text], input[type=email], input[type=date], input[type=time], 
+input[type=number], input[type=search], input[type=password], input[type="tel"]
+select[name="category"], select[name="donorPrefix"] {
 	font-size: 0.9rem; 
-	color: #808080; 
+	color: #666; 
+}
+
+input[type="text"].input-priority {
+	font-size: 0.7rem !important; 
+	color: #666; 
+}
+
+input[type="text"]::placeholder {
+	font-size: 0.9rem !important; 
+	color: #666; 
 }
 
 textarea {
 	font-size: 0.9rem !important;
-	color: #808080 !important; 
+	color: #666 !important; 
 }
 
 /* Common Styles Validations and Error Messages
