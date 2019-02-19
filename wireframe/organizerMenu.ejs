@@ -23,10 +23,10 @@
       <table id="orgMenu" class="table table-hover text-justify table-bordered mt-4">
       <thead>
         <tr>
-          <th scope="col">Edit Auction</th>
+          <th scope="col">Set Up Auction</th>
           <th scope="col">Create Catalog</th>
           <th scope="col">Register Supporters</th>
-          <th scope="col">Reports</th>
+          <th scope="col">Generate Reports</th>
           <th scope="col">Admin</th>
         </tr>
       </thead>
@@ -47,25 +47,33 @@
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-clock"></i> Edit Auction Clock</td>
-          <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight borderSide"><i class="fas fa-box-open"></i> Create Packages</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-address-book"></i> View Supporters Registry</td>
+          <td onClick="document.location='/<%=auction%>/items'" class="highlight borderSide"><i class="fas fa-columns"></i> View Item Register</td>
+          <td class="highlight borderSide text-black-50"><i class="fas fa-address-book"></i> View Supporter Register</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-cubes"></i> Package Details</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-database"></i> Customize Data Fields</td>
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-envelope-square"></i> Create Email Invitation</td>
-          <td onClick="document.location='/<%=auction%>/packages'" class="highlight borderSide text-black-50"><i class="fas fa-th"></i> Preview Catalog</td>
-          <td class="highlight borderSide text-black-50"><i class="fas fa-clipboard-list"></i> Create Email Distribution List</td>
+          <td onClick="document.location='/<%=auction%>/packages/new'" class="highlight borderSide"><i class="fas fa-box-open"></i> Create Packages</td>         
+          <td class="highlight borderSide text-black-50"><i class="fas fa-clipboard-list"></i> Create Email List</td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-history"></i> Bid History By Package</td>
           <td class="highlight borderSide"></td>
         </tr>
         <tr>
           <td class="highlight borderSide text-black-50"><i class="fas fa-paper-plane"></i> Publish Auction</td>
-          <td class="borderSide"></td>
+          <td onClick="document.location='/<%=auction%>/packages/list'" class="highlight borderSide"><i class="fas fa-file-alt"></i> View Package Register</td>
           <td class="noBorder"></td>
           <td class="highlight borderSide text-black-50"><i class="fas fa-money-bill-alt"></i> Proceeds By Bidder</td>
           <td class="noBorder"></td>
         </tr>
+        <tr>
+          <td class="noBorder"></td>
+          <td onClick="document.location='/<%=auction%>/packages'" class="highlight borderSide"><i class="fas fa-th"></i> Preview Catalog</td>
+          <td class="borderSide"></td>
+          <td class="borderSide"></td>
+          <td class="noBorder"></td>
+        </tr>
+
       </tbody>
     </table>
 
