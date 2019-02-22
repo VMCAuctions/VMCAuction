@@ -31,7 +31,35 @@
     <%}%>
       <div class="container mt-4">
         <h2>Create Package</h2>
-           <p class="err-info">The fields marked with (*) are required.</p>
+           <p class="err-info">The field(s) marked with (*) are required | You can always create an empty package and add items to it later</p>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-add show-modal mt-2 mb-4" data-toggle="modal" data-target="#itemsModal">
+          Add/Remove Items
+         </button>
+
+         <!-- need a read only feild with the current number selected -->
+         <div class="alert alert-secondary">
+          <div class="form-check">
+            <div>
+              <p>Items</p>
+              <ol id="itemList">
+              </ol>
+            </div>
+          <!-- Commented for future reference -->
+          <!-- <%for (var i in items){%>
+            <%if(!items[i].packaged){%>
+              <br>
+              <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+              <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+              <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
+              <p>Fair Market Value: <%= items[i].value %></p>
+              <%}%>
+              <%}%> -->
+
+            <!-- End reference Comment -->
+          </div>
+        </div>
 
         <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post">
         <div class="form-row">
@@ -40,7 +68,7 @@
             <input type="text" name="packageName" id="packageName" class="form-control">
           </div>
           <div class="form-group col-4">
-            <label for="category" class="label-name">Category</label>
+            <label for="category" class="label-name">Category*</label>
             <select name="category" id="category" class="form-control">
               <% for (var c in categories){%>
               <!-- add radio and jquery to make only one catagory option apear
@@ -60,35 +88,24 @@
           </div>
         </div>
 
-         <!-- Button trigger modal -->
-         <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-          Add Items to a Package/Edit Package
-         </button>
-
-          
-
-          <!-- need a read only feild with the current number selected -->
-          <div class="alert alert-secondary">
-            <div class="form-check">
-              <div>
-                <p>Items</p>
-                <ol id="itemList">
-                </ol>
-              </div>
-            <!-- Commented for future reference -->
-            <!-- <%for (var i in items){%>
-              <%if(!items[i].packaged){%>
-                <br>
-                <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-                <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                <p><strong>Restrictions:</strong> <%= items[i].restrictions %></p>
-                <p>Fair Market Value: <%= items[i].value %></p>
-                <%}%>
-                <%}%> -->
-
-              <!-- End reference Comment -->
-            </div>
+        <div class="form-group row">
+          <div class="col-4">
+            <label for="totalValue" class="label-name">Total Value</label>
+            <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
           </div>
+
+          <div class="col-4">
+            <label for="openingBid" class="label-name">Opening Bid*</label>
+            <input type="number" name="openingBid" id="openingBid" class="form-control">
+          </div>
+          
+          <div class="col-4">
+            <label for="increments" class="label-name">Increment Amount*</label>
+            <input type="number" name="increments" id="increments" class="form-control">
+          </div>
+
+      </div>
+
 
           <div class="form-group">
               <label for="packageDescription" class="label-name">Package Description*</label>
@@ -98,24 +115,6 @@
           <div class="form-group">
             <label for="packageRestrictions" class="label-name">Package Restrictions</label>
             <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
-          </div>
-          
-          <div class="form-group row">
-              <div class="col-4">
-                <label for="totalValue" class="label-name">Total Value</label>
-                <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
-              </div>
-
-              <div class="col-4">
-                <label for="openingBid" class="label-name">Opening Bid*</label>
-                <input type="number" name="openingBid" id="openingBid" class="form-control">
-              </div>
-              
-              <div class="col-4">
-                <label for="increments" class="label-name">Increment Amount*</label>
-                <input type="number" name="increments" id="increments" class="form-control">
-              </div>
-
           </div>
 
           <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
@@ -192,9 +191,9 @@
                 </div>
                 <div class="modal-footer">
                  
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
                  
-                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
+                  <button id="saveChecked" type="button" class="btn btn-primary" data-dismiss="modal" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
                 </div>
               </div>
             </div>
