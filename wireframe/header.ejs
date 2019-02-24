@@ -2,7 +2,7 @@
 <!-- Bootstrap -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="/css/header.css"> 
+  <link rel="stylesheet" href="/css/header.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -35,12 +35,17 @@
             <li class="li-marg">
               <a class="nav-link nav-org" href="/<%=auction%>/users/account/<%=userName%>"><%=userName%>'s Account</a>
             </li>
+            <li>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#donate-modal" style="background-color: #fbd38f; color: brown; font-weight: bold; font-size: 120%;">
+                Donate
+              </button>
+            </li>
             <li class="li-marg">
               <a class="nav-link nav-org" href="/users/logout">Logout</a>
             </li>
           <%}else{%>
             <li>
-              <a class="nav-link nav-org" href="/users/login">Login</a> 
+              <a class="nav-link nav-org" href="/users/login">Login</a>
             </li>
             <li>
               <a class="nav-link nav-org" href="/users/register">Register </a>
@@ -49,6 +54,285 @@
         </ul>
         <!-- colapse div ends -->
     </div>
+
+    <!-- Donate Button Modal -->
+    <div class="modal fade" id="donate-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <script src="https://cdn.jotfor.ms/static/prototype.forms.js" type="text/javascript"></script>
+      <script src="https://cdn.jotfor.ms/static/jotform.forms.js?3.3.10137" type="text/javascript"></script>
+      <script src="https://cdn.jotfor.ms/js/paypal.js?v=3.3.10137" type="text/javascript"></script>
+      <script type="text/javascript">
+      	JotForm.init(function(){
+            setTimeout(function() {
+                $('input_3').hint('ex: myname@example.com');
+             }, 20);
+          /*INIT-END*/
+      	});
+
+         JotForm.prepareCalculationsOnTheFly([null,{"name":"fullName1","qid":"1","text":"Full Name","type":"control_fullname"},{"name":"submit","qid":"2","text":"Donate","type":"control_button"},{"name":"email3","qid":"3","text":"E-mail","type":"control_email"},null,{"name":"organization","qid":"5","text":"Organization","type":"control_textbox"},{"name":"phoneNumber6","qid":"6","text":"Phone Number","type":"control_phone"},{"name":"amount","qid":"7","text":"Amount","type":"control_paypal"},null,{"name":"comment","qid":"9","text":"Comment","type":"control_textarea"},null,{"name":"clickTo","qid":"11","text":"Donation","type":"control_head"}]);
+         setTimeout(function() {
+      JotForm.paymentExtrasOnTheFly([null,{"name":"fullName1","qid":"1","text":"Full Name","type":"control_fullname"},{"name":"submit","qid":"2","text":"Donate","type":"control_button"},{"name":"email3","qid":"3","text":"E-mail","type":"control_email"},null,{"name":"organization","qid":"5","text":"Organization","type":"control_textbox"},{"name":"phoneNumber6","qid":"6","text":"Phone Number","type":"control_phone"},{"name":"amount","qid":"7","text":"Amount","type":"control_paypal"},null,{"name":"comment","qid":"9","text":"Comment","type":"control_textarea"},null,{"name":"clickTo","qid":"11","text":"Donation","type":"control_head"}]);}, 20);
+      </script>
+      <link href="https://cdn.jotfor.ms/static/formCss.css?3.3.10137" rel="stylesheet" type="text/css" />
+      <link type="text/css" media="print" rel="stylesheet" href="https://cdn.jotfor.ms/css/printForm.css?3.3.10137" />
+      <link type="text/css" rel="stylesheet" href="https://cdn.jotfor.ms/css/styles/nova.css?3.3.10137" />
+      <link type="text/css" rel="stylesheet" href="https://cdn.jotfor.ms/themes/CSS/566a91c2977cdfcd478b4567.css?themeRevisionID=59fb4852cf3bfe589c6c6f21"/>
+      <style type="text/css">
+          .form-label-left{
+              width:150px;
+          }
+          .form-line{
+              padding-top:12px;
+              padding-bottom:12px;
+          }
+          .form-label-right{
+              width:150px;
+          }
+          .form-all{
+              width:690px;
+              color:#28330f !important;
+              font-family:"Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, sans-serif;
+              font-size:14px;
+          }
+          .form-radio-item label, .form-checkbox-item label, .form-grading-label, .form-header{
+              color: false;
+          }
+
+      </style>
+
+      <style type="text/css" id="form-designer-style">
+          /* Injected CSS Code */
+      /*PREFERENCES STYLE*/
+          .form-all {
+            font-family: Lucida Grande, sans-serif;
+          }
+          .form-all .qq-upload-button,
+          .form-all .form-submit-button,
+          .form-all .form-submit-reset,
+          .form-all .form-submit-print {
+            font-family: Lucida Grande, sans-serif;
+          }
+          .form-all .form-pagebreak-back-container,
+          .form-all .form-pagebreak-next-container {
+            font-family: Lucida Grande, sans-serif;
+          }
+          .form-header-group {
+            font-family: Lucida Grande, sans-serif;
+          }
+          .form-label {
+            font-family: Lucida Grande, sans-serif;
+          }
+
+          .form-label.form-label-auto {
+
+          display: inline-block;
+          float: left;
+          text-align: left;
+
+          }
+
+          .form-line {
+            margin-top: 12px 36px 12px 36px px;
+            margin-bottom: 12px 36px 12px 36px px;
+          }
+
+          .form-all {
+            width: 690px;
+          }
+
+          .form-label-left,
+          .form-label-right,
+          .form-label-left.form-label-auto,
+          .form-label-right.form-label-auto {
+            width: 150px;
+          }
+
+          .form-all {
+            font-size: 14px
+          }
+          .form-all .qq-upload-button,
+          .form-all .qq-upload-button,
+          .form-all .form-submit-button,
+          .form-all .form-submit-reset,
+          .form-all .form-submit-print {
+            font-size: 14px
+          }
+          .form-all .form-pagebreak-back-container,
+          .form-all .form-pagebreak-next-container {
+            font-size: 14px
+          }
+
+          .supernova .form-all, .form-all {
+            background-color: #fffbf4;
+            border: 1px solid transparent;
+          }
+
+          .form-all {
+            color: #28330f;
+          }
+          .form-header-group .form-header {
+            color: #28330f;
+          }
+          .form-header-group .form-subHeader {
+            color: #28330f;
+          }
+          .form-label-top,
+          .form-label-left,
+          .form-label-right,
+          .form-html,
+          .form-checkbox-item label,
+          .form-radio-item label {
+            color: #28330f;
+          }
+          .form-sub-label {
+            color: #424d29;
+          }
+
+          .supernova {
+            background-color: #8FBDFD;
+          }
+          .supernova body {
+            background: transparent;
+          }
+
+          .form-textbox,
+          .form-textarea,
+          .form-radio-other-input,
+          .form-checkbox-other-input,
+          .form-captcha input,
+          .form-spinner input {
+            background-color: #fff;
+          }
+
+          .supernova {
+            background-image: none;
+          }
+          #stage {
+            background-image: none;
+          }
+
+          .form-all {
+            background-image: none;
+          }
+
+        .ie-8 .form-all:before { display: none; }
+        .ie-8 {
+          margin-top: auto;
+          margin-top: initial;
+        }
+
+        /*PREFERENCES STYLE*//*__INSPECT_SEPERATOR__*/
+          /* Injected CSS Code */
+      </style>
+
+      <form class="jotform-form" action="https://submit.jotform.us/submit/90541686675165/" method="post" name="form_90541686675165" id="90541686675165" accept-charset="utf-8">
+        <input type="hidden" name="formID" value="90541686675165" />
+        <div class="form-all">
+          <ul class="form-section page-section">
+            <li id="cid_11" class="form-input-wide" data-type="control_head">
+              <div class="form-header-group ">
+                <div class="header-text httal htvam">
+                  <h2 id="header_11" class="form-header" data-component="header">
+                    Donation
+                  </h2>
+                </div>
+              </div>
+            </li>
+            <li class="form-line" data-type="control_fullname" id="id_1">
+              <label class="form-label form-label-left form-label-auto" id="label_1" for="first_1"> Full Name </label>
+              <div id="cid_1" class="form-input">
+                <div data-wrapper-react="true">
+                  <span class="form-sub-label-container" style="vertical-align:top">
+                    <input type="text" id="first_1" name="q1_fullName1[first]" class="form-textbox" size="10" value="" data-component="first" />
+                    <label class="form-sub-label" for="first_1" id="sublabel_first" style="min-height:13px"> First Name </label>
+                  </span>
+                  <span class="form-sub-label-container" style="vertical-align:top">
+                    <input type="text" id="last_1" name="q1_fullName1[last]" class="form-textbox" size="15" value="" data-component="last" />
+                    <label class="form-sub-label" for="last_1" id="sublabel_last" style="min-height:13px"> Last Name </label>
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li class="form-line" data-type="control_email" id="id_3">
+              <label class="form-label form-label-left form-label-auto" id="label_3" for="input_3"> E-mail </label>
+              <div id="cid_3" class="form-input">
+                <input type="email" id="input_3" name="q3_email3" class="form-textbox validate[Email]" size="30" value="" placeholder="ex: myname@example.com" data-component="email" />
+              </div>
+            </li>
+            <li class="form-line" data-type="control_textbox" id="id_5">
+              <label class="form-label form-label-left form-label-auto" id="label_5" for="input_5"> Organization </label>
+              <div id="cid_5" class="form-input">
+                <input type="text" id="input_5" name="q5_organization" data-type="input-textbox" class="form-textbox" size="20" value="" placeholder=" " data-component="textbox" />
+              </div>
+            </li>
+            <li class="form-line" data-type="control_phone" id="id_6">
+              <label class="form-label form-label-left form-label-auto" id="label_6" for="input_6_area"> Phone Number </label>
+              <div id="cid_6" class="form-input">
+                <div data-wrapper-react="true">
+                  <span class="form-sub-label-container" style="vertical-align:top">
+                    <input type="tel" id="input_6_area" name="q6_phoneNumber6[area]" class="form-textbox" size="6" value="" data-component="areaCode" />
+                    <span class="phone-separate">
+                       -
+                    </span>
+                    <label class="form-sub-label" for="input_6_area" id="sublabel_area" style="min-height:13px"> Area Code </label>
+                  </span>
+                  <span class="form-sub-label-container" style="vertical-align:top">
+                    <input type="tel" id="input_6_phone" name="q6_phoneNumber6[phone]" class="form-textbox" size="12" value="" data-component="phone" />
+                    <label class="form-sub-label" for="input_6_phone" id="sublabel_phone" style="min-height:13px"> Phone Number </label>
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li class="form-line" data-type="control_paypal" id="id_7">
+              <label class="form-label form-label-left form-label-auto" id="label_7" for="input_7"> Amount </label>
+              <div id="cid_7" class="form-input">
+                <div data-wrapper-react="true">
+                  <input type="hidden" name="simple_fpc" data-payment_type="paypal" data-component="payment1" value="7" />
+                  <input type="hidden" name="payment_total_checksum" id="payment_total_checksum" data-component="payment2" />
+                  <span class="form-sub-label-container" style="vertical-align:top">
+                    <input type="text" class="form-textbox validate[Numeric]" id="input_7_donation" name="q7_amount[price]" value="" data-component="paymentDonation" />
+                    USD
+                    <label class="form-sub-label" for="input_7_donation" style="min-height:13px"> Donation </label>
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li class="form-line" data-type="control_textarea" id="id_9">
+              <label class="form-label form-label-left form-label-auto" id="label_9" for="input_9"> Comment </label>
+              <div id="cid_9" class="form-input">
+                <textarea id="input_9" class="form-textarea" name="q9_comment" cols="40" rows="6" data-component="textarea"></textarea>
+              </div>
+            </li>
+            <li class="form-line" data-type="control_button" id="id_2">
+              <div id="cid_2" class="form-input-wide">
+                <div style="text-align:center" class="form-buttons-wrapper">
+                  <button id="input_2" type="submit" class="btn btn-primary" data-component="button" alt="form-submit-button">
+                    Donate
+                  </button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li style="display:none">
+              Should be Empty:
+              <input type="text" name="website" value="" />
+            </li>
+          </ul>
+        </div>
+        <script>
+        JotForm.showJotFormPowered = "new_footer";
+        </script>
+        <input type="hidden" id="simple_spc" name="simple_spc" value="90541686675165" />
+        <script type="text/javascript">
+          document.getElementById("si" + "mple" + "_spc").value = "90541686675165-90541686675165";
+        </script>
+      </form>
+      <script type="text/javascript">JotForm.ownerView=true;</script>
+      </div>
+    </div>
+
     <div class="mobile-clock">
       <p class="timer"></p>
     </div>
@@ -83,7 +367,7 @@
         hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-      
+
         if (days < 1) {
           desktopClock.innerHTML = `
             <span class="clock-numbers">${hours}</span> Hours
@@ -94,7 +378,7 @@
             <span class="clock-numbers">${hours}</span> Hours
             <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
             <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
-           `  
+           `
         } else {
           desktopClock.innerHTML = `
             <span class="clock-numbers">${days}</span> Days
