@@ -114,8 +114,6 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	
-	  
 	  
 	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
@@ -156,7 +154,7 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//Organizer's landing page (where the organizer selects what she wants to do)
+	//Organizer's landing page (where the organizer selects what she wants to do)	
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
 	//This is the page with the form for creating a new auction

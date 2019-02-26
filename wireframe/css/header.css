@@ -1,4 +1,89 @@
 
+#top-nav-supporter {
+    background-color: #003d79;
+    color: #f9f8fa;
+    font-weight: 400 !important; 
+    
+}
+#countdown-clock {
+    background-color: #bacc14;  
+    color:  #f9f8fa;
+    font-size: 0.8rem; 
+    font-weight: 300 !important; 
+}
+
+.brand-nav {
+    font-family: "Kameron", Georgia, "Times New Roman", serif;
+    color: #f9f8fa;
+    font-size: 0.9rem !important;
+    display: block; 
+    margin: 0 auto;
+    
+}
+.auction-nav {
+    font-family: Lato, sans-serif; 
+    color: #f9f8fa;
+    font-size: 0.8rem; 
+    font-weight: 300; 
+    text-transform: uppercase; 
+    letter-spacing: 0.1rem;
+    display: block; 
+    margin: 0 auto;
+}
+
+a.logout, a.user {
+    color: #69afff; 
+}
+
+a.logout:hover, a.logout:active, a.user:hover, a.user:active {
+    color: #0055cb; 
+}
+
+.nav-btn {
+    text-align: center;
+    text-transform: uppercase; 
+    font-weight: 400; 
+    font-size: 0.8rem; 
+    padding: 0px; 
+}
+
+.catalog {
+    background-color: #0080ff;
+}
+
+.featured {
+    background-color: #ff2719;
+    color: #f9f8fa;
+}
+
+.watch-list {
+    background-color: #a2b209;
+    
+}
+
+a.nav2-link {
+    color: #f9f8fa !important; 
+}
+
+a.nav2-link:hover {
+    color: #e6e1ea !important; 
+    font-weight: 900 !important; 
+}
+
+.nav-btn {
+    text-align: center;
+    text-transform: uppercase; 
+    color: #f9f8fa;
+    font-weight: 400; 
+    font-size: 0.8rem; 
+    padding: 0px; 
+    
+}
+
+
+
+/* Old Unused stuff */
+
 .nav-head {
     background-color: #003d79;
 }
@@ -14,6 +99,20 @@ a.nav-org:hover {
 .li-marg {
     padding-right: 1.5rem; 
 }
+/* ------------- */
+
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-top: 2rem;
+    height: 50px;
+    background-color: #bacc14; 
+  }
+
+
+
 
 /* Countdown Clock */
 

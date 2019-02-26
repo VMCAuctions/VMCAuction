@@ -1,130 +1,125 @@
 
-<!-- Bootstrap -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="/css/header.css"> 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/header.css">
+
+
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <header>
-
-<nav class="navbar navbar-expand-md navbar-dark nav-head">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <% if (auction){ %>
-        <ul class="navbar-nav mr-auto">
-            <li class="li-marg">
-              <a class="nav-link nav-org" href="/<%=auction%>/packages">Catalog</a>
-            </li>
-        </ul>
-      <%}%>
-    <!-- fix the route that takes it to the '#' and it actually should not be there in full size screens but only mobile displays -->
-        <div class="desktop-clock">
-          <p class="timer" data-startClock="<%= auctionDetails.startClock %>"></p>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-          <%if(userName){%>
-            <li class="li-marg">
-              <a class="nav-link nav-org" href="/<%=auction%>/users/<%=userName%>">Watch List</a>
-            </li>
-            <li class="li-marg">
-              <a class="nav-link nav-org" href="/<%=auction%>/users/account/<%=userName%>"><%=userName%>'s Account</a>
-            </li>
-            <li class="li-marg">
-              <a class="nav-link nav-org" href="/users/logout">Logout</a>
-            </li>
-          <%}else{%>
-            <li>
-              <a class="nav-link nav-org" href="/users/login">Login</a> 
-            </li>
-            <li>
-              <a class="nav-link nav-org" href="/users/register">Register </a>
-            </li>
-          <%}%>
-        </ul>
-        <!-- colapse div ends -->
-    </div>
-    <div class="mobile-clock">
-      <p class="timer"></p>
-    </div>
-<!-- container ends -->
-  </div>
-</nav>
+	<% if (auction){ %>
+		<% if(userName) {%>
+			<nav class="mb-3">
+				<!-- <div id="countdown-clock" class="text-center py-2">Time left: 3 hours,  40 min</div> -->
+				<div id="top-nav-supporter" class="d-flex flex-row justify-content-between align-items-center text-white nav-head py-3">
+					<div class="col-3 pl-4">
+						<a class="user" href="/<%=auction%>/users/account/<%=userName%>"><i class="fas fa-user"></i> <%= user.lastName %></a>
+					</div>		
+					<div class="col-6">
+						<div class="row brand-nav text-center mb-1">elizabid by VMCF </div>
+						<div class="row auction-nav text-center"><%= auctionDetails.name %></div>		
+					</div> 
+					<div class="col-3 text-right">
+						<a class="pr-3 logout" href="/users/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+					</div>
+				</div>
+				
+				<div class="d-flex flex-row justify-content-center align-items-center">
+					<div class="col-4 nav-btn catalog py-3">
+							<a class="nav2-link" href="/<%=auction%>/packages">Catalog</a>		
+					</div>
+					<div class="col-4 nav-btn featured py-3">
+						<a class="nav2-link" href="#">Featured Bids</a>
+					</div>
+					<div class="col-4 nav-btn watch-list py-3">
+						<a class="nav2-link" href="/<%=auction%>/users/<%=userName%>">Watch list</a>
+					</div>		
+				</div>
+			</nav>
+		<%}%>
+	<%}%>
 </header>
 
+
 <script>
-  const desktopClock = document.getElementsByClassName('timer')[0];
-  const mobileClock = document.getElementsByClassName('timer')[1];
+//   const desktopClock = document.getElementsByClassName('timer')[0];
+//   const mobileClock = document.getElementsByClassName('timer')[1];
 
-  function countdown(endDate) {
-    let timer, days, hours, minutes, seconds;
+//   function countdown(endDate) {
+//     let timer, days, hours, minutes, seconds;
 
-    endDate = new Date(endDate).getTime();
+//     endDate = new Date(endDate).getTime();
 
-    if (isNaN(endDate)) {
-      return;
-    }
+//     if (isNaN(endDate)) {
+//       return;
+//     }
 
-    timer = setInterval(calculate, 1000);
+//     timer = setInterval(calculate, 1000);
 
-    function calculate() {
-      let startDate = new Date().getTime();
+//     function calculate() {
+//       let startDate = new Date().getTime();
 
-      let timeRemaining = endDate - startDate;
+//       let timeRemaining = endDate - startDate;
 
-      if (timeRemaining >= 0) {
+//       if (timeRemaining >= 0) {
 
-        days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+//         days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+//         hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//         minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+//         seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
       
-        if (days < 1) {
-          desktopClock.innerHTML = `
-            <span class="clock-numbers">${hours}</span> Hours
-            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
-            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
-           `
-          mobileClock.innerHTML = `
-            <span class="clock-numbers">${hours}</span> Hours
-            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
-            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
-           `  
-        } else {
-          desktopClock.innerHTML = `
-            <span class="clock-numbers">${days}</span> Days
-            <span class="clock-numbers">${("0" + hours).slice(-2)}</span> Hours
-            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
-            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
-          `
-          mobileClock.innerHTML = `
-            <span class="clock-numbers">${days}</span> D
-            <span class="clock-numbers">${("0" + hours).slice(-2)}</span> H
-            <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> M
-            <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> S
-          `
-        }
-      } else {
-        desktopClock.style.color = 'orangered';
-        mobileClock.style.color = 'orangered';
-        desktopClock.style.fontWeight = 'bold';
-        mobileClock.style.fontWeight = 'bold';
-        desktopClock.innerHTML = 'Auction has ended';
-        mobileClock.innerHTML = 'Auction has ended';
-      }
-    }
-  }
+//         if (days < 1) {
+//           desktopClock.innerHTML = `
+//             <span class="clock-numbers">${hours}</span> Hours
+//             <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+//             <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
+//            `
+//           mobileClock.innerHTML = `
+//             <span class="clock-numbers">${hours}</span> Hours
+//             <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+//             <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
+//            `  
+//         } else {
+//           desktopClock.innerHTML = `
+//             <span class="clock-numbers">${days}</span> Days
+//             <span class="clock-numbers">${("0" + hours).slice(-2)}</span> Hours
+//             <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> Minutes
+//             <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> Seconds
+//           `
+//           mobileClock.innerHTML = `
+//             <span class="clock-numbers">${days}</span> D
+//             <span class="clock-numbers">${("0" + hours).slice(-2)}</span> H
+//             <span class="clock-numbers">${("0" + minutes).slice(-2)}</span> M
+//             <span class="clock-numbers">${("0" + seconds).slice(-2)}</span> S
+//           `
+//         }
+//       } else {
+//         desktopClock.style.color = 'orangered';
+//         mobileClock.style.color = 'orangered';
+//         desktopClock.style.fontWeight = 'bold';
+//         mobileClock.style.fontWeight = 'bold';
+//         desktopClock.innerHTML = 'Auction has ended';
+//         mobileClock.innerHTML = 'Auction has ended';
+//       }
+//     }
+//   }
 
-  (function () {
-    let startTime = desktopClock.dataset.startclock;
+//   (function () {
+//     let startTime = desktopClock.dataset.startclock;
 
-    countdown(startTime);
-  }());
+//     countdown(startTime);
+//   }());
+// </script>
 </script>
 
-<!-- Nav-bar -->
+
+
+
+

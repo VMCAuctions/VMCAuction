@@ -49,18 +49,21 @@ function PackagesController(){
 										console.log(err)
 									} else {
 										console.log("req.session is", req.session)
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										res.render('packages', {
 											page: 'catalog',
 											packages: packages,
 											admin: req.session.admin,
 											userName: req.session.userName,
 											user: user,
+											userDisplay: userDisplay, 
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
 											auction: req.params.auctions,
 											auctionDetails: auctionDetails,
 										})
+										
 									}
 								})
 							}

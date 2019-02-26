@@ -114,6 +114,7 @@ function AuctionsController() {
           console.log(err);
         } else {
           console.log("auction details", auctionDetails);
+          res.locals.auctionName = auctionDetails.name; // makes the auction name available in all in Headers when added to any page
           res.render("organizerMenu", {
             page: "organizerMenu",
             admin: req.session.admin,

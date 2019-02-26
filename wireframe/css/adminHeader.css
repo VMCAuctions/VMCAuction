@@ -1,22 +1,37 @@
+/* top nav bar */
 
+#top-nav {
+    background-color: #f8f9fa; 
+}
 .brand{
     font-family: "Kameron", Georgia, "Times New Roman", serif;
-    font-size: 2rem !important;
+    font-size: 1.6rem !important;
     color: #003d79 !important;
     padding-left: 10px; 
-  }
-.top-link {
-    color: #003d79 !important;
-    font-weight: 500; 
+}
+
+.auction-nav {
+    font-family: Lato, sans-serif; 
+    font-size: 1rem; 
+    font-weight: 400; 
+    text-transform: uppercase; 
+    letter-spacing: 0.1rem
+}
+    
+a.top-link {
+    color: #0080ff !important;
+    font-weight: 400;
 }
 a.top-link:hover {
-    color: #99004d !important;
-    background-color: #eef3f6;
-    height: 100%; 
+    color: #0055cb !important; 
 }
-.active1 {
-    color: #99004d !important;
+.top-link.active1 {
+    color: #0055cb !important;
 }
+
+
+/* lower nav bar  */
+
 .nav-head {
     background-color: #003d79;
 }
@@ -25,21 +40,22 @@ a.top-link:hover {
 }
 a.nav-org:hover {
     color: #b3d9ff !important;
-    background-color: #004d99;
+    /* background-color: #004d99; */
 }
 .active2 {
     color: #b3d9ff !important;
+    
 }
+
+/* lower nav bar  */
 .btn-logout {
-    border: solid 2px #003d79 !important; 
-    color: #003d79 !important; 
+    border: solid 2px #0080ff !important; 
+    color: #0080ff !important; 
+    padding: 4px 10px;  
 }
 a.btn-logout:hover {
     color: #fff !important;
-    background-color: #99004d;
-    border: solid 2px #99004d !important; 
+    background-color: #0055cb;
+    border: solid 2px #0055cb!important; 
 }
-.li-marg {
-    padding-right: 1.2rem; 
-}
-
+ 
