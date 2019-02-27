@@ -6,7 +6,7 @@ var auctions = require('../controllers/auctions.js');
 var path = require('path')
 
 // for image upload
-var multer = require('multer')
+// var multer = require('multer')
 // var storage = multer.diskStorage({
 //     destination: function(req, file, callback) {
 //         callback(null, './public')//here you can place your destination path
@@ -18,16 +18,7 @@ var multer = require('multer')
 //     }
 // })
 
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, './public')
-    },
-    filename: function(req, file, callback) {
-        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-        callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-    }
-}, console.log("000 routes.js var storage.  storage = ",storage)
-)
+
 
 
 module.exports = function(app) {
@@ -197,18 +188,33 @@ module.exports = function(app) {
 	// 	console.log("100 routes.js Auction.create.  req.body.name = ",req.body.name)
 	// 	auctions.create(req, res)});
 	
+
+
+
+
+
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
 
+		console.log("200 routes.js auction app.post.  req.body = ",req.body);
 
-		var upload = multer({ storage: storage}).single('headerImage');
-		// var upload = multer({ storage: storage}).single('auctionImage');
+		// var upload = multer({ storage: storage}).single('headerImage');
+		// // var upload = multer({ storage: storage}).single('auctionImage');
 		
 		
-		upload(req, res, function(err) {
-	})
+		// upload(req, res, function(err) {
 
+		// // console.log("201 routes.js auction app.post.  req = ",req);
+		// })
+
+		// console.log("202 routes.js auction app.post.  pre controller call.  req.file = ",req.file);
 		auctions.create(req, res)});
+
+
+
+
+
+
 
 
 
@@ -216,7 +222,6 @@ module.exports = function(app) {
 		// console.log("200 routes.js auction app.post start.  req.file = ",req.file);
 		// console.log("200 routes.js auction app.post.  upload = ",upload);
 		// console.log("201 routes.js auction app.post.  req.body = ",req.body);
-		// console.log("202 routes.js auction app.post.  pre controller call");
 	
 	
 	//Renders the organizer menu page

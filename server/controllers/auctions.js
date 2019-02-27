@@ -9,16 +9,16 @@ globals = require("../controllers/globals.js");
 var dateFormat = require('dateformat');
 
 // for image upload
-var multer = require('multer')
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, './public')
-    },
-    filename: function(req, file, callback) {
-        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-        callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-    }
-})
+// var multer = require('multer')
+// var storage = multer.diskStorage({
+//     destination: function(req, file, callback) {
+//         callback(null, './public')
+//     },
+//     filename: function(req, file, callback) {
+//         // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+//         callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+//     }
+// })
 
 // console.log("000 auctions.js var storage.  storage = ",storage)
 
@@ -26,6 +26,7 @@ function AuctionsController() {
   this.index = function(req, res) {
     //Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
     if (globals.adminValidation(req, res)) {
+		
       res.render("auctions", {
         admin: req.session.admin,
         userName: req.session.userName
@@ -66,6 +67,8 @@ function AuctionsController() {
       res.redirect("/" + req.session.auction + "/packages");
     }
   };
+
+
   //Just used as an API for now
   this.create = function(req, res) {
 	console.log("000 auctions.js Auction.create start")
@@ -80,7 +83,7 @@ function AuctionsController() {
       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
       var end = new Date(endDate);
       Global.findOne({}, function(err, global) {
-        // console.log("000 auctions.js this.create global.findOne.  global = ",global);
+        
         if (err) {
           console.log(err);
         }
@@ -110,13 +113,24 @@ function AuctionsController() {
                   description: req.body.description,
                   venue: req.body.venue,
 				  // for image upload
-				  headerImage: req.file.filename
+				//   headerImage: req.file.filename
                 },
                 function(err, result) {
                   if (err) {
-                    console.log(err);
+                    console.log("106 auctions.js Auction.create error.  err = ",err);
                   } else {
                     console.log("110 auctions.js auction.create result = ",result);
+
+
+					
+
+					var upload = multer({ storage: storage}).single('headerImage');
+					// var upload = multer({ storage: storage}).single('auctionImage');
+					upload(req, res, function(err) {
+
+					// console.log("201 routes.js auction app.post.  req = ",req);
+					})
+
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");
                   }
