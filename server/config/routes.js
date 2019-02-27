@@ -3,6 +3,31 @@ var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
+var path = require('path')
+
+// for image upload
+var multer = require('multer')
+// var storage = multer.diskStorage({
+//     destination: function(req, file, callback) {
+//         callback(null, './public')//here you can place your destination path
+//     },
+	
+//     filename: function(req, file, callback) {
+//         // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+// 		callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+//     }
+// })
+
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './public')
+    },
+    filename: function(req, file, callback) {
+        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+    }
+}, console.log("000 routes.js var storage.  storage = ",storage)
+)
 
 
 module.exports = function(app) {
@@ -158,13 +183,42 @@ module.exports = function(app) {
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)
 	app.get('^/auctions/main', function (req, res) {
+		console.log("160 routes.js /auctions/main. req.body = ",req.body)
 		auctions.main(req, res)});
+
+
 	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
+		console.log("161 routes.js /auctions$. req.body = ",req.body)
 		auctions.index(req, res)});
+
 	//Creating an auction
+	// app.post('^/auctions$', function (req, res) {
+	// 	console.log("100 routes.js Auction.create.  req.body.name = ",req.body.name)
+	// 	auctions.create(req, res)});
+	
+	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
+
+
+		var upload = multer({ storage: storage}).single('headerImage');
+		// var upload = multer({ storage: storage}).single('auctionImage');
+		
+		
+		upload(req, res, function(err) {
+	})
+
 		auctions.create(req, res)});
+
+
+
+		// console.log("200 routes.js auction app.post.  req.file = ",req.file);
+		// console.log("200 routes.js auction app.post start.  req.file = ",req.file);
+		// console.log("200 routes.js auction app.post.  upload = ",upload);
+		// console.log("201 routes.js auction app.post.  req.body = ",req.body);
+		// console.log("202 routes.js auction app.post.  pre controller call");
+	
+	
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
@@ -177,9 +231,13 @@ module.exports = function(app) {
 		// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
+		
 	//Event landing page the supporters will see; has links to supporter login and registration
 	app.get('/:auctions/event', function(req, res) {
+		console.log("300 routes.js :auctions/event.  req.body = ",req.body)
 		auctions.event(req, res)});
+
+
 	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
 	app.get('/:auctions/clerkDash', function(req,res) {
 		auctions.clerk(req,res)});

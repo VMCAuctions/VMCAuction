@@ -1,12 +1,26 @@
 var mongoose = require("mongoose"),
-  Item = require("../models/item.js"),
-  Package = require("../models/package.js"),
-  Category = require("../models/category.js"),
-  User = require("../models/user.js"),
-  Auction = require("../models/auction.js"),
-  Global = require("../models/global.js"),
-  globals = require("../controllers/globals.js");
-  var dateFormat = require('dateformat');
+Item = require("../models/item.js"),
+Package = require("../models/package.js"),
+Category = require("../models/category.js"),
+User = require("../models/user.js"),
+Auction = require("../models/auction.js"),
+Global = require("../models/global.js"),
+globals = require("../controllers/globals.js");
+var dateFormat = require('dateformat');
+
+// for image upload
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './public')
+    },
+    filename: function(req, file, callback) {
+        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+// console.log("000 auctions.js var storage.  storage = ",storage)
 
 function AuctionsController() {
   this.index = function(req, res) {
@@ -54,6 +68,7 @@ function AuctionsController() {
   };
   //Just used as an API for now
   this.create = function(req, res) {
+	console.log("000 auctions.js Auction.create start")
     // console.log("req.body.startClockDate is", req.body.startClockDate)
     // console.log("req.body.startClockTime is", req.body.startClockTime)
     // Add validations to ensure auction start occurs before auction end
@@ -65,7 +80,7 @@ function AuctionsController() {
       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
       var end = new Date(endDate);
       Global.findOne({}, function(err, global) {
-        console.log(global);
+        // console.log("000 auctions.js this.create global.findOne.  global = ",global);
         if (err) {
           console.log(err);
         }
@@ -80,6 +95,10 @@ function AuctionsController() {
             if (err) {
               console.log(err);
             } else {
+				// console.log("100 auctions.js Auction.create.  req = ",req)
+				// console.log("100 auctions.js Auction.create.  req.file = ",req.file)
+				console.log("100 auctions.js Auction.create.  req.body = ",req.body)
+				console.log("101 auctions.js Auction.create.  req.body.name = ",req.body.name)
               Auction.create(
                 {
                   name: req.body.name,
@@ -89,13 +108,15 @@ function AuctionsController() {
                   subtitle: req.body.subtitle,
                   welcomeMessage: req.body.welcomeMessage,
                   description: req.body.description,
-                  venue: req.body.venue
+                  venue: req.body.venue,
+				  // for image upload
+				  headerImage: req.file.filename
                 },
                 function(err, result) {
                   if (err) {
                     console.log(err);
                   } else {
-                    console.log(result);
+                    console.log("110 auctions.js auction.create result = ",result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");
                   }
@@ -151,6 +172,7 @@ function AuctionsController() {
   };
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
+		console.log("400 auctions.js this.event.  auction = ",auction)
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       startDate = stringStartClock.substring(0, 10);
