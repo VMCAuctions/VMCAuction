@@ -1,21 +1,16 @@
-
+/* top nav bar 
+---------------------------------------------------------------*/
 #top-nav-supporter {
     background-color: #003d79;
     color: #f9f8fa;
     font-weight: 400 !important; 
     
 }
-#countdown-clock {
-    background-color: #bacc14;  
-    color:  #f9f8fa;
-    font-size: 0.8rem; 
-    font-weight: 300 !important; 
-}
 
 .brand-nav {
     font-family: "Kameron", Georgia, "Times New Roman", serif;
     color: #f9f8fa;
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
     display: block; 
     margin: 0 auto;
     
@@ -23,7 +18,7 @@
 .auction-nav {
     font-family: Lato, sans-serif; 
     color: #f9f8fa;
-    font-size: 0.8rem; 
+    font-size: 0.75rem; 
     font-weight: 300; 
     text-transform: uppercase; 
     letter-spacing: 0.1rem;
@@ -31,20 +26,33 @@
     margin: 0 auto;
 }
 
-a.logout, a.user {
+.user {
+    font-size: 0.8rem; 
+
+}
+a.log, a.user {
+    color: #b3d9ff; 
+}
+
+a.log:hover, a.log:active, a.user:hover, a.user:active {
     color: #69afff; 
 }
 
-a.logout:hover, a.logout:active, a.user:hover, a.user:active {
-    color: #0055cb; 
+/* to show which page is active */
+.current {
+    color: #69afff !important; 
+    font-weight: 700 !important;
+    padding: 0 0 5px 0; 
+    border-bottom: 3px solid #69afff; 
 }
 
+/* second nav bar with buttons
+---------------------------------------------------------------*/
 .nav-btn {
     text-align: center;
     text-transform: uppercase; 
     font-weight: 400; 
-    font-size: 0.8rem; 
-    padding: 0px; 
+    font-size: 0.73rem !important; 
 }
 
 .catalog {
@@ -76,45 +84,34 @@ a.nav2-link:hover {
     color: #f9f8fa;
     font-weight: 400; 
     font-size: 0.8rem; 
-    padding: 0px; 
-    
+      
+}
+
+/* to show which page is active */
+.catalog .current {
+    color: #e6e1ea !important; 
+    font-weight: 900 !important;
+    border-bottom: 3px solid #0055cb; 
+    padding: 0 0 16px 0; 
+}
+
+.featured .current {
+    color: #e6e1ea !important; 
+    font-weight: 900 !important;
+    border-bottom: 3px solid #c30000; 
+    padding: 0 0 16px 0;  
+
+}
+
+.watch-list .current {
+    color: #e6e1ea !important; 
+    font-weight: 900 !important;
+    border-bottom: 3px solid #6f8300; 
+    padding: 0 0 16px 0;  
 }
 
 
-
-/* Old Unused stuff */
-
-.nav-head {
-    background-color: #003d79;
-}
-.nav-org {
-    color: #ffffff !important;
-    font-size: 1.2rem; 
-    padding-right: 0 !important;
-}
-a.nav-org:hover {
-    color: #b3d9ff !important;
-    background-color: #004d99;
-}
-.li-marg {
-    padding-right: 1.5rem; 
-}
-/* ------------- */
-
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    margin-top: 2rem;
-    height: 50px;
-    background-color: #bacc14; 
-  }
-
-
-
-
-/* Countdown Clock */
+/* Old Countdown Clock */
 
 .timer {
     margin: 0;

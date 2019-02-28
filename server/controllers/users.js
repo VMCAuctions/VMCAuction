@@ -116,6 +116,7 @@ function UsersController(){
 					} else {
 						res.render('userAccount', {
 							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
+							page: 'myAccount',
 							user: user,
 							firstName: user.firstName,
 							lastName: user.lastName,
@@ -276,7 +277,7 @@ function UsersController(){
               } else {
                 console.log("req.session is", req.session)
                 res.render('userPage', {
-                  page: 'myAccount',
+                  page: 'watch-list',
                   userName: req.session.userName,
                   admin: req.session.admin,
                   user: user,

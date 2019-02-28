@@ -114,12 +114,12 @@ function AuctionsController() {
           console.log(err);
         } else {
           console.log("auction details", auctionDetails);
-          res.locals.auctionName = auctionDetails.name; // makes the auction name available in all in Headers when added to any page
+          res.locals.auctionName = auctionDetails.name; // to make the auction name available in all in Headers when added to any page
           res.render("organizerMenu", {
             page: "organizerMenu",
             admin: req.session.admin,
             auction: req.params.auctions,
-            auctionDetails: auctionDetails,
+            auctionDetails: auctionDetails, //might be use to display auction name 
             userName: req.session.userName
           });
         }

@@ -8,17 +8,20 @@ html {
   	box-sizing: border-box; 
 }
 
+*, *:before, *:after {
+  	box-sizing: inherit; 
+}
+
+/* Footer Fix?
+-------------------------------------------------------------- */
+/* 
 html {
 	position: relative;
 	min-height: 100%;
 	max-width: 100%; 
 	
-}
+} */
 
-
-*, *:before, *:after {
-  	box-sizing: inherit; 
-}
 
 /* Common styles 
 -------------------------------------------------------------- */
@@ -59,7 +62,6 @@ a:hover {
 
 /* Common Styling Headers
 -------------------------------------------------------------- */ 
-
 
 
 

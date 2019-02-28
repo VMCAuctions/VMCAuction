@@ -72,7 +72,9 @@ module.exports = function(app) {
 	app.get('/:auctions/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)});
 
-
+	//TO BE ADDED (a page just for the featured pacakges):	
+	app.get('/:auctions/featured-packages', function(req, res) {
+		packages.featuredPackages(req, res)});	
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down

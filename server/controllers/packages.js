@@ -435,7 +435,7 @@ this.new = function(req,res){
 		}
 	}
 
-
+	
 	this.cancelBid = function(req,res){
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function(err,package){
