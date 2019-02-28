@@ -4,19 +4,20 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
 var path = require('path')
+Auction = require("../models/auction.js");
 
 // for image upload
-// var multer = require('multer')
-// var storage = multer.diskStorage({
-//     destination: function(req, file, callback) {
-//         callback(null, './public')//here you can place your destination path
-//     },
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './public')//here you can place your destination path
+    },
 	
-//     filename: function(req, file, callback) {
-//         // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-// 		callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-//     }
-// })
+    filename: function(req, file, callback) {
+        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+		callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
 
 
 
@@ -185,27 +186,61 @@ module.exports = function(app) {
 
 	//Creating an auction
 	// app.post('^/auctions$', function (req, res) {
-	// 	console.log("100 routes.js Auction.create.  req.body.name = ",req.body.name)
+	// 	console.log("162 routes.js /auctions$. req.body = ",req.body)
+	// 	console.log("163 routes.js /auctions$  req.body.name = ",req.body.name)
 	// 	auctions.create(req, res)});
 	
-
-
-
 
 
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
 
-		console.log("200 routes.js auction app.post.  req.body = ",req.body);
-
-		// var upload = multer({ storage: storage}).single('headerImage');
-		// // var upload = multer({ storage: storage}).single('auctionImage');
+		console.log(Date.now(),": 200 routes.js auction app.post.  req.body = ",req.body);
+		console.log(Date.now(),": 201 routes.js auction app.post.  req.file = ",req.file);
 		
-		
-		// upload(req, res, function(err) {
 
-		// // console.log("201 routes.js auction app.post.  req = ",req);
-		// })
+		var upload = multer({ storage: storage}).single('headerImage');
+		// var upload = multer({ storage: storage}).single('auctionImage');
+
+		console.log(Date.now(),": 202 routes.js auction app.post.  req.body = ",req.body);
+		console.log(Date.now(),": 203 routes.js auction app.post.  req.file = ",req.file);
+		
+		upload(req, res, function(err) {
+			console.log(Date.now(),": 206 routes.js auction app.post. in upload  req.body = ",req.body);
+			console.log(Date.now(),": 207 routes.js auction app.post. in upload  req.file = ",req.file);
+			
+
+			Auction.findOne({ name: req.body.name }, function(err, auction) {
+        
+				if (err) {
+					console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne err = ",err);
+				
+				} else {
+					console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne auction = ",auction);
+
+
+					auction.headerImage = req.file.filename;
+					auction.save()
+					
+				}
+
+				console.log(Date.now(),": 208 routes.js auction app.post. after header image save.  auction.headerimage = ",auction.headerImage);
+				console.log(Date.now(),": 208 routes.js auction app.post. after header image save.  auction._id = ",auction._id);
+					
+			})
+
+			// Auction.findOne({ _id: auction._id }, function(err, auction) {
+        
+			// 	if (err) {
+			// 		console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne err = ",err);
+				
+			// 	} else {
+			// 		console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne auction = ",auction);
+			// 	}
+					
+			// })
+		})
+	
 
 		// console.log("202 routes.js auction app.post.  pre controller call.  req.file = ",req.file);
 		auctions.create(req, res)});
@@ -217,8 +252,8 @@ module.exports = function(app) {
 
 
 
+		// console.log("201 routes.js auction app.post.  req = ",req);
 
-		// console.log("200 routes.js auction app.post.  req.file = ",req.file);
 		// console.log("200 routes.js auction app.post start.  req.file = ",req.file);
 		// console.log("200 routes.js auction app.post.  upload = ",upload);
 		// console.log("201 routes.js auction app.post.  req.body = ",req.body);

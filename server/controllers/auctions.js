@@ -9,16 +9,16 @@ globals = require("../controllers/globals.js");
 var dateFormat = require('dateformat');
 
 // for image upload
-// var multer = require('multer')
-// var storage = multer.diskStorage({
-//     destination: function(req, file, callback) {
-//         callback(null, './public')
-//     },
-//     filename: function(req, file, callback) {
-//         // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-//         callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-//     }
-// })
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './public')
+    },
+    filename: function(req, file, callback) {
+        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
 
 // console.log("000 auctions.js var storage.  storage = ",storage)
 
@@ -100,8 +100,9 @@ function AuctionsController() {
             } else {
 				// console.log("100 auctions.js Auction.create.  req = ",req)
 				// console.log("100 auctions.js Auction.create.  req.file = ",req.file)
-				console.log("100 auctions.js Auction.create.  req.body = ",req.body)
-				console.log("101 auctions.js Auction.create.  req.body.name = ",req.body.name)
+				console.log(Date.now(),": 100 auctions.js Auction.create.  req.body = ",req.body)
+				console.log(Date.now(),": 101 auctions.js Auction.create.  req.body.name = ",req.body.name)
+				console.log(Date.now(),": 102 auctions.js Auction.create.  req.file = ",req.file);
               Auction.create(
                 {
                   name: req.body.name,
@@ -117,19 +118,17 @@ function AuctionsController() {
                 },
                 function(err, result) {
                   if (err) {
-                    console.log("106 auctions.js Auction.create error.  err = ",err);
+                    console.log(Date.now(),": 106 auctions.js Auction.create error.  err = ",err);
                   } else {
-                    console.log("110 auctions.js auction.create result = ",result);
+                    console.log(Date.now(),": 110 auctions.js auction.create result = ",result);
+					console.log(Date.now(),": 112 auctions.js Auction.create. post result  req.file = ",req.file);
 
+					// var upload = multer({ storage: storage}).single('headerImage');
+					// // var upload = multer({ storage: storage}).single('auctionImage');
+					// upload(req, res, function(err) {
 
-					
-
-					var upload = multer({ storage: storage}).single('headerImage');
-					// var upload = multer({ storage: storage}).single('auctionImage');
-					upload(req, res, function(err) {
-
-					// console.log("201 routes.js auction app.post.  req = ",req);
-					})
+					// // console.log("201 routes.js auction app.post.  req = ",req);
+					// })
 
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");
@@ -142,6 +141,68 @@ function AuctionsController() {
       });
     }
   };
+
+
+// this.create = function(req, res) {
+    // console.log("req.body.startClockDate is", req.body.startClockDate)
+    // console.log("req.body.startClockTime is", req.body.startClockTime)
+    // Add validations to ensure auction start occurs before auction end
+
+//     if (globals.adminValidation(req, res)) {
+//       var startDate =
+//         req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+//       var start = new Date(startDate);
+//       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
+//       var end = new Date(endDate);
+//       Global.findOne({}, function(err, global) {
+//         // console.log(global);
+//         if (err) {
+//           console.log(err);
+//         }
+//         if (global.pins.length == 0) {
+//           console.log("Out of available pins!");
+//         } else {
+//           randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
+//           randomPin = global.pins[randomPinIndex];
+//           global.pins.splice(randomPinIndex, 1);
+
+//           global.save(function(err, result) {
+//             if (err) {
+//               console.log(err);
+//             } else {
+//               Auction.create(
+//                 {
+//                   name: req.body.name,
+//                   startClock: start,
+//                   endClock: end,
+//                   pin: randomPin,
+//                   subtitle: req.body.subtitle,
+//                   welcomeMessage: req.body.welcomeMessage,
+//                   description: req.body.description,
+//                   venue: req.body.venue
+//                 },
+//                 function(err, result) {
+//                   if (err) {
+//                     console.log(err);
+//                   } else {
+//                     console.log(result);
+//                     //Perhaps display pin to organizer on creation and/or auction menu page
+//                     res.redirect("/" + result._id + "/organizerMenu");
+//                   }
+//                 }
+//               );
+//             }
+//           });
+//         }
+//       });
+//     }
+//   };
+
+
+
+
+
+
   this.menu = function(req, res) {
     if (globals.adminValidation(req, res)) {
       Auction.findById(req.params.auctions, function(err, auctionDetails) {
