@@ -33,8 +33,25 @@
       <%- include('header') -%>
     <%}%>
     <div class="container mt-4">
-      <h2>Edit Package</h2>
+      <h2>Edit <%=package.name%> Package</h2>
       <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-add show-modal mt-2 mb-4" data-toggle="modal" data-target="#itemsModal">
+          Add/Remove Items
+         </button>
+
+          <fieldset class="item-list">
+            <p>Items</p>
+              <%for (var j = 0; j < package._items.length; j++){%>
+                <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" required value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">&nbsp
+                <strong>Name: <%=package._items[j].name%></strong>
+                <div style="padding-left: 17px">
+                  Description: <%=package._items[j].description%>
+                  <br>
+                  Restrictions: <%=package._items[j].restrictions%>
+                </div>
+                <%}%>
+          </fieldset>
 
         <!-- Row 1 -->
         <div class="form-row mt-3">
@@ -86,25 +103,149 @@
           </div>
         </div>
         
-        <label class="label-name">Item List</label>
-          <fieldset class="item-list">
-              <%for (var j = 0; j < package._items.length; j++){%>
-                <input type="checkbox" name="selectedItems" id="<%=package._items[j]._id%>" required value="<%=package._items[j]._id%>" onChange='totalAdd(<%=package._items[j].value%>, <%=package._items[j]._id%>)' checked = "true">&nbsp
-                <strong>Name: <%=package._items[j].name%></strong>
-                <div style="padding-left: 17px">
-                  Description: <%=package._items[j].description%>
-                  <br>
-                  Restrictions: <%=package._items[j].restrictions%>
-                </div>
-                <%}%>
-          </fieldset>
         
         <button class="btn btn-submit mt-4 mb-5" type="submit">Submit Changes</button>
+
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add/Remove Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-header">
+                  <div id="search-container">
+                    <!-- Find items by keyword -->
+                    <div id="search-keyword">
+                      <label for "keyword">Search by keyword:</label>
+                      <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                    </div>
+                  </div>
+                  <div id="search-category">
+                      <label for "category" >Search by category:</label>
+                      <select select class="form-control" name="category" id="category">
+                        <option value="">All Categories</option>
+                        <% for(var c in categories) {%>
+                          <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+                        <%}%>
+                      </select>
+                    </div>
+              </div>
+              <div class="modal-body">
+                <div class="col-lg-6">
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Add/Remove</th>
+                          <th>Name</th>
+                          <th>Category</th>
+                          <th>Restrictions</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%for (var i in items){%>
+                          <%if(!items[i].packaged){%>
+                            <tr class="itemRow">
+                              <td>
+                                <input class="" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                              </td>
+                              <td>
+                                <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                              </td>
+                              <td>
+                                <%=items[i]._category%>
+                              </td>
+                              <td>
+                                <%= items[i].restrictions %>
+                              </td>
+                              <td>
+                                <p><%= items[i].value %></p>
+                              </td>
+                            </tr>
+                            <%}%>
+                          <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+               
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+               
+                <button id="saveChecked" type="button" class="btn btn-primary" data-dismiss="modal" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
   </div>
-      
-    <!-- need a read only feild with the current number selected -->
-    <script type="text/javascript">
+
+  <script>
+    $(document).ready(function(){
+      $('.show-modal').click(function(){
+        $('#itemsModal').modal({
+          backdrop: 'static',
+          keyboard: false
+        })
+      })
+
+      $("#keyword").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        if (value == '') {
+          $(".itemRow").show();
+        } else {
+          $(".itemRow").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+          });
+        }
+      });
+
+      var total = 0;
+      var checkedItems = {};
+      totalAdd = function(value, id){
+        var checkbox = document.getElementById(id);
+        if (checkbox.checked === true){
+          total += value
+        }else{
+          total -= value;
+        }
+        document.getElementById('totalValue').value = total
+      }
+
+      updateList = function(items){
+        var counter = 0
+        var test = "test"
+        $('#itemList').html("")
+        for (var i = 0; i < items.length; i++) {
+          if(items[i].packaged === false){
+            var checkbox = document.getElementById(items[i]._id)
+            if ((checkbox.checked === true)){
+              $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+              counter++
+              if((checkbox.checked === true) && (checkedItems.hasOwnProperty(items[i]._id) === false)){
+                $('#packageDescription').append(items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n")
+                $('#packageRestrictions').append(items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n")
+                checkedItems[items[i]._id]= 1;
+              }
+            }
+            else if((checkbox.checked === false) && (checkedItems.hasOwnProperty(items[i]._id) === true)){
+              $(`#itemID${counter}`).remove()
+              $('#packageDescription').splice(items[i]._id, 1)
+              console.log('item removed from package description');
+            }
+          }
+        }
+      }
+    })
+
     var total = <%= total%>;
     var checkedItems = {};
 
@@ -125,9 +266,7 @@
       }
       document.getElementById('totalValue').value = total
     }
-    </script>
 
-    <script>
       var validator = $("#packageForm").validate({
       rules: {
 
@@ -158,6 +297,6 @@
       }
     });
     validator.form();
-    </script>
+  </script>
   </body>
 </html>
