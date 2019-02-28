@@ -29,7 +29,8 @@
 			<div class="mb-4">
 				<a href="auctions/main"> <i class="fa fa-angle-double-left"></i> Back to Dashboard </a>
 			</div>
-      		<form action="/auctions" method="post">
+      		<!-- <form action="/auctions" method="post"> -->
+      		<form action="/auctions" enctype="multipart/form-data" method="post">
 			  	<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="name" class="label-name" >Auction Name</label>
@@ -63,6 +64,7 @@
 					<label for="subtitle" class="label-name">Subtitle/Tagline</label>
 					<textarea name="subtitle" id="subtitle" class="form-control" rows="1" ></textarea>
 				</div>
+
 				<div class="form-group">
 					<label for="welcomeMessage" class="label-name">Welcome Message</label>
 					<textarea name="welcomeMessage" id="welcomeMessage" class="form-control" rows="3"></textarea>
@@ -72,9 +74,13 @@
 					<textarea name="description" id="description" class="form-control" rows="5"></textarea>
 				</div>
 				<div class="form-group">
-					<label for="headerImage" class="label-name text-black-50">Header Image</label>
-					<input type="text" name="headerImage" id="headerImage" class="form-control">
+					<!-- <label for="headerImage" class="label-name text-black-50">Header Image</label>
+					<input type="file" name="headerImage" id="headerImage" class="form-control"> -->
+					<label for="auctionImage" class="label-name text-black-50">Header Image</label>
+					<input type="file" name="auctionImage" id="auctionImage" class="form-control">
 				</div>
+
+
 				<div class="form-group">
 					<label for="auctionLogo" class="label-name text-black-50">Auction Logo</label>
 					<input type="text" name="auctionLogo" id="auctionLogo" class="form-control">
