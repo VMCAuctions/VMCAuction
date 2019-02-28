@@ -70,7 +70,9 @@ a.btn-nav-login:hover {
 .header-img {
   /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
   /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
-  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg"); 
+  /* background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg");  */
+  
+  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%); 
   background-blend-mode: multiply;
   background-size: cover; 
   opacity: .95;  
