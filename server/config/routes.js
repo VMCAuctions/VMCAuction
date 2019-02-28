@@ -175,89 +175,32 @@ module.exports = function(app) {
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)
 	app.get('^/auctions/main', function (req, res) {
-		console.log("160 routes.js /auctions/main. req.body = ",req.body)
 		auctions.main(req, res)});
-
-
 	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
-		console.log("161 routes.js /auctions$. req.body = ",req.body)
 		auctions.index(req, res)});
 
-	//Creating an auction
+	//Creating an auction (without image upload)
 	// app.post('^/auctions$', function (req, res) {
-	// 	console.log("162 routes.js /auctions$. req.body = ",req.body)
-	// 	console.log("163 routes.js /auctions$  req.body.name = ",req.body.name)
 	// 	auctions.create(req, res)});
-	
-
 
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
-
-		console.log(Date.now(),": 200 routes.js auction app.post.  req.body = ",req.body);
-		console.log(Date.now(),": 201 routes.js auction app.post.  req.file = ",req.file);
-		
-
-		var upload = multer({ storage: storage}).single('headerImage');
-		// var upload = multer({ storage: storage}).single('auctionImage');
-
-		console.log(Date.now(),": 202 routes.js auction app.post.  req.body = ",req.body);
-		console.log(Date.now(),": 203 routes.js auction app.post.  req.file = ",req.file);
-		
+		var upload = multer({ storage: storage}).single('auctionImage');
 		upload(req, res, function(err) {
-			console.log(Date.now(),": 206 routes.js auction app.post. in upload  req.body = ",req.body);
-			console.log(Date.now(),": 207 routes.js auction app.post. in upload  req.file = ",req.file);
-			
-
+			// Sorry!  Had to put this code here and not in the controller.  Req.file is undefined in the controller :(
 			Auction.findOne({ name: req.body.name }, function(err, auction) {
-        
 				if (err) {
-					console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne err = ",err);
-				
+					console.log(Date.now(),": err = ",err);
 				} else {
-					console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne auction = ",auction);
-
-
 					auction.headerImage = req.file.filename;
 					auction.save()
-					
+					console.log(Date.now(),": auction = ",auction);
 				}
-
-				console.log(Date.now(),": 208 routes.js auction app.post. after header image save.  auction.headerimage = ",auction.headerImage);
-				console.log(Date.now(),": 208 routes.js auction app.post. after header image save.  auction._id = ",auction._id);
-					
 			})
 
-			// Auction.findOne({ _id: auction._id }, function(err, auction) {
-        
-			// 	if (err) {
-			// 		console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne err = ",err);
-				
-			// 	} else {
-			// 		console.log(Date.now(),": 208 routes.js auction app.post. auction.findOne auction = ",auction);
-			// 	}
-					
-			// })
 		})
-	
-
-		// console.log("202 routes.js auction app.post.  pre controller call.  req.file = ",req.file);
 		auctions.create(req, res)});
-
-
-
-
-
-
-
-
-		// console.log("201 routes.js auction app.post.  req = ",req);
-
-		// console.log("200 routes.js auction app.post start.  req.file = ",req.file);
-		// console.log("200 routes.js auction app.post.  upload = ",upload);
-		// console.log("201 routes.js auction app.post.  req.body = ",req.body);
-	
 	
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
