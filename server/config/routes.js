@@ -3,23 +3,6 @@ var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
-var path = require('path')
-Auction = require("../models/auction.js");
-
-// for image upload
-var multer = require('multer')
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, './public')//here you can place your destination path
-    },
-	
-    filename: function(req, file, callback) {
-        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-		callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-    }
-})
-
-
 
 
 module.exports = function(app) {
@@ -179,29 +162,9 @@ module.exports = function(app) {
 	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
-
-	//Creating an auction (without image upload)
-	// app.post('^/auctions$', function (req, res) {
-	// 	auctions.create(req, res)});
-
-	//Creating an auction with image upload capability
+	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
-		var upload = multer({ storage: storage}).single('auctionImage');
-		upload(req, res, function(err) {
-			// Sorry!  Had to put this code here and not in the controller.  Req.file is undefined in the controller :(
-			Auction.findOne({ name: req.body.name }, function(err, auction) {
-				if (err) {
-					console.log(Date.now(),": err = ",err);
-				} else {
-					auction.headerImage = req.file.filename;
-					auction.save()
-					console.log(Date.now(),": auction = ",auction);
-				}
-			})
-
-		})
 		auctions.create(req, res)});
-	
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
@@ -214,13 +177,9 @@ module.exports = function(app) {
 		// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
-		
 	//Event landing page the supporters will see; has links to supporter login and registration
 	app.get('/:auctions/event', function(req, res) {
-		console.log("300 routes.js :auctions/event.  req.body = ",req.body)
 		auctions.event(req, res)});
-
-
 	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
 	app.get('/:auctions/clerkDash', function(req,res) {
 		auctions.clerk(req,res)});

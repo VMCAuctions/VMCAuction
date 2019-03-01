@@ -1,19 +1,17 @@
 var mongoose = require("mongoose"),
-Item = require("../models/item.js"),
-Package = require("../models/package.js"),
-Category = require("../models/category.js"),
-User = require("../models/user.js"),
-Auction = require("../models/auction.js"),
-Global = require("../models/global.js"),
-globals = require("../controllers/globals.js");
-var dateFormat = require('dateformat');
-
+  Item = require("../models/item.js"),
+  Package = require("../models/package.js"),
+  Category = require("../models/category.js"),
+  User = require("../models/user.js"),
+  Auction = require("../models/auction.js"),
+  Global = require("../models/global.js"),
+  globals = require("../controllers/globals.js");
+  var dateFormat = require('dateformat');
 
 function AuctionsController() {
   this.index = function(req, res) {
     //Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
     if (globals.adminValidation(req, res)) {
-		
       res.render("auctions", {
         admin: req.session.admin,
         userName: req.session.userName
@@ -54,16 +52,20 @@ function AuctionsController() {
       res.redirect("/" + req.session.auction + "/packages");
     }
   };
-
-
   //Just used as an API for now
   this.create = function(req, res) {
-	if (globals.adminValidation(req, res)) {
-      var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+    // console.log("req.body.startClockDate is", req.body.startClockDate)
+    // console.log("req.body.startClockTime is", req.body.startClockTime)
+    // Add validations to ensure auction start occurs before auction end
+
+    if (globals.adminValidation(req, res)) {
+      var startDate =
+        req.body.startClockDate + "T" + req.body.startClockTime + ":00";
       var start = new Date(startDate);
       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
       var end = new Date(endDate);
       Global.findOne({}, function(err, global) {
+        console.log(global);
         if (err) {
           console.log(err);
         }
@@ -73,6 +75,7 @@ function AuctionsController() {
           randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
           randomPin = global.pins[randomPinIndex];
           global.pins.splice(randomPinIndex, 1);
+
           global.save(function(err, result) {
             if (err) {
               console.log(err);
@@ -86,13 +89,13 @@ function AuctionsController() {
                   subtitle: req.body.subtitle,
                   welcomeMessage: req.body.welcomeMessage,
                   description: req.body.description,
-                  venue: req.body.venue,
+                  venue: req.body.venue
                 },
                 function(err, result) {
                   if (err) {
-                    console.log(Date.now(),": err = ",err);
+                    console.log(err);
                   } else {
-                    console.log(Date.now(),": result = ",result);
+                    console.log(result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");
                   }
@@ -104,8 +107,6 @@ function AuctionsController() {
       });
     }
   };
-
-
   this.menu = function(req, res) {
     if (globals.adminValidation(req, res)) {
       Auction.findById(req.params.auctions, function(err, auctionDetails) {
@@ -128,8 +129,11 @@ function AuctionsController() {
     Auction.findById(req.params.auctions, function(err, auction) {
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
+      // console.log("stringStartClock is", stringStartClock)
       startDate = stringStartClock.substring(0, 10);
       startClock = stringStartClock.substring(11, 16);
+      // console.log("startDate is", startDate)
+      // console.log("startClock is", startClock)
       endDate = stringEndClock.substring(0, 10);
       endClock = stringEndClock.substring(11, 16);
       res.render("editAuction", {
@@ -147,7 +151,7 @@ function AuctionsController() {
   };
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
-	  stringStartClock = auction.startClock.toISOString();
+      stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       startDate = stringStartClock.substring(0, 10);
       startClock = stringStartClock.substring(11, 16);
@@ -180,6 +184,9 @@ function AuctionsController() {
   };
 
   this.update = function(req, res) {
+    // console.log("req.body is", req.body)
+    // console.log("we are in the update function")
+    console.log("in this.update");
     var startDate =
       req.body.startClockDate + "T" + req.body.startClockTime + ":00";
     var start = new Date(startDate);
