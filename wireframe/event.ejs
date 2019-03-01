@@ -33,14 +33,9 @@
 				</li>
 			</ul>
 		</nav>
-
 		
-		<!-- <img src="/headerImage-1551203500048.jpg" alt=""> -->
 		<!-- EVENT LANDING PAGE HEADER -->
-		<!-- <div style="background-image: url('/headerImage-1551203500048.jpg')" class="jumbotron jumbotron-fluid header-img" > -->
-		<!-- <div style="background-image: url('/headerImage-1551203500048.jpg')" class="jumbotron jumbotron-fluid header-img" > -->
-		<div style="background-image: url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
-			<!-- <img class="header-img" src="/<%= auctionDetails.headerImage %>"> -->
+		<div class="jumbotron jumbotron-fluid header-img">
 
 			<!-- COUNTDOWN CLOCK -->
 			<div class="d-flex flex-row justify-content-center">
@@ -73,7 +68,6 @@
 
 		<!-- CONTAINER FOR CONTENT AND FEATURED PACKAGES-->
 		<div class="container-fluid">
-			
 
 			<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
 			<div class="row">
@@ -183,7 +177,7 @@
 			function Calculate() {
 				let now = new Date().getTime();
 				let timeRemaining = countDownDate - now; 
-				// console.log("time remaining:", timeRemaining);
+				console.log("time remaining:", timeRemaining);
 				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
 				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
@@ -221,7 +215,7 @@
 				}
 			}
 			var eventStart = document.getElementById("event-start");
-			console.log("100 event.ejs eventStart = ",eventStart); 
+			console.log(eventStart); 
 			var countDownDate = new Date(eventStart.innerText).getTime();
 
 			// Use the folowing format to test for less than one day to the event

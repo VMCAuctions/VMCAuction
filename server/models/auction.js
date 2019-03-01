@@ -11,8 +11,7 @@ var auctionSchema = new Schema({
 	welcomeMessage: {type: String},
 	description: {type: String},
 	venue: {type: String},
-	// startClock: {type: Date, required:true},
-	startClock: {type: Date},
+	startClock: {type: Date, required:true},
 	endClock: {type: Date},
 	//colors would hold the color related to the auction's theme
 	colors: {type: String},
