@@ -58,6 +58,8 @@ function AuctionsController() {
 
   //Just used as an API for now
   this.create = function(req, res) {
+	  	console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
+		console.log(Date.now()," - 201 auctions.js this.create.  req.file = ",req.file);
 	if (globals.adminValidation(req, res)) {
       var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
       var start = new Date(startDate);
@@ -77,6 +79,8 @@ function AuctionsController() {
             if (err) {
               console.log(err);
             } else {
+				console.log(Date.now()," - 203 auctions.js pre auction create.  req.body = ",req.body);
+				console.log(Date.now()," - 204 auctions.js pre auction create.  req.file = ",req.file);
               Auction.create(
                 {
                   name: req.body.name,
@@ -87,11 +91,17 @@ function AuctionsController() {
                   welcomeMessage: req.body.welcomeMessage,
                   description: req.body.description,
                   venue: req.body.venue,
+
+				  headerImage: req.body.imgFileName,
+
+
                 },
                 function(err, result) {
                   if (err) {
                     console.log(Date.now(),": err = ",err);
                   } else {
+					console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
+					console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
                     console.log(Date.now(),": result = ",result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");

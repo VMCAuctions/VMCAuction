@@ -15,7 +15,10 @@ var storage = multer.diskStorage({
 	
     filename: function(req, file, callback) {
         // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-		callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+		var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+		req.body.imgFileName = imgFileName;
+		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+		callback(null, imgFileName)
     }
 })
 
@@ -186,18 +189,27 @@ module.exports = function(app) {
 
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
+
+		console.log(Date.now()," - 100 routes.js /auctions$.  req.body = ",req.body);
+		console.log(Date.now()," - 101 routes.js /auctions$.  req.file = ",req.file);
+		
 		var upload = multer({ storage: storage}).single('auctionImage');
 		upload(req, res, function(err) {
+			console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
+			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
 			// Sorry!  Had to put this code here and not in the controller.  Req.file is undefined in the controller :(
-			Auction.findOne({ name: req.body.name }, function(err, auction) {
-				if (err) {
-					console.log(Date.now(),": err = ",err);
-				} else {
-					auction.headerImage = req.file.filename;
-					auction.save()
-					console.log(Date.now(),": auction = ",auction);
-				}
-			})
+			// Auction.findOne({ name: req.body.name }, function(err, auction) {
+			// 	if (err) {
+			// 		console.log(Date.now(),": err = ",err);
+			// 	} else {
+			// 		console.log(Date.now()," - 106 auction = ",auction);
+			// 		console.log(Date.now()," - 107 routes.js /auctions$.  req.body = ",req.body);
+			// 		console.log(Date.now()," - 108 routes.js /auctions$.  req.file = ",req.file);
+			// 		auction.headerImage = req.file.filename;
+			// 		auction.save()
+			// 		console.log(Date.now()," - 109 auction = ",auction);
+			// 	}
+			// })
 
 		})
 		auctions.create(req, res)});
