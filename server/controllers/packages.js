@@ -10,8 +10,9 @@ var ObjectId = require('mongodb').ObjectId;
 function PackagesController(){
 
 	this.index = function(req,res){
-		console.log('PackagesController index');
+		console.log("000 packages.js this.index start. req.session = ",req.session);
 		if (!req.session.userName){
+		console.log('001 packages.js this.index in if !req.session.username');
 	  	req.session.auction = req.params.auctions
 		}
 		var user
@@ -21,6 +22,7 @@ function PackagesController(){
 			}
 			else {
 				User.findOne({userName:req.session.userName}, function(err, result){
+					console.log("004 packages.js this.index user.findOne.  result = ",result)
 					if(err){
 						console.log(err)
 					}else{

@@ -214,16 +214,24 @@ module.exports = function(app) {
 		})
 		auctions.create(req, res)});
 	
+	
+	
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
+
 	//Renders the page to edit an auction
 	app.get('/:auctions/edit', function (req, res) {
 		auctions.edit(req, res)})
-		//Actually edits the auction on the backend
+	
+	//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 		auctions.update(req, res)})
-		// Deletes auction
+	
+	
+	
+	
+	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
 		

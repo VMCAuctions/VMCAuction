@@ -134,8 +134,13 @@ function AuctionsController() {
       });
     }
   };
+
+
   this.edit = function(req, res) {
+	console.log(Date.now()," - 210 auctions.js this.edit.  req.body = ",req.body);
+	console.log(Date.now()," - 211 auctions.js this.edit.  req.file = ",req.file);
     Auction.findById(req.params.auctions, function(err, auction) {
+	  console.log(Date.now()," - 212 auctions.js this.edit.  auction = ",auction);
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       startDate = stringStartClock.substring(0, 10);
@@ -151,10 +156,56 @@ function AuctionsController() {
         startClock: startClock,
         endDate: endDate,
         endClock: endClock,
-        pin: auction.pin
+        pin: auction.pin,
+
+		headerImage: auction.imgFileName
+
       });
     });
   };
+
+
+  this.update = function(req, res) {
+	console.log(Date.now()," - 220 auctions.js this.update.  req.body = ",req.body);
+	console.log(Date.now()," - 221 auctions.js this.update.  req.file = ",req.file);
+    var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+    var start = new Date(startDate);
+    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
+    var end = new Date(endDate);
+    Auction.findById(req.params.auctions, function(err, auction) {
+	  console.log(Date.now()," - 222 auctions.js this.update.  auction = ",auction);
+      if (err) {
+        console.log(err);
+      } else {
+        auction.name = req.body.name || auction.name;
+        auction.startClock = start || auction.startClock;
+        auction.endClock = end || auction.endClock;
+        auction.subtitle = req.body.subtitle;
+        auction.venue = req.body.venue;
+        auction.description = req.body.description;
+        auction.welcomeMessage = req.body.welcomeMessage;
+	    console.log(Date.now()," - 222 auctions.js this.update.  auction = ",auction);
+        console.log(req.body.pin);
+        auction.save()
+        res.redirect(
+        "/" + req.params.auctions + "/organizerMenu"
+        )
+      }
+    });
+  };
+
+  this.deleteAuction = function(req, res) {
+    Auction.remove({ _id: req.params.auctions }, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/auctions/main");
+      }
+    });
+  };
+
+  
+
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
 	  stringStartClock = auction.startClock.toISOString();
@@ -185,42 +236,6 @@ function AuctionsController() {
             });
           }
         });
-      }
-    });
-  };
-
-  this.update = function(req, res) {
-    var startDate =
-      req.body.startClockDate + "T" + req.body.startClockTime + ":00";
-    var start = new Date(startDate);
-    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
-    var end = new Date(endDate);
-    Auction.findById(req.params.auctions, function(err, auction) {
-      if (err) {
-        console.log(err);
-      } else {
-        auction.name = req.body.name || auction.name;
-        auction.startClock = start || auction.startClock;
-        auction.endClock = end || auction.endClock;
-        auction.subtitle = req.body.subtitle;
-        auction.venue = req.body.venue;
-        auction.description = req.body.description;
-        auction.welcomeMessage = req.body.welcomeMessage;
-        console.log(req.body.pin);
-        auction.save()
-        res.redirect(
-        "/" + req.params.auctions + "/organizerMenu"
-        )
-      }
-    });
-  };
-
-  this.deleteAuction = function(req, res) {
-    Auction.remove({ _id: req.params.auctions }, function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect("/auctions/main");
       }
     });
   };
