@@ -214,11 +214,11 @@ this.new = function(req,res){
 		console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
 		//following should never get triggered.
 		//front end validations should take care of it
-		if (req.body.selectedItems.length == 0){
-      	console.log('reached empty item list')
-		  return res.json(false)
-    }
-    Package.create({
+		// if (req.body.selectedItems.length == 0){
+      	// console.log('reached empty item list')
+		//   return res.json(false)
+   		// }
+    	Package.create({
 			name: req.body.packageName,
 			_items: req.body.selectedItems,
 			description: req.body.packageDescription,

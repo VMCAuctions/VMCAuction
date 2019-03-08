@@ -76,21 +76,21 @@ module.exports = function(app) {
 
 
 	// post the new package form and create the new package
-	app.post('/:auctions/packages', function(req,res){
-		packages.create(req,res)});
+	// app.post('/:auctions/packages', function(req,res){
+	// 	packages.create(req,res)});
 
-	// app.post('/:auctions/packages', function (req, res) {
+	app.post('/:auctions/packages', function (req, res) {
 
-	// 	console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
-	// 	console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
+		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
 		
-	// 	var upload = multer({ storage: storage}).single('auctionImage');
-	// 	upload(req, res, function(err) {
-	// 		console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
-	// 		console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		// var upload = multer({ storage: storage}).single('auctionImage');
+		// upload(req, res, function(err) {
+		// 	console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+		// 	console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
 			
-	// 	})
-	// 	packages.create(req, res)});
+		// })
+		packages.create(req, res)});
 
 
 
@@ -208,8 +208,8 @@ module.exports = function(app) {
 		auctions.index(req, res)});
 
 	//Creating an auction (without image upload)
-	// app.post('^/auctions$', function (req, res) {
-	// 	auctions.create(req, res)});
+	app.post('^/auctions$', function (req, res) {
+		auctions.create(req, res)});
 
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {
