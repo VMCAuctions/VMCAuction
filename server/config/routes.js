@@ -14,16 +14,19 @@ var storage = multer.diskStorage({
     },
 	
     filename: function(req, file, callback) {
-        // callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-		var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+        var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
 		req.body.imgFileName = imgFileName;
+		console.log(Date.now() + " - 000 routes.js var storage.  imgFileName = ",imgFileName)
+		console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
+		console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
+		console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
+
 		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
 		callback(null, imgFileName)
     }
 })
 
-
-
+		// console.log(Date.now() + " - 002 routes.js var storage.  path.basename(file.originalname) = ",path.basename(file.originalname))
 
 module.exports = function(app) {
 
@@ -70,12 +73,33 @@ module.exports = function(app) {
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
+
+
 	// post the new package form and create the new package
 	app.post('/:auctions/packages', function(req,res){
 		packages.create(req,res)});
+
+	// app.post('/:auctions/packages', function (req, res) {
+
+	// 	console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
+	// 	console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		
+	// 	var upload = multer({ storage: storage}).single('auctionImage');
+	// 	upload(req, res, function(err) {
+	// 		console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+	// 		console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+			
+	// 	})
+	// 	packages.create(req, res)});
+
+
+
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
 		packages.show(req,res)});
+
+
+
 	// update a single package
 	app.post('/:auctions/packages/:id', function(req,res){
 		packages.update(req,res)});
@@ -197,20 +221,7 @@ module.exports = function(app) {
 		upload(req, res, function(err) {
 			console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
 			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
-			// Sorry!  Had to put this code here and not in the controller.  Req.file is undefined in the controller :(
-			// Auction.findOne({ name: req.body.name }, function(err, auction) {
-			// 	if (err) {
-			// 		console.log(Date.now(),": err = ",err);
-			// 	} else {
-			// 		console.log(Date.now()," - 106 auction = ",auction);
-			// 		console.log(Date.now()," - 107 routes.js /auctions$.  req.body = ",req.body);
-			// 		console.log(Date.now()," - 108 routes.js /auctions$.  req.file = ",req.file);
-			// 		auction.headerImage = req.file.filename;
-			// 		auction.save()
-			// 		console.log(Date.now()," - 109 auction = ",auction);
-			// 	}
-			// })
-
+			
 		})
 		auctions.create(req, res)});
 	
@@ -226,7 +237,23 @@ module.exports = function(app) {
 	
 	//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
+
+		console.log(Date.now()," - 110 routes.js /auctions/update.  req.body = ",req.body);
+		console.log(Date.now()," - 111 routes.js /auctions/update.  req.file = ",req.file);
+
+		var upload = multer({ storage: storage}).single('auctionImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
+			console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
+			
+		})
+
+
 		auctions.update(req, res)})
+	
+	//Actually edits the auction on the backend
+	// app.post('/:auctions/update', function(req,res){
+	// 	auctions.update(req, res)})
 	
 	
 	

@@ -210,12 +210,12 @@ this.new = function(req,res){
 
 	//post method that creats packages
 	this.create = function(req,res){
-		console.log('PackagesController create');
-		console.log('selected items' ,req.body)
+		console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
+		console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
 		//following should never get triggered.
 		//front end validations should take care of it
 		if (req.body.selectedItems.length == 0){
-      console.log('reached empty item list')
+      	console.log('reached empty item list')
 		  return res.json(false)
     }
     Package.create({
@@ -229,6 +229,9 @@ this.new = function(req,res){
 			amount: req.body.openingBid,
 			featured: req.body.featured,
 			restrictions: req.body.packageRestrictions,
+
+			photo: req.body.imgFileName,
+
 			_auctions: req.params.auctions
 		}, function(err, package){
 			if(err){
@@ -236,7 +239,10 @@ this.new = function(req,res){
 				return;
 		   }
 		   else{
-				 for(let i = 0; i < package._items.length; i++ ){
+				console.log(Date.now() + " - 104 packages.js this.create post create.  req.body = ",req.body);
+				console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ",req.file);
+				console.log(Date.now() + " - 106 packages.js this.create post create.  package = ",package);
+				for(let i = 0; i < package._items.length; i++ ){
 						Item.findOne({_id: package._items[i]} , function(err, item){
 								item.packaged = true;
 								item._package = package._id;

@@ -31,7 +31,7 @@
         <h2 class="mb-1">Edit Auction</h2>
         <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#myModal">Delete Auction</button>
       </div>
-      <form action="/<%=auction%>/update" method="post">
+      <form action="/<%=auction%>/update" enctype="multipart/form-data" method="post">
         <div class="form-group">
           <label for="name" class="label-name">Auction Name</label>
           <input type="text" name="name" id="name" class="form-control" value="<%=auctionDetails.name%>">
@@ -72,13 +72,15 @@
 				</div>
 				<div class="form-group">
 					<label for="description" class="label-name">Description</label>
-					<textarea name="description" id="description" class="form-control" rows="5"><%= auctionDetails.description %></textarea>
+					<textarea name="description" id="description" value="<%= auctionDetails.headerImage %>" class="form-control" rows="5"><%= auctionDetails.description %></textarea>
 				</div>
 
 				<div class="form-group">
 					<label for="auctionImage" class="label-name text-black-50">Event Page Image</label>
-					<input type="file" name="auctionImage" id="auctionImage" class="form-control">
+					<input type="file" name="auctionImage" id="auctionImage" class="form-control", value="headerImage">
 				</div>
+
+				
 
 
         <div id="myModal" class="modal fade">

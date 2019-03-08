@@ -158,7 +158,7 @@ function AuctionsController() {
         endClock: endClock,
         pin: auction.pin,
 
-		headerImage: auction.imgFileName
+		headerImage: auction.headerImage
 
       });
     });
@@ -184,12 +184,16 @@ function AuctionsController() {
         auction.venue = req.body.venue;
         auction.description = req.body.description;
         auction.welcomeMessage = req.body.welcomeMessage;
-	    console.log(Date.now()," - 222 auctions.js this.update.  auction = ",auction);
-        console.log(req.body.pin);
+
+		auction.headerImage = req.body.imgFileName
+
+
+	    console.log(Date.now()," - 223 auctions.js this.update pre save.  auction = ",auction);
+        // console.log(req.body.pin);
         auction.save()
-        res.redirect(
-        "/" + req.params.auctions + "/organizerMenu"
-        )
+	    console.log(Date.now()," - 224 auctions.js this.update post save.  auction = ",auction);
+	    console.log(Date.now()," - 225 auctions.js this.update post save.  req.params.auctions = ",req.params.auctions);
+        res.redirect("/" + req.params.auctions + "/organizerMenu")
       }
     });
   };
