@@ -208,6 +208,8 @@ this.new = function(req,res){
 
 	//post method that creats packages
 	this.create = function(req,res){
+		console.log(Date.now()," - 100 packages.js this.create start  req.body = ",req.body);
+		console.log(Date.now()," - 101 packages.js this.create start  req.file = ",req.file);
 		console.log('PackagesController create');
 		console.log('selected items' ,req.body)
 		//following should never get triggered.

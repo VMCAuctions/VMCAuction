@@ -50,8 +50,11 @@ module.exports = function(app) {
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
+
 	// post the new package form and create the new package
 	app.post('/:auctions/packages', function(req,res){
+		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
+		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
 		packages.create(req,res)});
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
