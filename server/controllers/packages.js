@@ -199,9 +199,10 @@ this.new = function(req,res){
 							}
 							else {
 								console.log(itemsArray);
-								res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+								// res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+								res.render('packageCreate_1', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
 							}
-							console.log('PackagesController new =>');
+							console.log(Date.now() + " - 080 packages.js this.new end.  Displaying packageCreate_1");
 					})
 				}
 		})
@@ -242,17 +243,17 @@ this.new = function(req,res){
 				console.log(Date.now() + " - 104 packages.js this.create post create.  req.body = ",req.body);
 				console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ",req.file);
 				console.log(Date.now() + " - 106 packages.js this.create post create.  package = ",package);
-				for(let i = 0; i < package._items.length; i++ ){
-						Item.findOne({_id: package._items[i]} , function(err, item){
-								item.packaged = true;
-								item._package = package._id;
-								item.save(function (err){
-									if (err){
-										console.log(err)
-									}
-								})
-						})
-					}
+				// for(let i = 0; i < package._items.length; i++ ){
+				// 		Item.findOne({_id: package._items[i]} , function(err, item){
+				// 				item.packaged = true;
+				// 				item._package = package._id;
+				// 				item.save(function (err){
+				// 					if (err){
+				// 						console.log(err)
+				// 					}
+				// 				})
+				// 		})
+				// 	}
 					res.redirect('/' + req.params.auctions  + '/packages/new?true')
 			 }
 		});

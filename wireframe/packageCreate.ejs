@@ -62,11 +62,11 @@
         </div>
 
          <!-- Button trigger modal -->
-         <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+         <!-- <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
           Add Items to a Package/Edit Package
          </button>
 
-          
+           -->
 
           <!-- need a read only feild with the current number selected -->
           <div class="alert alert-secondary">
@@ -124,88 +124,20 @@
 
           </div>
 
-          <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
+          <!-- <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button> -->
 
           <!-- Modal -->
-          <div class="modal fade bd-example-modal-lg" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                
-                <div>
-                  <button type="button" class="close" data-dismiss="modal" id="modalX">
-                    &times;</button>
-                </div>
-
-                <div class="modal-header">
-                    <div id="search-container">
-                      <!-- Find items by keyword -->
-                      <div id="search-keyword">
-                        <label for "keyword">Search by keyword:</label>
-                        <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
-                      </div>
-                    </div>
-                    <div id="search-category">
-                        <label for "category" >Search by category:</label>
-                        <select select class="form-control" name="category" id="category">
-                          <option value="">All Categories</option>
-                          <% for(var c in categories) {%>
-                            <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-                          <%}%>
-                        </select>
-                      </div>
-                </div>
-                <div class="modal-body">
-                  <div class="col-lg-6">
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>Add/Remove</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Restrictions</th>
-                            <th>Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <%for (var i in items){%>
-                            <%if(!items[i].packaged){%>
-                              <tr class="itemRow">
-                                <td>
-                                  <input class="" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-                                </td>
-                                <td>
-                                  <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                                </td>
-                                <td>
-                                  <%=items[i]._category%>
-                                </td>
-                                <td>
-                                  <%= items[i].restrictions %>
-                                </td>
-                                <td>
-                                  <p><%= items[i].value %></p>
-                                </td>
-                              </tr>
-                              <%}%>
-                            <%}%>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                 
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 
-                  <button id="saveChecked" type="button" class="btn btn-primary" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
+         
           <!-- End Modal -->
+
+		<div class="form-group">
+			<label for="packageImage" class="label-name text-black-50">Package Image</label>
+			<input type="file" name="packageImage" id="packageImage" class="form-control">
+		</div>
+
+		 <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
+
+
           </form>
       </div><!-- End of page's main container -->
 

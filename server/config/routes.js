@@ -84,15 +84,15 @@ module.exports = function(app) {
 		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
 		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
 		
-		// var upload = multer({ storage: storage}).single('auctionImage');
-		// upload(req, res, function(err) {
-		// 	console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
-		// 	console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		var upload = multer({ storage: storage}).single('packageImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+			console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+			packages.create(req, res);
 			
-		// })
-		packages.create(req, res)});
-
-
+		})
+		// packages.create(req, res)
+	});
 
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
