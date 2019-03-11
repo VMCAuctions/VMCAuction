@@ -11,27 +11,49 @@ Widget = require("../models/widget.js");
 
 // for image upload
 var multer = require('multer')
-var storage = multer.diskStorage({
-    destination: function(req, file, callback) {
-        callback(null, './public')//here you can place your destination path
-    },
+// var storage = multer.diskStorage({
+//     destination: function(req, file, callback) {
+//         callback(null, './public')//here you can place your destination path
+//     },
 	
-    filename: function(req, file, callback) {
-        var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
-		req.body.imgFileName = imgFileName;
-		console.log(Date.now() + " - 000 routes.js var storage.  imgFileName = ",imgFileName)
-		console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
-		console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
-		console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
+//     filename: function(req, file, callback) {
+//         var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+// 		req.body.imgFileName = imgFileName;
+// 		console.log(Date.now() + " - 000 routes.js var storage.  imgFileName = ",imgFileName)
+// 		console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
+// 		console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
+// 		console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
 
-		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-		callback(null, imgFileName)
-    }
-})
+// 		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+// 		callback(null, imgFileName)
+//     }
+// })
 
 		// console.log(Date.now() + " - 002 routes.js var storage.  path.basename(file.originalname) = ",path.basename(file.originalname))
 
 module.exports = function(app) {
+
+	var storage = multer.diskStorage({
+		destination: function(req, file, callback) {
+			console.log(Date.now() + " - 000 routes.js var storage. in destination")
+			callback(null, './public')//here you can place your destination path
+		},
+	
+		filename: function(req, file, callback) {
+			console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
+			console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
+			console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
+			var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+			req.body.imgFileName = imgFileName;
+			// var pkgFileName = file.fieldname + '-' + req.body.packageName + '-' + Date.now() + path.extname(file.originalname);
+			// req.body.pkgFileName = pkgFileName;
+			console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
+			// console.log(Date.now() + " - 005 routes.js var storage.  pkgFileName = ",pkgFileName)
+
+		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+			callback(null, imgFileName)
+		}
+	})
 
 	// Renders widget create page
 	app.get('/widget', function(req,res){
@@ -106,13 +128,14 @@ module.exports = function(app) {
 		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
 		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
 		
-		// var upload = multer({ storage: storage}).single('auctionImage');
-		// upload(req, res, function(err) {
-		// 	console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
-		// 	console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		var upload = multer({ storage: storage}).single('packageImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+			console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+			packages.create(req, res)});
 			
-		// })
-		packages.create(req, res)});
+		})
+		// packages.create(req, res)});
 
 
 
@@ -230,8 +253,8 @@ module.exports = function(app) {
 		auctions.index(req, res)});
 
 	//Creating an auction (without image upload)
-	app.post('^/auctions$', function (req, res) {
-		auctions.create(req, res)});
+	// app.post('^/auctions$', function (req, res) {
+	// 	auctions.create(req, res)});
 
 	//Creating an auction with image upload capability
 	app.post('^/auctions$', function (req, res) {

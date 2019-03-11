@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
 var ObjectId = require('mongodb').ObjectId;
+var multer = require('multer')
 
 function PackagesController(){
 
@@ -184,24 +185,34 @@ function PackagesController(){
 	}
 
 this.new = function(req,res){
+	console.log(Date.now() + " - 000 packages.js this.new start.  req.body = ",req.body);
+	console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
 	if (globals.adminValidation(req, res)){
-		var itemsArray = [];
+		// var itemsArray = [];
 		Item.find({_auctions: req.params.auctions}, function(err, items) {
 				if(err) {
-						console.log(err);
-						res.status(500).send('Failed to Load Items');
+					console.log(Date.now() + " - 001 packages.js this.new Items.find error. err = ",err);
+					res.status(500).send('Failed to Load Items');
 				}
 				else {
+					// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
 					Category.find({}, function(err, categories) {
 							if(err) {
-									console.log(err);
-									res.status(500).send('Failed to Load Items');
+								console.log(Date.now() + " - 006 packages.js this.new category.find error. err = ",err);
+								res.status(500).send('Failed to find categories');
 							}
 							else {
-								console.log(itemsArray);
-								res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+								// console.log(Date.now() + " - 007 packages.js this.new category.find. categories = ",categories);
+								res.render('packageCreate', {
+									page: 'createPackage',
+									categories: categories,
+									items: items,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									auction: req.params.auctions
+								})
 							}
-							console.log('PackagesController new =>');
+							// console.log(Date.now() + " - 009 packages.js this.new end.  rendering packageCreate.ejs");
 					})
 				}
 		})
@@ -209,17 +220,104 @@ this.new = function(req,res){
 }
 
 	//post method that creats packages
+	// this.create = function(req,res){
+	// 	console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
+	// 	console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
+	// 	console.log(Date.now() + " - 102 packages.js this.create start. req.params = ",req.params);
+	// 	//following should never get triggered.  front end validations should take care of it
+		
+	// 	// var storage = multer.diskStorage({
+	// 	// 	destination: function(req, file, callback) {
+	// 	// 		callback(null, './public')//here you can place your destination path
+	// 	// 	},
+		
+	// 	// 	filename: function(req, file, callback) {
+	// 	// 		var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+	// 	// 		req.body.imgFileName = imgFileName;
+	// 	// 		console.log(Date.now() + " - 110 packages.js var storage.  imgFileName = ",imgFileName)
+	// 	// 		console.log(Date.now() + " - 111 packages.js var storage.  file = ",file)
+	// 	// 		console.log(Date.now() + " - 112 packages.js var storage.  req.file = ",req.file)
+	// 	// 		console.log(Date.now() + " - 113 packages.js var storage.  req.body = ",req.body)
+
+	// 	// 	// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+	// 	// 		callback(null, imgFileName)
+	// 	// 	}
+	// 	// })
+
+	// 	// var upload = multer({ storage: storage}).single('auctionImage');
+	// 	// upload(req, res, function(err) {
+
+	// 	// 	if (err) {
+
+	// 	// 	} else {
+
+	// 			// console.log(Date.now() + " - 120 packages.js var storage.  imgFileName = ",imgFileName)
+	// 			console.log(Date.now()," - 122 packages.js /:auctions/pkgs.  req.body = ",req.body);
+	// 			console.log(Date.now()," - 123 packages.js /:auctions/pkgs.  req.file = ",req.file);
+				
+	// 			// Empty Items List Error
+	// 			// if (req.body.selectedItems.length == 0){
+	// 			// 	console.log('reached empty item list')
+	// 			// 	return res.json(false)
+	// 			// }
+
+	// 			Package.create({
+	// 				name: req.body.packageName,
+	// 				_items: req.body.selectedItems,
+	// 				description: req.body.packageDescription,
+	// 				value: req.body.totalValue,
+	// 				bidIncrement: req.body.increments,
+	// 				_category: req.body.category,
+	// 				bid: [],
+	// 				amount: req.body.openingBid,
+	// 				featured: req.body.featured,
+	// 				restrictions: req.body.packageRestrictions,
+
+	// 				// photo: req.body.imgFileName,
+
+	// 				_auctions: req.params.auctions
+	// 				}, function(err, package){
+	// 					if(err){
+	// 						console.log(err);
+	// 						return;
+	// 					}
+	// 					else{
+	// 						console.log(Date.now() + " - 104 packages.js this.create post create.  req.body = ",req.body);
+	// 						console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ",req.file);
+	// 						console.log(Date.now() + " - 106 packages.js this.create post create.  package = ",package);
+	// 						for(let i = 0; i < package._items.length; i++ ){
+	// 							Item.findOne({_id: package._items[i]} , function(err, item){
+	// 								item.packaged = true;
+	// 								item._package = package._id;
+	// 								item.save(function (err){
+	// 									if (err){
+	// 										console.log(err)
+	// 									}
+	// 								})
+	// 							})
+	// 						}
+	// 						res.redirect('/' + req.params.auctions  + '/packages/new?true')
+	// 					}
+	// 				});
+	// 	// 	}
+	// 	// })
+
+	// };
+
+	// copy of this.create prior to multer code insertion
 	this.create = function(req,res){
 		console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
 		console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
-		//following should never get triggered.
-		//front end validations should take care of it
+		console.log(Date.now() + " - 102 packages.js this.create start. req.params = ",req.params);
+		//following should never get triggered.  front end validations should take care of it
+		
 		// if (req.body.selectedItems.length == 0){
       	// console.log('reached empty item list')
 		//   return res.json(false)
    		// }
     	Package.create({
-			name: req.body.packageName,
+			// name: req.body.packageName,
+			name: req.body.name,
 			_items: req.body.selectedItems,
 			description: req.body.packageDescription,
 			value: req.body.totalValue,
