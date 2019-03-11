@@ -6,6 +6,9 @@ var auctions = require('../controllers/auctions.js');
 var path = require('path')
 Auction = require("../models/auction.js");
 
+var widgets = require('../controllers/widgets.js');
+Widget = require("../models/widget.js");
+
 // for image upload
 var multer = require('multer')
 var storage = multer.diskStorage({
@@ -29,6 +32,25 @@ var storage = multer.diskStorage({
 		// console.log(Date.now() + " - 002 routes.js var storage.  path.basename(file.originalname) = ",path.basename(file.originalname))
 
 module.exports = function(app) {
+
+	// Renders widget create page
+	app.get('/widget', function(req,res){
+		widgets.index(req,res)});
+
+	//WIDGETS
+	app.post('^/widgets$', function (req, res) {
+
+		console.log(Date.now()," - 100 routes.js /widgets$.  req.body = ",req.body);
+		console.log(Date.now()," - 101 routes.js /widgets$.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('widgetImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 102 routes.js /widgets$.  req.body = ",req.body);
+			console.log(Date.now()," - 103 routes.js /widgets$.  req.file = ",req.file);
+			widgets.create(req, res)});
+		})
+		// widgets.create(req, res)});
+	
 
 	// ITEMS //
 	// Renders all items page
@@ -221,7 +243,7 @@ module.exports = function(app) {
 		upload(req, res, function(err) {
 			console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
 			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
-			
+			// auctions.create(req, res)});
 		})
 		auctions.create(req, res)});
 	
@@ -245,11 +267,10 @@ module.exports = function(app) {
 		upload(req, res, function(err) {
 			console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
 			console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
+			auctions.update(req, res)})
 			
 		})
-
-
-		auctions.update(req, res)})
+		// auctions.update(req, res)})
 	
 	//Actually edits the auction on the backend
 	// app.post('/:auctions/update', function(req,res){

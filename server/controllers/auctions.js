@@ -102,7 +102,7 @@ function AuctionsController() {
                   } else {
 					console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
 					console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
-                    console.log(Date.now(),": result = ",result);
+                    console.log(Date.now()," - 208 auctions.js post auction create.  result = ",result);
                     //Perhaps display pin to organizer on creation and/or auction menu page
                     res.redirect("/" + result._id + "/organizerMenu");
                   }
@@ -122,7 +122,7 @@ function AuctionsController() {
         if (err) {
           console.log(err);
         } else {
-          console.log("auction details", auctionDetails);
+          console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
           res.render("organizerMenu", {
             page: "organizerMenu",
             admin: req.session.admin,
