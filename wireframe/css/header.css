@@ -41,9 +41,7 @@ a.log:hover, a.log:active, a.user:hover, a.user:active {
 /* to show which page is active */
 .current {
     color: #69afff !important; 
-    font-weight: 700 !important;
-    padding: 0 0 5px 0; 
-    border-bottom: 4px solid #69afff; 
+    font-weight: 900 !important;
 }
 
 /* second nav bar with buttons

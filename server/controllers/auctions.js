@@ -49,7 +49,7 @@ function AuctionsController() {
         }
       });
     } else {
-      res.redirect("/" + req.session.auction + "/packages");
+      res.redirect("/" + req.session.auction + "/event");
     }
   };
   //Just used as an API for now
@@ -115,8 +115,9 @@ function AuctionsController() {
         } else {
           console.log("auction details", auctionDetails);
           // res.locals.auctionName = auctionDetails.name; // to make the auction name available in all in Headers when added to any page
+          // current is a flag showing which page is active
           res.render("organizerMenu", {
-            page: "organizerMenu",
+            current: "organizerMenu",
             admin: req.session.admin,
             auction: req.params.auctions,
             auctionDetails: auctionDetails, //might be use to display auction name 
@@ -266,8 +267,9 @@ function AuctionsController() {
                     total: total
                   };
                 }
+                //Current is a flag showing which page is active
                 res.render("clerkDash", {
-                  page: "Clerk Dashboard",
+                  current: "Clerk Dashboard",
                   users: users,
                   cart: cart,
                   packages: result,
@@ -279,7 +281,7 @@ function AuctionsController() {
               }
             });
         } else {
-          res.redirect("/" + req.params.auctions + "/packages");
+          res.redirect("/" + req.params.auctions + "/event");
         }
       });
     }

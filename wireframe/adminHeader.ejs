@@ -26,65 +26,52 @@
 			</div> 
 
 			<div class="col-5 navbar navbar-expand-sm flex-row justify-content-end align-items-center">
-					<ul class="navbar-nav">
-						<% if (admin === 2) { %>
-							<li>
-								<a class="mr-4 top-link  <% if (typeof(page) != 'undefined' && page == 'dashboard') { %> active1 <% } %>" href="/auctions/main">My Dashboard</a>
-							</li>
-							<li>
-								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Auction Menu</a>
-							</li>
-				
-							<li>
-								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
-							</li>
+				<!-- "current" is a flag sent from the server to indicate the active web page -->
+				<ul class="navbar-nav">
+					<li>
+						<a class="mr-4 top-link  <% if (typeof(current) != 'undefined' && current == 'dashboard') { %> active1 <% } %>" href="/auctions/main">My Dashboard</a>
+					</li>
+					<li>
+						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Auction Menu</a>
+					</li>
 		
-							<li>
-								<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-							</li>
-						<%}else{%>
-							<li>
-								<a class="mr-4 nav-link top-link" href='/users/login'>Login</a>
-							</li>
-							<li>
-								<a class="pr-2 nav-link top-link" href="/users/register">Register </a>
-							</li>
-						<%}%>
-					</ul>
-				</div>
+					<li>
+						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
+					</li>
+					<li>
+						<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+				</ul>
 			</div>
 		</div>
     </nav> 	
 	
-
 	<!-- Organizer Secondary Navbar-->
-  	<nav id="second-nav" class="navbar navbar-expand-md navbar-dark pr-2">
+  	<nav id="second-nav" class="navbar navbar-expand-md navbar-dark pl-4">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           	<span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
+			<!-- "current" is a flag sent from the server to indicate the active web page -->
           	<ul class="navbar-nav">
-				<% if (admin === 2){ %>
-					<li>
-						<!-- "page" is a flag sent from the server to indicate the active web page -->
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Add Item</a>
-					</li>	
-					<li>
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
-					</li>
-					<li>
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Item Register</a>
-					</li>
-					<li>
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register </a>
-					</li>
-					<li>
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
-					</li>
-					<li>
-						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporter Register</a>
-					</li>
-                <% } %>  
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Add Item</a>
+				</li>	
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'item-register') { %> active2 <% } %>" href="/<%=auction%>/items">Item Register</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register </a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporter Register</a>
+				</li>
           	</ul>
         </div>
     </nav>

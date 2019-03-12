@@ -51,8 +51,9 @@ function PackagesController(){
 										console.log(err)
 									} else {
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
 										res.render('packages', {
-											page: 'catalog',
+											current: 'catalog',
 											packages: packages,
 											admin: req.session.admin,
 											userName: req.session.userName,
@@ -126,7 +127,7 @@ function PackagesController(){
 									} else {
 										console.log("100-packages.js | this.list | auction.findByID | auctionDetails:",auctionDetails);
 										res.render('packageRegister', {
-											page: 'register',
+											current: 'package-register',
 											packages: sortedPackages,
 											sumMarketVal: sumMarketVal,
 											sumStartingBid: sumStartingBid,
@@ -226,9 +227,10 @@ this.new = function(req,res){
 						Auction.findById(req.params.auctions, function (err, auctionDetails) {
 							if (err) {
 								console.log(err)
-							} else {	
+							} else {
+								//current is a flag indicating which page is active	
 								res.render('packageCreate', {
-									page: 'createPackage', 
+									current: 'createPackage', 
 									categories: categories, 
 									items: items, 
 									userName: req.session.userName, 

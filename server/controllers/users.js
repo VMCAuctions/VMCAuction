@@ -30,9 +30,6 @@ function UsersController(){
 
 
 	this.index = function(req,res){
-		console.log('#################################');
-		console.log('#################################');
-		console.log('#################################');
 		console.log('UsersController index');
 		console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
@@ -63,15 +60,16 @@ function UsersController(){
 									if (err) {
 										console.log(err)
 									} else {	
+										//current is a flag showing which page is active
 										res.render('allUsers', {
-											page: 'supporters', 
+											current: 'supporters', 
 											users: users, 
 											cart: cart, 
 											packages: result, 
 											userName: req.session.userName, 
 											admin: req.session.adm, 
 											auction: req.params.auctions,
-											auctionDetails: auctionDetails,
+											auctionDetails: auctionDetails
 										})		
 									}
 								})
@@ -97,7 +95,7 @@ function UsersController(){
 					admin: req.session.admin
 				})
 			}else{
-				res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/event')
 			}
 		})
 	};
@@ -137,7 +135,8 @@ function UsersController(){
 					} else {
 						res.render('userAccount', {
 							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
-							page: 'myAccount',
+							//current is a flag showing which page is active
+							current: 'myAccount',
 							user: user,
 							firstName: user.firstName,
 							lastName: user.lastName,
@@ -298,7 +297,7 @@ function UsersController(){
               } else {
                 console.log("req.session is", req.session)
                 res.render('userPage', {
-                  page: 'watch-list',
+                  current: 'watch-list',
                   userName: req.session.userName,
                   admin: req.session.admin,
                   user: user,
@@ -310,7 +309,7 @@ function UsersController(){
               }
             })
           }else{
-            res.redirect('/' + req.params.auctions  + '/packages')
+            res.redirect('/' + req.params.auctions  + '/event')
           }
         })
 			}

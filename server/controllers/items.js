@@ -23,8 +23,9 @@ function ItemsController(){
 								if (err) {
 									console.log(err)
 								} else {	
+									//current is a flag showing which page is active
 									res.render('items', {
-										page:'items',
+										current:'item-register',
 										items: items,
 										admin: req.session.admin,
 										userName: req.session.userName,
@@ -52,8 +53,9 @@ function ItemsController(){
 						if (err) {
 							console.log(err);
 						} else {	
+							//current is a flag showing which page is active
 							res.render('createItem', {
-								page:'addItem',
+								current:'addItem',
 								categories: categories,
 								userName: req.session.userName,
 								admin: req.session.admin,
@@ -63,8 +65,7 @@ function ItemsController(){
 						}	
 					}) 
 				} else {
-					// Why do we redirect to this page (the external catalog with register and login)? We may rather redirect to the login page [Corina]
-					res.redirect('/' + req.params.auctions + '/packages')
+					res.redirect('/' + req.params.auctions + '/event')
 				}
 			}
 		})
@@ -136,7 +137,7 @@ function ItemsController(){
 							}	
 						})		
 					}else{
-						res.redirect('/' + req.params.auctions + '/packages')
+						res.redirect('/' + req.params.auctions + '/event')
 					}
 				})
 		  }
