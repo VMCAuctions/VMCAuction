@@ -1,0 +1,15 @@
+h3 {
+	padding: 15px 0px 0px 30px;
+}
+
+.tagLine {
+	padding-left: 30px;
+}
+
+#hide {
+	display: none;
+	font-size: 0.8rem;
+	color: #99004d;
+	line-height: 1.5;
+	padding-top: 0.3rem;
+}
