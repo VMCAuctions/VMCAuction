@@ -30,7 +30,11 @@ function UsersController(){
 
 
 	this.index = function(req,res){
+		console.log('#################################');
+		console.log('#################################');
+		console.log('#################################');
 		console.log('UsersController index');
+		console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
 			User.find({_auctions: req.params.auctions}, function(err, users ){
@@ -74,7 +78,8 @@ function UsersController(){
 							}	
 						})	
 				}else{
-					res.redirect('/' + req.params.auctions  + '/packages');
+					//If no known user, redirect to the event landing page 
+					res.redirect('/' + req.params.auctions  + '/event');
 				}
 		  })
 		}

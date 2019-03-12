@@ -164,7 +164,7 @@ module.exports = function(app) {
 	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-	//Renders the organizer menu page
+	//Renders the Organizer's Menu page, which has been renamed as Auction Menu
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
 	//Renders the page to edit an auction

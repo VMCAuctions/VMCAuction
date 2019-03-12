@@ -32,21 +32,22 @@ function GlobalsController(){
 
 			// //END
 
-			res.redirect('/' + req.session.auction + '/packages')
+			//Redirect to the event landing page
+			res.redirect('/' + req.session.auction + '/event')
 			return false
 		}
 		return true
 	}
 	this.clerkValidation = function(req, res) {
 		if (req.session.admin == 0){
-			res.redirect('/' + req.session.auction + '/packages')
+			res.redirect('/' + req.session.auction + '/event')
 			return false
 		}
 		return true
 	}
 	this.notClerkValidation = function(req, res) {
 		if (req.session.admin == 1){
-			res.redirect('/' + req.session.auction + '/packages')
+			res.redirect('/' + req.session.auction + '/event')
 			return false
 		}
 		return true

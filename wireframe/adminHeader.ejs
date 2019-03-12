@@ -34,13 +34,11 @@
 							<li>
 								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Auction Menu</a>
 							</li>
-						<% } %>
-						<%if(userName){%>
-							<% if (admin === 2){ %>
+				
 							<li>
 								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
 							</li>
-							<% } %>
+		
 							<li>
 								<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
 							</li>
