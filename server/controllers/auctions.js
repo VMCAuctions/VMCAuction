@@ -114,7 +114,7 @@ function AuctionsController() {
           console.log(err);
         } else {
           console.log("auction details", auctionDetails);
-          res.locals.auctionName = auctionDetails.name; // to make the auction name available in all in Headers when added to any page
+          // res.locals.auctionName = auctionDetails.name; // to make the auction name available in all in Headers when added to any page
           res.render("organizerMenu", {
             page: "organizerMenu",
             admin: req.session.admin,
@@ -150,6 +150,7 @@ function AuctionsController() {
       });
     });
   };
+  
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
       stringStartClock = auction.startClock.toISOString();

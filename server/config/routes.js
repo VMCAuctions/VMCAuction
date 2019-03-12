@@ -89,7 +89,6 @@ module.exports = function(app) {
 		categories.delete(req,res)});
 
 
-
 	// USERS //
 	// get the index page of all users
 	app.get('/:auctions/users', function(req,res){

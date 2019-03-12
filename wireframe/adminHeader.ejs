@@ -15,15 +15,15 @@
 <header>
 	<!-- Organizer Top Navbar -->
 	<nav>
-		<div id="top-nav" class="d-flex flex-row bg-light justify-content-between align-items-center py-2">
+		<div id="top-nav" class="d-flex flex-row bg-light justify-content-between align-items-center py-3">
 			<div class="col-5">
 				<div class="brand">elizabid</div>
 		    </div>	
 
-			<!-- To display AUCTION NAME in the center of the top navigation bar-->	
-			<!-- <div class="col-2 text-center">
-				<a href="/<%=auction%>/event" class="auction-nav">AUCTION NAME</a> 
-			</div> -->
+			<!-- Displaying AUCTION NAME in the center of the top navigation bar-->	
+			<div class="col-2 text-center">
+			    <a href="/<%=auction%>/event" class="auction-nav"><%= auctionDetails.name %></a> 
+			</div> 
 
 			<div class="col-5 navbar navbar-expand-sm flex-row justify-content-end align-items-center">
 					<ul class="navbar-nav">
@@ -38,11 +38,11 @@
 						<%if(userName){%>
 							<% if (admin === 2){ %>
 							<li>
-								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user fa-lg"></i></a>
+								<a class="mr-4 top-link <% if (typeof(page) != 'undefined' && page == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
 							</li>
 							<% } %>
 							<li>
-								<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+								<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
 							</li>
 						<%}else{%>
 							<li>
@@ -70,33 +70,24 @@
 					<li>
 						<!-- "page" is a flag sent from the server to indicate the active web page -->
 						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Add Item</a>
-					</li>
-				<% } %>
-				<% if (admin === 2){ %>
+					</li>	
 					<li>
 						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
 					</li>
-				<% } %>
-				<li>
-					<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Item Register</a>
-				</li>
-				<li>
-                    <a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register </a>
-                </li>
-                <% if (admin !== 1) { %>
-				<li>
-					<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
-				</li>
-				<li>
-					<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporter Register</a>
-				</li>
-                <% } %>
-                <% if (admin === 1) { %>
-                <li>
-					<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/clerkDash'>Supporters</a>
-				</li>
-                <% } %>
-          </ul>
+					<li>
+						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'items') { %> active2 <% } %>" href="/<%=auction%>/items">Item Register</a>
+					</li>
+					<li>
+						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register </a>
+					</li>
+					<li>
+						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
+					</li>
+					<li>
+						<a class="mr-3 nav-link second-link <% if (typeof(page) != 'undefined' && page == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporter Register</a>
+					</li>
+                <% } %>  
+          	</ul>
         </div>
     </nav>
 </header>

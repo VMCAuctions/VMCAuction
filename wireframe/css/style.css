@@ -28,6 +28,7 @@ html {
 body {
 	font-family: Lato, sans-serif;  
 	color: #404040;
+	font-size: 0.9rem;
 }
 
 h1 {
@@ -38,7 +39,7 @@ h1 {
 h2 {
 	font-family: Lato, sans-serif; 
 	color: #4567a8;
-	font-size: 1.8rem; 
+	font-size: 1.7rem; 
 	font-weight: 700;  
 }
 

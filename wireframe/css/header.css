@@ -10,7 +10,7 @@
 .brand-nav {
     font-family: "Kameron", Georgia, "Times New Roman", serif;
     color: #f9f8fa;
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
     display: block; 
     margin: 0 auto;
     
@@ -31,7 +31,7 @@
 
 }
 a.log, a.user {
-    color: #b3d9ff; 
+    color: #99ccff; 
 }
 
 a.log:hover, a.log:active, a.user:hover, a.user:active {
@@ -43,7 +43,7 @@ a.log:hover, a.log:active, a.user:hover, a.user:active {
     color: #69afff !important; 
     font-weight: 700 !important;
     padding: 0 0 5px 0; 
-    border-bottom: 3px solid #69afff; 
+    border-bottom: 4px solid #69afff; 
 }
 
 /* second nav bar with buttons
@@ -91,23 +91,23 @@ a.nav2-link:hover {
 .catalog .current {
     color: #e6e1ea !important; 
     font-weight: 900 !important;
-    border-bottom: 3px solid #0055cb; 
-    padding: 0 0 16px 0; 
+    border-bottom: 4px solid #0055cb; 
+    padding: 0 0 15px 0; 
 }
 
 .featured .current {
     color: #e6e1ea !important; 
     font-weight: 900 !important;
-    border-bottom: 3px solid #c30000; 
-    padding: 0 0 16px 0;  
+    border-bottom: 4px solid #c30000; 
+    padding: 0 0 15px 0;  
 
 }
 
 .watch-list .current {
     color: #e6e1ea !important; 
     font-weight: 900 !important;
-    border-bottom: 3px solid #6f8300; 
-    padding: 0 0 16px 0;  
+    border-bottom: 4px solid #6f8300; 
+    padding: 0 0 15px 0;  
 }
 
 

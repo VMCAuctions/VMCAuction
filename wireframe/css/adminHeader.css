@@ -21,6 +21,7 @@
 a.top-link {
     color: #0080ff !important;
     font-weight: 400;
+    font-size: 0.9rem; 
 }
 a.top-link:hover {
     color: #0055cb !important; 
@@ -28,7 +29,7 @@ a.top-link:hover {
 .top-link.active1 {
     color: #0055cb !important;
     font-weight: 700 !important; 
-    padding: 0 0 5px 0; 
+    padding: 0 0 7px 0; 
     border-bottom: 3px solid #0055cb; 
 }
 
@@ -42,17 +43,17 @@ a.top-link:hover {
 .second-link {
     display: block;
     color: #fff !important;
+    font-size: 0.9rem; 
    
 } 
 
 a.second-link:hover {
-    color: #b3d9ff!important;
-    /* background-color: #004d99; */
+    color: #99ccff!important;
 }
 
 .active2 {
-    color: #b3d9ff !important;
-    border-bottom: 3px solid #b3d9ff; 
+    color: #99ccff !important;
+    border-bottom: 3px solid #99ccff; 
     
 }
 

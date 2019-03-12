@@ -54,13 +54,29 @@ function UsersController(){
 									}
 									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								res.render('allUsers', {page: 'supporters', users: users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
-							}
-						})
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {	
+										res.render('allUsers', {
+											page: 'supporters', 
+											users: users, 
+											cart: cart, 
+											packages: result, 
+											userName: req.session.userName, 
+											admin: req.session.adm, 
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})		
+									}
+								})
+							}	
+						})	
 				}else{
-					res.redirect('/' + req.params.auctions  + '/packages')
+					res.redirect('/' + req.params.auctions  + '/packages');
 				}
-			})
+		  })
 		}
 	};
 
