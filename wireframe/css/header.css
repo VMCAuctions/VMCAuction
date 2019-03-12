@@ -28,8 +28,8 @@
 
 .user {
     font-size: 0.8rem; 
-
 }
+
 a.log, a.user {
     color: #99ccff; 
 }
@@ -38,7 +38,7 @@ a.log:hover, a.log:active, a.user:hover, a.user:active {
     color: #69afff; 
 }
 
-/* to show which page is active */
+/* to display which page is active */
 .current {
     color: #69afff !important; 
     font-weight: 900 !important;
@@ -106,117 +106,4 @@ a.nav2-link:hover {
     font-weight: 900 !important;
     border-bottom: 4px solid #6f8300; 
     padding: 0 0 15px 0;  
-}
-
-
-/* Old Countdown Clock */
-
-.timer {
-    margin: 0;
-    background-color: #003d79;
-    color: #fff;
-    text-align: center;
-    font-size: 1.2em;
-    font-family: 'Century Gothic Bold', sans-serif;
-}
-
-.mobile-clock .timer {
-    font-size: 14px;
-}
-
-.clock-numbers {
-    padding: 1px;
-    font: bold 18px 'Droid Sans', Arial, sans-serif;
-    text-align: center;
-    color: #111;
-    background-color: #ddd;
-    background-image: -webkit-linear-gradient(top, #bbb, #eee); 
-    background-image:    -moz-linear-gradient(top, #bbb, #eee);
-    background-image:     -ms-linear-gradient(top, #bbb, #eee);
-    background-image:      -o-linear-gradient(top, #bbb, #eee);
-    border-radius: 3px;
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.7);
-}
-
-.desktop-clock {
-    height: 28px;
-    padding-right: 18px;
-}
-
-/* 
-  Device = Desktops, Higher Resolution Desktops
-*/
-
-@media (min-width: 1281px) {
-  .desktop-clock {
-      display: block;
-  }
-  .mobile-clock {
-      display: none;
-  }
-}
-
-/* 
-  Device = Laptops, Desktops
-*/
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-  .desktop-clock {
-      display: block;
-  }
-  .mobile-clock {
-      display: none;
-  }
-}
-
-/* 
-  Device = Tablets, iPads (portrait)
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .desktop-clock {
-      display: block;
-  }
-  .mobile-clock {
-      display: none;
-  }
-}
-
-/* 
-  Device = Tablets, iPads (landscape)
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  .desktop-clock {
-      display: block;
-  }
-  .mobile-clock {
-      display: none;
-  }
-}
-
-/* 
-  Device = Low Resolution Tablets, Mobiles (Landscape)
-*/
-
-@media (min-width: 481px) and (max-width: 767px) {
-  .desktop-clock {
-      display: none;
-  }
-  .mobile-clock {
-      display: block;
-  }
-}
-
-/* 
-  Device = Most Smartphones (Portrait)
-*/
-
-@media (min-width: 320px) and (max-width: 480px) {
-  .desktop-clock {
-      display: none;
-  }
-  .mobile-clock {
-      display: block;
-  }
 }

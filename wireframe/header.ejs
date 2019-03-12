@@ -17,7 +17,6 @@
 	<% if (auction){ %>
 		<% if(userName) {%>
 			<nav class="mb-3">
-
 				<!-- top nav bar -->
 				<!-- "current" is a flag sent from the server to indicate the active web page -->
 				<div id="top-nav-supporter" class="d-flex flex-row justify-content-between align-items-center text-white py-2">
@@ -32,7 +31,6 @@
 						<a class="pr-3 log" href="/users/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
 					</div>
 				</div>
-
 				<!-- second nav bar with buttons -->
 				<div class="d-flex flex-row justify-content-center align-items-center">
 					<div class="col-4 nav-btn catalog py-3">
@@ -46,6 +44,21 @@
 					</div>		
 				</div>
 			</nav>
+		<%} else {%>
+			<nav class="mb-3">
+			<!-- top nav bar -->
+				<div id="top-nav-supporter" class="d-flex flex-row justify-content-between align-items-center text-white py-2">	
+					<div class="col-3 pl-4">
+						<a class="user <% if (typeof(current) != 'undefined' && current == 'catalog') { %> current <% } %>" href="/<%=auction%>/packages">Catalog </a>
+					</div>		
+					<div class="col-6">
+						<div class="row brand-nav text-center mb-1">elizabid by VMCF </div>
+						<div class="row auction-nav text-center"><%= auctionDetails.name %></div>		
+					</div> 
+					<div class="col-3 text-right">
+						<a class="pr-3 login" href="/users/login"><i class="<i class="fas fa-sign-in-alt"></i>"></i> Login</a></a>
+					</div>
+				</div>
 		<%}%>	
 	<%}%> 
 </header>
