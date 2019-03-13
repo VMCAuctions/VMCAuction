@@ -9,9 +9,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/packageRegister.css">
-  
+
     <!-- Java Script -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -91,6 +91,7 @@
                     <tr class="text-center">
                         <th scope="col" class="narrow-col">Package Number</th>
                         <th scope="col" class="medium-col">Package Name</th>
+                        <th scope="col" class="medium-col">Package Image</th>
                         <th scope="col" class="med-to-narrow-col">Category</th>
                         <th scope="col" class="large-col">Package Description</th>
                         <th scope="col" class="medium-col">Package Restrictions</th>
@@ -111,6 +112,7 @@
                         <tr class="packageRow">
                             <td><%= packages[i]._id%></td>
                             <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+                            <td><img src="../public/<%= packages[i].photo %>" /></td>
                             <td><%= packages[i]._category%></td>
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
@@ -140,7 +142,7 @@
                                     <td class="text-center" id="priority">
                                         <input id="<%= packages[i].id%>Priority" class="input-featured" type="text" value="<%= packages[i].priority %>" style="display:none;"></input>
                                     <% } %>
-                                    
+
                                     </td>
                                     <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
                                 </form>
