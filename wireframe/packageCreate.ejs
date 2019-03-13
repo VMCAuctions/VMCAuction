@@ -33,12 +33,16 @@
         <h2>Create Package</h2>
            <p class="err-info">The fields marked with (*) are required.</p>
 
-        <!-- <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" enctype="multipart/form-data" method="post"> -->
-        <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post">
+        <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" enctype="multipart/form-data" method="POST">
+        <!-- <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" method="post"> -->
         <div class="form-row">
-          <div class="form-group col-6">
+          <!-- <div class="form-group col-6">
             <label for="packageName" class="label-name">Package Name*</label>
             <input type="text" name="packageName" id="packageName" class="form-control">
+          </div> -->
+          <div class="form-group col-6">
+            <label for="name" class="label-name">Package Name*</label>
+            <input type="text" name="name" id="name" class="form-control">
           </div>
           <div class="form-group col-4">
             <label for="category" class="label-name">Category</label>
@@ -117,10 +121,10 @@
                 <input type="number" name="increments" id="increments" class="form-control">
               </div>
 
-			<!-- <div class="form-group">
+			<div class="form-group">
 				<label for="packageImage" class="label-name text-black-50">Package Image</label>
 				<input type="file" name="packageImage" id="packageImage" class="form-control">
-			</div> -->
+			</div>
 
           </div>
 
@@ -266,7 +270,7 @@
 
         var validator = $("#packageForm").validate({
           rules: {
-            packageName: {
+            name: {
               required: true,
               minlength: 4
             },
