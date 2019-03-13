@@ -306,8 +306,6 @@ function UsersController(){
 		} else {
 			user.firstName = req.body.firstName;
 			user.lastName = req.body.lastName;
-			// user.userName = req.body.userName;
-			user.phone = req.body.phone;
 			user.streetAddress = req.body.address;
 			user.city = req.body.city;
 			user.states = req.body.states;
