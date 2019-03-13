@@ -6,10 +6,10 @@ h3 {
 	padding-left: 30px;
 }
 
-#hide {
+#hide1, #hide2 {
 	display: none;
 	font-size: 0.8rem;
-	color: #99004d;
+	color: #ff2719;
 	line-height: 1.5;
-	padding-top: 0.3rem;
+	padding-top: 0.25rem;
 }
