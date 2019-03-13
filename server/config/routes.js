@@ -11,25 +11,6 @@ Widget = require("../models/widget.js");
 
 // for image upload
 var multer = require('multer')
-// var storage = multer.diskStorage({
-//     destination: function(req, file, callback) {
-//         callback(null, './public')//here you can place your destination path
-//     },
-	
-//     filename: function(req, file, callback) {
-//         var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
-// 		req.body.imgFileName = imgFileName;
-// 		console.log(Date.now() + " - 000 routes.js var storage.  imgFileName = ",imgFileName)
-// 		console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
-// 		console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
-// 		console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
-
-// 		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-// 		callback(null, imgFileName)
-//     }
-// })
-
-		// console.log(Date.now() + " - 002 routes.js var storage.  path.basename(file.originalname) = ",path.basename(file.originalname))
 
 module.exports = function(app) {
 
@@ -45,12 +26,8 @@ module.exports = function(app) {
 			console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
 			var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
 			req.body.imgFileName = imgFileName;
-			// var pkgFileName = file.fieldname + '-' + req.body.packageName + '-' + Date.now() + path.extname(file.originalname);
-			// req.body.pkgFileName = pkgFileName;
 			console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
-			// console.log(Date.now() + " - 005 routes.js var storage.  pkgFileName = ",pkgFileName)
-
-		// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
+			
 			callback(null, imgFileName)
 		}
 	})
@@ -135,22 +112,28 @@ module.exports = function(app) {
 			packages.create(req, res)});
 			
 		})
-		// packages.create(req, res)});
-
-
 
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
 		packages.show(req,res)});
 
-
-
 	// update a single package
 	app.post('/:auctions/packages/:id', function(req,res){
-		packages.update(req,res)});
+
+		console.log(Date.now()," - 030 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+		console.log(Date.now()," - 031 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('packageImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 032 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+			console.log(Date.now()," - 033 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+			packages.update(req, res)});
+		})
+
   	// get the edit package form
 	app.get('/:auctions/packages/edit/:id', function(req,res){
 		packages.edit(req,res)});
+	
 	//removing a package from the DB
 	app.get('/:auctions/packages/remove/:id', function(req, res){
 		packages.removePackage(req, res)});
@@ -203,9 +186,7 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	
-	  
-	  
+
 	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
@@ -270,8 +251,6 @@ module.exports = function(app) {
 		})
 		auctions.create(req, res)});
 	
-	
-	
 	//Renders the organizer menu page
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
@@ -293,14 +272,6 @@ module.exports = function(app) {
 			auctions.update(req, res)})
 			
 		})
-		// auctions.update(req, res)})
-	
-	//Actually edits the auction on the backend
-	// app.post('/:auctions/update', function(req,res){
-	// 	auctions.update(req, res)})
-	
-	
-	
 	
 	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
@@ -319,8 +290,6 @@ module.exports = function(app) {
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
-
-
 
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {

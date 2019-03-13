@@ -140,7 +140,8 @@ function PackagesController(){
 	};
 
 	this.edit = function(req,res){
-		console.log('PackagesController new');
+		console.log(Date.now()," - 210 packages.js this.edit start.  req.body = ",req.body);
+		console.log(Date.now()," - 211 packages.js this.edit start.  req.file = ",req.file);
 		if (globals.adminValidation(req, res)){
 			var categoryArray = [];
 			var itemsArray = [];
@@ -150,10 +151,12 @@ function PackagesController(){
 					console.log(err);
 				}
 				else{
+					console.log(Date.now()," - 214 packages.js this.edit pkg.findById.  result = ",result);
+					
 					Category.find({}, function(err, categories) {
 							if(err) {
 									console.log(err);
-									res.status(500).send('Failed to Load Items');
+									res.status(500).send('Failed to Load Categories');
 							}
 							else {
 								Item.find({_auctions: req.params.auctions}, function(err, items) {
@@ -166,15 +169,24 @@ function PackagesController(){
 										for(let i = 0; i<items.length; i++){
 											 if(!items[i].packaged){
 												 itemsArray.push(items[i]);
-												 console.log(itemsArray);
+												//  console.log(itemsArray);
 										 	}
 										}
 										 for(let i = 0; i < result._items.length; i++){
 											total += result._items[i].value;
-										 	console.log(result._items[i]);
+										 	// console.log(result._items[i]);
 										 }
-										console.log("result is", result)
-										res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
+										res.render('packageEdit', {
+											package: result,
+											categories: categories,
+											items: itemsArray,
+											total: total,
+											userName: req.session.userName,
+											admin: req.session.admin,
+											auction: req.params.auctions,
+
+											photo: result.photo
+										})
 									}
 								})
 							}
@@ -220,91 +232,6 @@ this.new = function(req,res){
 }
 
 	//post method that creats packages
-	// this.create = function(req,res){
-	// 	console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
-	// 	console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
-	// 	console.log(Date.now() + " - 102 packages.js this.create start. req.params = ",req.params);
-	// 	//following should never get triggered.  front end validations should take care of it
-		
-	// 	// var storage = multer.diskStorage({
-	// 	// 	destination: function(req, file, callback) {
-	// 	// 		callback(null, './public')//here you can place your destination path
-	// 	// 	},
-		
-	// 	// 	filename: function(req, file, callback) {
-	// 	// 		var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
-	// 	// 		req.body.imgFileName = imgFileName;
-	// 	// 		console.log(Date.now() + " - 110 packages.js var storage.  imgFileName = ",imgFileName)
-	// 	// 		console.log(Date.now() + " - 111 packages.js var storage.  file = ",file)
-	// 	// 		console.log(Date.now() + " - 112 packages.js var storage.  req.file = ",req.file)
-	// 	// 		console.log(Date.now() + " - 113 packages.js var storage.  req.body = ",req.body)
-
-	// 	// 	// callback(null, file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname))
-	// 	// 		callback(null, imgFileName)
-	// 	// 	}
-	// 	// })
-
-	// 	// var upload = multer({ storage: storage}).single('auctionImage');
-	// 	// upload(req, res, function(err) {
-
-	// 	// 	if (err) {
-
-	// 	// 	} else {
-
-	// 			// console.log(Date.now() + " - 120 packages.js var storage.  imgFileName = ",imgFileName)
-	// 			console.log(Date.now()," - 122 packages.js /:auctions/pkgs.  req.body = ",req.body);
-	// 			console.log(Date.now()," - 123 packages.js /:auctions/pkgs.  req.file = ",req.file);
-				
-	// 			// Empty Items List Error
-	// 			// if (req.body.selectedItems.length == 0){
-	// 			// 	console.log('reached empty item list')
-	// 			// 	return res.json(false)
-	// 			// }
-
-	// 			Package.create({
-	// 				name: req.body.packageName,
-	// 				_items: req.body.selectedItems,
-	// 				description: req.body.packageDescription,
-	// 				value: req.body.totalValue,
-	// 				bidIncrement: req.body.increments,
-	// 				_category: req.body.category,
-	// 				bid: [],
-	// 				amount: req.body.openingBid,
-	// 				featured: req.body.featured,
-	// 				restrictions: req.body.packageRestrictions,
-
-	// 				// photo: req.body.imgFileName,
-
-	// 				_auctions: req.params.auctions
-	// 				}, function(err, package){
-	// 					if(err){
-	// 						console.log(err);
-	// 						return;
-	// 					}
-	// 					else{
-	// 						console.log(Date.now() + " - 104 packages.js this.create post create.  req.body = ",req.body);
-	// 						console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ",req.file);
-	// 						console.log(Date.now() + " - 106 packages.js this.create post create.  package = ",package);
-	// 						for(let i = 0; i < package._items.length; i++ ){
-	// 							Item.findOne({_id: package._items[i]} , function(err, item){
-	// 								item.packaged = true;
-	// 								item._package = package._id;
-	// 								item.save(function (err){
-	// 									if (err){
-	// 										console.log(err)
-	// 									}
-	// 								})
-	// 							})
-	// 						}
-	// 						res.redirect('/' + req.params.auctions  + '/packages/new?true')
-	// 					}
-	// 				});
-	// 	// 	}
-	// 	// })
-
-	// };
-
-	// copy of this.create prior to multer code insertion
 	this.create = function(req,res){
 		console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
 		console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
@@ -312,10 +239,10 @@ this.new = function(req,res){
 		//following should never get triggered.  front end validations should take care of it
 		
 		// if (req.body.selectedItems.length == 0){
-      	// console.log('reached empty item list')
+		// console.log('reached empty item list')
 		//   return res.json(false)
-   		// }
-    	Package.create({
+		// }
+		Package.create({
 			// name: req.body.packageName,
 			name: req.body.name,
 			_items: req.body.selectedItems,
@@ -341,17 +268,17 @@ this.new = function(req,res){
 				console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ",req.file);
 				console.log(Date.now() + " - 106 packages.js this.create post create.  package = ",package);
 				for(let i = 0; i < package._items.length; i++ ){
-						Item.findOne({_id: package._items[i]} , function(err, item){
-								item.packaged = true;
-								item._package = package._id;
-								item.save(function (err){
-									if (err){
-										console.log(err)
-									}
-								})
+					Item.findOne({_id: package._items[i]} , function(err, item){
+						item.packaged = true;
+						item._package = package._id;
+						item.save(function (err){
+							if (err){
+								console.log(err)
+							}
 						})
-					}
-					res.redirect('/' + req.params.auctions  + '/packages/new?true')
+					})
+				}
+				res.redirect('/' + req.params.auctions  + '/packages/new?true')
 			 }
 		});
 	};
@@ -400,26 +327,27 @@ this.new = function(req,res){
 	};
 
 	this.update = function(req,res){
-		console.log('PackagesController update');
+		console.log(Date.now()," - 220 packages.js this.update start.  req.body = ",req.body);
+		console.log(Date.now()," - 221 packages.js this.update start.  req.file = ",req.file);
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function (err, package) {
-				console.log(package);
-			    if (err) {
+				console.log(Date.now()," - 224 packages.js this.update pkg.findById result = ",package);
+				if (err) {
 			        res.status(500).send(err);
 			    }else {
-							Item.find({_id: package._items}, function(err, items) {
-								if (err) {
-									console.log(err);
-								}else{
-									for (var i = 0; i < items.length; i++) {
-										//Setting all of the items to unpackaged, just in case they are removed and not put back into the package
-										//Items that remain in the package will be repackaged below
-										items[i].packaged = false;
-										items[i]._package = null;
-										items[i].save()
-									}
-								}
-							})
+					Item.find({_id: package._items}, function(err, items) {
+						if (err) {
+							console.log(err);
+						}else{
+							for (var i = 0; i < items.length; i++) {
+								//Setting all of the items to unpackaged, just in case they are removed and not put back into the package
+								//Items that remain in the package will be repackaged below
+								items[i].packaged = false;
+								items[i]._package = null;
+								items[i].save()
+							}
+						}
+					})
 			        // Update each attribute with value that was submitted in the body of the request
 			        // If that attribute isn't in the request body, default back to whatever it was before.
 			        package.name = req.body.packageName || package.name;
@@ -432,27 +360,33 @@ this.new = function(req,res){
 			        package._category = req.body.category || package._category;
 					package.priority = req.body.priority || package.priority;
 					package._items = req.body.selectedItems;
+
+					// For image upload
+					package.photo = req.body.imgFileName || package.photo;
+
+
 			        package.save(function (err, package) {
 			            if (err) {
 	                    console.log(err)
 			                res.status(500).send(err)
 			            }else{
-			    					for(let i = 0; i < package._items.length; i++ ){
-											Item.findOne({_id: package._items[i]} , function(err, item){
-												item.packaged = true;
-												item._package = package.id;
-												item.save(function (err){
-													if (err){
-														console.log(err)
-													}else{
-														console.log('item should  be packaged', item.packaged);
-													}
-												})
-											})
-			    					}
-										// 1-17 Bug Fix List Item 7 Change redirect to Package Register
-										// res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
-										res.redirect('/' + req.params.auctions  + '/packages/list' );
+							console.log(Date.now()," - 226 packages.js this.update post pkg.save.  package = ",package);
+							for(let i = 0; i < package._items.length; i++ ){
+								Item.findOne({_id: package._items[i]} , function(err, item){
+									item.packaged = true;
+									item._package = package.id;
+									item.save(function (err){
+										if (err){
+											console.log(err)
+										}else{
+											console.log('item should  be packaged', item.packaged);
+										}
+									})
+								})
+							}
+							// 1-17 Bug Fix List Item 7 Change redirect to Package Register
+							// res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+							res.redirect('/' + req.params.auctions  + '/packages/list' );
 			           }
 			       });
 			    }
