@@ -52,6 +52,66 @@ function AuctionsController() {
       res.redirect("/" + req.session.auction + "/event");
     }
   };
+
+
+	this.create = function(req, res) {
+		console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
+		console.log(Date.now()," - 201 auctions.js this.create.  req.file = ",req.file);
+		if (globals.adminValidation(req, res)) {
+			var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+			var start = new Date(startDate);
+			var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
+			var end = new Date(endDate);
+			Global.findOne({}, function(err, global) {
+				if (err) {
+					console.log(err);
+				}
+				if (global.pins.length == 0) {
+					console.log("Out of available pins!");
+				} else {
+					randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
+					randomPin = global.pins[randomPinIndex];
+					global.pins.splice(randomPinIndex, 1);
+					global.save(function(err, result) {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(Date.now()," - 203 auctions.js pre auction create.  req.body = ",req.body);
+						console.log(Date.now()," - 204 auctions.js pre auction create.  req.file = ",req.file);
+
+
+						Auction.create({
+							name: req.body.name,
+							startClock: start,
+							endClock: end,
+							pin: randomPin,
+							subtitle: req.body.subtitle,
+							welcomeMessage: req.body.welcomeMessage,
+							description: req.body.description,
+							venue: req.body.venue,
+
+							headerImage: req.body.imgFileName,
+
+
+							}, function(err, result) {
+								if (err) {
+									console.log(Date.now(),": err = ",err);
+								} else {
+									console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
+									console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
+									console.log(Date.now()," - 208 auctions.js post auction create.  result = ",result);
+									//Perhaps display pin to organizer on creation and/or auction menu page
+									res.redirect("/" + result._id + "/organizerMenu");
+								}
+							}
+						);
+					}
+					});
+				}
+			});
+		}
+	};
+
   //Just used as an API for now
   this.create = function(req, res) {
     // console.log("req.body.startClockDate is", req.body.startClockDate)
@@ -107,15 +167,16 @@ function AuctionsController() {
       });
     }
   };
+
   this.menu = function(req, res) {
     if (globals.adminValidation(req, res)) {
       Auction.findById(req.params.auctions, function(err, auctionDetails) {
         if (err) {
           console.log(err);
         } else {
-          console.log("auction details", auctionDetails);
-          // res.locals.auctionName = auctionDetails.name; // to make the auction name available in all in Headers when added to any page
-          // current is a flag showing which page is active
+
+          console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
+
           res.render("organizerMenu", {
             current: "organizerMenu",
             admin: req.session.admin,
@@ -127,8 +188,13 @@ function AuctionsController() {
       });
     }
   };
+
+
   this.edit = function(req, res) {
+	console.log(Date.now()," - 210 auctions.js this.edit.  req.body = ",req.body);
+	console.log(Date.now()," - 211 auctions.js this.edit.  req.file = ",req.file);
     Auction.findById(req.params.auctions, function(err, auction) {
+	  console.log(Date.now()," - 212 auctions.js this.edit.  auction = ",auction);
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       // console.log("stringStartClock is", stringStartClock)
@@ -147,10 +213,59 @@ function AuctionsController() {
         startClock: startClock,
         endDate: endDate,
         endClock: endClock,
-        pin: auction.pin
+        pin: auction.pin,
+
+		headerImage: auction.headerImage
+
       });
     });
   };
+
+
+
+  this.update = function(req, res) {
+	console.log(Date.now()," - 220 auctions.js this.update.  req.body = ",req.body);
+	console.log(Date.now()," - 221 auctions.js this.update.  req.file = ",req.file);
+    var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+    var start = new Date(startDate);
+    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
+    var end = new Date(endDate);
+    Auction.findById(req.params.auctions, function(err, auction) {
+	  console.log(Date.now()," - 222 auctions.js this.update.  auction = ",auction);
+      if (err) {
+        console.log(err);
+      } else {
+        auction.name = req.body.name || auction.name;
+        auction.startClock = start || auction.startClock;
+        auction.endClock = end || auction.endClock;
+        auction.subtitle = req.body.subtitle;
+        auction.venue = req.body.venue;
+        auction.description = req.body.description;
+        auction.welcomeMessage = req.body.welcomeMessage;
+
+		auction.headerImage = req.body.imgFileName
+
+
+	    console.log(Date.now()," - 223 auctions.js this.update pre save.  auction = ",auction);
+        // console.log(req.body.pin);
+        auction.save()
+	    console.log(Date.now()," - 224 auctions.js this.update post save.  auction = ",auction);
+	    console.log(Date.now()," - 225 auctions.js this.update post save.  req.params.auctions = ",req.params.auctions);
+        res.redirect("/" + req.params.auctions + "/organizerMenu")
+      }
+    });
+  };
+
+  this.deleteAuction = function(req, res) {
+    Auction.remove({ _id: req.params.auctions }, function(err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/auctions/main");
+      }
+    });
+  };
+
   
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
@@ -186,44 +301,6 @@ function AuctionsController() {
     });
   };
 
-  this.update = function(req, res) {
-    // console.log("req.body is", req.body)
-    // console.log("we are in the update function")
-    console.log("in this.update");
-    var startDate =
-      req.body.startClockDate + "T" + req.body.startClockTime + ":00";
-    var start = new Date(startDate);
-    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
-    var end = new Date(endDate);
-    Auction.findById(req.params.auctions, function(err, auction) {
-      if (err) {
-        console.log(err);
-      } else {
-        auction.name = req.body.name || auction.name;
-        auction.startClock = start || auction.startClock;
-        auction.endClock = end || auction.endClock;
-        auction.subtitle = req.body.subtitle;
-        auction.venue = req.body.venue;
-        auction.description = req.body.description;
-        auction.welcomeMessage = req.body.welcomeMessage;
-        console.log(req.body.pin);
-        auction.save()
-        res.redirect(
-        "/" + req.params.auctions + "/organizerMenu"
-        )
-      }
-    });
-  };
-
-  this.deleteAuction = function(req, res) {
-    Auction.remove({ _id: req.params.auctions }, function(err, result) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect("/auctions/main");
-      }
-    });
-  };
 
   this.clerk = function(req, res) {
     console.log("Clerk landing page");

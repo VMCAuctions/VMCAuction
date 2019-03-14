@@ -4,8 +4,54 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
 
+var path = require('path')
+Auction = require("../models/auction.js");
+
+var widgets = require('../controllers/widgets.js');
+Widget = require("../models/widget.js");
+
+// for image upload
+var multer = require('multer')
 
 module.exports = function(app) {
+
+	var storage = multer.diskStorage({
+		destination: function(req, file, callback) {
+			console.log(Date.now() + " - 000 routes.js var storage. in destination")
+			callback(null, './public')//here you can place your destination path
+		},
+	
+		filename: function(req, file, callback) {
+			console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
+			console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
+			console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
+			var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+			req.body.imgFileName = imgFileName;
+			console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
+			
+			callback(null, imgFileName)
+		}
+	})
+
+	// Renders widget create page
+	app.get('/widget', function(req,res){
+		widgets.index(req,res)});
+
+
+	//WIDGETS
+	app.post('^/widgets$', function (req, res) {
+
+		console.log(Date.now()," - 100 routes.js /widgets$.  req.body = ",req.body);
+		console.log(Date.now()," - 101 routes.js /widgets$.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('widgetImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 102 routes.js /widgets$.  req.body = ",req.body);
+			console.log(Date.now()," - 103 routes.js /widgets$.  req.file = ",req.file);
+			widgets.create(req, res)});
+		})
+		// widgets.create(req, res)});
+	
 
 	// ITEMS //
 	// Renders all items page
@@ -50,18 +96,46 @@ module.exports = function(app) {
 	// get the new package form
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
+
+
 	// post the new package form and create the new package
-	app.post('/:auctions/packages', function(req,res){
-		packages.create(req,res)});
+	// app.post('/:auctions/packages', function(req,res){
+	// 	packages.create(req,res)});
+
+	app.post('/:auctions/packages', function (req, res) {
+
+		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
+		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('packageImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+			console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+			packages.create(req, res)});
+			
+		})
+
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
 		packages.show(req,res)});
+
 	// update a single package
 	app.post('/:auctions/packages/:id', function(req,res){
-		packages.update(req,res)});
+
+		console.log(Date.now()," - 030 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+		console.log(Date.now()," - 031 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('packageImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 032 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+			console.log(Date.now()," - 033 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+			packages.update(req, res)});
+		})
+
   	// get the edit package form
 	app.get('/:auctions/packages/edit/:id', function(req,res){
 		packages.edit(req,res)});
+	
 	//removing a package from the DB
 	app.get('/:auctions/packages/remove/:id', function(req, res){
 		packages.removePackage(req, res)});
@@ -115,7 +189,7 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-	  
+
 	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
 		users.duplicate(req,res)});
@@ -163,17 +237,42 @@ module.exports = function(app) {
 		auctions.index(req, res)});
 	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
+
+
+		console.log(Date.now()," - 100 routes.js /auctions$.  req.body = ",req.body);
+		console.log(Date.now()," - 101 routes.js /auctions$.  req.file = ",req.file);
+		
+		var upload = multer({ storage: storage}).single('auctionImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
+			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
+			// auctions.create(req, res)});
+		})
+
 		auctions.create(req, res)});
 	//Renders the Organizer's Menu page, which has been renamed as Auction Menu
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
+
 	//Renders the page to edit an auction
 	app.get('/:auctions/edit', function (req, res) {
 		auctions.edit(req, res)})
-		//Actually edits the auction on the backend
+	
+	//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
-		auctions.update(req, res)})
-		// Deletes auction
+
+		console.log(Date.now()," - 110 routes.js /auctions/update.  req.body = ",req.body);
+		console.log(Date.now()," - 111 routes.js /auctions/update.  req.file = ",req.file);
+
+		var upload = multer({ storage: storage}).single('auctionImage');
+		upload(req, res, function(err) {
+			console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
+			console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
+			auctions.update(req, res)})
+			
+		})
+	
+	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
 	//Event landing page the supporters will see; has links to supporter login and registration
@@ -186,8 +285,6 @@ module.exports = function(app) {
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
-
-
 
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {

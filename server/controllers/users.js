@@ -247,13 +247,18 @@ function UsersController(){
 	this.checkLogin = function(req, res){
 		console.log("in check login");
 		var name = req.body.userName;
+		console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
-				console.log(err);
+				console.log(Date.now(),"001 users.js checkLogin.  err = ",err);
+
 			}else if(!user){
+				console.log(Date.now(),"001 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
+				console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
+				console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
 					if(err){
 						console.log(err)
 					}else if(match){

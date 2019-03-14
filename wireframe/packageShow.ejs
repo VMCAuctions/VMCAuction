@@ -57,6 +57,11 @@
 		<div>
       <h3 class="card-header"><%= package.name %> </h3>
 
+	  <div>
+		  <!-- <img class="package-img" src="/<%= package.photo %>"> -->
+		  <img src="/<%= package.photo %>">
+	  </div>
+
       <div class="card-body">
           <p> Package Description: <%= package.description %> </p>
           <p> Package Value: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
