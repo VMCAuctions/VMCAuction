@@ -318,18 +318,36 @@ function UsersController(){
 
 
 	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
+	//3.2019 update - instead, using this for supporter to be able to edit their account.
+	//code for changing password is commented out.
   this.update = function(req,res){
-		bcrypt.hash(req.body.newPass, null, null, function(err, hash){
-			User.findOneAndUpdate({
-				userName: req.session.userName
-			}, {
-				password: req.body.newPass
-			}).then(function(res){
-				console.log('changed pass')
-			})
-		})
+	User.findOne({userName: req.body.userName}, function(err, user) {
+		if (err) {
+			console.log(err);
+		} else {
+			user.firstName = req.body.firstName;
+			user.lastName = req.body.lastName;
+			user.streetAddress = req.body.address;
+			user.city = req.body.city;
+			user.states = req.body.states;
+			user.zip = req.body.zip;
+			user.save();
+			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
+		}
+	});
+		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
+		// 	User.findOne({userName: req.body.userName}, function(err, user) {
+		// 		if (err) {
+		// 			console.log(err);
+		// 		} else {
+		// 			user.password = hash;
+		// 			user.save();
+		// 			res.redirect("/" + req.params.auctions + 
+		// 			"/users/account/" + req.params.userName);
+		// 		}
+		// 	});
+		// });
 	}
-
 
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){

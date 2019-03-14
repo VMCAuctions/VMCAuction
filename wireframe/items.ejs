@@ -77,7 +77,7 @@
                         <td></td>
                       <%}%>
                       <td><%= items[i]._category%></td>
-                      <td class="item-val"><%= items[i].value%></td>
+                      <td class="item-val"><%= "$" + items[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                       <td><%= items[i].description%></tdc>
                       <td><%= items[i].restrictions%></td>
                       <td><%= items[i].donorPrefix%> <%= items[i].donorFirst%> <%= items[i].donorLast%></td>  
