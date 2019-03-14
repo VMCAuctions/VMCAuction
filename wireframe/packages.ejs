@@ -77,9 +77,9 @@
   <h5 class="card-title"><%=featured[f].name%></h5>
   <!-- <a href="/<%=auction%>/packages/<%=featured[f]._id%>"><%=featured[f].name%></a> -->
   <p><b>Category:</b> <%=featured[f]._category%></p>
-  <p><b>STARTING BID:</b> <%=featured[f].amount%></p>
+  <p><b>STARTING BID:</b> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></p>
   <%if(featured[f].bids[featured[f].bids.length-1]){%>
-  <p ><b>Current Bid:</b><span class='currentBid<%=featured[f]._id%>'> <%=featured[f].bids[featured[f].bids.length-1].bidAmount%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
+  <p ><b>Current Bid:</b><span class='currentBid<%=featured[f]._id%>'> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (By: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></p>
   <%}else{%>
     <p><b>Current Bid:</b> None (By: Nobody)</p>
   <%}%>
@@ -142,11 +142,11 @@
       <h5 class="card-title"><%=packages[n].name%></h5>
     <!-- <a class="card-title" href="/<%=auction%>/packages/<%=packages[n]._id%>"><%=packages[n].name%></a> -->
     <p class="card-text">Category: <%=packages[n]._category%></p>
-    <p>Value:<%=packages[n].value%></p>
+    <p>Value:<%="$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></p>
     <%if(packages[n].bids[packages[n].bids.length-1]){%>
     <p>Current Bid:
       <span class='currentBid<%=packages[n]._id%>'>
-        <%=packages[n].bids[packages[n].bids.length-1].bidAmount%>
+        <%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>
         (By: <%= packages[n].bids[packages[n].bids.length-1].name%>)
         
       </span>

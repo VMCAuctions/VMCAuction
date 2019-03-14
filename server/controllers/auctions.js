@@ -1,19 +1,17 @@
 var mongoose = require("mongoose"),
-Item = require("../models/item.js"),
-Package = require("../models/package.js"),
-Category = require("../models/category.js"),
-User = require("../models/user.js"),
-Auction = require("../models/auction.js"),
-Global = require("../models/global.js"),
-globals = require("../controllers/globals.js");
-var dateFormat = require('dateformat');
-
+  Item = require("../models/item.js"),
+  Package = require("../models/package.js"),
+  Category = require("../models/category.js"),
+  User = require("../models/user.js"),
+  Auction = require("../models/auction.js"),
+  Global = require("../models/global.js"),
+  globals = require("../controllers/globals.js");
+  var dateFormat = require('dateformat');
 
 function AuctionsController() {
   this.index = function(req, res) {
     //Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
     if (globals.adminValidation(req, res)) {
-		
       res.render("auctions", {
         admin: req.session.admin,
         userName: req.session.userName
@@ -51,9 +49,10 @@ function AuctionsController() {
         }
       });
     } else {
-      res.redirect("/" + req.session.auction + "/packages");
+      res.redirect("/" + req.session.auction + "/event");
     }
   };
+
 
 	this.create = function(req, res) {
 		console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
@@ -113,66 +112,61 @@ function AuctionsController() {
 		}
 	};
 
+  //Just used as an API for now
+  this.create = function(req, res) {
+    // console.log("req.body.startClockDate is", req.body.startClockDate)
+    // console.log("req.body.startClockTime is", req.body.startClockTime)
+    // Add validations to ensure auction start occurs before auction end
 
-  // Copy of this.create prior to inserting multer upload
-//   this.create = function(req, res) {
-// 	  	console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
-// 		console.log(Date.now()," - 201 auctions.js this.create.  req.file = ",req.file);
-// 	if (globals.adminValidation(req, res)) {
-//       var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
-//       var start = new Date(startDate);
-//       var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
-//       var end = new Date(endDate);
-//       Global.findOne({}, function(err, global) {
-//         if (err) {
-//           console.log(err);
-//         }
-//         if (global.pins.length == 0) {
-//           console.log("Out of available pins!");
-//         } else {
-//           randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
-//           randomPin = global.pins[randomPinIndex];
-//           global.pins.splice(randomPinIndex, 1);
-//           global.save(function(err, result) {
-//             if (err) {
-//               console.log(err);
-//             } else {
-// 				console.log(Date.now()," - 203 auctions.js pre auction create.  req.body = ",req.body);
-// 				console.log(Date.now()," - 204 auctions.js pre auction create.  req.file = ",req.file);
-//               Auction.create(
-//                 {
-//                   name: req.body.name,
-//                   startClock: start,
-//                   endClock: end,
-//                   pin: randomPin,
-//                   subtitle: req.body.subtitle,
-//                   welcomeMessage: req.body.welcomeMessage,
-//                   description: req.body.description,
-//                   venue: req.body.venue,
+    if (globals.adminValidation(req, res)) {
+      var startDate =
+        req.body.startClockDate + "T" + req.body.startClockTime + ":00";
+      var start = new Date(startDate);
+      var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
+      var end = new Date(endDate);
+      Global.findOne({}, function(err, global) {
+        console.log(global);
+        if (err) {
+          console.log(err);
+        }
+        if (global.pins.length == 0) {
+          console.log("Out of available pins!");
+        } else {
+          randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
+          randomPin = global.pins[randomPinIndex];
+          global.pins.splice(randomPinIndex, 1);
 
-// 				  headerImage: req.body.imgFileName,
-
-
-//                 },
-//                 function(err, result) {
-//                   if (err) {
-//                     console.log(Date.now(),": err = ",err);
-//                   } else {
-// 					console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
-// 					console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
-//                     console.log(Date.now()," - 208 auctions.js post auction create.  result = ",result);
-//                     //Perhaps display pin to organizer on creation and/or auction menu page
-//                     res.redirect("/" + result._id + "/organizerMenu");
-//                   }
-//                 }
-//               );
-//             }
-//           });
-//         }
-//       });
-//     }
-//   };
-
+          global.save(function(err, result) {
+            if (err) {
+              console.log(err);
+            } else {
+              Auction.create(
+                {
+                  name: req.body.name,
+                  startClock: start,
+                  endClock: end,
+                  pin: randomPin,
+                  subtitle: req.body.subtitle,
+                  welcomeMessage: req.body.welcomeMessage,
+                  description: req.body.description,
+                  venue: req.body.venue
+                },
+                function(err, result) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log(result);
+                    //Perhaps display pin to organizer on creation and/or auction menu page
+                    res.redirect("/" + result._id + "/organizerMenu");
+                  }
+                }
+              );
+            }
+          });
+        }
+      });
+    }
+  };
 
   this.menu = function(req, res) {
     if (globals.adminValidation(req, res)) {
@@ -180,12 +174,14 @@ function AuctionsController() {
         if (err) {
           console.log(err);
         } else {
+
           console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
+
           res.render("organizerMenu", {
-            page: "organizerMenu",
+            current: "organizerMenu",
             admin: req.session.admin,
             auction: req.params.auctions,
-            auctionDetails: auctionDetails,
+            auctionDetails: auctionDetails, //might be use to display auction name 
             userName: req.session.userName
           });
         }
@@ -201,8 +197,11 @@ function AuctionsController() {
 	  console.log(Date.now()," - 212 auctions.js this.edit.  auction = ",auction);
       stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
+      // console.log("stringStartClock is", stringStartClock)
       startDate = stringStartClock.substring(0, 10);
       startClock = stringStartClock.substring(11, 16);
+      // console.log("startDate is", startDate)
+      // console.log("startClock is", startClock)
       endDate = stringEndClock.substring(0, 10);
       endClock = stringEndClock.substring(11, 16);
       res.render("editAuction", {
@@ -221,6 +220,7 @@ function AuctionsController() {
       });
     });
   };
+
 
 
   this.update = function(req, res) {
@@ -267,10 +267,9 @@ function AuctionsController() {
   };
 
   
-
   this.event = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction) {
-	  stringStartClock = auction.startClock.toISOString();
+      stringStartClock = auction.startClock.toISOString();
       stringEndClock = auction.endClock.toISOString();
       startDate = stringStartClock.substring(0, 10);
       startClock = stringStartClock.substring(11, 16);
@@ -301,6 +300,7 @@ function AuctionsController() {
       }
     });
   };
+
 
   this.clerk = function(req, res) {
     console.log("Clerk landing page");
@@ -344,8 +344,9 @@ function AuctionsController() {
                     total: total
                   };
                 }
+                //Current is a flag showing which page is active
                 res.render("clerkDash", {
-                  page: "Clerk Dashboard",
+                  current: "Clerk Dashboard",
                   users: users,
                   cart: cart,
                   packages: result,
@@ -357,7 +358,7 @@ function AuctionsController() {
               }
             });
         } else {
-          res.redirect("/" + req.params.auctions + "/packages");
+          res.redirect("/" + req.params.auctions + "/event");
         }
       });
     }

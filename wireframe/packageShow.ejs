@@ -30,8 +30,8 @@
 
 				socket.on("serverTalksBack", function(data){
 					if (data.packId == <%= package._id %>) {
-						$('#currentBid').text("Current Bid: " + data.bid + " by: " + data.userName)
-						$('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>)+" ' >")
+						$('#currentBid').text("Current Bid: $" + data.bid.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " by: " + data.userName)
+						$('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>) + " ' >")
 						customPlaceholder = data.bid;
 					}
 				})
@@ -64,29 +64,29 @@
 
       <div class="card-body">
           <p> Package Description: <%= package.description %> </p>
-          <p> Package Value: <%= package.value %> </p>
-          <p> Starting Bid: <%= package.amount %> </p>
+          <p> Package Value: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
+          <p> Starting Bid: <%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
 
         <% if (package.bids.length == 0) {%>
-          <!-- <p id ='currentBid'>Current Bid: <%= package.value %></p> -->
+          <!-- <p id ='currentBid'>Current Bid: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p> -->
 		  <!-- 1-17 Bug Fix List Item 22 Make opening current bid field default to package.amount instead of package value -->
-          <p id ='currentBid'>Current Bid: <%= package.amount %></p>
+          <p id ='currentBid'>Current Bid: <%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
         <%} else {%>
           <p id ='currentBid'>
             Current Bid: 
-            <%= package.bids[package.bids.length-1].bidAmount%>
+            <%= "$" + package.bids[package.bids.length-1].bidAmount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>
             <!-- by: <%= package.bids[package.bids.length-1].name%>   -->
             by: <%= user.firstName.charAt(0) %>. <%= user.lastName %>  
           </p>
         <%}%>
-		<p> Bid Increment: <%= package.bidIncrement %> </p>
+		<p> Bid Increment: <%= "$" + package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
 
           <p> Next Bid:</p>
           <form action='/<%=auction%>/packages/<%= package._id %>' id='bidding'>
             <% if (package.bids == false) {%>
-              <input id='bidAmount' readonly value='<%= package.amount%>'>
+              <input id='bidAmount' readonly value='<%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>
             <%} else {%>
-              <input id='bidAmount' readonly value='<%= package.bids[package.bids.length-1].bidAmount + package.bidIncrement %> '>
+              <input id='bidAmount' readonly value='<%= "$" + (package.bids[package.bids.length-1].bidAmount + package.bidIncrement).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> '>
             <%}%>
 
           <% if (!userName) {%>
@@ -132,23 +132,23 @@
           if (<%=ourBids%>===true) {
 
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
+                                  'placeholder': "$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +' or higher'});
           $('#bidAmount').val(null);
         }else{
           $('#bidAmount').attr({'readonly': false,
-                                  'placeholder': customPlaceholder + ' or higher'});
+                                  'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'});
           $('#bidAmount').val(null);
               }
         }else{
           if (<%=ourBids%>===true) {
             $('#bidAmount').attr({'readonly': 'readonly',
-                                  'placeholder': customPlaceholder + <%=package.bidIncrement %> +' or higher'});
-            $('#bidAmount').val(customPlaceholder + <%=package.bidIncrement %>)
+                                  'placeholder': "$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +' or higher'});
+            $('#bidAmount').val("$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
         }else{
           $('#bidAmount').attr({'readonly': 'readonly',
-                              'placeholder': customPlaceholder + ' or higher'});
+                              'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'});
 
-          $('#bidAmount').val(customPlaceholder)
+          $('#bidAmount').val("$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
         }
       }
         $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
@@ -156,13 +156,13 @@
 
         //There is also a socket function for submitButton.click above, with the rest of the socket stuff
         $("#submitButton").click(function(){
-          console.log("package.amount is", <%= package.amount%>)
-          console.log("lastBid is", <%= lastBid%>)
+          // console.log("package.amount is", <%= "$" + package.amount.toFixed(2).toString()%>)
+          // console.log("lastBid is", <%= "$" + lastBid.toFixed(2).toString()%>)
         	if($("#bidAmount").val() < <%= package.amount%> && <%=ourBids%> === false){
-            	alert("Please enter a bid above " + <%= package.amount%>)
+            	alert("Please enter a bid above $" + <%= package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)
             	event.preventDefault()
         	}else if ($("#bidAmount").val() < <%= lastBid + package.bidIncrement %> && <%=ourBids%> === true) {
-            	alert("Please enter a bid above " + <%= lastBid + package.bidIncrement %> )
+            	alert("Please enter a bid above $" + <%= (lastBid + package.bidIncrement).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> )
               event.preventDefault()
           }
 

@@ -74,8 +74,8 @@
                             <tbody>
                                 <tr>
                                     <td class="summary-table">Total Packages: &nbsp; <span class="summary-num"><%= packages.length %> </span></td>
-                                    <td class="summary-table">Total Estimated Market Value: &nbsp; <span class="summary-num"><%= sumMarketVal %></span></td>
-                                    <td class="summary-table">Total Starting Bids: &nbsp; <span class="summary-num"><%=sumStartingBid %></span></td>
+                                    <td class="summary-table">Total Estimated Market Value: &nbsp; <span class="summary-num"><%= "$" + sumMarketVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></td>
+                                    <td class="summary-table">Total Starting Bids: &nbsp; <span class="summary-num"><%="$" + sumStartingBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></td>
                                 <tr>
                             </tbody>
                         </table>
@@ -125,9 +125,9 @@
                                 <% } %>
                                 </ul>
                             </td>
-                            <td class="text-center"><%= packages[i].value%></td>
-                            <td class="text-center"><%= packages[i].amount%></td>
-                            <td class="text-center"><%= packages[i].bidIncrement%></td>
+                            <td class="text-center"><%= "$" + packages[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            <td class="text-center"><%= "$" + packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            <td class="text-center"><%= "$" + packages[i].bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                             <% if(admin == 2){ %>
                                 <form>
                                     <td class="text-center"><select class="input-featured" id="<%= packages[i].id %>Featured">

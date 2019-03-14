@@ -1,3 +1,7 @@
+body {
+    background-color: #f9f8fa; 
+}
+
 .modal-confirm {		
     color: #636363;
     width: 400px;

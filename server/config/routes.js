@@ -3,6 +3,7 @@ var packages = require('../controllers/packages.js');
 var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
+
 var path = require('path')
 Auction = require("../models/auction.js");
 
@@ -35,6 +36,7 @@ module.exports = function(app) {
 	// Renders widget create page
 	app.get('/widget', function(req,res){
 		widgets.index(req,res)});
+
 
 	//WIDGETS
 	app.post('^/widgets$', function (req, res) {
@@ -144,7 +146,9 @@ module.exports = function(app) {
 	app.get('/:auctions/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)});
 
-
+	//TO BE ADDED (a page just for the featured pacakges):	
+	app.get('/:auctions/featured-packages', function(req, res) {
+		packages.featuredPackages(req, res)});	
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
@@ -157,7 +161,6 @@ module.exports = function(app) {
 	// delete a category
 	app.get('/:auctions/categories/:_id/delete', function(req,res){
 		categories.delete(req,res)});
-
 
 
 	// USERS //
@@ -226,19 +229,15 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//Organizer's landing page (where the organizer selects what she wants to do)
+	//Organizer's landing page (where the organizer selects what she wants to do)	
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
 	//This is the page with the form for creating a new auction
 	app.get('^/auctions$', function (req, res) {
 		auctions.index(req, res)});
-
-	//Creating an auction (without image upload)
-	// app.post('^/auctions$', function (req, res) {
-	// 	auctions.create(req, res)});
-
-	//Creating an auction with image upload capability
+	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
+
 
 		console.log(Date.now()," - 100 routes.js /auctions$.  req.body = ",req.body);
 		console.log(Date.now()," - 101 routes.js /auctions$.  req.file = ",req.file);
@@ -249,9 +248,9 @@ module.exports = function(app) {
 			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
 			// auctions.create(req, res)});
 		})
+
 		auctions.create(req, res)});
-	
-	//Renders the organizer menu page
+	//Renders the Organizer's Menu page, which has been renamed as Auction Menu
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
 
@@ -276,13 +275,9 @@ module.exports = function(app) {
 	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
-		
 	//Event landing page the supporters will see; has links to supporter login and registration
 	app.get('/:auctions/event', function(req, res) {
-		console.log("300 routes.js :auctions/event.  req.body = ",req.body)
 		auctions.event(req, res)});
-
-
 	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
 	app.get('/:auctions/clerkDash', function(req,res) {
 		auctions.clerk(req,res)});

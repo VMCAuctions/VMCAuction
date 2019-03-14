@@ -51,7 +51,7 @@
       <!-- <button id='update'>Update List Order</button> -->
       <!--cant tell if pressing this button works or not on my phone-->
 
-      <h3 id = "cartTotal">Total: $<%=cartTotal%></h3>
+      <h3 id = "cartTotal">Total: $<%=cartTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></h3>
     </div> <!-- End of container -->
     <script>
     	var socket = io.connect('http://localhost:8000/');
@@ -95,8 +95,8 @@
         }
         <%for (var j = 0; j < cartArray.length; j++){%>
           if(<%=cartArray[j]._id%> == data.packId){
-            cartTotal -= <%=cartArray[j].bids[cartArray[j].bids.length - 1].bidAmount%>
-            $("#cartTotal").text("Total: $" + cartTotal)
+            cartTotal -= <%=cartArray[j].bids[cartArray[j].bids.length - 1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>
+            $("#cartTotal").text("Total: $" + cartTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
             //Remove your last bid amount from cartTotal
           }
           //If the newest bidder is you, then you will add the new amount to cartTotal

@@ -8,10 +8,13 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+  
+  
+ 
   <%- include('adminHeader') -%>
 
 
-    <!-- check with client to verify all admin powers / priveledges, regarding deleting and editing other non admin users -->
+  <!-- check with client to verify all admin/clerk priveledges, regarding deleting and editing other non admin users -->
 
 
   <table class="table table-striped table-bordered mt-4">
@@ -51,7 +54,7 @@
               //decrament the amount of packages the previous winner was winning
               $('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text(parseInt($('#'+packages[i].bids[packages[i].bids.length-1].name+'winning').text())-1)
               //change the diplay of the previous winner to new decramented total amount
-              $('#'+packages[i].bids[packages[i].bids.length-1].name+'total').text("$" + cart[packages[i].bids[packages[i].bids.length-1].name].total);
+              $('#'+packages[i].bids[packages[i].bids.length-1].name+'total').text("$" + cart[packages[i].bids[packages[i].bids.length-1].name].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
               //put new bid into packages[i] so the next check will be correct
               packages[i].bids.push({bidAmount: data.bid, name: data.userName})
               //put new package into cart so next check will be correct
@@ -62,7 +65,7 @@
         //add new bid into cart total for new winner
         cart[data.userName].total+=data.bid
         //change display for new winner
-        $('#'+data.userName+'total').text("$" + cart[data.userName].total);
+        $('#'+data.userName+'total').text("$" + cart[data.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         $('#'+data.userName+'winning').text(parseInt($('#'+data.userName+'winning').text())+1)
       })
     </script>

@@ -1,45 +1,63 @@
-
+/* top nav bar 
+---------------------------------------------------------------*/
+#top-nav {
+    background-color: #f8f9fa; 
+}
 .brand{
     font-family: "Kameron", Georgia, "Times New Roman", serif;
-    font-size: 2rem !important;
+    font-size: 1.6rem !important;
     color: #003d79 !important;
     padding-left: 10px; 
-  }
-.top-link {
-    color: #003d79 !important;
-    font-weight: 500; 
-}
-a.top-link:hover {
-    color: #99004d !important;
-    background-color: #eef3f6;
-    height: 100%; 
-}
-.active1 {
-    color: #99004d !important;
-}
-.nav-head {
-    background-color: #003d79;
-}
-.nav-org {
-    color: #ffffff !important;
-}
-a.nav-org:hover {
-    color: #b3d9ff !important;
-    background-color: #004d99;
-}
-.active2 {
-    color: #b3d9ff !important;
-}
-.btn-logout {
-    border: solid 2px #003d79 !important; 
-    color: #003d79 !important; 
-}
-a.btn-logout:hover {
-    color: #fff !important;
-    background-color: #99004d;
-    border: solid 2px #99004d !important; 
-}
-.li-marg {
-    padding-right: 1.2rem; 
 }
 
+.auction-nav {
+    font-family: Lato, sans-serif; 
+    font-size: 1rem; 
+    font-weight: 400; 
+    text-transform: uppercase; 
+    letter-spacing: 0.1rem
+}
+    
+a.top-link {
+    color: #0080ff !important;
+    font-weight: 400;
+    font-size: 0.9rem; 
+}
+a.top-link:hover {
+    color: #0055cb !important; 
+}
+.top-link.active1 {
+    color: #0055cb !important;
+    font-weight: 700 !important; 
+    padding: 0 0 6px 0; 
+    border-bottom: 3px solid #ff2719; 
+}
+
+
+/* lower nav bar  
+---------------------------------------------------------------*/
+#second-nav {
+    background-color: #003d79;
+    padding-top: 0px !important; 
+    padding-bottom: 0px !important;
+}  
+
+.second-link {
+    color: #fff !important;
+    font-size: 0.9rem; 
+    padding-left: 0px !important; 
+    padding-right: 0px !important;
+   
+} 
+
+a.second-link:hover {
+    color: #99ccff!important;
+}
+
+.active2 {
+    color: #99ccff !important;
+    border-bottom: 3px solid #99ccff;
+    
+}
+
+ 
