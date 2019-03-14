@@ -75,6 +75,72 @@ function PackagesController(){
 		})
 	};
 
+	this.featuredPackages = function(req, res) {
+		console.log('PackagesController: Featured Packages');
+
+		if (req.session.userName){
+			User.findOne({userName:req.session.userName}, function(err, user){
+				console.log(user.userName);
+				if(err){
+					console.log(err);
+				} else {
+					Auction.findById(req.params.auctions, function (err, auctionDetails) {
+						console.log(auctionDetails);
+						if (err) {
+							console.log(err)
+						} else {
+							Package.find({ _auctions: req.params.auctions, featured: true}).sort({priority: 'ascending'}).exec(function (err, packages) {
+								if (err) {
+									res.status(500).send('Failed to Load Featured Packages');
+									console.error();
+								} else {
+									console.log("004-Packages", packages);
+									res.render("featuredPackages", {
+										userName: req.session.userName,
+										user: user, 
+										auction: req.params.auction, 
+										auctionDetails: auctionDetails,
+										packages: packages,
+									});
+								}
+							});
+						}
+					});
+				};	
+			});	
+		} else {
+			res.redirect('/' + req.session.auction  + '/event')	
+		}
+	}			
+		
+	this.cancelBid = function(req,res){
+		if (globals.adminValidation(req, res)){
+			Package.findById(req.params.id, function(err,package){
+				if(err){
+					console.log(err)
+				}else{
+					var bid	= package.bids[package.bids.length - 1]
+					if(req.body.user){
+						User.findOne({userName: req.body.user}, function(err,user){
+							if(err){
+								console.log(err)
+							}else{
+								if(bid.name === user.userName){
+									package.bids.pop()
+									package.save();
+								}
+							}
+						})
+					}
+					res.redirect('/' + req.params.auctions  + '/packages/' + package._id)
+				}
+			})
+		}else{
+			res.redirect('/packages')
+		}
+	}
+
+
 	this.list = function (req, res) {
 		console.log('PackagesController list');
 		if (!req.session.userName) {
@@ -149,7 +215,7 @@ function PackagesController(){
 	};
 
 	this.edit = function(req,res){
-		console.log('PackagesController new');
+		console.log('PackagesController edit');
 		if (globals.adminValidation(req, res)){
 			var categoryArray = [];
 			var itemsArray = [];
@@ -210,42 +276,43 @@ function PackagesController(){
 		}
 	}
 
-this.new = function(req,res){
-	if (globals.adminValidation(req, res)){
-		var itemsArray = [];
-		Item.find({_auctions: req.params.auctions}, function(err, items) {
-			if(err) {
-				console.log(err);
-				res.status(500).send('Failed to Load Items');
-			} else {
-				Category.find({}, function(err, categories) {
-					if(err) {
-							console.log(err);
-							res.status(500).send('Failed to Load Items');
-					} else {
-						//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
-						Auction.findById(req.params.auctions, function (err, auctionDetails) {
-							if (err) {
-								console.log(err)
-							} else {
-								//current is a flag indicating which page is active	
-								res.render('packageCreate', {
-									current: 'createPackage', 
-									categories: categories, 
-									items: items, 
-									userName: req.session.userName, 
-									admin: req.session.admin, 
-									auction: req.params.auctions,
-									auctionDetails: auctionDetails,
-								})
-							}	
-						})	
-					}		
-				})
-			}
-		})
-	}
-};
+	this.new = function(req,res){
+		console.log('PackagesController new');
+		if (globals.adminValidation(req, res)){
+			var itemsArray = [];
+			Item.find({_auctions: req.params.auctions}, function(err, items) {
+				if(err) {
+					console.log(err);
+					res.status(500).send('Failed to Load Items');
+				} else {
+					Category.find({}, function(err, categories) {
+						if(err) {
+								console.log(err);
+								res.status(500).send('Failed to Load Items');
+						} else {
+							//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+							Auction.findById(req.params.auctions, function (err, auctionDetails) {
+								if (err) {
+									console.log(err)
+								} else {
+									//current is a flag indicating which page is active	
+									res.render('packageCreate', {
+										current: 'createPackage', 
+										categories: categories, 
+										items: items, 
+										userName: req.session.userName, 
+										admin: req.session.admin, 
+										auction: req.params.auctions,
+										auctionDetails: auctionDetails,
+									})
+								}	
+							})	
+						}		
+					})
+				}
+			})
+		}
+	};
 
 	//post method that creates packages
 	this.create = function(req,res){
@@ -396,8 +463,8 @@ this.new = function(req,res){
 	}
 
 	this.removePackage = function(req, res){
+		console.log('PackagesController remove');
 		if (globals.adminValidation(req, res)){
-			console.log('in remove package')
 			Package.findOne({_id: req.params.id}, function(err, package){
 				if(err){
 					console.log(err)
@@ -468,12 +535,11 @@ this.new = function(req,res){
 					package.featured = true;
 				}
 				package.save()
-				res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/event')
 			})
 		}
 	}
-
-	
+					
 	this.cancelBid = function(req,res){
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function(err,package){
