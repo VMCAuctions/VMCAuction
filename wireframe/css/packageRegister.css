@@ -43,6 +43,11 @@ th, td{
     font-size: 0.8rem !important; 
 }
 
+td img{
+	width: 100px;
+	
+}
+
 th.large-col{
     width: 20%;
 }  

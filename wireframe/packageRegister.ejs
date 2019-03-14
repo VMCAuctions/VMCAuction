@@ -91,6 +91,7 @@
                     <tr class="text-center">
                         <th scope="col" class="narrow-col">Package Number</th>
                         <th scope="col" class="medium-col">Package Name</th>
+						<th scope="col" class="narrow-col">Image</th>
                         <th scope="col" class="med-to-narrow-col">Category</th>
                         <th scope="col" class="large-col">Package Description</th>
                         <th scope="col" class="medium-col">Package Restrictions</th>
@@ -111,7 +112,10 @@
                         <tr class="packageRow">
                             <td><%= packages[i]._id%></td>
                             <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
-                            <td><%= packages[i]._category%></td>
+
+							<td class=img-fluid> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                            
+							<td><%= packages[i]._category%></td>
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
                             <td>
