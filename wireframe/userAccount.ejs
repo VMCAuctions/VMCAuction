@@ -19,18 +19,18 @@
 			<%- include('header') -%>
 		<%}%>
 
-		<h3><%=user.firstName%>, Welcome to Your Account</h3>
-		<p class="tagLine">Here is your personal information.</p>
+		<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to Your Account</h3>
+		<!-- <p class="tag-line">Here is your personal information.</p> -->
 
 		<div class="container regist-container">
 			<div class="row">
 				<div class="col">  <!-- this column is for equal space on the margins -->
 					<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
-						<div class="card regist-card" id="user-info" data=<%= userName%>>
+						<div class="card regist-card mb-4" id="user-info" data=<%= userName%>>
 							<div class="card-body">
 								<%if(admin == 0 || (admin >= 1 && user.userName != viewer)){%>
 									<div>
-										<p><%=user.firstName%>, here is what you've won:</p>
+										<h5 class="mb-3">Here is what you've won:</h5>
 										<div class="table-responsive">
 											<table class="table">
 												<tr>
@@ -48,7 +48,7 @@
 									</div>
 					
 									<div>
-										<p>Here is what you paid for:</p>
+											<h5 class="mb-3">Here is what you paid for:</h5>
 										<div class="table-responsive">
 											<table class="table">
 												<tr>
@@ -65,7 +65,12 @@
 										</div>
 									</div>
 								<%}%>
+							</div><!-- End card-body-->
+						</div>
 
+						<div class="card regist-card" id="user-info" data=<%= userName%>>
+							<div class="card-body">
+								<h5 class="mb-3">Here is your personal information:</h5>
 								<form id="registrationForm" action="/<%=auction%>/users/account/<%=userName%>" method="post">
 
 									<div class="form-row">
@@ -130,12 +135,16 @@
 									<%}%>
 
 									<div class="form-group">
-										<input type="submit" name="submit" value="Update" class="btn btn-submit mt-1 mb-5">
+										<input type="submit" name="submit" value="Update" class="btn btn-submit mt-1">
 									</div>
 								</form>
+							</div>
+						</div>
 
-							</div><!-- End card-body-->
-
+					</div>
+				</div>
+			</div>
+		</div>
 
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">

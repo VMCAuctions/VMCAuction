@@ -297,8 +297,8 @@ function UsersController(){
 
 
 	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
-	//3.2019 update - instead, using this for supporter to be able to edit their account. code for changing password is commented out.
-	// unable to edit userName for now
+	//3.2019 update - instead, using this for supporter to be able to edit their account.
+	//code for changing password is commented out.
   this.update = function(req,res){
 	User.findOne({userName: req.body.userName}, function(err, user) {
 		if (err) {
