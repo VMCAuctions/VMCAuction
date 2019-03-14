@@ -19,10 +19,8 @@
 			<%- include('header') -%>
 		<%}%>
 
-		<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to Your Account</h3>
-		<!-- <p class="tag-line">Here is your personal information.</p> -->
-
 		<div class="container regist-container">
+			<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to the Auction</h3>
 			<div class="row">
 				<div class="col">  <!-- this column is for equal space on the margins -->
 					<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
@@ -34,7 +32,7 @@
 										<div class="table-responsive">
 											<table class="table">
 												<tr>
-													<th>Item</th>
+													<th>Package #</th>
 													<th>Description</th>
 													<th>Your bid</th>
 												</tr>
@@ -52,7 +50,7 @@
 										<div class="table-responsive">
 											<table class="table">
 												<tr>
-													<th>Item</th>
+													<th>Package #</th>
 													<th>Description</th>
 													<th>Amount</th>
 												</tr>
@@ -70,7 +68,8 @@
 
 						<div class="card regist-card" id="user-info" data=<%= userName%>>
 							<div class="card-body">
-								<h5 class="mb-3">Here is your personal information:</h5>
+								<h5>Here is your personal information:</h5>
+								<h6 class="pin mb-3">*Please fill in any missing fields.</h6>
 								<form id="registrationForm" action="/<%=auction%>/users/account/<%=userName%>" method="post">
 
 									<div class="form-row">
