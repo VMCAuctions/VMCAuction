@@ -72,7 +72,9 @@ module.exports = function(app) {
 	app.get('/:auctions/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)});
 
-
+	//TO BE ADDED (a page just for the featured pacakges):	
+	app.get('/:auctions/featured-packages', function(req, res) {
+		packages.featuredPackages(req, res)});	
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
@@ -85,7 +87,6 @@ module.exports = function(app) {
 	// delete a category
 	app.get('/:auctions/categories/:_id/delete', function(req,res){
 		categories.delete(req,res)});
-
 
 
 	// USERS //
@@ -114,8 +115,6 @@ module.exports = function(app) {
 	app.post('/users/checklogin', function(req,res){
 	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
-  	
-	  
 	  
 	  //Check if username is already in use
 	app.get('/users/duplicate/', function(req,res) {
@@ -156,7 +155,7 @@ module.exports = function(app) {
 		users.delete(req,res)});
 
 	// AUCTION //
-	//Organizer's landing page (where the organizer selects what she wants to do)
+	//Organizer's landing page (where the organizer selects what she wants to do)	
 	app.get('^/auctions/main', function (req, res) {
 		auctions.main(req, res)});
 	//This is the page with the form for creating a new auction
@@ -165,7 +164,7 @@ module.exports = function(app) {
 	//Creating an auction
 	app.post('^/auctions$', function (req, res) {
 		auctions.create(req, res)});
-	//Renders the organizer menu page
+	//Renders the Organizer's Menu page, which has been renamed as Auction Menu
 	app.get('/:auctions/organizerMenu', function (req, res) {
 		auctions.menu(req, res)});
 	//Renders the page to edit an auction

@@ -10,24 +10,25 @@ function CategoriesController(){
 		if (globals.adminValidation(req, res)){
 			Category.find({}, function(err, categories) {
 		    	if(err) {
-		      		console.log(err);
+		      	console.log(err);
 		    	}
 		    	else if(req.session.admin) {
-					console.log('categories.js render categories');
-		        	res.render('categories', {
-						page: 'addCategory',
-						admin: req.session.admin,
-						categories: categories,
-						userName: req.session.userName,
-						auction: req.params.auctions
-					});
-				}else{
-					res.redirect('/' + req.params.auctions + '/packages')
-				}
-			})
-		}
+						console.log('categories.js render categories');
+								res.render('categories', {
+									page: 'addCategory',
+									admin: req.session.admin,
+									categories: categories,
+									userName: req.session.userName,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								});		
+					}else{
+						res.redirect('/' + req.params.auctions + '/packages')
+					}
+				})		
+			}
+	};	
 
-	};
 
 	this.create = function(req,res){
 		console.log('CategoriesController create');

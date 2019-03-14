@@ -21,6 +21,7 @@ function PackagesController(){
 			}
 			else {
 				User.findOne({userName:req.session.userName}, function(err, result){
+					
 					if(err){
 						console.log(err)
 					}else{
@@ -28,33 +29,36 @@ function PackagesController(){
 						// This is the method that finds all of the packages from the database
 						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
-									console.log('Package Index Error');
-									res.status(500).send('Failed to Load Packages');
-									console.error();
+								console.log('Package Index Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
 							}else {
-									// console.log('this is user again', user)
-									var featured = [];
-									var nonfeatured = [];
-									for (var i = 0; i < packages.length; i++){
-										if(packages[i].featured === true){
-											featured.push(packages[i]);
-										}
-										//Not actually using nonfeatured packages right now
-										else{
-											nonfeatured.push(packages[i]);
-										}
+								// console.log('this is user again', user)
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++){
+									if(packages[i].featured === true){
+										featured.push(packages[i]);
 									}
+									//Not actually using nonfeatured packages right now
+									else{
+										nonfeatured.push(packages[i]);
+									}
+								}
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
 									} else {
-										console.log("req.session is", req.session)
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
 										res.render('packages', {
-											page: 'catalog',
+											current: 'catalog',
 											packages: packages,
 											admin: req.session.admin,
 											userName: req.session.userName,
 											user: user,
+											userDisplay: userDisplay, 
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
@@ -116,19 +120,27 @@ function PackagesController(){
 									}
 								}
 								sortedPackages = sortedPackages.concat(nonFeatured)
-
-								res.render('packageRegister', {
-									page: 'register',
-									packages: sortedPackages,
-									sumMarketVal: sumMarketVal,
-									sumStartingBid: sumStartingBid,
-									admin: req.session.admin,
-									userName: req.session.userName,
-									user: user,
-									auction: req.params.auctions,
-									categories: categories,
-								})
-							}
+								
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										console.log("100-packages.js | this.list | auction.findByID | auctionDetails:",auctionDetails);
+										res.render('packageRegister', {
+											current: 'package-register',
+											packages: sortedPackages,
+											sumMarketVal: sumMarketVal,
+											sumStartingBid: sumStartingBid,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+											categories: categories,
+										})
+									}
+								}	
+							)}
 						})
 					}
 				})
@@ -171,8 +183,25 @@ function PackagesController(){
 										 	console.log(result._items[i]);
 										 }
 										console.log("result is", result)
-										res.render('packageEdit', {package: result, categories: categories, items: itemsArray, total: total, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
-									}
+
+										//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+										Auction.findById(req.params.auctions, function (err, auctionDetails) {
+											if (err) {
+												console.log(err)
+											} else {
+												res.render('packageEdit', {
+													package: result, 
+													categories: categories, 
+													items: itemsArray, 
+													total: total, 
+													userName: req.session.userName, 
+													admin: req.session.admin, 
+													auction: req.params.auctions,
+													auctionDetails: auctionDetails,
+												})
+											}
+										})
+									}	
 								})
 							}
 					})
@@ -185,28 +214,40 @@ this.new = function(req,res){
 	if (globals.adminValidation(req, res)){
 		var itemsArray = [];
 		Item.find({_auctions: req.params.auctions}, function(err, items) {
-				if(err) {
-						console.log(err);
-						res.status(500).send('Failed to Load Items');
-				}
-				else {
-					Category.find({}, function(err, categories) {
-							if(err) {
-									console.log(err);
-									res.status(500).send('Failed to Load Items');
-							}
-							else {
-								console.log(itemsArray);
-								res.render('packageCreate', {page: 'createPackage', categories: categories, items: items, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
-							}
-							console.log('PackagesController new =>');
-					})
-				}
+			if(err) {
+				console.log(err);
+				res.status(500).send('Failed to Load Items');
+			} else {
+				Category.find({}, function(err, categories) {
+					if(err) {
+							console.log(err);
+							res.status(500).send('Failed to Load Items');
+					} else {
+						//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								//current is a flag indicating which page is active	
+								res.render('packageCreate', {
+									current: 'createPackage', 
+									categories: categories, 
+									items: items, 
+									userName: req.session.userName, 
+									admin: req.session.admin, 
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}	
+						})	
+					}		
+				})
+			}
 		})
 	}
-}
+};
 
-	//post method that creats packages
+	//post method that creates packages
 	this.create = function(req,res){
 		console.log('PackagesController create');
 		console.log('selected items' ,req.body)
@@ -432,7 +473,7 @@ this.new = function(req,res){
 		}
 	}
 
-
+	
 	this.cancelBid = function(req,res){
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function(err,package){

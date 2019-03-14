@@ -31,6 +31,7 @@ function UsersController(){
 
 	this.index = function(req,res){
 		console.log('UsersController index');
+		console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
 			User.find({_auctions: req.params.auctions}, function(err, users ){
@@ -54,13 +55,31 @@ function UsersController(){
 									}
 									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								res.render('allUsers', {page: 'supporters', users: users, cart: cart, packages: result, userName: req.session.userName, admin: req.session.admin, auction: req.params.auctions})
-							}
-						})
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {	
+										//current is a flag showing which page is active
+										res.render('allUsers', {
+											current: 'supporters', 
+											users: users, 
+											cart: cart, 
+											packages: result, 
+											userName: req.session.userName, 
+											admin: req.session.adm, 
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails
+										})		
+									}
+								})
+							}	
+						})	
 				}else{
-					res.redirect('/' + req.params.auctions  + '/packages')
+					//If no known user, redirect to the event landing page 
+					res.redirect('/' + req.params.auctions  + '/event');
 				}
-			})
+		  })
 		}
 	};
 
@@ -76,7 +95,7 @@ function UsersController(){
 					admin: req.session.admin
 				})
 			}else{
-				res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/event')
 			}
 		})
 	};
@@ -116,6 +135,8 @@ function UsersController(){
 					} else {
 						res.render('userAccount', {
 							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
+							//current is a flag showing which page is active
+							current: 'myAccount',
 							user: user,
 							firstName: user.firstName,
 							lastName: user.lastName,
@@ -276,7 +297,7 @@ function UsersController(){
               } else {
                 console.log("req.session is", req.session)
                 res.render('userPage', {
-                  page: 'myAccount',
+                  current: 'watch-list',
                   userName: req.session.userName,
                   admin: req.session.admin,
                   user: user,
@@ -288,7 +309,7 @@ function UsersController(){
               }
             })
           }else{
-            res.redirect('/' + req.params.auctions  + '/packages')
+            res.redirect('/' + req.params.auctions  + '/event')
           }
         })
 			}

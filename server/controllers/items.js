@@ -9,7 +9,6 @@ const csv=require('csvtojson')
 function ItemsController(){
 
 	this.index = function(req,res){
-		console.log('ItemsController index');
 		Category.find({}, function (err, categories) {
 			if (err) {
 				console.log(err);
@@ -19,42 +18,59 @@ function ItemsController(){
 								console.log(err);
 								res.status(500).send('Failed to Load Items');
 						}else{
-							res.render('items', {
-								page:'items',
-								items: items,
-								admin: req.session.admin,
-								userName: req.session.userName,
-								categories: categories,
-								auction: req.params.auctions
+							//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+							Auction.findById(req.params.auctions, function (err, auctionDetails) {
+								if (err) {
+									console.log(err)
+								} else {	
+									//current is a flag showing which page is active
+									res.render('items', {
+										current:'item-register',
+										items: items,
+										admin: req.session.admin,
+										userName: req.session.userName,
+										categories: categories,
+										auction: req.params.auctions,
+										auctionDetails: auctionDetails,
+									})
+								}
 							})
 						}
-				})
+					})
 			}
 		})
 	};
-
 
 	this.new = function(req,res){
 		Category.find({}, function(err, categories) {
     	if(err) {
       		console.log(err);
       		res.status(500).send('Failed to Load Items');
-    	}else{
+    	} else {
 				if(req.session.admin){
-					res.render('createItem', {
-						page:'addItem',
-						categories: categories,
-						userName: req.session.userName,
-						admin: req.session.admin,
-						auction: req.params.auctions
-					})
-				}else{
-					res.redirect('/' + req.params.auctions + '/packages')
+					//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+					Auction.findById(req.params.auctions, function (err, auctionDetails) {
+						if (err) {
+							console.log(err);
+						} else {	
+							//current is a flag showing which page is active
+							res.render('createItem', {
+								current:'addItem',
+								categories: categories,
+								userName: req.session.userName,
+								admin: req.session.admin,
+								auction: req.params.auctions,
+								auctionDetails: auctionDetails,
+							})
+						}	
+					}) 
+				} else {
+					res.redirect('/' + req.params.auctions + '/event')
 				}
-			console.log('ItemsController new');
-			};
+			}
 		})
-	}
+	};
+
 	this.create = function(req,res){
 		console.log('ItemsController create');
 		console.log("donor display:", req.body.donorAnonymous);
@@ -96,7 +112,6 @@ function ItemsController(){
 
 
 	this.edit = function(req,res){
-		console.log('ItemsController edit');
 		Item.findById(req.params.id, function(err, result){
 			if(err){
 	        console.log(err);
@@ -106,20 +121,28 @@ function ItemsController(){
 					  console.log(err);
 					  res.status(500).send('Failed to Load Items');
 					}else if(req.session.admin){
-						res.render('itemEdit', {
-							item:result,
-							categories:categories,
-							userName: req.session.userName,
-							admin: req.session.admin,
-							auction: req.params.auctions
-						});
+						//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {	
+								res.render('itemEdit', {
+									item:result,
+									categories:categories,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								});
+							}	
+						})		
 					}else{
-						res.redirect('/' + req.params.auctions + '/packages')
+						res.redirect('/' + req.params.auctions + '/event')
 					}
 				})
 		  }
 		})
-	}
+	};
 
 
 	this.update = function(req,res){
@@ -220,8 +243,15 @@ function ItemsController(){
 	this.populatePage = function(req, res){
 		//May need to add validation checks so that only admins can see
 		console.log("reached this.populatePage")
-		res.render('itemPopulator', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions})
-	}
+		Auction.findById(req.params.auctions, function (err, auctionDetails) {
+			if (err) {
+				console.log(err)
+			} else {
+				res.render('itemPopulator', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails})
+			}
+		})
+	};
+			
 	this.populate = function(req, res){
 		//May need to add validation checks so that only admins can see
 		console.log("reached this.populate")
