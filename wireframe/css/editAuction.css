@@ -2,6 +2,11 @@ body {
     background-color: #f9f8fa; 
 }
 
+.thumbnail{
+	width: 100px;
+	
+}
+
 .modal-confirm {		
     color: #636363;
     width: 400px;
