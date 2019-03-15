@@ -185,22 +185,30 @@ function PackagesController(){
 												//  console.log(itemsArray);
 										 	}
 										}
-										 for(let i = 0; i < result._items.length; i++){
+										for(let i = 0; i < result._items.length; i++){
 											total += result._items[i].value;
 										 	// console.log(result._items[i]);
-										 }
+										}
+										Auction.findById(req.params.auctions, function (err, auctionDetails) {
+											if (err) {
+												console.log(err)
+											} else {
+												
+												res.render('packageEdit', {
+													package: result,
+													categories: categories,
+													items: itemsArray,
+													total: total,
+													userName: req.session.userName,
+													admin: req.session.admin,
+													auction: req.params.auctions,
+													auctionDetails: auctionDetails,
 
-										res.render('packageEdit', {
-											package: result,
-											categories: categories,
-											items: itemsArray,
-											total: total,
-											userName: req.session.userName,
-											admin: req.session.admin,
-											auction: req.params.auctions,
-
-											photo: result.photo
+													photo: result.photo
+												})
+											}
 										})
+
 									}
 
 								})
@@ -225,22 +233,31 @@ this.new = function(req,res){
 				else {
 					// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
 					Category.find({}, function(err, categories) {
-							if(err) {
-								console.log(Date.now() + " - 006 packages.js this.new category.find error. err = ",err);
-								res.status(500).send('Failed to find categories');
-							}
-							else {
-								// console.log(Date.now() + " - 007 packages.js this.new category.find. categories = ",categories);
-								res.render('packageCreate', {
-									page: 'createPackage',
-									categories: categories,
-									items: items,
-									userName: req.session.userName,
-									admin: req.session.admin,
-									auction: req.params.auctions
-								})
-							}
-							// console.log(Date.now() + " - 009 packages.js this.new end.  rendering packageCreate.ejs");
+						if(err) {
+							console.log(Date.now() + " - 006 packages.js this.new category.find error. err = ",err);
+							res.status(500).send('Failed to find categories');
+						}
+						else {
+							Auction.findById(req.params.auctions, function (err, auctionDetails){
+								if (err) {
+									console.log(err)
+								} else {
+
+									// console.log(Date.now() + " - 007 packages.js this.new category.find. categories = ",categories);
+									res.render('packageCreate', {
+										current: 'createPackage',
+										categories: categories,
+										items: items,
+										userName: req.session.userName,
+										admin: req.session.admin,
+										auction: req.params.auctions,
+										auctionDetails: auctionDetails
+									})
+								}
+							
+							})
+						}
+						// console.log(Date.now() + " - 009 packages.js this.new end.  rendering packageCreate.ejs");
 					})
 				}
 

@@ -75,10 +75,28 @@
 					<textarea name="description" id="description" value="<%= auctionDetails.headerImage %>" class="form-control" rows="5"><%= auctionDetails.description %></textarea>
 				</div>
 
-				<div class="form-group">
+				<!-- <div class="form-row"> -->
+					<div class="form-group col-md-12">
+
+					<label class="label-name">Event Page Image</label>
+					<fieldset class="item-list">
+						<div class="col-1 form-group">
+							<img class="thumbnail ml-3" src="/<%= auctionDetails.headerImage%>" alt="">
+						</div>
+						<div class="form-group">
+							<label class="label-name">Current filename: <%= auctionDetails.headerImage%></label>
+						</div>
+						<div class="col-11 form-group">
+							<input type="file" name="auctionImage" id="auctionImage" class="form-control">
+						</div>
+					</fieldset>
+				</div>
+				<!-- </div> -->
+
+				<!-- <div class="form-group">
 					<label for="auctionImage" class="label-name text-black-50">Event Page Image</label>
 					<input type="file" name="auctionImage" id="auctionImage" class="form-control", value="headerImage">
-				</div>
+				</div> -->
 
 				
 

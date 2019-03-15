@@ -33,9 +33,12 @@
 				</li>
 			</ul>
 		</nav>
+
 		
-		<!-- EVENT LANDING PAGE HEADER -->
-		<div class="jumbotron jumbotron-fluid header-img">
+		
+			<!-- EVENT LANDING PAGE HEADER -->
+			<div style="background-image: url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
+			
 
 			<!-- COUNTDOWN CLOCK -->
 			<div class="d-flex flex-row justify-content-center">
@@ -68,6 +71,7 @@
 
 		<!-- CONTAINER FOR CONTENT AND FEATURED PACKAGES-->
 		<div class="container-fluid">
+			
 
 			<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
 			<div class="row">
@@ -91,12 +95,10 @@
 						<h2 class="mb-3">Featured Packages</h2>
 						
 						<% for (var i = 0; i < packages.length; i+=2) {%>
-
 							<div class="row">
 								<div class="col-md-6 mt-4">
 									<div class="card featured-card">
 										<div class="card-body">
-
 											<div class="featured-num">
 													#<%= packages[i]._id%>
 											</div>
@@ -113,18 +115,13 @@
 												<hr>
 												<p class="featured-text text-truncate mt-2" style="max-height: 6rem;"><%= packages[i].description %></p>
 											</div>		
-
 										</div>
 									</div>
 								</div>
-
 								<div class="col-md-6 mt-4">
-
 								<% if (i+1 < packages.length) { %>
-
 									<div class="card featured-card">
 										<div class="card-body">
-
 											<div class="d-flex flex-row justify-content-start align-items-start">
 												<div class="featured-num">
 													#<%= packages[i+1]._id%>
@@ -145,7 +142,6 @@
 													
 												<p class="featured-text text-truncate mt-2"><%= packages[i+1].description %></p>
 											</div>
-
 										</div>
 									</div>
 								<% } %>
@@ -177,26 +173,22 @@
 			function Calculate() {
 				let now = new Date().getTime();
 				let timeRemaining = countDownDate - now; 
-				console.log("time remaining:", timeRemaining);
+				// console.log("time remaining:", timeRemaining);
 				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
 				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
 				let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
 				if (days > 1) {
 					document.getElementById("item1").innerText = `${days}`;
 					document.getElementById("item2").innerText = `${hours}`;
 					document.getElementById("item3").innerText =`${minutes}`;
-
 					document.getElementById("item4").innerText = "days";
 					document.getElementById("item5").innerText = "hours";
 					document.getElementById("item6").innerText = "minutes";	
-
 				} else if (timeRemaining >=0 && days <= 1) {
 					document.getElementById("item1").innerText = `${hours}`;
 					document.getElementById("item2").innerText = `${minutes}`;
 					document.getElementById("item3").innerText =`${seconds}`;
-
 					document.getElementById("item4").innerText = "hours";
 					document.getElementById("item5").innerText = "minutes";
 					document.getElementById("item6").innerText = "seconds";
@@ -205,28 +197,23 @@
 					document.getElementById("item1").innerText = "";
 					document.getElementById("item2").innerText = "";
 					document.getElementById("item3").innerText = "";
-
 					document.getElementById("item4").innerText = "";
 					document.getElementById("item5").innerText = "";
 					document.getElementById("item6").innerText = "";
 					document.getElementById("item6").innerText = "";
-
 					document.getElementById("event-end").innerText = "This event has ended";
 				}
 			}
 			var eventStart = document.getElementById("event-start");
-			console.log(eventStart); 
+			console.log("100 event.ejs eventStart = ",eventStart); 
 			var countDownDate = new Date(eventStart.innerText).getTime();
-
 			// Use the folowing format to test for less than one day to the event
 			// var countDownDate = new Date("October 25, 2018 22:13:00").getTime(); 
 			
 			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
 			Calculate(); 
-
 			//setInterval will show the minutes/seconds changing
 			var timer = setInterval(Calculate, 1000);	
-
 		</script>
 
   	</body>
