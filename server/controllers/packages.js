@@ -75,8 +75,74 @@ function PackagesController(){
 		})
 	};
 
-	this.featuredPackages = function(req, res) {
-		console.log('PackagesController: Featured Packages');
+	this.featuredPackages = function(req,res){
+		console.log('PackagesController index');
+		if (!req.session.userName){
+	  	req.session.auction = req.params.auctions
+		}
+		var user
+		Category.find({}, function(err, categories) {
+			if(err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({userName:req.session.userName}, function(err, result){
+					
+					if(err){
+						console.log(err)
+					}else{
+						user = result
+						// This is the method that finds all of the packages from the database
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+							if(err) {
+								console.log('Package Index Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
+							}else {
+								// console.log('this is user again', user)
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++){
+									if(packages[i].featured === true){
+										featured.push(packages[i]);
+									}
+									//Not actually using nonfeatured packages right now
+									else{
+										nonfeatured.push(packages[i]);
+									}
+								}
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
+										res.render('packages', {
+											current: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											userDisplay: userDisplay, 
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+	};
+
+	this.featuredPackages__ = function(req, res) {
+		console.log('102: PackagesController: Featured Packages');
 
 		if (req.session.userName){
 			User.findOne({userName:req.session.userName}, function(err, user){
@@ -94,7 +160,7 @@ function PackagesController(){
 									res.status(500).send('Failed to Load Featured Packages');
 									console.error();
 								} else {
-									console.log("004-Packages", packages);
+									console.log("104-Packages", packages);
 									res.render("featuredPackages", {
 										userName: req.session.userName,
 										user: user, 

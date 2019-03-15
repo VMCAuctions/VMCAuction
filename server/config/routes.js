@@ -46,7 +46,6 @@ module.exports = function(app) {
 		packages.index(req,res)});
 	// show just the featured packages):	
 	app.get('/:auctions/featured-packages', function(req, res) {
-		console.log("003-inside Route FP:", req.params);
 		packages.featuredPackages(req, res)});	
 	// show package register
 	app.get('/:auctions/packages/list', function(req, res) {
