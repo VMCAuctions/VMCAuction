@@ -95,7 +95,7 @@ function AuctionsController() {
 
 							}, function(err, result) {
 								if (err) {
-									console.log(Date.now(),": err = ",err);
+									console.log(err);
 								} else {
 									console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
 									console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
@@ -125,7 +125,7 @@ function AuctionsController() {
 					console.log(err);
 				}
 				if (global.pins.length == 0) {
-					console.log("Out of available pins!");
+					console.log("auctions.js this.create  Out of available pins!");
 				} else {
 					randomPinIndex = parseInt(Math.floor(Math.random() * 9000));
 					randomPin = global.pins[randomPinIndex];
@@ -153,7 +153,7 @@ function AuctionsController() {
 
 							}, function(err, result) {
 								if (err) {
-									console.log(Date.now(),": err = ",err);
+									console.log(err);
 								} else {
 									console.log(Date.now()," - 206 auctions.js post auction create.  req.body = ",req.body);
 									console.log(Date.now()," - 207 auctions.js post auction create.  req.file = ",req.file);
@@ -286,7 +286,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-            console.log(packages);
+			console.log(Date.now()," - 230 auctions.js this.event Package.find packages = ",packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -306,7 +306,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log("Clerk landing page");
+    console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
     if (globals.clerkValidation(req, res)) {
       var cart = {};
       User.find({ _auctions: req.params.auctions }, function(err, users) {
