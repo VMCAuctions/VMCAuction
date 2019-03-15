@@ -33,8 +33,8 @@ function PackagesController(){
 						// This is the method that finds all of the packages from the database
 						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
-								console.log('Package Index Error');
-								res.status(500).send('Failed to Load Packages');
+								console.log('packages.js this.index Package Index Error');
+								res.status(500).send('packages.js this.index Failed to Load Packages');
 								console.error();
 							}else {
 								// console.log('this is user again', user)
@@ -80,7 +80,7 @@ function PackagesController(){
 	};
 
 	this.list = function (req, res) {
-		console.log('PackagesController list');
+		console.log('packages.js this.list PackagesController list');
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
 		}
@@ -98,11 +98,11 @@ function PackagesController(){
 
 						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _id: 'ascending' }).exec(function (err, packages) {
 							if (err) {
-								console.log('Package Register Error');
+								console.log('packages.js this.list Package Register Error');
 								res.status(500).send('Failed to Load Packages');
 								console.error();
 							} else {
-								console.log("req.session is", req.session)
+								// console.log("packages.js this.list req.session is", req.session)
 								let sumMarketVal = 0;
 								let sumStartingBid = 0;
 								let featured = [];
@@ -169,16 +169,16 @@ function PackagesController(){
 					Category.find({}, function(err, categories) {
 							if(err) {
 									console.log(err);
-									res.status(500).send('Failed to Load Categories');
+									res.status(500).send('packages.js this.edit.  Failed to Load Categories');
 							}
 							else {
 								Item.find({_auctions: req.params.auctions}, function(err, items) {
 									if(err) {
 											console.log(err);
-											res.status(500).send('Failed to Load Items');
+											res.status(500).send('packages.js this.edit.  Failed to Load Items');
 									}
 									else {
-										console.log(total);
+										// console.log(total);
 										for(let i = 0; i<items.length; i++){
 											 if(!items[i].packaged){
 												 itemsArray.push(items[i]);
@@ -319,7 +319,7 @@ this.new = function(req,res){
 
 
 	this.show = function(req,res){
-		console.log('PackagesController show');
+		console.log('packages.js this.show PackagesController show');
 		var user
 		User.findOne({userName:req.session.userName}, function(err, result){
 			if(err){
@@ -413,7 +413,7 @@ this.new = function(req,res){
 										if (err){
 											console.log(err)
 										}else{
-											console.log('item should  be packaged', item.packaged);
+											console.log('packages.js this.update item should  be packaged', item.packaged);
 										}
 									})
 								})
@@ -430,7 +430,7 @@ this.new = function(req,res){
 
 	this.removePackage = function(req, res){
 		if (globals.adminValidation(req, res)){
-			console.log('in remove package')
+			console.log('packages.js this.removePackage in remove package')
 			Package.findOne({_id: req.params.id}, function(err, package){
 				if(err){
 					console.log(err)
@@ -556,10 +556,10 @@ this.new = function(req,res){
 						result.save(function(err){
 							if (err){
 								console.log(err)
-								res.json(`Error occurred while attempting to modify package id ${result._id}. Please try again.`)
+								res.json(`packages.js this.priority Error occurred while attempting to modify package id ${result._id}. Please try again.`)
 							}
 							else{
-								console.log("Successful package modification")
+								console.log("packages.js this.priority Successful package modification")
 								res.json(`Package id ${result._id} modified successfully!`)
 							}
 						})

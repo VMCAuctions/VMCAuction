@@ -20,7 +20,7 @@ function UsersController(){
 		];
 		let output = "";
 		for(let i = 0; i < validationArray.length; i++) {
-			console.log(validationArray[i]);
+			// console.log(Date.now()," - 000 users.js registrationValidation.  validationArray[i] = ",validationArray[i]);
 			if (input[validationArray[i][0]].length < validationArray[i][1]) {
 				output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
 			}
@@ -30,7 +30,7 @@ function UsersController(){
 
 
 	this.index = function(req,res){
-		console.log('UsersController index');
+		console.log(Date.now()," - 010 users.js this.index.  UsersController index");
 		console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
@@ -84,7 +84,7 @@ function UsersController(){
 	};
 
 	this.admin = function(req,res){
-		console.log('Admin change display');
+		console.log(Date.now()," - 020 users.js this.admin  Admin change display");
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
@@ -162,7 +162,7 @@ function UsersController(){
 
 	this.duplicate = function (req, res) {
 		let user = req.query.userName;
-		console.log(req.query)
+		// console.log(req.query)
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
@@ -180,7 +180,7 @@ function UsersController(){
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
-		console.log('UsersController create');
+		// console.log(Date.now()," - 030 users.js this.create start");
 		console.log(req.body)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
@@ -189,7 +189,7 @@ function UsersController(){
 				console.log(err)
 			}
 			else if(duplicate){
-				console.log(duplicate);
+				// console.log(duplicate);
 			}else{
 				//start actual registration
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
@@ -206,7 +206,7 @@ function UsersController(){
 							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
 							var linkedAuction = req.body.auctionName
 							if (adminStatus){
-								console.log("got in adminStatus")
+								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
 							User.create({
@@ -227,12 +227,12 @@ function UsersController(){
 									if(err){
 										console.log(err)
 									}else{
-										console.log("linkedAuction is", linkedAuction)
-										console.log("req.session is", req.session)
+										// console.log("linkedAuction is", linkedAuction)
+										// console.log("req.session is", req.session)
 										req.session.auction = linkedAuction
 										req.session.userName = user.userName
 										req.session.admin = user.admin
-										console.log("afterwards, req.session is", req.session)
+										// console.log("afterwards, req.session is", req.session)
 										res.redirect('/' + linkedAuction + '/packages')
 										return;
 									}
@@ -247,7 +247,7 @@ function UsersController(){
 	this.checkLogin = function(req, res){
 		console.log("in check login");
 		var name = req.body.userName;
-		console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
+		// console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
 				console.log(Date.now(),"001 users.js checkLogin.  err = ",err);
@@ -256,13 +256,13 @@ function UsersController(){
 				console.log(Date.now(),"001 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
+				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
-				console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
+				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
 					if(err){
 						console.log(err)
 					}else if(match){
-						console.log("user._auctions", user._auctions)
+						// console.log("user._auctions", user._auctions)
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
@@ -277,7 +277,7 @@ function UsersController(){
 
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
-		console.log('UsersController show');
+		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
 		Package.find({_auctions: req.params.auctions}, function(err, result){
@@ -300,7 +300,7 @@ function UsersController(){
               if (err) {
                 console.log(err)
               } else {
-                console.log("req.session is", req.session)
+                // console.log("req.session is", req.session)
                 res.render('userPage', {
                   current: 'watch-list',
                   userName: req.session.userName,
@@ -356,11 +356,11 @@ function UsersController(){
 
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){
-			console.log('UsersController admin change')
+			// console.log('UsersController admin change')
 			//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
-			console.log("req.body is", req.body)
+			// console.log("req.body is", req.body)
 
-			console.log("req.body.keys() is", Object.keys(req.body))
+			// console.log("req.body.keys() is", Object.keys(req.body))
 
 			User.find({_id: Object.keys(req.body)}, function(err, users){
 				if (err){
@@ -370,7 +370,7 @@ function UsersController(){
 						if (users[user].userName.toLowerCase() != 'admin') {
 							users[user].admin = req.body[users[user]._id]
 							if(req.body[users[user]._id] === "true"){
-								console.log("Got inside if statement")
+								// console.log("Got inside if statement")
 								users[user]._auctions = null
 							}
 							users[user].save(function(err, result){
@@ -395,7 +395,7 @@ function UsersController(){
 
 	this.interested = function(req, res) {
 		if (globals.notClerkValidation(req, res)){
-			console.log("Interested");
+			// console.log("Interested");
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
@@ -425,7 +425,7 @@ function UsersController(){
 
 
 	this.uninterested= function(req,res) {
-		console.log("in uninterested");
+		// console.log("in uninterested");
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
