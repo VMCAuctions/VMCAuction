@@ -25,9 +25,37 @@ module.exports = function(app) {
 			console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
 			console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
 			console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
-			var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+
+			// Creates text stub for URL, auction image name and package image name
+
+			// converts 'name' to all lower case 
+			var lowerName = req.body.name.toLowerCase();
+				// console.log("154 routes.js var storage.  var lowerName = ",lowerName)
+
+			// converts spaces to dashes for use in URLStub
+			var urlStub = '';
+			for (var i = 0; i < lowerName.length; i++){
+				var code = lowerName.charCodeAt(i);
+				// console.log("155 routes.js var storage.  var code = ",code)
+				if (code == 32){
+					code = 45;
+					urlStub += String.fromCharCode(code);
+					// console.log("156 routes.js var storage.  lowerName letter (= s/b dash) = ",urlStub)
+				} else {
+					urlStub += lowerName.charAt(i);
+					// console.log("157 routes.js var storage.  lowerName letter (=charAt i) = ",urlStub)
+				}
+				// console.log("158 routes.js var storage. urlStub final = ",urlStub)
+
+			}
+
+
+			// var imgFileName = file.fieldname + '-' + req.body.name + '-' + Date.now() + path.extname(file.originalname);
+			var imgFileName = file.fieldname + '_' + urlStub + '_' + Date.now() + path.extname(file.originalname);
 			req.body.imgFileName = imgFileName;
+			req.body.urlStub = urlStub;
 			console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
+			console.log(Date.now() + " - 005 routes.js var storage.  urlStub = ",urlStub)
 			
 			callback(null, imgFileName)
 		}

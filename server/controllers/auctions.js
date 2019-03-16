@@ -62,6 +62,7 @@ function AuctionsController() {
 			var start = new Date(startDate);
 			var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
 			var end = new Date(endDate);
+
 			Global.findOne({}, function(err, global) {
 				if (err) {
 					console.log(err);
@@ -82,6 +83,7 @@ function AuctionsController() {
 
 						Auction.create({
 							name: req.body.name,
+							urlStub: req.body.urlStub,
 							startClock: start,
 							endClock: end,
 							pin: randomPin,
