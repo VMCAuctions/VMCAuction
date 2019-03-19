@@ -30,22 +30,24 @@ module.exports = function(app) {
 
 			// converts 'name' to all lower case 
 			var lowerName = req.body.name.toLowerCase();
-				// console.log("154 routes.js var storage.  var lowerName = ",lowerName)
+			console.log("150 routes.js var storage.  var lowerName = ",lowerName)
 
 			// converts spaces to dashes for use in URLStub
 			var urlStub = '';
 			for (var i = 0; i < lowerName.length; i++){
 				var code = lowerName.charCodeAt(i);
-				// console.log("155 routes.js var storage.  var code = ",code)
+				console.log("151 routes.js var storage.  var code = ",code)
+				console.log("152 routes.js var storage.  String.fromCharCode(code) = ",String.fromCharCode(code))
 				if (code == 32){
 					code = 45;
 					urlStub += String.fromCharCode(code);
-					// console.log("156 routes.js var storage.  lowerName letter (= s/b dash) = ",urlStub)
-				} else {
-					urlStub += lowerName.charAt(i);
-					// console.log("157 routes.js var storage.  lowerName letter (=charAt i) = ",urlStub)
-				}
-				// console.log("158 routes.js var storage. urlStub final = ",urlStub)
+					console.log("154 routes.js var storage.  lowerName letter (= s/b dash) = ",String.fromCharCode(code))
+				} else if (code >= 97 && code <= 122) {
+					console.log("155 routes.js var storage.  code = ",code)
+					console.log("156 routes.js var storage.  String.fromCharCode(code) = ",String.fromCharCode(code))
+					urlStub += String.fromCharCode(code);
+				} else console.log("157 routes.js var storage.Code not in lower-case range 97-122.  Code = ",code)
+				console.log("158 routes.js var storage. urlStub final = ",urlStub)
 
 			}
 
