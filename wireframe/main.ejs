@@ -51,9 +51,31 @@
 						<h4 class="card-header auction-list"><i class="fas fa-hand-holding-usd"></i> &nbsp; Resume Auction</h4>												
 						<ul class="list-group list-group-flush">
 							<% for (var a in auctions) { %>
-								<li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li>
+								<li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a><a href="/<%= auctions[a]._id%>/edit"><i class="fas fa-edit to-edit text-right"></i></a><a href="/<%= auctions[a]._id %>/remove"><i class="far fa-trash-alt to-delete text-right"></i></a></li>
 							<% } %>
-						</ul>						
+						</ul>
+						<table>
+							<thead>
+
+							</thead>
+							<tbody>
+								<% for (var a in auctions) { %>
+								<tr>
+									<td>
+										<a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a>
+									</td>
+									<td>
+										<a href="/<%= auctions[a]._id%>/edit"><i class="fas fa-edit to-edit text-right"></i></a><a href="/<%= auctions[a]._id %>/remove"><i class="far fa-trash-alt to-delete text-right"></i></a>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+
+
+
+
+
 					</div>
 				</div>
 
