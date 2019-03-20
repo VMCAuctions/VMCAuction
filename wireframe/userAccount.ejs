@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+	<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 	  
 	<body>
 		<%if(admin){%>
@@ -20,13 +21,20 @@
 		<%}%>
 
 		<div class="container regist-container">
-			<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to the Auction</h3>
+			<%if(admin == 0){%>
+				<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to the Auction</h3>
+			<%} else if (admin >= 1 && user.userName != viewer){%>
+				<h3 class="pt-4 mb-4"><%=user.firstName%>'s Account</h3>
+			<%} else {%>
+				<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to Your Account</h3>
+			<%}%>
+
 			<div class="row">
 				<div class="col">  <!-- this column is for equal space on the margins -->
 					<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
-						<div class="card regist-card mb-4" id="user-info" data=<%= userName%>>
-							<div class="card-body">
-								<%if(admin == 0 || (admin >= 1 && user.userName != viewer)){%>
+						<%if(admin == 0){%>
+							<div class="card regist-card mb-4" id="user-info" data=<%= userName%>>
+								<div class="card-body">
 									<div>
 										<h5 class="mb-3">Here is what you've won:</h5>
 										<div class="table-responsive">
@@ -44,33 +52,19 @@
 											</table>
 										</div>
 									</div>
-					
-									<div>
-											<h5 class="mb-3">Here is what you paid for:</h5>
-										<div class="table-responsive">
-											<table class="table">
-												<tr>
-													<th>Package #</th>
-													<th>Description</th>
-													<th>Amount</th>
-												</tr>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
-											</table>
-										</div>
-									</div>
-								<%}%>
-							</div><!-- End card-body-->
-						</div>
+								</div><!-- End card-body-->
+							</div>
+						<%}%>
 
 						<div class="card regist-card" id="user-info" data=<%= userName%>>
 							<div class="card-body">
-								<h5>Here is your personal information:</h5>
-								<h6 class="pin mb-3">*Please fill in any missing fields.</h6>
-								<form id="registrationForm" action="/<%=auction%>/users/account/<%=user.userName%>" method="post">
+								<%if (admin >= 1 && user.userName != viewer){%>
+									<h5>Here is their personal information:</h5>
+								<%} else {%>
+									<h5>Here is your personal information:</h5>
+								<%}%>
+								<h6 class="mb-3">*Please fill in any missing fields.</h6>
+								<form id="registrationForm" action="/<%=auction%>/users/account/<%=userName%>" method="post">
 
 									<div class="form-row">
 										<div class="form-group col-md-6">
@@ -91,7 +85,7 @@
 
 									<div class="form-group">
 										<label for="phoneNumber">Cell Phone Number</label>
-										<input type="number" name="phone" class="form-control" id="phoneTarget" readonly value="<%= user.phone %>">
+										<input type="tel" name="phone" class="form-control" id="phoneTarget" readonly value="<%= phone %>">
 										<span id="hide2">Please note that this field cannot be edited.</span>
 									</div>
 
@@ -186,6 +180,9 @@
 				$('#hide2').css('display', 'block');
 			});
 
+			// input mask for phone number format
+			$('#phoneTarget').inputmask("999-999-9999");
+
 			var validator = $("#registrationForm").validate({
 				rules: {
 					firstName: {
@@ -225,7 +222,7 @@
 			}, "Please specify the two-digit code for a US state");
 
 			validator.form();
-			
+
 		</script>
 	</body>
 </html>
