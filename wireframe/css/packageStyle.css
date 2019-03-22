@@ -1,9 +1,82 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
 
-body {
-  font-family: 'Roboto', sans-serif !important;
-  color: #ffffff;
+ h2 {
+   color: #003d79 !important;
+   font-size: 1.1rem !important; 
+   font-weight: 700 !important; 
+   
+ }
+.pkg-card {
+  height: 18rem;
+  background-color: #f8f9fa !important;
+  border:solid 1px #f1f3f1 !important;  
+  box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+  -moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
+  display: flex; 
+  flex-flow: row wrap; 
+  justify-content: start; 
+  align-content: center;  
+  position: relative;
+  text-overflow: hidden;  
+  font-size: 0.8rem; 
 }
+
+.img-row {
+}
+
+.pkg-num {
+  width: 46px; 
+  height: 32px; 
+  background-color: #c30000;
+  color: #fff; 
+  font-size: 0.75rem ; 
+  font-weight: 500; 
+  border-radius: 2px;  
+  position: absolute; 
+  padding: 7px; 
+  text-align: center;
+  top: 10px; 
+  left: 10px; 
+}
+
+.pkg-img {
+  width: 140px;
+  width: 120px; 
+  display: block; 
+  align-self: flex-start;  
+}
+
+.featured-box {
+  display: inline-block; 
+}
+
+.pkg-title { 
+  font-size: 0.92rem; 
+  font-weight: 700; 
+}
+
+.category {
+  color: #808080; 
+}
+.opening-bid {
+  font-weight: 700; 
+  color :#003d79;
+  font-size: 0.92rem; 
+}
+
+.highest-bid {
+  font-weight: 700; 
+  color :#c30000;
+  font-size: 0.92rem; 
+}
+
+/* .featured-text {
+  font-size: 0.8rem;
+  line-height: 1.4rem; 
+  color: #737373; 
+  
+} */
+
 
 .cardMargin{
   margin-top: 5rem;

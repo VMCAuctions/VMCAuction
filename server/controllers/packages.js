@@ -118,7 +118,7 @@ function PackagesController(){
 									} else {
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										//current is a flag showing which page is active
-										res.render('packages', {
+										res.render('featuredPackages', {
 											current: 'catalog',
 											packages: packages,
 											admin: req.session.admin,
@@ -177,7 +177,7 @@ function PackagesController(){
 		} else {
 			res.redirect('/' + req.session.auction  + '/event')	
 		}
-	}			
+	};			
 		
 	this.cancelBid = function(req,res){
 		if (globals.adminValidation(req, res)){
