@@ -112,7 +112,24 @@
 																	<!-- these fields visible to admin only								 -->
 									<%if(admin){%>
 										<!-- <form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>"> -->
-											<!-- <h6>This can be done by Admin only!</h6>
+											<h6>This can be done by Admin only!</h6>
+												<%if(user.userName != viewer){%>
+													<div class="form-row">
+														<div class="form-group col-md-12">
+															<label for="table" class="label-name">Table #</label>
+															<span class="float-right">
+																<%if( tableOwner === true){%>
+																	<input type="checkbox" id="tableOwner" name="tableOwner" checked>
+																	<label class="label-name" for="tableOwner">Table Owner?</label>
+																<%} else { %>
+																	<input type="checkbox" id="tableOwner" name="tableOwner">
+																	<label class="label-name" for="tableOwner">Table Owner?</label>
+																<%}%>
+															</span>
+															<input id="table" type="text" name="table" class="form-control" value="<%= table %>">
+														</div>
+													</div>
+												<%}%>
 												<div class="form-row">
 												<div class="form-group col-md-6">
 													<input type="password" name="newPass" class="form-control" placeholder="new password" readonly>
