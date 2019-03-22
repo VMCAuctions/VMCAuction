@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt-nodejs');
+
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Package = require('../models/package.js'),
@@ -158,10 +158,28 @@ function UsersController(){
 								auctionDetails: auctionDetails,
 							})
 						}
+							table: user.table,
+							tableOwner: user.tableOwner
 					}
 				})
 			}else{
 				res.redirect('/users/login')
+			}
+		})
+	};
+
+	this.new = function(req,res) {
+		//May need to add validation checks so that only admins can see
+		Auction.findById(req.params.auctions, function (err, auctionDetails) {
+			if (err) {
+				console.log(err)
+			} else {
+				res.render('userCreate', {
+					admin: req.session.admin, 
+					userName: req.session.userName, 
+					auction: req.params.auctions, 
+					auctionDetails: auctionDetails
+				})
 			}
 		})
 	};
@@ -216,6 +234,12 @@ function UsersController(){
 								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
+							var tableOwner = req.body.tableOwner;
+							if (tableOwner === "on") {
+								tableOwner = true
+							} else {
+								tableOwner = false
+							}
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -228,7 +252,9 @@ function UsersController(){
 								zip: req.body.zip,
 								_auctions: linkedAuction,
 								password: hash,
-								admin: adminStatus
+								admin: adminStatus,
+								table: req.body.table,
+								tableOwner: tableOwner
 							},
 							function(err, user){
 									if(err){
@@ -236,11 +262,16 @@ function UsersController(){
 									}else{
 										// console.log("linkedAuction is", linkedAuction)
 										// console.log("req.session is", req.session)
-										req.session.auction = linkedAuction
-										req.session.userName = user.userName
-										req.session.admin = user.admin
 										// console.log("afterwards, req.session is", req.session)
-										res.redirect('/' + linkedAuction + '/packages')
+										
+										if (req.body.admin) {
+											res.redirect('/' + linkedAuction + '/users');
+										} else {
+											req.session.auction = linkedAuction
+											req.session.userName = user.userName
+											req.session.admin = user.admin
+											res.redirect('/' + linkedAuction + '/packages')
+										}
 										return;
 									}
 							});
@@ -329,28 +360,75 @@ function UsersController(){
 	};
 
 
-
-	this.update = function(req,res){
-		// console.log("400 users.js this.update start.  req.body = ",req.body)
-		// console.log("400 users.js this.update start.  req.params = ",req.params)
-		User.findOne({userName: req.body.userName}, function(err, user) {
-			if (err) {
-				console.log(err);
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
+	//3.2019 update - instead, using this for supporter to be able to edit their account.
+	//code for changing password is commented out.
+  this.update = function(req,res){
+	User.findOne({userName: req.body.userName}, function(err, user) {
+		if (err) {
+			console.log(err);
+		} else {
+			user.firstName = req.body.firstName;
+			user.lastName = req.body.lastName;
+			user.streetAddress = req.body.address;
+			user.city = req.body.city;
+			user.states = req.body.states;
+			user.zip = req.body.zip;
+			user.save();
+			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
+		}
+	});
+		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
+		// 	User.findOne({userName: req.body.userName}, function(err, user) {
+		// 		if (err) {
+		// 			console.log(err);
+		// 		} else {
+		// 			user.password = hash;
+		// 			user.save();
+		// 			res.redirect("/" + req.params.auctions + 
+		// 			"/users/account/" + req.params.userName);
+		// 		}
+		// 	});
+		// });
+	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
+	//3.2019 update - instead, using this for supporter to be able to edit their account.
+	//code for changing password is commented out.
+  this.update = function(req,res){
+	User.findOne({userName: req.body.userName}, function(err, user) {
+		if (err) {
+			console.log(err);
+		} else {
+			var tableOwner = req.body.tableOwner;
+			if (tableOwner === "on") {
+				tableOwner = true
 			} else {
-				// console.log("410 users.js this.update User.findOne.  user = ",user)
-				user.firstName = req.body.firstName;
-				user.lastName = req.body.lastName;
-				user.streetAddress = req.body.address;
-				user.city = req.body.city;
-				user.states = req.body.states;
-				user.zip = req.body.zip;
-				user._auctions = req.params.auctions;
-				user.save()
+				tableOwner = false
 			}
-		})
-		.then(res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName))
-	};
 
+			user.firstName = req.body.firstName;
+			user.lastName = req.body.lastName;
+			user.streetAddress = req.body.address;
+			user.city = req.body.city;
+			user.states = req.body.states;
+			user.zip = req.body.zip;
+			user.table = req.body.table;
+			user.tableOwner = tableOwner;
+			user.save();
+			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
+		}
+	});
+		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
+		// 	User.findOne({userName: req.body.userName}, function(err, user) {
+		// 		if (err) {
+		// 			console.log(err);
+		// 		} else {
+		// 			user.password = hash;
+		// 			user.save();
+		// 			res.redirect("/" + req.params.auctions + 
+		// 			"/users/account/" + req.params.userName);
+		// 		}
+		// 	});
+		// });
 	this.supporterCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("310 items.js this.populateCsv start")
