@@ -91,13 +91,29 @@ module.exports = function(app) {
 	app.get('/:auctions/items/new', function(req,res){
 		items.new(req,res)});
 
+
+	// Bob
+	//displays add items from csv html page
+	app.get('/:auctions/items/csv', function(req, res){
+		console.log("200 routes.js /:auc./items/csv route")
+		items.populateCsv(req, res)});
+
+	// actually adding items from csv
+	app.post('/:auctions/items/itemsCsv', function(req, res){
+		console.log("201 routes.js /:auc./items/itemsCsv route")
+		items.itemsCsv(req, res)});
+	
+	// existing methods
 	//adding items from csv page
 	app.get('/:auctions/items/populate', function(req, res){
 		items.populatePage(req, res)});
+
 	//actually adding items from csv
 	app.post('/:auctions/items/populate', function(req, res){
-		console.log("in items.populate route")
+		console.log("201 routes.js /:auc./itemsCsv/populate route")
 		items.populate(req, res)});
+
+	// end csv upload	
 
 	// post the new item form and create that new item
 	app.post('/:auctions/items', function(req,res){
@@ -217,7 +233,6 @@ module.exports = function(app) {
 
   	//Check login credentials
 	app.post('/users/checklogin', function(req,res){
-	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
 
 	  //Check if username is already in use

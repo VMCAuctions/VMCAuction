@@ -256,7 +256,7 @@ function UsersController(){
 				console.log(Date.now(),"001 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
+				console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
 				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
 					if(err){
