@@ -166,6 +166,7 @@ function ItemsController(){
 		        item.restrictions = req.body.itemRestriction || item.restrictions;
 		        item.value = req.body.fairMarketValue || item.value;
 		        item._category = req.body.category || item._category;
+		        item._auctions = req.body.auction || item._auction;
 		        item.save(function (err, item) {
 		            if (err) {
 	                  console.log(err)

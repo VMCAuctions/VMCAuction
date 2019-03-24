@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
+const csv=require('csvtojson')
 
 function UsersController(){
 
@@ -30,14 +31,17 @@ function UsersController(){
 
 
 	this.index = function(req,res){
-		console.log(Date.now()," - 010 users.js this.index.  UsersController index");
-		console.log(globals.clerkValidation(req, res));
+		// console.log(Date.now()," - 010 users.js this.index.  UsersController index");
+		// console.log("011 users.js this.index.  req.session = ", req.session)
+		// console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
 			User.find({_auctions: req.params.auctions}, function(err, users ){
+			// User.find({}, function(err, users ){
 				if(err){
 					console.log(err)
 				}else if(req.session.admin){
+						// console.log("012 users.js this.index User.find.  users = ",users);
 						Package.find({_auctions: req.params.auctions}, function(err, result){
 							if (err){
 								console.log(err)
@@ -67,7 +71,7 @@ function UsersController(){
 											cart: cart, 
 											packages: result, 
 											userName: req.session.userName, 
-											admin: req.session.adm, 
+											admin: req.session.admin, 
 											auction: req.params.auctions,
 											auctionDetails: auctionDetails
 										})		
@@ -84,7 +88,7 @@ function UsersController(){
 	};
 
 	this.admin = function(req,res){
-		console.log(Date.now()," - 020 users.js this.admin  Admin change display");
+		// console.log("020 users.js this.admin  Admin change display");
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
@@ -129,6 +133,7 @@ function UsersController(){
 			if(err){
 				console.log(err)
 			}else if(user.userName === req.session.userName || req.session.admin >= 1){
+				// console.log("100 users.js this.showAccount User.findOne.  user = ",user)
 				Auction.findById(req.params.auctions, function (err, auctionDetails) {
 					if (err) {
 						console.log(err)
@@ -138,14 +143,14 @@ function UsersController(){
 							//current is a flag showing which page is active
 							current: 'myAccount',
 							user: user,
-							firstName: user.firstName,
-							lastName: user.lastName,
 							userName: user.userName,
-							phone: user.phone,
-							address: user.streetAddress,
-							city: user.city,
-							states: user.states,
-							zip: user.zip,
+							// firstName: user.firstName,
+							// lastName: user.lastName,
+							// phone: user.phone,
+							// address: user.streetAddress,
+							// city: user.city,
+							// states: user.states,
+							// zip: user.zip,
 							admin: req.session.admin,
 							auction: req.params.auctions,
 							viewer: req.session.userName,
@@ -256,7 +261,7 @@ function UsersController(){
 				console.log(Date.now(),"001 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
+				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
 				bcrypt.compare(req.body.password, user.password, function(err, match) {
 				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
 					if(err){
@@ -322,36 +327,94 @@ function UsersController(){
 	};
 
 
-	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
-	//3.2019 update - instead, using this for supporter to be able to edit their account.
-	//code for changing password is commented out.
-  this.update = function(req,res){
-	User.findOne({userName: req.body.userName}, function(err, user) {
-		if (err) {
-			console.log(err);
-		} else {
-			user.firstName = req.body.firstName;
-			user.lastName = req.body.lastName;
-			user.streetAddress = req.body.address;
-			user.city = req.body.city;
-			user.states = req.body.states;
-			user.zip = req.body.zip;
-			user.save();
-			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
-		}
-	});
-		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
-		// 	User.findOne({userName: req.body.userName}, function(err, user) {
-		// 		if (err) {
-		// 			console.log(err);
-		// 		} else {
-		// 			user.password = hash;
-		// 			user.save();
-		// 			res.redirect("/" + req.params.auctions + 
-		// 			"/users/account/" + req.params.userName);
-		// 		}
-		// 	});
-		// });
+
+	this.update = function(req,res){
+		// console.log("400 users.js this.update start.  req.body = ",req.body)
+		// console.log("400 users.js this.update start.  req.params = ",req.params)
+		User.findOne({userName: req.body.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			} else {
+				// console.log("410 users.js this.update User.findOne.  user = ",user)
+				user.firstName = req.body.firstName;
+				user.lastName = req.body.lastName;
+				user.streetAddress = req.body.address;
+				user.city = req.body.city;
+				user.states = req.body.states;
+				user.zip = req.body.zip;
+				user._auctions = req.params.auctions;
+				user.save()
+			}
+		})
+		.then(res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName))
+	};
+
+	this.supporterCsv = function(req, res){
+		//May need to add validation checks so that only admins can see
+		// console.log("310 items.js this.populateCsv start")
+		Auction.findById(req.params.auctions, function (err, auctionDetails) {
+			if (err) {
+				console.log(err)
+			} else {
+				// console.log("311 items.js this.populateCsv.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
+				res.render('csvUpload-supporters', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.supporterCsvUpload})
+			}
+		})
+	};
+
+	// Import new users from .csv file (stored in /public)
+	this.usersCsv = function(req, res){
+		//May need to add validation checks so that only admins can see
+		// console.log("400 users.js this.usersCsv start")
+		// console.log("401 users.js this.usersCsv.  req.body = ", req.body)
+		// console.log("401 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		// console.log("401 users.js this.usersCsv.  req.session = ", req.session)
+		// console.log("401 users.js this.usersCsv.  req.params = ", req.params)
+		
+		const csvFilePath=("C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/" + req.body.supporterCsvUpload);
+		
+		// console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
+
+		csv()
+		.fromFile(csvFilePath)
+		.then((jsonObj)=>{
+			
+			// console.log("403 users.js this.usersCsv.  jsonObj[0][User Name] = ", jsonObj[0]["User Name"])
+			// console.log("404 users.js this.usersCsv.  jsonObj[0] = ", jsonObj[0])
+			// console.log("405 users.js this.usersCsv.  jsonObj = ", jsonObj)
+			// console.log("405.1 users.js this.usersCsv.  jsonObj.length = ", jsonObj.length)
+
+			for (var i = 0; i < jsonObj.length; i++){
+
+				if (jsonObj[i]){
+
+					// console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
+
+					User.create({
+						userName: jsonObj[i]["User Name"],
+						firstName: jsonObj[i]["First Name"],
+						lastName: jsonObj[i]["Last Name"],
+						phone: jsonObj[i]["Phone"],
+						streetAddress: jsonObj[i]["Street"],
+						city: jsonObj[i]["City"],
+						states: jsonObj[i]["State"],
+						zip: jsonObj[i]["Zip"],
+						admin: jsonObj[i]["Admin"],
+						_auctions: req.params.auctions
+						
+						
+					}, function(err, user){
+						if(err){
+							console.log("406 users.js this.usersCsv User.create fail.  err = ",err)
+							
+						}else{
+							console.log("407 users.js this.usersCsv User.create success.  ")
+						}
+					});
+				}
+			}
+			
+		}).then(res.redirect('/' + req.params.auctions + '/users'));
 	}
 
 	this.adminChange = function(req,res){
@@ -475,12 +538,15 @@ function UsersController(){
 	//I don't think this has been implemented yet
 	this.delete = function(req, res){
 		if (globals.adminValidation(req, res)){
-			User.remove({userName: req.params.user}, function(err, result){
+			// console.log("600 users.js this.delete.  req.params.id = ",req.params.id)
+			// console.log("601 users.js this.delete.  req.params = ",req.params)
+			User.remove({_id: req.params.id}, function(err, result){
 				if (err){
 					console.log(err)
 				}
 				else{
-					res.redirect("/users/register")
+					// console.log("602 users.js this.delete.  result = ",result)
+					res.redirect('/' + req.params.auction  + '/users')
 				}
 			})
 		}
@@ -505,15 +571,6 @@ function UsersController(){
 		})
 	}
 
-	//This has been moved to global controller
-	// this.adminValidation = function(req, res) {
-	// 	console.log("inside adminValidation")
-	// 	if (req.session.admin != 2){
-	// 		res.redirect('/' + req.session.auction + '/packages')
-	// 		return false
-	// 	}
-	// 	return true
-	// }
 
 }
 
