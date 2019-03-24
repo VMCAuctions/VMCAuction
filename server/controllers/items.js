@@ -445,9 +445,13 @@ function ItemsController(){
 
 		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
 		// const csvFilePath="2019 Gala Auction Item Tracker.csv"
-		const csvFilePath=("C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/" + req.body.csvUpload);
-		
-		// console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
+
+		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
+		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
+
+		const csvFilePath=(path + req.body.csvUpload);
+
+		console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
 		.fromFile(csvFilePath)

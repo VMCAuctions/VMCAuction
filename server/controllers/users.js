@@ -371,9 +371,12 @@ function UsersController(){
 		// console.log("401 users.js this.usersCsv.  req.session = ", req.session)
 		// console.log("401 users.js this.usersCsv.  req.params = ", req.params)
 		
-		const csvFilePath=("C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/" + req.body.supporterCsvUpload);
+		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
+		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
+
+		const csvFilePath=(path + req.body.supporterCsvUpload);
 		
-		// console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
+		console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
 		.fromFile(csvFilePath)
