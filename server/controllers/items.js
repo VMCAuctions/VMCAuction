@@ -145,15 +145,19 @@ function ItemsController(){
 
 
 	this.update = function(req,res){
-		console.log('ItemsController update');
+		console.log("400 items.js this.itemsCsv start")
+		console.log("381 items.js this.update.  req.body = ", req.body)
+		console.log("382 items.js this.update.  req.session = ", req.session)
+		console.log("383 items.js this.update.  req.params = ", req.params)
 		if (globals.adminValidation(req, res)){
 			Item.findById(req.params.id, function (err, item) {
 		    if (err) {
 	          console.log(err);
 		        res.status(500).send('Failed to Update Item');
 		    }else {
-						//Saving old value to check whether it changes; if it does, you'll want to perform a package.find
-						oldValue = item.value
+				console.log("384 items.js this.update Item.findById.  item = ", item)
+				//Saving old value to check whether it changes; if it does, you'll want to perform a package.find
+				oldValue = item.value
 		        // Update each attribute with value that was submitted in the body of the request
 		        // If that attribute isn't in the request body, default back to whatever it was before.
 		        item.name = req.body.itemName || item.name;
@@ -166,23 +170,24 @@ function ItemsController(){
 		        item.restrictions = req.body.itemRestriction || item.restrictions;
 		        item.value = req.body.fairMarketValue || item.value;
 		        item._category = req.body.category || item._category;
-		        item._auctions = req.body.auction || item._auction;
+		        item._auctions = req.params.auctions || item._auction;
 		        item.save(function (err, item) {
 		            if (err) {
 	                  console.log(err)
+					console.log("384 items.js this.update Item.findById.  item = ", item)
 		                res.status(500).send('Failed to Save Item update')
 		            }else if (req.body.fairMarketValue != oldValue && item.packaged === true){
-										Package.findById(item._package, function(err, package){
-											package.value -= oldValue
-											package.value += item.value
-											package.save(function (err, result){
-												if (err){
-													console.error();
-												}
-											})
-										})
+						Package.findById(item._package, function(err, package){
+							package.value -= oldValue
+							package.value += item.value
+							package.save(function (err, result){
+								if (err){
+									console.error();
 								}
-								res.redirect('/' + req.params.auctions + '/items')
+							})
+						})
+					}
+				res.redirect('/' + req.params.auctions + '/items')
 	          });
 		    }
 		  });
