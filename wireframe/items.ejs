@@ -70,7 +70,7 @@
                 <% for (var i in items){%>
                   <tr class="itemRow">
                       <td><%= items[i]._id%></td>
-                      <td><%= items[i].name%></td>
+                      <td><a class="mb-1 mr-1" href='/<%=auction%>/items/<%=items[i]._id%>'><%= items[i].name%></a></td>
                       <% if (items[i].packaged) {%>
                         <td> <a class="pkg-link" href="/<%=auction%>/packages/<%= items[i]._package._id%>"> <%= items[i]._package.name%></a></td>
                       <%}else{%>
