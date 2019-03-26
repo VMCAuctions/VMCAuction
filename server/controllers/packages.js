@@ -80,7 +80,7 @@ function PackagesController(){
 	};
 
 	this.list = function (req, res) {
-		console.log('packages.js this.list PackagesController list');
+		console.log('100 packages.js this.list start');
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
 		}
@@ -124,12 +124,13 @@ function PackagesController(){
 									}
 								}
 								sortedPackages = sortedPackages.concat(nonFeatured)
+									console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
 								
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
 									} else {
-										console.log("100-packages.js | this.list | auction.findByID | auctionDetails:",auctionDetails);
+										console.log("100 packages.js this.list auction.findByID.  auctionDetails = ",auctionDetails);
 										res.render('packageRegister', {
 											current: 'package-register',
 											packages: sortedPackages,
@@ -342,6 +343,7 @@ this.new = function(req,res){
 							if (err) {
 								console.log(err)
 							} else {
+								console.log("260 packages.js this.show pre-render.  user = ",user)
 								res.render('packageShow', {
 									package: package,
 									userName: req.session.userName,

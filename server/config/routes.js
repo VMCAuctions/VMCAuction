@@ -91,13 +91,29 @@ module.exports = function(app) {
 	app.get('/:auctions/items/new', function(req,res){
 		items.new(req,res)});
 
+
+	// Bob
+	//displays add items from csv html page
+	app.get('/:auctions/items/csv', function(req, res){
+		// console.log("200 routes.js /:auc./items/csv route")
+		items.populateCsv(req, res)});
+
+	// actually adding items from csv
+	app.post('/:auctions/items/itemsCsv', function(req, res){
+		// console.log("201 routes.js /:auc./items/itemsCsv route")
+		items.itemsCsv(req, res)});
+	
+	// existing methods
 	//adding items from csv page
 	app.get('/:auctions/items/populate', function(req, res){
 		items.populatePage(req, res)});
+
 	//actually adding items from csv
 	app.post('/:auctions/items/populate', function(req, res){
-		console.log("in items.populate route")
+		// console.log("201 routes.js /:auc./itemsCsv/populate route")
 		items.populate(req, res)});
+
+	// end csv upload	
 
 	// post the new item form and create that new item
 	app.post('/:auctions/items', function(req,res){
@@ -214,10 +230,20 @@ module.exports = function(app) {
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
 
+	// Supporters .csv import
+	//displays add supporters from csv html page
+	app.get('/:auctions/users/csv', function(req, res){
+		console.log("200 routes.js /:auc./users/csv route")
+		users.supporterCsv(req, res)});
+
+	// actually adding supporters from csv
+	app.post('/:auctions/users/usersImport', function(req, res){
+		console.log("201 routes.js /:auc./users/supportersCsv route")
+		users.usersCsv(req, res)});
+
 
   	//Check login credentials
 	app.post('/users/checklogin', function(req,res){
-	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
 
 	  //Check if username is already in use
@@ -227,6 +253,11 @@ module.exports = function(app) {
 	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
+	
+	// display the edit supporter page
+	app.get('/:auctions/usersAccount/:userName', function(req,res){
+		users.showAccount(req,res)});
+
 	// get the watchlist page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){
 		users.show(req,res)});
@@ -255,7 +286,7 @@ module.exports = function(app) {
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
 		//deletes a user (Note: no front-end link to this route yet)
-	app.get('/users/delete/:user', function(req, res){
+	app.get('/:auction/users/delete/:id', function(req, res){
 		users.delete(req,res)});
 
 	// AUCTION //

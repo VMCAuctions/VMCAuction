@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4},
- _category: String,
+ _category: {type: String},
  donorPrefix: {type: String},
  donorFirst: {type: String},
  donorLast: {type: String},
@@ -18,8 +18,8 @@ var itemSchema = new Schema({
  restrictions: {type: String},
  value: {type: Number, required: true},
  packaged: {type: Boolean, default:false},
- priority: {type: Number, required: true, default: 0},
-_auctions: {type: Schema.Types.ObjectId, required:true, ref: 'Auction'},
+//  priority: {type: Number, required: true, default: 0},
+ _auctions: {type: Schema.Types.ObjectId, required:true, ref: 'Auction'},
  photo: {type: String},
  _package: {type: Number, ref: 'Package'}
 }, { timestamps: true, usePushEach: true });

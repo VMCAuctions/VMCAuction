@@ -181,6 +181,9 @@ function AuctionsController() {
         } else {
 
           console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
+		  req.session.auction = req.params.auctions;
+          console.log(Date.now()," - 301 auctions.js.  req.ses.auction = ",req.session.auction);
+          console.log(Date.now()," - 302 auctions.js.  req.session = ",req.session);
 
           res.render("organizerMenu", {
             current: "organizerMenu",
