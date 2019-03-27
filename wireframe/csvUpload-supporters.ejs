@@ -23,10 +23,8 @@
 	<%}%>
 	<div class="container mt-4">
 		<h3>Import Supporters from .csv File</h3>
-		<form action="/<%=auction%>/users/usersImport" method="POST">
+		<form action="/<%=auction%>/users/usersImport" method="POST" enctype="multipart/form-data">
 	
-
-
 			<div class="form-group">
 				<label for="supporterCsvUpload" class="label-name text-black-50">File Name</label>
 				<input type="file" name="supporterCsvUpload" id="supporterCsvUpload" class="form-control">
