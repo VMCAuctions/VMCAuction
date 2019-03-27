@@ -6,6 +6,20 @@
     </title>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+
+	   <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">  
+  <link rel="stylesheet" type="text/css" href="/css/item.css" >
+  
+  <!-- Java Script -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+	<!-- Data Tables  -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 </head>
 <body>
   
@@ -15,12 +29,20 @@
 
 
   <!-- check with client to verify all admin/clerk priveledges, regarding deleting and editing other non admin users -->
+<div class="container-fluid item-container">
+	 <h2 class="my-4">Supporters Register</h2>
+      <div class="my-4" id="search-container">
+        <!-- Find supporters by keyword -->
+        <div id="search-keyword">
+          <label for "keyword" class="label-search">Search by keyword:</label>
+          <input class="form-control" type="search" id="keyword" placeholder="Keyword">
+        </div>
+      </div>
 
-
-  <table class="table table-striped table-bordered mt-4">
+  <table class="table table-striped table-bordered mt-4" id="sup-table">
     <thead>
       <tr>
-        <th scope="col">Username / email</th>
+        <th scope="col">Email (username)</th>
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
         <th scope="col">Street</th>
@@ -29,16 +51,12 @@
         <th scope="col">Zip</th>
         <th scope="col">Phone</th>
         <th scope="col">Actions</th>
-        <!-- <th scope="col">Auction ID</th> -->
-        
-        <!-- <th scope="col">Pkgs Winning</th>
-        <th scope="col">Total Bids</th> -->
       </tr>
     </thead>
     <tbody>
 
       <% for (var u in users) {%>
-        <tr>
+        <tr class="supRow">
           <td><a href="/<%=auction%>/users/account/<%= users[u].userName %>"><%= users[u].userName %></a></td>
           <td><%= users[u].firstName %></td>
           <td><%= users[u].lastName %></td>
@@ -53,14 +71,42 @@
 					<a class="mb-1" href='/<%=auction%>/users/delete/<%=users[u]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
 				</td>
 				<%}%>
-          <!-- <td><%= users[u]._auctions %></td> -->
-          <!-- <td id="<%=users[u].userName + 'winning'%>"><%=cart[users[u].userName].packages.length%></td>
-          <td id="<%=users[u].userName + 'total'%>">$<%=cart[users[u].userName].total%></td> -->
-        </tr>
+		</tr>
       <%}%>
 
         </tbody>
       </table>
+	</div> <!-- End main page container-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			// Initializes Data Tables plugin
+			$('#sup-table').DataTable({
+					"dom": '<lip<t>ip>',
+					"searching": false,
+					"order": [[ 0, "asc" ]],
+					"pageLength": 5,
+					"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+					"pagingType": "full_numbers",
+					"columnDefs": [
+						{ "orderable": false, "targets": 8 },
+					]
+				
+			});
+
+			$("#keyword").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				if (value == '') {
+				$(".supRow").show();
+				} else {
+				$(".supRow").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+				});
+				}
+			});
+
+		});        
+  </script>
     <script>
       var cart = <%-JSON.stringify(cart)%>;
       var packages = <%-JSON.stringify(packages)%>;
