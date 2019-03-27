@@ -138,24 +138,26 @@ function UsersController(){
 					if (err) {
 						console.log(err)
 					} else {
-						res.render('userAccount', {
-							//This should be refactored; there's no reason to send the entire user object and it's parsed elements.  It should just send one or the other.
-							//current is a flag showing which page is active
-							current: 'myAccount',
-							user: user,
-							userName: user.userName,
-							// firstName: user.firstName,
-							// lastName: user.lastName,
-							// phone: user.phone,
-							// address: user.streetAddress,
-							// city: user.city,
-							// states: user.states,
-							// zip: user.zip,
-							admin: req.session.admin,
-							auction: req.params.auctions,
-							viewer: req.session.userName,
-							auctionDetails: auctionDetails,
-						})
+						if (user.userName != req.session.userName) {
+							res.render('userAccount', {
+								user: user,
+								phone: user.phone,
+								admin: req.session.admin,
+								auction: req.params.auctions,
+								userName: req.session.userName,
+								auctionDetails: auctionDetails,
+							})
+						} else {
+							res.render('userAccount', {
+								//current is a flag showing which page is active
+								current: 'myAccount',
+								user: user,
+								admin: req.session.admin,
+								auction: req.params.auctions,
+								userName: req.session.userName,
+								auctionDetails: auctionDetails,
+							})
+						}
 					}
 				})
 			}else{

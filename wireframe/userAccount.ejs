@@ -23,7 +23,7 @@
 		<div class="container regist-container">
 			<%if(admin == 0){%>
 				<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to the Auction</h3>
-			<%} else if (admin >= 1 && user.userName != viewer){%>
+			<%} else if (admin >= 1 && user.userName != userName){%>
 				<h3 class="pt-4 mb-4"><%=user.firstName%>'s Account</h3>
 			<%} else {%>
 				<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to Your Account</h3>
@@ -33,7 +33,7 @@
 				<div class="col">  <!-- this column is for equal space on the margins -->
 					<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
 						<%if(admin == 0){%>
-							<div class="card regist-card mb-4" id="user-info" data=<%= userName%>>
+							<div class="card regist-card mb-4" id="user-info" data=<%= user.userName%>>
 								<div class="card-body">
 									<div>
 										<h5 class="mb-3">Here is what you've won:</h5>
@@ -56,15 +56,15 @@
 							</div>
 						<%}%>
 
-						<div class="card regist-card" id="user-info" data=<%= userName%>>
+						<div class="card regist-card" id="user-info" data=<%= user.userName%>>
 							<div class="card-body">
-								<%if (admin >= 1 && user.userName != viewer){%>
+								<%if (admin >= 1 && user.userName != userName){%>
 									<h5>Here is their personal information:</h5>
 								<%} else {%>
 									<h5>Here is your personal information:</h5>
 								<%}%>
 								<h6 class="mb-3">*Please fill in any missing fields.</h6>
-								<form id="registrationForm" action="/<%=auction%>/users/account/<%=userName%>" method="post">
+								<form id="registrationForm" action="/<%=auction%>/users/account/<%=user.userName%>" method="post">
 
 									<div class="form-row">
 										<div class="form-group col-md-6">
@@ -85,7 +85,7 @@
 
 									<div class="form-group">
 										<label for="phoneNumber">Cell Phone Number</label>
-										<input type="tel" name="phone" class="form-control" id="phoneTarget" readonly value="<%= phone %>">
+										<input type="tel" name="phone" class="form-control" id="phoneTarget" readonly value="<%= user.phone %>">
 										<span id="hide2">Please note that this field cannot be edited.</span>
 									</div>
 
