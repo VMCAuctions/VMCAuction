@@ -46,7 +46,7 @@
           </div>
           <div class="form-group col-4">
             <label for="category" class="label-name">Category</label>
-            <select name="category" id="category" class="form-control">
+            <select name="cat" id="category" class="form-control">
               <% for (var c in categories){%>
               <!-- add radio and jquery to make only one catagory option apear
               or Make a seperate page to creat catagories -->
@@ -150,7 +150,7 @@
                     </div>
                     <div id="search-category">
                         <label for "category" >Search by category:</label>
-                        <select select class="form-control" name="category" id="category">
+                        <select select class="form-control" name="cat" id="category">
                           <option value="">All Categories</option>
                           <% for(var c in categories) {%>
                             <option value="<%=categories[c].name%>"><%=categories[c].name%></option>

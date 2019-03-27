@@ -180,7 +180,7 @@ function AuctionsController() {
           console.log(err);
         } else {
 
-          console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
+          // console.log(Date.now()," - 300 auctions.js.  Auction details = ", auctionDetails);
 
           res.render("organizerMenu", {
             current: "organizerMenu",
