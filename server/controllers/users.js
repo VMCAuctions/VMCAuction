@@ -255,10 +255,10 @@ function UsersController(){
 		// console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
-				console.log(Date.now(),"001 users.js checkLogin.  err = ",err);
+				// console.log("001 users.js checkLogin.  err = ",err);
 
 			}else if(!user){
-				console.log(Date.now(),"001 users.js checkLogin.  !user block");
+				// console.log("002 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
 				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
@@ -366,17 +366,18 @@ function UsersController(){
 	this.usersCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
-		// console.log("401 users.js this.usersCsv.  req.body = ", req.body)
-		// console.log("401 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
-		// console.log("401 users.js this.usersCsv.  req.session = ", req.session)
-		// console.log("401 users.js this.usersCsv.  req.params = ", req.params)
+		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
+		// console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
+		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
+		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
 		
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
 
-		const csvFilePath=(path + req.body.supporterCsvUpload);
+		const csvFilePath=(path + req.body.csvFileName);
 		
-		console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
+		// console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
 		.fromFile(csvFilePath)

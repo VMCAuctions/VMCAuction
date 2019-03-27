@@ -18,6 +18,7 @@ function ItemsController(){
 								console.log(err);
 								res.status(500).send('Failed to Load Items');
 						}else{
+							console.log("001 items.js this.index Item.find.  items = ", items)
 							//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
 							Auction.findById(req.params.auctions, function (err, auctionDetails) {
 								if (err) {
@@ -145,17 +146,17 @@ function ItemsController(){
 
 
 	this.update = function(req,res){
-		console.log("400 items.js this.itemsCsv start")
-		console.log("381 items.js this.update.  req.body = ", req.body)
-		console.log("382 items.js this.update.  req.session = ", req.session)
-		console.log("383 items.js this.update.  req.params = ", req.params)
+		// console.log("400 items.js this.itemsCsv start")
+		// console.log("381 items.js this.update.  req.body = ", req.body)
+		// console.log("382 items.js this.update.  req.session = ", req.session)
+		// console.log("383 items.js this.update.  req.params = ", req.params)
 		if (globals.adminValidation(req, res)){
 			Item.findById(req.params.id, function (err, item) {
 		    if (err) {
 	          console.log(err);
 		        res.status(500).send('Failed to Update Item');
 		    }else {
-				console.log("384 items.js this.update Item.findById.  item = ", item)
+				// console.log("384 items.js this.update Item.findById.  item = ", item)
 				//Saving old value to check whether it changes; if it does, you'll want to perform a package.find
 				oldValue = item.value
 		        // Update each attribute with value that was submitted in the body of the request
@@ -174,7 +175,7 @@ function ItemsController(){
 		        item.save(function (err, item) {
 		            if (err) {
 	                  console.log(err)
-					console.log("384 items.js this.update Item.findById.  item = ", item)
+					// console.log("384 items.js this.update Item.findById.  item = ", item)
 		                res.status(500).send('Failed to Save Item update')
 		            }else if (req.body.fairMarketValue != oldValue && item.packaged === true){
 						Package.findById(item._package, function(err, package){
@@ -248,16 +249,14 @@ function ItemsController(){
 	
 	this.populatePage = function(req, res){
 		//May need to add validation checks so that only admins can see
-		console.log("300 items.js this.populatePage start")
+		// console.log("300 items.js this.populatePage start")
 		Auction.findById(req.params.auctions, function (err, auctionDetails) {
 			if (err) {
 				console.log(err)
 			} else {
-				console.log("301 items.js this.populatePage.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
+				// console.log("301 items.js this.populatePage.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
 				// console.log("302 items.js this.populatePage.  auctionDetails = ",auctionDetails)
 				res.render('itemPopulator', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails})
-				// res.render('csvUpload', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails})
-				// res.render('csvUpload', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.csvUpload})
 			}
 		})
 	};
@@ -441,9 +440,9 @@ function ItemsController(){
 
 	this.itemsCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
-		console.log("400 items.js this.itemsCsv start")
+		// console.log("400 items.js this.itemsCsv start")
 		// console.log("401 items.js this.itemsCsv.  req.body = ", req.body)
-		// console.log("401 items.js this.itemsCsv.  req.body.filename = ", req.body.filename)
+		// console.log("401 items.js this.itemsCsv.  req.body.csvFileName = ", req.body.csvFileName)
 		// console.log("401 items.js this.itemsCsv.  req.session = ", req.session)
 		// console.log("401 items.js this.itemsCsv.  req.params = ", req.params)
 		
@@ -451,12 +450,12 @@ function ItemsController(){
 		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
 		// const csvFilePath="2019 Gala Auction Item Tracker.csv"
 
-		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
+		// NOTE: MUST CHANGE path VARIABLE TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
 
-		const csvFilePath=(path + req.body.csvUpload);
+		const csvFilePath=(path + req.body.csvFileName);
 
-		console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
+		// console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
 		.fromFile(csvFilePath)
@@ -465,7 +464,7 @@ function ItemsController(){
 			// console.log("403 items.js this.itemsCsv.  jsonObj[0][Item Name] = ", jsonObj[0]["Item Name"])
 			// console.log("404 items.js this.itemsCsv.  jsonObj[0] = ", jsonObj[0])
 			// console.log("405 items.js this.itemsCsv.  jsonObj = ", jsonObj)
-			console.log("405.1 items.js this.itemsCsv.  jsonObj.length = ", jsonObj.length)
+			// console.log("405.1 items.js this.itemsCsv.  jsonObj.length = ", jsonObj.length)
 
 
 			// This jsonObj is a list of json objects, with each json object having the column name as a key and the entry of the row for that column as its value, illustrated below
@@ -502,7 +501,7 @@ function ItemsController(){
 							console.log("406 items.js this.itemsCsv Item.create fail.  err = ",err)
 							
 						}else{
-							console.log("407 items.js this.itemsCsv Item.create success.  ")
+							console.log("407 items.js this.itemsCsv Item.create success.  item = ",item)
 						}
 					});
 				}
