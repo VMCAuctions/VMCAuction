@@ -52,13 +52,17 @@
 						<input type="checkbox" id="tableOwner" name="tableOwner">
 						<label class="label-name" for="tableOwner">Table Owner?</label>
 					</span>
-					<input id="table" type="text" name="table" class="form-control">
+					<input id="table" type="number" name="table" class="form-control">
 				</div>
 			</div>
 			<div class="form-row">
-				<div class="form-group col-md-12">
+				<div class="form-group col-md-6">
 					<label for="userName" class="label-name">Email*</label>
 					<input id="email" type="email" name="userName" class="form-control" rows="4">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="userOrg" class="label-name">Organization</label>
+					<input id="userOrg" type="text" name="userOrg" class="form-control" rows="4">
 				</div>
 			</div>
 			<div class="form-row">
@@ -119,6 +123,9 @@
 					user: true,
 					nowhitespace: true,
 					remote: '/users/duplicate'
+				},
+				userOrg: {
+					rangelength: [2, 50]
 				},
 				password: {
 					required: true,

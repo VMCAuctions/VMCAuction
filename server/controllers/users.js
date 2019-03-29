@@ -236,9 +236,9 @@ function UsersController(){
 							}
 							var tableOwner = req.body.tableOwner;
 							if (tableOwner === "on") {
-								tableOwner = true
+								tableOwner = req.body.firstName
 							} else {
-								tableOwner = false
+								tableOwner = undefined
 							}
 							User.create({
 								userName: req.body.userName,
@@ -254,7 +254,8 @@ function UsersController(){
 								password: hash,
 								admin: adminStatus,
 								table: req.body.table,
-								tableOwner: tableOwner
+								tableOwner: tableOwner,
+								userOrg: req.body.userOrg
 							},
 							function(err, user){
 									if(err){
@@ -399,10 +400,10 @@ function UsersController(){
 			console.log(err);
 		} else {
 			var tableOwner = req.body.tableOwner;
-			if (tableOwner === "on") {
-				tableOwner = true
+			if (tableOwner) {
+				tableOwner = req.body.firstName
 			} else {
-				tableOwner = false
+				tableOwner = undefined
 			}
 
 			user.firstName = req.body.firstName;
@@ -413,6 +414,7 @@ function UsersController(){
 			user.zip = req.body.zip;
 			user.table = req.body.table;
 			user.tableOwner = tableOwner;
+			user.userOrg = req.body.userOrg;
 			user.save();
 			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
 		}

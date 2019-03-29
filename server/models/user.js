@@ -17,10 +17,12 @@ var userSchema = new Schema(
     states: { type: String },
     zip: { type: String },
 	password: { type: String },
-	table: { type: String, default: "0" },
-	tableOwner: { type: Boolean, default: false },
     _auctions: { type: Schema.Types.ObjectId, ref: "Auction" },
     _packages: [{ type: Number, ref: "Package" }],
+	admin: { type: Number },
+	table: { type: String, default: "0" },
+	tableOwner: { type: String },
+	userOrg: { type: String }
   },
   { usePushEach: true }
 );
