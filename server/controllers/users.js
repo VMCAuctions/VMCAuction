@@ -147,6 +147,8 @@ function UsersController(){
 								auction: req.params.auctions,
 								userName: req.session.userName,
 								auctionDetails: auctionDetails,
+								table: user.table,
+								tableOwner: user.tableOwner
 							})
 						} else {
 							res.render('userAccount', {
@@ -157,10 +159,10 @@ function UsersController(){
 								auction: req.params.auctions,
 								userName: req.session.userName,
 								auctionDetails: auctionDetails,
+								table: user.table,
+								tableOwner: user.tableOwner
 							})
 						}
-							table: user.table,
-							tableOwner: user.tableOwner
 					}
 				})
 			}else{

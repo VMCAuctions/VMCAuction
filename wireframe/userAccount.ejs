@@ -117,8 +117,8 @@
 																	<!-- these fields visible to admin only								 -->
 									<%if(admin){%>
 										<!-- <form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>"> -->
-											<h6>This can be done by Admin only!</h6>
-												<%if(user.userName != viewer){%>
+												<%if(user.userName != userName){%>
+													<h6>This can be done by Admin only!</h6>
 													<div class="form-row">
 														<div class="form-group col-md-12">
 															<label for="table" class="label-name">Table #</label>
@@ -135,13 +135,13 @@
 														</div>
 													</div>
 												<%}%>
-												<div class="form-row">
+												<!-- <div class="form-row">
 												<div class="form-group col-md-6">
 													<input type="password" name="newPass" class="form-control" placeholder="new password" readonly>
 												</div>
 												<div class="form-group col-md-6">
 													<input type="password" name="confirmPass" class="form-control" placeholder="confirm new password" readonly>
-												</div>
+												</div> -->
 												<!-- <div class="form-group col-md-6">
 													<button type="submit" id="changePassBtn" class="btn btn-primary">Save</button>
 												</div>
