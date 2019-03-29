@@ -1,4 +1,5 @@
 
+var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Package = require('../models/package.js'),
@@ -296,20 +297,20 @@ function UsersController(){
 				res.json({match: false})
 			}else if(user){
 				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
-				bcrypt.compare(req.body.password, user.password, function(err, match) {
+				// bcrypt.compare(req.body.password, user.password, function(err, match) {
 				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
 					if(err){
 						console.log(err)
-					}else if(match){
+					}else {
 						// console.log("user._auctions", user._auctions)
 						req.session.auction = user._auctions
 						req.session.userName = user.userName
 						req.session.admin = user.admin
 						res.json({match: true, auction: user._auctions, admin:user.admin})
-					}else{
-						res.json({match: false})
+					// }else{
+					// 	res.json({match: false})
 					}
-				})
+				// })
 			}
 		})
 	}
@@ -360,65 +361,35 @@ function UsersController(){
 		})
 	};
 
-
 	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
 	//3.2019 update - instead, using this for supporter to be able to edit their account.
 	//code for changing password is commented out.
-  this.update = function(req,res){
-	User.findOne({userName: req.body.userName}, function(err, user) {
-		if (err) {
-			console.log(err);
-		} else {
-			user.firstName = req.body.firstName;
-			user.lastName = req.body.lastName;
-			user.streetAddress = req.body.address;
-			user.city = req.body.city;
-			user.states = req.body.states;
-			user.zip = req.body.zip;
-			user.save();
-			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
-		}
-	});
-		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
-		// 	User.findOne({userName: req.body.userName}, function(err, user) {
-		// 		if (err) {
-		// 			console.log(err);
-		// 		} else {
-		// 			user.password = hash;
-		// 			user.save();
-		// 			res.redirect("/" + req.params.auctions + 
-		// 			"/users/account/" + req.params.userName);
-		// 		}
-		// 	});
-		// });
-	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
-	//3.2019 update - instead, using this for supporter to be able to edit their account.
-	//code for changing password is commented out.
-  this.update = function(req,res){
-	User.findOne({userName: req.body.userName}, function(err, user) {
-		if (err) {
-			console.log(err);
-		} else {
-			var tableOwner = req.body.tableOwner;
-			if (tableOwner) {
-				tableOwner = req.body.firstName
+	this.update = function(req,res){
+		User.findOne({userName: req.body.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
 			} else {
-				tableOwner = undefined
-			}
+				var tableOwner = req.body.tableOwner;
+				if (tableOwner) {
+					tableOwner = req.body.firstName
+				} else {
+					tableOwner = undefined
+				}
 
-			user.firstName = req.body.firstName;
-			user.lastName = req.body.lastName;
-			user.streetAddress = req.body.address;
-			user.city = req.body.city;
-			user.states = req.body.states;
-			user.zip = req.body.zip;
-			user.table = req.body.table;
-			user.tableOwner = tableOwner;
-			user.userOrg = req.body.userOrg;
-			user.save();
-			res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
-		}
-	});
+				user.firstName = req.body.firstName;
+				user.lastName = req.body.lastName;
+				user.streetAddress = req.body.address;
+				user.city = req.body.city;
+				user.states = req.body.states;
+				user.zip = req.body.zip;
+				user.table = req.body.table;
+				user.tableOwner = tableOwner;
+				user.userOrg = req.body.userOrg;
+				user.save();
+				res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
+			}
+		});
+
 		// bcrypt.hash(req.body.newPass, null, null, function(err, hash) {
 		// 	User.findOne({userName: req.body.userName}, function(err, user) {
 		// 		if (err) {
@@ -431,6 +402,8 @@ function UsersController(){
 		// 		}
 		// 	});
 		// });
+	};
+	
 	this.supporterCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("310 items.js this.populateCsv start")
