@@ -227,7 +227,7 @@ function PackagesController(){
                           package: result,
                           
 													packageItems: packageItems,
-                          
+													
                           categories: categories,
 													items: itemsArray,
 													total: total,

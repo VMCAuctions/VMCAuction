@@ -29,7 +29,7 @@
     <%if(admin){%> <%- include('adminHeader') -%> <%}else{%> <%-
     include('header') -%> <%}%>
     <div class="container mt-4">
-      <h2>Edit Package</h2>
+      <h2>Package Edit</h2>
       <!-- <form id='packageForm' action="/<%=auction%>/packages/<%=package._id%>" method="post"> -->
       <form
         id="packageForm"
@@ -45,13 +45,13 @@
           data-toggle="modal"
           data-target="#itemsModal"
         >
-          <i class="fas fa-tasks mr-1"></i> Manage Items
+          Manage Items
         </button>
 
         <!-- <fieldset class="item-list">
           <h5>Packaged Items</h5>
-           <ol> -->
-          <!-- <%for (var j = 0; j < package._items.length; j++){%>
+           <ol> 
+          <%for (var j = 0; j < package._items.length; j++){%>
               <li><%=package._items[j].name%></li>
           <%}%>
           </ol> 
@@ -84,9 +84,9 @@
           <div class="form-group col-md-4">
             <label class="label-name">Category</label>
             <select class="form-control" id="category" name="cat">
-              <option value="<%=package._cat%>"><%=package._cat%></option>
-              <% for (var c in categories){%> 
-                <%if(package._category !=categories[c]){%>
+              <option value="<%=package.cat%>"><%=package.cat%></option>
+              <%for (var c in categories){%> 
+                <%if(package.cat != categories[c]){%>
                   <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
                 <%}%> 
               <%}%>
@@ -141,24 +141,17 @@
               class="form-control"
               name="packageDescription"
               rows="6"
-              cols="40"
-            >
-            <%=package.description%></textarea
-            >
+              cols="40"><%=package.description%></textarea>
           </div>
           <div class="form-group col-md-6">
-            <label for="packageRestrictions" class="label-name"
-              >Package Restrictions</label
-            >
+            <label for="packageRestrictions" class="label-name">Package Restrictions</label>
             <textarea
               id="packageRestrictions"
               class="form-control"
               name="packageRestrictions"
               rows="6"
               cols="40"
-            >
-            <%=package.restrictions%></textarea
-            >
+            ><%=package.restrictions%></textarea>
           </div>
         </div>
 
