@@ -14,6 +14,10 @@ var packageSchema = new Schema({
 	_items: [{type: Number, ref: 'Item'}],
 	description: {type: String},
 	_category: {type: String},
+
+	//for testing package create/edit category comma snafu
+	cat: {type: String},
+	
 	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	value: {type: Number},  //prepopulated field with for item in package._items { value += item.value }
 	amount: {type: Number}, //starting bid

@@ -80,7 +80,6 @@ function PackagesController(){
 	};
 
 	this.list = function (req, res) {
-		console.log('100 packages.js this.list start');
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
 		}
@@ -130,7 +129,6 @@ function PackagesController(){
 									if (err) {
 										console.log(err)
 									} else {
-										console.log("100 packages.js this.list auction.findByID.  auctionDetails = ",auctionDetails);
 										res.render('packageRegister', {
 											current: 'package-register',
 											packages: sortedPackages,
@@ -154,25 +152,50 @@ function PackagesController(){
 	};
 
 	this.edit = function(req,res){
-		console.log(Date.now()," - 210 packages.js this.edit start.  req.body = ",req.body);
-		console.log(Date.now()," - 211 packages.js this.edit start.  req.file = ",req.file);
+		// console.log(Date.now()," - 209 packages.js this.edit start.  req.params = ",req.params);
+		// console.log(Date.now()," - 210 packages.js this.edit start.  req.body = ",req.body);
+		// console.log(Date.now()," - 211 packages.js this.edit start.  req.file = ",req.file);
 		if (globals.adminValidation(req, res)){
-			var categoryArray = [];
+      var categoryArray = [];
+      var packageItems =[];
 			var itemsArray = [];
-			var total = 0;
+      var total = 0;
+      
+    
 			Package.findById(req.params.id).populate("_items").exec(function(err,result){
 				if(err){
 					console.log(err);
 				}
 				else{
-					console.log(Date.now()," - 214 packages.js this.edit pkg.findById.  result = ",result);
+					// console.log(Date.now()," - 214 packages.js this.edit pkg.findById.  result._items = ",result._items);
+					// console.log(Date.now()," - 215 packages.js this.edit pkg.findById.  result._id = ",result._id);
 					
 					Category.find({}, function(err, categories) {
-							if(err) {
-									console.log(err);
-									res.status(500).send('packages.js this.edit.  Failed to Load Categories');
-							}
-							else {
+            if(err) {
+              console.log(err);
+              res.status(500).send('packages.js this.edit.  Failed to Load Categories');
+            }
+            else {
+							console.log("100 packages.js this.edit Cat.find.  categories = ",categories)
+							console.log("101 packages.js this.edit categories[0].name = ",categories[0].name);
+              Item.find({_package: result._id  }, function(err, packageItems) {
+                if(err) {
+                  console.log(err);
+                  res.status(500).send('packages.js this.edit.  Failed to find items in this package');
+                }
+                else {
+                 
+                  packageItems = packageItems;
+                  // console.log(Date.now()," - 216 packages.js this.edit pkg.findById.  packageItems = ",packageItems);
+
+                  for (var i in packageItems){
+                    // console.log("packageItems[i].name = ", packageItems[i].name);
+                  }
+
+
+                }
+              })
+              
 								Item.find({_auctions: req.params.auctions}, function(err, items) {
 									if(err) {
 											console.log(err);
@@ -181,11 +204,14 @@ function PackagesController(){
 									else {
 										// console.log(total);
 										for(let i = 0; i<items.length; i++){
-											 if(!items[i].packaged){
+											//  if(!items[i].packaged){
+											 if(!items[i].packaged || items[i]._package == req.params.id){
 												 itemsArray.push(items[i]);
-												//  console.log(itemsArray);
+												//  console.log("===========================");
+												//  console.log("218 - packages.js this.edit itemsArray for loop.  items[i] = ",items[i]);
 										 	}
 										}
+										// console.log(Date.now()," - 218 packages.js this.edit itemsArray = ",itemsArray);
 										for(let i = 0; i < result._items.length; i++){
 											total += result._items[i].value;
 										 	// console.log(result._items[i]);
@@ -196,8 +222,11 @@ function PackagesController(){
 											} else {
 												
 												res.render('packageEdit', {
-													package: result,
-													categories: categories,
+                          package: result,
+                          
+													packageItems: packageItems,
+													
+                          categories: categories,
 													items: itemsArray,
 													total: total,
 													userName: req.session.userName,
@@ -235,16 +264,17 @@ this.new = function(req,res){
 					// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
 					Category.find({}, function(err, categories) {
 						if(err) {
-							console.log(Date.now() + " - 006 packages.js this.new category.find error. err = ",err);
+							console.log("006 packages.js this.new category.find error. err = ",err);
 							res.status(500).send('Failed to find categories');
 						}
 						else {
+							console.log("007 packages.js this.new category.find. categories = ",categories);
+							console.log("008 packages.js this.new category.find. categories[0].name = ",categories[0].name);
 							Auction.findById(req.params.auctions, function (err, auctionDetails){
 								if (err) {
 									console.log(err)
 								} else {
 
-									// console.log(Date.now() + " - 007 packages.js this.new category.find. categories = ",categories);
 									res.render('packageCreate', {
 										current: 'createPackage',
 										categories: categories,
@@ -268,9 +298,14 @@ this.new = function(req,res){
 
 	//post method that creates packages
 	this.create = function(req,res){
-		console.log(Date.now() + " - 100 packages.js this.create start. req.body = ",req.body);
-		console.log(Date.now() + " - 101 packages.js this.create start. req.file = ",req.file);
-		console.log(Date.now() + " - 102 packages.js this.create start. req.params = ",req.params);
+		console.log("101 packages.js this.create req.body.category = ",req.body.category);
+		console.log("101 packages.js this.create start. req.file = ",req.file);
+		console.log("100 packages.js this.create start. req.body = ",req.body);
+		console.log("102 packages.js this.create start. req.params = ",req.params);
+		
+		// var cat = req.body.category[0]
+		// console.log("103 packages.js this.create cat = ",cat);
+		
 		//following should never get triggered.  front end validations should take care of it
 		
 		// if (req.body.selectedItems.length == 0){
@@ -285,6 +320,7 @@ this.new = function(req,res){
 			value: req.body.totalValue,
 			bidIncrement: req.body.increments,
 			_category: req.body.category,
+			cat: req.body.cat,
 			bid: [],
 			amount: req.body.openingBid,
 			featured: req.body.featured,
@@ -332,7 +368,7 @@ this.new = function(req,res){
 						console.log(err);
 					}
 					else{
-						console.log(package)
+						// console.log(package)
 						var ourBids = false
 						var lastBid = package.amount
 						if(package.bids.length > 0){
@@ -363,8 +399,12 @@ this.new = function(req,res){
 	};
 
 	this.update = function(req,res){
-		console.log(Date.now()," - 220 packages.js this.update start.  req.body = ",req.body);
-		console.log(Date.now()," - 221 packages.js this.update start.  req.file = ",req.file);
+		console.log("220 packages.js this.update start.  req.body = ",req.body);
+		console.log("220 packages.js this.update start.  req.body.category = ",req.body.category);
+		console.log("221 packages.js this.update start.  req.file = ",req.file);
+		var cat = req.body.category[0];
+		console.log("222 packages.js this.update start.  cat = ",cat);
+		
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function (err, package) {
 				console.log(Date.now()," - 224 packages.js this.update pkg.findById result = ",package);
@@ -384,16 +424,18 @@ this.new = function(req,res){
 							}
 						}
 					})
-			        // Update each attribute with value that was submitted in the body of the request
-			        // If that attribute isn't in the request body, default back to whatever it was before.
-			        package.name = req.body.name || package.name;
+					// Update each attribute with value that was submitted in the body of the request
+					// If that attribute isn't in the request body, default back to whatever it was before.
+			  	package.name = req.body.name || package.name;
 					package.description = req.body.packageDescription || package.description;
 					package.restrictions = req.body.packageRestrictions || package.restrictions;
 					package.bids[0] = req.body.openingBid || package.bids[0];
 					package.value = req.body.totalValue || package.value;
 					package.amount = req.body.openingBid || package.amount;
-			        package.bidIncrement = req.body.increments || package.bidIncrement;
-			        package._category = req.body.category || package._category;
+			    package.bidIncrement = req.body.increments || package.bidIncrement;
+			    package._category = req.body.category || package._category;
+			    package.cat = req.body.cat || package.cat;
+			    package._category = req.body.category;
 					package.priority = req.body.priority || package.priority;
 					package._items = req.body.selectedItems;
 
@@ -428,6 +470,75 @@ this.new = function(req,res){
 			    }
 			});
 		}
+	}
+
+
+	this.itemsUpdate = function(req,res){
+		console.log(Date.now()," - 220 packages.js this.itemsUpdate start.  req.body = ",req.body);
+		
+		// if (globals.adminValidation(req, res)){
+		// 	Package.findById(req.params.id, function (err, package) {
+		// 		console.log(Date.now()," - 224 packages.js this.update pkg.findById result = ",package);
+		// 		if (err) {
+		// 	        res.status(500).send(err);
+		// 	    }else {
+		// 			Item.find({_id: package._items}, function(err, items) {
+		// 				if (err) {
+		// 					console.log(err);
+		// 				}else{
+		// 					for (var i = 0; i < items.length; i++) {
+		// 						//Setting all of the items to unpackaged, just in case they are removed and not put back into the package
+		// 						//Items that remain in the package will be repackaged below
+		// 						items[i].packaged = false;
+		// 						items[i]._package = null;
+		// 						items[i].save()
+		// 					}
+		// 				}
+		// 			})
+		// 			// Update each attribute with value that was submitted in the body of the request
+		// 			// If that attribute isn't in the request body, default back to whatever it was before.
+		// 	  	package.name = req.body.name || package.name;
+		// 			package.description = req.body.packageDescription || package.description;
+		// 			package.restrictions = req.body.packageRestrictions || package.restrictions;
+		// 			package.bids[0] = req.body.openingBid || package.bids[0];
+		// 			package.value = req.body.totalValue || package.value;
+		// 			package.amount = req.body.openingBid || package.amount;
+		// 	    package.bidIncrement = req.body.increments || package.bidIncrement;
+		// 	    package._category = req.body.category || package._category;
+		// 			package.priority = req.body.priority || package.priority;
+		// 			package._items = req.body.selectedItems;
+
+		// 			// For image upload
+		// 			package.photo = req.body.imgFileName || package.photo;
+
+
+		// 	        package.save(function (err, package) {
+		// 	            if (err) {
+	  //                   console.log(err)
+		// 	                res.status(500).send(err)
+		// 	            }else{
+		// 					console.log(Date.now()," - 226 packages.js this.update post pkg.save.  package = ",package);
+		// 					for(let i = 0; i < package._items.length; i++ ){
+		// 						Item.findOne({_id: package._items[i]} , function(err, item){
+		// 							item.packaged = true;
+		// 							item._package = package.id;
+		// 							item.save(function (err){
+		// 								if (err){
+		// 									console.log(err)
+		// 								}else{
+		// 									console.log('packages.js this.update item should  be packaged', item.packaged);
+		// 								}
+		// 							})
+		// 						})
+		// 					}
+		// 					// 1-17 Bug Fix List Item 7 Change redirect to Package Register
+		// 					// res.redirect('/' + req.params.auctions  + '/packages/' + package._id );
+		// 					res.redirect('/' + req.params.auctions  + '/packages/list' );
+		// 	           }
+		// 	       });
+		// 	    }
+		// 	});
+		// }
 	}
 
 	this.removePackage = function(req, res){
