@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 var itemSchema = new Schema({
  name: {type: String, required: true, minlength: 4},
  description: {type: String, required: true, minlength: 4},
- _category: String,
+ _category: {type: String},
  donorPrefix: {type: String},
  donorFirst: {type: String},
  donorLast: {type: String},

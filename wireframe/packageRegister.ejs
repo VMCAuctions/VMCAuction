@@ -125,9 +125,10 @@
                                 <% } %>
                                 </ul>
                             </td>
-                            <td class="text-center"><%= "$" + packages[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+							<td class="text-center"><%= "$" + packages[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                             <td class="text-center"><%= "$" + packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                             <td class="text-center"><%= "$" + packages[i].bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            
                             <% if(admin == 2){ %>
                                 <form>
                                     <td class="text-center"><select class="input-featured" id="<%= packages[i].id %>Featured">

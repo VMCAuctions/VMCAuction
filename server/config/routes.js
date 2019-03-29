@@ -17,34 +17,36 @@ module.exports = function(app) {
 
 	var storage = multer.diskStorage({
 		destination: function(req, file, callback) {
-			console.log(Date.now() + " - 000 routes.js var storage. in destination")
+			// console.log(Date.now() + " - 000 routes.js var storage. in destination")
 			callback(null, './public')//here you can place your destination path
 		},
 	
 		filename: function(req, file, callback) {
-			console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
-			console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
-			console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
+			// console.log(Date.now() + " - 001 routes.js var storage.  file = ",file)
+			// console.log(Date.now() + " - 002 routes.js var storage.  req.file = ",req.file)
+			// console.log(Date.now() + " - 003 routes.js var storage.  req.body = ",req.body)
 
 			// Creates text stub for URL, auction image name and package image name
 
 			// converts 'name' to all lower case 
 			var lowerName = req.body.name.toLowerCase();
-				// console.log("154 routes.js var storage.  var lowerName = ",lowerName)
+			// console.log("150 routes.js var storage.  var lowerName = ",lowerName)
 
 			// converts spaces to dashes for use in URLStub
 			var urlStub = '';
 			for (var i = 0; i < lowerName.length; i++){
 				var code = lowerName.charCodeAt(i);
-				// console.log("155 routes.js var storage.  var code = ",code)
+				// console.log("151 routes.js var storage.  var code = ",code)
+				// console.log("152 routes.js var storage.  String.fromCharCode(code) = ",String.fromCharCode(code))
 				if (code == 32){
 					code = 45;
 					urlStub += String.fromCharCode(code);
-					// console.log("156 routes.js var storage.  lowerName letter (= s/b dash) = ",urlStub)
-				} else {
-					urlStub += lowerName.charAt(i);
-					// console.log("157 routes.js var storage.  lowerName letter (=charAt i) = ",urlStub)
-				}
+					// console.log("154 routes.js var storage.  lowerName letter (= s/b dash) = ",String.fromCharCode(code))
+				} else if (code >= 97 && code <= 122) {
+					// console.log("155 routes.js var storage.  code = ",code)
+					// console.log("156 routes.js var storage.  String.fromCharCode(code) = ",String.fromCharCode(code))
+					urlStub += String.fromCharCode(code);
+				} else console.log("157 routes.js var storage.Code not in lower-case range 97-122.  Code = ",code)
 				// console.log("158 routes.js var storage. urlStub final = ",urlStub)
 
 			}
@@ -54,10 +56,29 @@ module.exports = function(app) {
 			var imgFileName = file.fieldname + '_' + urlStub + '_' + Date.now() + path.extname(file.originalname);
 			req.body.imgFileName = imgFileName;
 			req.body.urlStub = urlStub;
-			console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
-			console.log(Date.now() + " - 005 routes.js var storage.  urlStub = ",urlStub)
+			// console.log(Date.now() + " - 004 routes.js var storage.  imgFileName = ",imgFileName)
+			// console.log(Date.now() + " - 005 routes.js var storage.  urlStub = ",urlStub)
 			
 			callback(null, imgFileName)
+		}
+	})
+
+	var csvStorage = multer.diskStorage({
+		destination: function(req, file, callback) {
+			// console.log("000 routes.js var csvStorage. in destination")
+			callback(null, './public')//here you can place your destination path
+		},
+	
+		filename: function(req, file, callback) {
+			// console.log("001 routes.js var csvStorage.  file = ",file)
+			// console.log("002 routes.js var csvStorage.  req.file = ",req.file)
+			// console.log("003 routes.js var csvStorage.  req.body = ",req.body)
+			
+			var csvFileName = file.originalname;
+			req.body.csvFileName = csvFileName;
+			// console.log("004 routes.js var storage.  csvFileName = ",csvFileName)
+			
+			callback(null, csvFileName)
 		}
 	})
 
@@ -69,15 +90,15 @@ module.exports = function(app) {
 	//WIDGETS
 	app.post('^/widgets$', function (req, res) {
 
-		console.log(Date.now()," - 100 routes.js /widgets$.  req.body = ",req.body);
-		console.log(Date.now()," - 101 routes.js /widgets$.  req.file = ",req.file);
+		// console.log(Date.now()," - 100 routes.js /widgets$.  req.body = ",req.body);
+		// console.log(Date.now()," - 101 routes.js /widgets$.  req.file = ",req.file);
 		
 		var upload = multer({ storage: storage}).single('widgetImage');
 		upload(req, res, function(err) {
-			console.log(Date.now()," - 102 routes.js /widgets$.  req.body = ",req.body);
-			console.log(Date.now()," - 103 routes.js /widgets$.  req.file = ",req.file);
+			// console.log(Date.now()," - 102 routes.js /widgets$.  req.body = ",req.body);
+			// console.log(Date.now()," - 103 routes.js /widgets$.  req.file = ",req.file);
 			widgets.create(req, res)});
-		})
+	})
 		// widgets.create(req, res)});
 	
 
@@ -89,13 +110,47 @@ module.exports = function(app) {
 	app.get('/:auctions/items/new', function(req,res){
 		items.new(req,res)});
 
+
+	// Bob
+	//displays add items from csv html page
+	app.get('/:auctions/items/csv', function(req, res){
+		// console.log("200 routes.js /:auc./items/csv route")
+		items.populateCsv(req, res)});
+
+	// actually adding items from csv - original
+	// app.post('/:auctions/items/itemsCsv', function(req, res){
+	// 	// console.log("201 routes.js /:auc./items/itemsCsv route")
+	// 	items.itemsCsv(req, res)});
+
+	// actually adding items from csv - with .csv file path save
+	app.post('/:auctions/items/itemsCsv', function(req, res){
+		// console.log("110 routes.js /:aucs/items/itemsCsv.  req.body = ",req.body);
+		// console.log("111 routes.js /:aucs/items/itemsCsv.  req.file = ",req.file);
+		
+		var upload = multer({ storage: csvStorage}).single('csvUpload');
+		upload(req, res, function(err) {
+			// console.log("112 routes.js /:aucs/items/itemsCsv.  req.body = ",req.body);
+			// console.log("113 routes.js /:aucs/items/itemsCsv.  req.file = ",req.file);
+			
+			items.itemsCsv(req, res)});
+
+	})
+		// items.itemsCsv(req, res)});
+
+
+
+	
+	// existing methods
 	//adding items from csv page
 	app.get('/:auctions/items/populate', function(req, res){
 		items.populatePage(req, res)});
+
 	//actually adding items from csv
 	app.post('/:auctions/items/populate', function(req, res){
-		console.log("in items.populate route")
+		// console.log("201 routes.js /:auc./itemsCsv/populate route")
 		items.populate(req, res)});
+
+	// end csv upload	
 
 	// post the new item form and create that new item
 	app.post('/:auctions/items', function(req,res){
@@ -126,19 +181,20 @@ module.exports = function(app) {
 		packages.new(req,res)});
 
 
-	// post the new package form and create the new package
+	// post the new package form and create the new package - ORIGINAL
 	// app.post('/:auctions/packages', function(req,res){
 	// 	packages.create(req,res)});
 
+	// post the new package form and create the new package - with image upload
 	app.post('/:auctions/packages', function (req, res) {
 
-		console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
-		console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
+		// console.log(Date.now()," - 020 routes.js /:auctions/pkgs.  req.body = ",req.body);
+		// console.log(Date.now()," - 021 routes.js /:auctions/pkgs.  req.file = ",req.file);
 		
 		var upload = multer({ storage: storage}).single('packageImage');
 		upload(req, res, function(err) {
-			console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
-			console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
+			// console.log(Date.now()," - 022 routes.js /:auctions/pkgs.  req.body = ",req.body);
+			// console.log(Date.now()," - 023 routes.js /:auctions/pkgs.  req.file = ",req.file);
 			packages.create(req, res)});
 			
 		})
@@ -156,13 +212,13 @@ module.exports = function(app) {
 	
 	app.post('/:auctions/packages/:id', function(req,res){
 
-		console.log(Date.now()," - 030 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
-		console.log(Date.now()," - 031 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+		// console.log(Date.now()," - 030 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+		// console.log(Date.now()," - 031 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
 		
 		var upload = multer({ storage: storage}).single('packageImage');
 		upload(req, res, function(err) {
-			console.log(Date.now()," - 032 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
-			console.log(Date.now()," - 033 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
+			// console.log(Date.now()," - 032 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
+			// console.log(Date.now()," - 033 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
 			packages.update(req, res)});
 		})
 	
@@ -219,10 +275,34 @@ module.exports = function(app) {
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
 
+	// Supporters .csv import
+	//displays add supporters from csv html page
+	app.get('/:auctions/users/csv', function(req, res){
+		console.log("200 routes.js /:auc./users/csv route")
+		users.supporterCsv(req, res)});
+
+	// actually adding supporters from csv - original
+	// app.post('/:auctions/users/usersImport', function(req, res){
+	// 	console.log("201 routes.js /:auc./users/supportersCsv route")
+	// 	users.usersCsv(req, res)});
+
+	app.post('/:auctions/users/usersImport', function(req, res){
+		
+		// console.log("110 routes.js /:aucs/users/usersImport.  req.body = ",req.body);
+		// console.log("111 routes.js /:aucs/users/usersImport.  req.file = ",req.file);
+
+		var upload = multer({ storage: csvStorage}).single('supporterCsvUpload');
+		upload(req, res, function(err) {
+			// console.log("112 routes.js /:aucs/users/usersImport.  req.body = ",req.body);
+			// console.log("113 routes.js /:aucs/users/usersImport.  req.file = ",req.file);
+			
+			users.usersCsv(req, res)});
+
+	})
+
 
   	//Check login credentials
 	app.post('/users/checklogin', function(req,res){
-	// app.post('/checklogin', function(req,res){
 		users.checkLogin(req,res)});
 
 	  //Check if username is already in use
@@ -232,6 +312,11 @@ module.exports = function(app) {
 	app.get('/users/logout', function(req,res){
 		console.log("route out");
 		users.logout(req,res)});
+	
+	// display the edit supporter page
+	app.get('/:auctions/usersAccount/:userName', function(req,res){
+		users.showAccount(req,res)});
+
 	// get the watchlist page of a specific user
 	app.get('/:auctions/users/:userName', function(req,res){
 		users.show(req,res)});
@@ -260,7 +345,7 @@ module.exports = function(app) {
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
 		//deletes a user (Note: no front-end link to this route yet)
-	app.get('/users/delete/:user', function(req, res){
+	app.get('/:auction/users/delete/:id', function(req, res){
 		users.delete(req,res)});
 
 	// AUCTION //
@@ -274,13 +359,13 @@ module.exports = function(app) {
 	app.post('^/auctions$', function (req, res) {
 
 
-		console.log(Date.now()," - 100 routes.js /auctions$.  req.body = ",req.body);
-		console.log(Date.now()," - 101 routes.js /auctions$.  req.file = ",req.file);
+		// console.log(Date.now()," - 100 routes.js /auctions$.  req.body = ",req.body);
+		// console.log(Date.now()," - 101 routes.js /auctions$.  req.file = ",req.file);
 		
 		var upload = multer({ storage: storage}).single('auctionImage');
 		upload(req, res, function(err) {
-			console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
-			console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
+			// console.log(Date.now()," - 102 routes.js /auctions$.  req.body = ",req.body);
+			// console.log(Date.now()," - 103 routes.js /auctions$.  req.file = ",req.file);
 			// auctions.create(req, res)});
 		})
 
@@ -296,13 +381,13 @@ module.exports = function(app) {
 	//Actually edits the auction on the backend
 	app.post('/:auctions/update', function(req,res){
 
-		console.log(Date.now()," - 110 routes.js /auctions/update.  req.body = ",req.body);
-		console.log(Date.now()," - 111 routes.js /auctions/update.  req.file = ",req.file);
+		// console.log(Date.now()," - 110 routes.js /auctions/update.  req.body = ",req.body);
+		// console.log(Date.now()," - 111 routes.js /auctions/update.  req.file = ",req.file);
 
 		var upload = multer({ storage: storage}).single('auctionImage');
 		upload(req, res, function(err) {
-			console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
-			console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
+			// console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
+			// console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
 			auctions.update(req, res)})
 			
 		})

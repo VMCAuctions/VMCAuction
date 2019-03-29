@@ -23,17 +23,17 @@ function GlobalsController(){
 			// //IMPORTANT - this code prevents being kicked out due to session.admin / session.auction = undefined errors
 			// //REMOVE FOR PRODUCTION!!
 
-			// req.session.admin = "2";
-			// req.session.auction = "5beda68d6555a93bbc62ba32";
+			req.session.admin = "2";
+			req.session.auction = "5c59f82b181b703674c1eca5"; // localhost Getting the Shiny Gold auction
 
-			// console.log("globals.js adminVal.  hard coded session data = req.ses.admin = ",req.session.admin," req.ses = ",req.session)
+			console.log("globals.js adminVal.  hard coded session data = req.ses.admin = ",req.session.admin," req.ses = ",req.session)
 
-			// return true
+			return true
 
 			// //END
 
-			res.redirect('/' + req.session.auction + '/packages')
-			return false
+			// res.redirect('/' + req.session.auction + '/packages')
+			// return false
 		}
 		return true
 	}
