@@ -16,11 +16,13 @@ var userSchema = new Schema(
     city: { type: String },
     states: { type: String },
     zip: { type: String },
-    // password: { type: String, required: true },
-    password: { type: String },
-    admin: { type: Number },
+	password: { type: String },
     _auctions: { type: Schema.Types.ObjectId, ref: "Auction" },
     _packages: [{ type: Number, ref: "Package" }],
+	admin: { type: Number },
+	table: { type: String, default: "0" },
+	tableOwner: { type: String },
+	userOrg: { type: String }
   },
   { usePushEach: true }
 );

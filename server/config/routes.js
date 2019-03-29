@@ -271,6 +271,10 @@ module.exports = function(app) {
 	app.get('/:auctions/users/account/:userName', function (req,res) {
 		users.showAccount(req,res)});
 
+	// get the new supporter form
+	app.get('/:auctions/users/new', function (req,res) {
+		users.new(req,res)});
+
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
