@@ -77,10 +77,12 @@
 										</div>
 									</div>
 
-									<div class="form-group">
-										<label for="userOrg">Organization</label>
-										<input type="text" name="userOrg" class="form-control" value="<%= user.userOrg %>">
-									</div>
+									<%if(admin == 0 || user.userName != userName){%>
+										<div class="form-group">
+											<label for="userOrg">Organization</label>
+											<input type="text" name="userOrg" class="form-control" value="<%= user.userOrg %>">
+										</div>
+									<%}%>
 
 									<div class="form-group">
 										<label for="userName">Email/Username</label>
