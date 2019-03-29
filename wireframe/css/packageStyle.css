@@ -1,34 +1,159 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+h2.supporter-view {
+	/* font-family: Kameron, serif;  */
+	color: #333!important;
+	font-size: 1rem;
+	font-weight: 700;
+	text-align: center; 
+	text-transform: uppercase;
+	padding-top: 10px; 
 
-body {
-  font-family: 'Roboto', sans-serif !important;
-  color: #ffffff;
 }
 
-.cardMargin{
-  margin-top: 5rem;
+.search-pkg {
+	width: 180px; 
+	margin: 0 0.7rem 0 0 ;
+	padding: 5px 3px; 
+	border: solid 1px #ccc; 
+	border-radius: 4px; 
+    display:inline-block;
 }
 
-.cardListButton{
-  background-color: coral !important;
+
+.pkg-card {
+	height: 21rem;
+	background-color: #f8f9fa !important;
+	border:solid 1px #f0f2f4 !important;  
+	box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	position: relative;
+	text-overflow: hidden;  
+	font-size: 0.8rem; 
 }
 
-.cardFeature{
-  background-color: #439941 !important;
+.card-top {
+	height: 6rem; 
 }
 
-.cardDelete{
-  background-color: #E84646 !important;
+.pkg-num {
+	width: 46px; 
+	height: 32px; 
+	background-color: #003d79;
+	color: #fff; 
+	font-size: 0.75rem ; 
+	font-weight: 500; 
+	border-radius: 2px;  
+	position: absolute; 
+	padding: 7px; 
+	text-align: center;
+	top: 0.7rem; 
+	left: 0.7rem; 
 }
 
-.cardEdit{
-  background-color: #DDDDDD !important;
+.pkg-img {
+	width: 120;
+	height: 90px; 
+	display: block; 
+	/* align-self: flex-start;   */
 }
 
-.cardWatch{
-  background-color: #439AEF !important;
+.featured-box {
+ 	display: inline-block; 
+}
+
+.pkg-title { 
+	font-size: 0.95rem; 
+	font-weight: 700; 
+}
+
+.category {
+	 color: #808080; 
+	 font-weight: 300; 
+}
+
+.value {
+	font-weight: 700; 
+	/* color: #003d79; */
+	font-size: 0.95rem; 
+}
+.opening-bid {
+	font-weight: 700; 
+	/* color: #003d79; */
+	font-size: 0.8rem; 
+}
+
+.highest-bid {
+	font-weight: 700; 
+	color :#69afff;
+	font-size: 0.8rem; 
+}
+
+.no-bid {
+	font-weight: 700; 
+	color :#ff6746;
+	font-size: 0.8rem; 
+
+}
+.donated {
+	color: #808080; 
+	font-style: italic;
+	font-weight: 300; 
+}
+
+ul {
+	list-style: none; /* Remove list bullets */
+	padding: 0;
+}
+
+/* buttons
+-------------------------------------------------------------- */
+.btn-add-watchlist {
+	background-color: #a2b209; 
+	color: #f8f9fa;
+	border: none;
+	width: 200px;
+	font-size: 0.75rem; 
+	font-weight:700; 
+	display: block;
+	margin: 0 auto; 
+} 
+
+.btn-remove-watchlist {
+	background-color: #a6a6a6; 
+	color: #f8f9fa;
+	border: none;
+	width: 200px;
+	font-size: 0.95rem !important; 
+	font-weight:700; 
+	display: block;
+	margin: 0 auto; 
+} 
+
+.form-control.btn-no-bids {
+	background-color: #ff6746; 
+	color: #f8f9fa;
+	font-size: 0.95rem !important; 
+	font-weight:400; 
+	border: none;
+}
+
+.btn-add-watchlist:hover {
+	background-color: #6f8300; 
+}
+
+.btn-remove-watchlist:hover {
+	background-color: #737373; 
+}
+
+.form-control.btn-no-bids:hover {
+	background-color: #c30000; 
+	color: #f8f9fa;
+	font-size: 0.95rem !important; 
+	font-weight:400; 
+	border: none;
 }
 
 .cardHover:hover{
-  cursor: pointer;
-}
+	cursor: pointer;
+	background-color:#f0f2f4 ; 
+} 
