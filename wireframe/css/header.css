@@ -49,8 +49,10 @@ a.log:hover, a.log:active, a.user:hover, a.user:active {
 .nav-btn {
     text-align: center;
     text-transform: uppercase; 
-    font-weight: 400; 
-    font-size: 0.73rem !important; 
+    color: #f9f8fa;
+    /* font-weight: 400;  */
+    font-weight: 300 !important;  
+    font-size: 0.72rem !important; 
 }
 
 .catalog {
@@ -73,29 +75,29 @@ a.nav2-link {
 
 a.nav2-link:hover {
     color: #e6e1ea !important; 
-    font-weight: 900 !important; 
+    font-weight: 700 !important; 
 }
-
+/* 
 .nav-btn {
     text-align: center;
     text-transform: uppercase; 
     color: #f9f8fa;
     font-weight: 400; 
-    font-size: 0.8rem; 
+    font-size: 0.75rem; 
       
-}
+} */
 
 /* to show which page is active */
 .catalog .current {
     color: #e6e1ea !important; 
-    font-weight: 900 !important;
+    font-weight: 700 !important;
     border-bottom: 4px solid #0055cb; 
     padding: 0 0 15px 0; 
 }
 
 .featured .current {
     color: #e6e1ea !important; 
-    font-weight: 900 !important;
+    font-weight: 700 !important;
     border-bottom: 4px solid #c30000; 
     padding: 0 0 15px 0;  
 
@@ -103,7 +105,7 @@ a.nav2-link:hover {
 
 .watch-list .current {
     color: #e6e1ea !important; 
-    font-weight: 900 !important;
+    font-weight: 700 !important;
     border-bottom: 4px solid #6f8300; 
     padding: 0 0 15px 0;  
 }

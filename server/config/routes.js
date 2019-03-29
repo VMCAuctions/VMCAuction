@@ -170,9 +170,12 @@ module.exports = function(app) {
 	//Modifying the featured status and priority of an item
 	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
-	// show all packages
+	// show catalog (all packages)
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
+	// show featured packages
+	app.get('/:auctions/featured-packages', function(req,res){
+		packages.featuredPackages(req,res)});
 	// show package register
 	app.get('/:auctions/packages/list', function(req, res) {
 		packages.list(req, res)});
