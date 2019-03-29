@@ -9,6 +9,16 @@ h2.supporter-view {
 
 }
 
+.search-pkg {
+	width: 180px; 
+	margin: 0 0.7rem 0 0 ;
+	padding: 5px 3px; 
+	border: solid 1px #ccc; 
+	border-radius: 4px; 
+    display:inline-block;
+}
+
+
 .pkg-card {
 	height: 21rem;
 	background-color: #f8f9fa !important;
@@ -16,10 +26,6 @@ h2.supporter-view {
 	box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
 	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
 	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
-	/* display: flex; 
-	flex-flow: row wrap; 
-	justify-content: start; 
-	align-content: center;   */
 	position: relative;
 	text-overflow: hidden;  
 	font-size: 0.8rem; 
@@ -99,9 +105,11 @@ ul {
 	padding: 0;
 }
 
+/* buttons
+-------------------------------------------------------------- */
 .btn-add-watchlist {
 	background-color: #a2b209; 
-	color: #e6e1ea;
+	color: #f8f9fa;
 	border: none;
 	width: 200px;
 	font-size: 0.75rem; 
@@ -112,7 +120,7 @@ ul {
 
 .btn-remove-watchlist {
 	background-color: #a6a6a6; 
-	color: #e6e1ea;
+	color: #f8f9fa;
 	border: none;
 	width: 200px;
 	font-size: 0.95rem !important; 
@@ -121,40 +129,31 @@ ul {
 	margin: 0 auto; 
 } 
 
+.form-control.btn-no-bids {
+	background-color: #ff6746; 
+	color: #f8f9fa;
+	font-size: 0.95rem !important; 
+	font-weight:400; 
+	border: none;
+}
+
 .btn-add-watchlist:hover {
 	background-color: #6f8300; 
 }
 
 .btn-remove-watchlist:hover {
-	background-color: #666666; 
+	background-color: #737373; 
 }
 
-
-
-.cardMargin{
-  margin-top: 5rem;
-}
-
-.cardListButton{
-  background-color: coral !important;
-}
-
-.cardFeature{
-  background-color: #439941 !important;
-}
-
-.cardDelete{
-  background-color: #E84646 !important;
-}
-
-.cardEdit{
-  background-color: #DDDDDD !important;
-}
-
-.cardWatch{
-  background-color: #439AEF !important;
+.form-control.btn-no-bids:hover {
+	background-color: #c30000; 
+	color: #f8f9fa;
+	font-size: 0.95rem !important; 
+	font-weight:400; 
+	border: none;
 }
 
 .cardHover:hover{
-  cursor: pointer;
-}
+	cursor: pointer;
+	background-color:#f0f2f4 ; 
+} 
