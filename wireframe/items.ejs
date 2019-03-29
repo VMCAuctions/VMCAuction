@@ -15,6 +15,10 @@
   <!-- Java Script -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+	<!-- Data Tables  -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
   
 </head>
 
@@ -27,7 +31,7 @@
 
   <div class="container-fluid item-container">
     <h2 class="my-4">Donated Items</h2>
-      <div id="search-container">
+      <div class="my-4" id="search-container">
         <!-- Find items by keyword -->
         <div id="search-keyword">
           <label for "keyword" class="label-search">Search by keyword:</label>
@@ -61,7 +65,7 @@
                   <th scope="col" class="med-to-narrow-col">Donor Name</th>
                   <th scope="col" class="med-to-narrow-col">Donor Organization</th>
                   <th scope="col" class="med-to-narrow-col">Donor Display</th>
-                  <% if (admin) { %>
+                  <% if (admin == 2) { %>
                     <th scope="col" class="med-to-narrow-col">Actions</th>
                   <% } %>
                 </tr>
@@ -97,7 +101,23 @@
 
   <script type="text/javascript">
     $(document).ready(function() {
-      console.log("Ready!");
+      
+	  // Initializes Data Tables plugin
+	  $('#item-table').DataTable({
+			"dom": '<lip<t>ip>',
+			"searching": false,
+			"order": [[ 0, "asc" ]],
+			"pageLength": 5,
+			"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+			"pagingType": "full_numbers",
+			"columnDefs": [
+				{ "orderable": false, "targets": 5 },
+				{ "orderable": false, "targets": 6 },
+				{ "orderable": false, "targets": 10 },
+			]
+		
+	  });
+
       $("#keyword").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         if (value == '') {

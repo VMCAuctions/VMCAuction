@@ -204,6 +204,12 @@ module.exports = function(app) {
 		packages.show(req,res)});
 
 	// update a single package
+	app.post('/:auctions/packages/items/:id', function(req,res){
+
+		console.log(Date.now()," - 040 routes.js /:aucs/pkgs/items/:id.  req.body = ",req.body);
+		
+		packages.itemsUpdate(req, res)});
+	
 	app.post('/:auctions/packages/:id', function(req,res){
 
 		// console.log(Date.now()," - 030 routes.js /:aucs/pkgs/:id.  req.body = ",req.body);
@@ -215,6 +221,7 @@ module.exports = function(app) {
 			// console.log(Date.now()," - 033 routes.js /:aucs/pkgs/:id.  req.file = ",req.file);
 			packages.update(req, res)});
 		})
+	
 
   	// get the edit package form
 	app.get('/:auctions/packages/edit/:id', function(req,res){
