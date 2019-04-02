@@ -26,6 +26,7 @@ var userSchema = new Schema(
 	userOrg: { type: String }
 	},
 	{ timestamps: true, usePushEach: true }
+
 );
 
 
