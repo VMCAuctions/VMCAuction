@@ -237,12 +237,7 @@ function UsersController(){
 								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
-							var tableOwner = req.body.tableOwner;
-							if (tableOwner === "on") {
-								tableOwner = req.body.firstName
-							} else {
-								tableOwner = undefined
-							}
+
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -257,7 +252,9 @@ function UsersController(){
 								password: hash,
 								admin: adminStatus,
 								table: req.body.table,
-								tableOwner: tableOwner,
+								tableOwner: req.body.tableOwner,
+								tableOwnerName: req.body.tableOwnerName,
+								// seats: req.body.seats,
 								userOrg: req.body.userOrg
 							},
 							function(err, user){
@@ -371,13 +368,6 @@ function UsersController(){
 			if (err) {
 				console.log(err);
 			} else {
-				var tableOwner = req.body.tableOwner;
-				if (tableOwner) {
-					tableOwner = req.body.firstName
-				} else {
-					tableOwner = undefined
-				}
-
 				user.firstName = req.body.firstName;
 				user.lastName = req.body.lastName;
 				user.streetAddress = req.body.address;
@@ -385,7 +375,8 @@ function UsersController(){
 				user.states = req.body.states;
 				user.zip = req.body.zip;
 				user.table = req.body.table;
-				user.tableOwner = tableOwner;
+				user.tableOwner = req.body.tableOwner;
+				user.tableOwnerName = req.body.tableOwnerName;
 				user.userOrg = req.body.userOrg;
 				user.save();
 				res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
