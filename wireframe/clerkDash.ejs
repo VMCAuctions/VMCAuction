@@ -26,32 +26,56 @@
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    </head>
+       
+           
+        </head>
     <body>
-        <%- include('adminHeader') -%>
+        <%- include('clerkHeader') -%>
         <div class="container-fluid">
             <h2>Supporters</h2>
-            <div id="supporter-search">
-                <!-- Find supporters by last name -->
-                <div id="search-lastname">
-                    <label for="lastname">Search by Last Name</label>
-                    <input type="search" class="form-control search-input" id="lastname" placeholder="Last Name">
+            <!-- <form action="/clerkDash" id="itemsSearch" method="post"> -->
+                <div id="supporter-search">
+                    <!-- Find supporters by last name -->
+                    <div id="search-lastname">
+                        <label for "lastname" class="label-search">Search by Last Name</label>
+                        <input class="form-control" type="search" id="lastname" placeholder="Last Name">
+                        <!-- <input type="search" class="form-control search-input" id="lastname" placeholder="Last Name"> -->
+                    </div>
+
+                    <!-- <div id="search-keyword">
+                        <label for "keyword" class="label-search">Search by keyword:</label>
+                        <input class="form-control" type="search" id="keyword" placeholder="Keyword">
+                    </div> -->
+
+
+                    <!-- Find package by package name -->
+                    <div id="search-packagename">
+                        <label for "packagename" class="label-search">Search by Package Name</label>
+                        <input class="form-control" type="search" id="packagename" placeholder="Package Name">
+                    </div>
+                    <div id="search-button">
+                        <input type="submit" name="search-button" value="Search" class="btn btn-submit mt-1 mb-2">
+                    </div>
+                    
                 </div>
-            </div>
+                
+            <!-- </form> for Supporters-->
+            <div id="supportertable">
+            <h3>Supporters</h3>
             <table class="table table-striped table-bordered package-table">
                 <thead>
                     <tr>
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">Packages Won</th>
-                        <th scope="col">Package Descriptions</th>
+                        
                         <th scope="col">Total Spent</th>
                         <th scope="col">Invoice</th>
                     </tr>
                 </thead>
                 <tbody id="carts">
                     <% for (var u in users) {%>
-                        <tr class="packageRow">
+                        <tr class="supporterRow">
                             <td>
                                 <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
                             </td>
@@ -66,13 +90,7 @@
                                     <% } %>
                                 </ul>
                             </td>
-                            <td id="<%= users[u].userName + 'description' %>">
-                                <ul>
-                                    <% for (var p in cart[users[u].userName].packages) { %>
-                                        <li><%= cart[users[u].userName].packages[p].description %></li>
-                                    <% } %>
-                                </ul>
-                            </td>
+                           
                             <td id="<%= users[u].userName + 'total' %>">
                                 $<%= cart[users[u].userName].total %>
                             </td>
@@ -83,6 +101,42 @@
                     <% } %>
                 </tbody>
             </table>
+            </div>
+            <!-- for Package name -->
+            <div id="packagetable">
+                <h3>Packages</h3>
+                <table class="table table-striped table-bordered package-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Package Id</th>
+                            <th scope="col">Package Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Packages Restrictions</th>
+                            <th scope="col">Items</th>
+                            <th scope="col">Fair Market value</th>
+                            <!-- <th scope="col">Invoice</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="carts">
+                        <% for (var i in packages) {%>
+                            <tr class="packageRow">
+                                    <td><%= packages[i]._id%></td>
+                                <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+
+                                <td> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                                
+                                <td><%= packages[i]._category%></td>
+                                <td><%= packages[i].description%></td>
+                                <td><%= packages[i].restrictions%></td>
+                            <td>
+                                
+                               
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!-- json parse scripts -->
         <script type="text/javascript">
@@ -92,18 +146,36 @@
         <!-- search box scripts -->
         <script type="text/javascript">
             $(document).ready(function () {
-                console.log("Ready!");
-                $(".packageRow").hide();
+                console.log("100 clerkDash.js script document.ready start");
+                $(".packageRow").show();
+               // $("#packagetable").hide();
                 $("#lastname").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
                     if (value == '') {
+                        // $(".packageRow").show();
+                        $(".supporterRow").show();
+                    } else {
+                        $(".supporterRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+                $(".packageRow").show();
+               // $("#supportertable").hide();
+                $("#packagename").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    if (value == '') {
+                        // $(".packageRow").show();
                         $(".packageRow").hide();
+                 
                     } else {
                         $(".packageRow").filter(function () {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
                         });
                     };
                 });
+           
+              
             })
         </script>
         <!-- pdfmake scripts -->

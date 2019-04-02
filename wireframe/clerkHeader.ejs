@@ -1,0 +1,54 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/adminHeader.css">
+
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<header>
+	<!-- Organizer's Top Navbar -->
+  	<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row">
+        <!-- Branding-->
+        <div class="brand">elizabid</div>
+        	<!-- Right Top Navbar -->
+          	<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
+				
+                <li class="li-marg">
+                    <a class="nav-link top-link">Auction Name (####)</a>
+                </li>
+                <li class="li-marg">
+                    <a class="nav-link top-link">Clerk Dashboard</a>
+                </li>
+				<li>
+                    <a class="btn btn-outline-primary btn-logout" href="/users/logout">Logout</a>
+                </li>
+			</ul>
+    </nav>
+  	<!-- Organizer Secondary Navbar-->
+  	<nav id="second-nav" class="navbar navbar-expand-md navbar-dark pl-4">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          	<span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+			<!-- "current" is a flag sent from the server to indicate the active web page -->
+          	<ul class="navbar-nav">
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Supporters </a>
+				</li>	
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Catalog</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'item-register') { %> active2 <% } %>" href="/<%=auction%>/items">Packages</a>
+				</li>
+				
+          	</ul>
+        </div>
+    </nav>
+</header>

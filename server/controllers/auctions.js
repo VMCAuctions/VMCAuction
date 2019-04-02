@@ -309,6 +309,7 @@ function AuctionsController() {
 
   this.clerk = function(req, res) {
     console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+    var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
       User.find({ _auctions: req.params.auctions }, function(err, users) {
@@ -320,31 +321,31 @@ function AuctionsController() {
             .sort({ _category: "ascending" })
             .sort({ priority: "ascending" })
             .sort({ _id: "descending" })
-            .exec(function(err, result) {
+            .exec(function(err, packages) {
               if (err) {
                 console.log(err);
               } else {
                 for (var x = 0; x < users.length; x++) {
-                  var packages = [];
-                  var items = [];
+                  var packagesArr = [];
+                  
                   var total = 0;
-                  for (var y = 0; y < result.length; y++) {
+                  for (var y = 0; y < packages.length; y++) {
                     //Not sure if we need this "if" statement for bids.length > 0; needs testing
-                    if (result[y].bids.length > 0){
+                    if (packages[y].bids.length > 0){
                       if (
-                        result[y].bids[result[y].bids.length - 1].name ===
+                        packages[y].bids[packages[y].bids.length - 1].name ===
                         users[x].firstName.charAt(0)+'. '+users[x].lastName
                       ) {
-                        packages.push(result[y]);
-                        items.push.apply(items,result[y]._items);
+                        packagesArr.push(packages[y]);
+                        items.push.apply(items,packages[y]._items);
                         total +=
-                          result[y].bids[result[y].bids.length - 1].bidAmount;
+                          packages[y].bids[packages[y].bids.length - 1].bidAmount;
                       }
                     }
 
                   }
                   cart[users[x].userName] = {
-                    packages: packages,
+                    packages: packagesArr,
                     items: items,
                     total: total
                   };
@@ -354,7 +355,7 @@ function AuctionsController() {
                   current: "Clerk Dashboard",
                   users: users,
                   cart: cart,
-                  packages: result,
+                  packages: packages,
                   items: items,
                   userName: req.session.userName,
                   admin: req.session.admin,
