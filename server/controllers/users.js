@@ -298,24 +298,17 @@ function UsersController(){
 				// console.log("002 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
-				// bcrypt.compare(req.body.password, user.password, function(err, match) {
-				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
-					if(err){
-						console.log(err)
-					}else {
-						// console.log("user._auctions", user._auctions)
-						req.session.auction = user._auctions
-						req.session.userName = user.userName
-						req.session.admin = user.admin
-						res.json({match: true, auction: user._auctions, admin:user.admin})
-					// }else{
-					// 	res.json({match: false})
-					}
-				// })
+				console.log("004 users.js checkLogin.  user = ",user)
+				console.log("005 user._auctions = ", user._auctions)
+				// req.session.auction = user._auctions
+				req.session.userName = user.userName
+				req.session.admin = user.admin
+				res.json({match: true, auction: user._auctions, admin:user.admin})
 			}
 		})
 	}
+
+	
 
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
