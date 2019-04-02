@@ -351,16 +351,25 @@ function AuctionsController() {
                   };
                 }
                 //Current is a flag showing which page is active
-                res.render("clerkDash", {
-                  current: "Clerk Dashboard",
-                  users: users,
-                  cart: cart,
-                  packages: packages,
-                  items: items,
-                  userName: req.session.userName,
-                  admin: req.session.admin,
-                  auction: req.params.auctions
+                Auction.findById({_id:req.params.auctions}, function(err, auction){
+                  if (err){
+                    console.log(err);
+
+                  } else{
+                    console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
+                    res.render("clerkDash", {
+                      current: "Clerk Dashboard",
+                      users: users,
+                      cart: cart,
+                      packages: packages,
+                      items: items,
+                      userName: req.session.userName,
+                      admin: req.session.admin,
+                      auction: auction
+                    });
+                  }
                 });
+                
               }
             });
         } else {
