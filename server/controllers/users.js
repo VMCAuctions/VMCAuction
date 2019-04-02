@@ -360,6 +360,10 @@ function UsersController(){
 	//3.2019 update - instead, using this for supporter to be able to edit their account.
 	//code for changing password is commented out.
 	this.update = function(req,res){
+		
+		console.log("380 users.js this.update.  req.body = ", req.body)
+		console.log("381 users.js this.update.  req.session = ", req.session)
+		console.log("382 users.js this.update.  req.params = ", req.params)
 		User.findOne({userName: req.body.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
@@ -374,12 +378,13 @@ function UsersController(){
 				user.firstName = req.body.firstName;
 				user.lastName = req.body.lastName;
 				user.streetAddress = req.body.address;
+				user.userOrg = req.body.userOrg;
 				user.city = req.body.city;
 				user.states = req.body.states;
 				user.zip = req.body.zip;
 				user.table = req.body.table;
 				user.tableOwner = tableOwner;
-				user.userOrg = req.body.userOrg;
+				user.tableOwnerName = tableOwnerName;
 				user.save();
 				res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
 			}
@@ -416,11 +421,11 @@ function UsersController(){
 	this.usersCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
-		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
-		// console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
-		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
-		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
-		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
+		console.log("400 users.js this.usersCsv.  req.body = ", req.body)
+		console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
+		console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		console.log("403 users.js this.usersCsv.  req.session = ", req.session)
+		console.log("404 users.js this.usersCsv.  req.params = ", req.params)
 		
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
@@ -449,11 +454,15 @@ function UsersController(){
 						firstName: jsonObj[i]["First Name"],
 						lastName: jsonObj[i]["Last Name"],
 						phone: jsonObj[i]["Phone"],
+						userOrg: jsonObj[i]["Organization"],
 						streetAddress: jsonObj[i]["Street"],
 						city: jsonObj[i]["City"],
 						states: jsonObj[i]["State"],
 						zip: jsonObj[i]["Zip"],
 						admin: jsonObj[i]["Admin"],
+						table: jsonObj[i]["Table"],
+						tableOwner: jsonObj[i]["Table Owner"],
+						tableOwnerName: jsonObj[i]["Table Owner Name"],
 						_auctions: req.params.auctions
 						
 						
