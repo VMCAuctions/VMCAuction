@@ -179,6 +179,11 @@ function AuctionsController() {
         if (err) {
           console.log(err);
         } else {
+			console.log("210 auctions.js this.menu.  req.session = ",req.session);
+			if (!req.session.auction){
+				req.session.auction = req.params.auctions;
+			};
+			console.log("211 auctions.js this.menu.  req.session = ",req.session);
           res.render("organizerMenu", {
             current: "organizerMenu",
             admin: req.session.admin,
