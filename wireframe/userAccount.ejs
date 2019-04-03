@@ -77,6 +77,54 @@
 										</div>
 									</div>
 
+									<!-- these fields visible to admin only								 -->
+									<%if(admin){%>
+										<!-- <form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>"> -->
+												<%if(user.userName != userName){%>
+													<div class="form-row">
+														<div class="form-group col-md-2">
+															<label for="table" class="label-name">Table #</label>
+															<input id="table" type="text" name="table" class="form-control" value="<%= table %>">
+														</div>
+														<div class="form-group col-md-4">
+															<label for="tableOwner" class="label-name">Is <%= user.firstName %> a Table Owner?</label>
+															<select name="tableOwner" id="tableOwner" class="form-control" onchange="tableOwnerChange()">
+																<%if( user.tableOwner === false){%>
+																	<option value="false">No</option>
+																	<option value="true">Yes</option>
+																<%} else if (!user.tableOwner) { %>
+																	<option value="false">No</option>
+																	<option value="true">Yes</option>
+																<%} else { %>
+																	<option value="true">Yes</option>
+																	<option value="false">No</option>
+																<%}%>
+															</select>
+														</div>
+														<div class="form-group col-md-6">
+															<label for="tableOwnerName" class="label-name">Table Owner (First and Last Name)</label>
+															<input id="tableOwnerName" type="text" name="tableOwnerName" class="form-control" value="<%= user.tableOwnerName %>">
+														</div>
+														<!-- <div class="form-group col-md-2">
+															<label for="seats" class="label-name"># of Seats</label>
+															<input id="seats" type="number" name="seats" class="form-control" value="<%= user.seats %>">
+														</div> -->
+													</div>
+												<%}%>
+												<!-- <div class="form-row">
+												<div class="form-group col-md-6">
+													<input type="password" name="newPass" class="form-control" placeholder="new password" readonly>
+												</div>
+												<div class="form-group col-md-6">
+													<input type="password" name="confirmPass" class="form-control" placeholder="confirm new password" readonly>
+												</div> -->
+												<!-- <div class="form-group col-md-6">
+													<button type="submit" id="changePassBtn" class="btn btn-primary">Save</button>
+												</div>
+											</div> -->
+										<!-- </form> -->
+									<%}%>
+
 									<%if(admin == 0 || user.userName != userName){%>
 										<div class="form-group">
 											<label for="userOrg">Organization</label>
@@ -117,26 +165,8 @@
 									</div>
 
 																	<!-- these fields visible to admin only								 -->
-									<%if(admin){%>
+									<!-- <%if(admin){%> -->
 										<!-- <form class="reg-form" id="passChangeForm" method="post" action="/<%=auction%>/users/account/<%=userName%>"> -->
-												<%if(user.userName != userName){%>
-													<h6>This can be done by Admin only!</h6>
-													<div class="form-row">
-														<div class="form-group col-md-12">
-															<label for="table" class="label-name">Table #</label>
-															<span class="float-right">
-																<%if( tableOwner ){%>
-																	<input type="checkbox" id="tableOwner" name="tableOwner" checked>
-																	<label class="label-name" for="tableOwner">Table Owner?</label>
-																<%} else { %>
-																	<input type="checkbox" id="tableOwner" name="tableOwner">
-																	<label class="label-name" for="tableOwner">Table Owner?</label>
-																<%}%>
-															</span>
-															<input id="table" type="text" name="table" class="form-control" value="<%= table %>">
-														</div>
-													</div>
-												<%}%>
 												<!-- <div class="form-row">
 												<div class="form-group col-md-6">
 													<input type="password" name="newPass" class="form-control" placeholder="new password" readonly>
@@ -149,7 +179,7 @@
 												</div>
 											</div> -->
 										<!-- </form> -->
-									<%}%>
+									<!-- <%}%> -->
 
 									<div class="form-group">
 										<input type="submit" name="submit" value="Update" class="btn btn-submit mt-1">
@@ -165,6 +195,16 @@
 
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">
+
+			function tableOwnerChange() {
+				var value = document.getElementById("tableOwner").value;
+				
+				if (value === "true") {
+					document.getElementById("tableOwnerName").value = "<%= user.firstName %> <%= user.lastName %>";
+				} else {
+					document.getElementById("tableOwnerName").value = "";
+				}
+			}
 
 			$(document).ready(function() {
 				validator.resetForm();
@@ -233,6 +273,12 @@
 					zip: {
 						required: false,
 						zipcodeUS: true
+					},
+					userOrg: {
+					rangelength: [2, 50]
+					},
+					tableOwnerName: {
+						rangelength: [2, 50]
 					},
 				}
 			});

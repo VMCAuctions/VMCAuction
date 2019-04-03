@@ -237,12 +237,7 @@ function UsersController(){
 								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
-							var tableOwner = req.body.tableOwner;
-							if (tableOwner === "on") {
-								tableOwner = req.body.firstName
-							} else {
-								tableOwner = undefined
-							}
+
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -257,7 +252,9 @@ function UsersController(){
 								password: hash,
 								admin: adminStatus,
 								table: req.body.table,
-								tableOwner: tableOwner,
+								tableOwner: req.body.tableOwner,
+								tableOwnerName: req.body.tableOwnerName,
+								// seats: req.body.seats,
 								userOrg: req.body.userOrg
 							},
 							function(err, user){
@@ -298,24 +295,17 @@ function UsersController(){
 				// console.log("002 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
-				// bcrypt.compare(req.body.password, user.password, function(err, match) {
-				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
-					if(err){
-						console.log(err)
-					}else {
-						// console.log("user._auctions", user._auctions)
-						req.session.auction = user._auctions
-						req.session.userName = user.userName
-						req.session.admin = user.admin
-						res.json({match: true, auction: user._auctions, admin:user.admin})
-					// }else{
-					// 	res.json({match: false})
-					}
-				// })
+				console.log("004 users.js checkLogin.  user = ",user)
+				console.log("005 user._auctions = ", user._auctions)
+				// req.session.auction = user._auctions
+				req.session.userName = user.userName
+				req.session.admin = user.admin
+				res.json({match: true, auction: user._auctions, admin:user.admin})
 			}
 		})
 	}
+
+	
 
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
@@ -367,26 +357,26 @@ function UsersController(){
 	//3.2019 update - instead, using this for supporter to be able to edit their account.
 	//code for changing password is commented out.
 	this.update = function(req,res){
+		
+		console.log("380 users.js this.update.  req.body = ", req.body)
+		console.log("381 users.js this.update.  req.session = ", req.session)
+		console.log("382 users.js this.update.  req.params = ", req.params)
 		User.findOne({userName: req.body.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
 			} else {
-				var tableOwner = req.body.tableOwner;
-				if (tableOwner) {
-					tableOwner = req.body.firstName
-				} else {
-					tableOwner = undefined
-				}
-
 				user.firstName = req.body.firstName;
 				user.lastName = req.body.lastName;
 				user.streetAddress = req.body.address;
+				user.userOrg = req.body.userOrg;
 				user.city = req.body.city;
 				user.states = req.body.states;
 				user.zip = req.body.zip;
 				user.table = req.body.table;
-				user.tableOwner = tableOwner;
-				user.userOrg = req.body.userOrg;
+
+				user.tableOwner = req.body.tableOwner;
+				user.tableOwnerName = req.body.tableOwnerName;
+
 				user.save();
 				res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
 			}
@@ -423,11 +413,11 @@ function UsersController(){
 	this.usersCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
-		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
-		// console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
-		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
-		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
-		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
+		console.log("400 users.js this.usersCsv.  req.body = ", req.body)
+		console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
+		console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		console.log("403 users.js this.usersCsv.  req.session = ", req.session)
+		console.log("404 users.js this.usersCsv.  req.params = ", req.params)
 		
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
@@ -449,18 +439,22 @@ function UsersController(){
 
 				if (jsonObj[i]){
 
-					// console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
+					console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
 
 					User.create({
 						userName: jsonObj[i]["User Name"],
 						firstName: jsonObj[i]["First Name"],
 						lastName: jsonObj[i]["Last Name"],
 						phone: jsonObj[i]["Phone"],
+						userOrg: jsonObj[i]["Organization"],
 						streetAddress: jsonObj[i]["Street"],
 						city: jsonObj[i]["City"],
 						states: jsonObj[i]["State"],
 						zip: jsonObj[i]["Zip"],
 						admin: jsonObj[i]["Admin"],
+						table: jsonObj[i]["Table"],
+						tableOwner: jsonObj[i]["Table Owner"],
+						tableOwnerName: jsonObj[i]["Table Owner Name"],
 						_auctions: req.params.auctions
 						
 						
