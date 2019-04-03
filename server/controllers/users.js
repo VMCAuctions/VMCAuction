@@ -439,7 +439,7 @@ function UsersController(){
 
 				if (jsonObj[i]){
 
-					// console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
+					console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
 
 					User.create({
 						userName: jsonObj[i]["User Name"],
