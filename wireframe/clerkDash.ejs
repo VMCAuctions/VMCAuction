@@ -32,7 +32,7 @@
     <body>
         <%- include('clerkHeader') -%>
         <div class="container-fluid">
-            <h2>Supporters</h2>
+            <!-- <h2>Supporters</h2> -->
             <!-- <form action="/clerkDash" id="itemsSearch" method="post"> -->
                 <div id="supporter-search">
                     <!-- Find supporters by last name -->
@@ -75,10 +75,10 @@
                     <% for (var u in users) {%>
                         <tr class="supporterRow">
                             <td>
-                                <a href="/<%=auction%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
+                                <a href="/<%=auction._id%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
                             </td>
                             <td id='supporterLast'>
-                                <a href="/<%=auction%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
+                                <a href="/<%=auction._id%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
                             </td>
                             <td id="<%= users[u].userName + 'winning' %>">
                                 <ul>
@@ -145,28 +145,31 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 console.log("100 clerkDash.js script document.ready start");
-                $(".packageRow").show();
-               // $("#packagetable").hide();
-                $("#lastname").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    if (value == '') {
-                        // $(".packageRow").show();
-                        $(".supporterRow").show();
+                // $(".packageRow").show();
+            //    $("#packagetable").hide();
+               $("#supportertable").hide();
+               $("#lastname").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#supportertable").hide();
                     } else {
+                        $("#supportertable").show();
                         $(".supporterRow").filter(function () {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
                         });
                     };
                 });
                 $(".packageRow").show();
-               // $("#supportertable").hide();
-                $("#packagename").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    if (value == '') {
-                        // $(".packageRow").show();
-                        $(".packageRow").hide();
-                 
+               $("#packagetable").hide();
+               $("#packagename").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#packagetable").hide();
+                       
                     } else {
+                        $("#packagetable").show();
                         $(".packageRow").filter(function () {
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
                         });

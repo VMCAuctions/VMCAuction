@@ -13,22 +13,26 @@
 
 <header>
 	<!-- Organizer's Top Navbar -->
-  	<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row">
+  	 <nav>
         <!-- Branding-->
-        <div class="brand">elizabid</div>
-        	<!-- Right Top Navbar -->
-          	<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
-				
-                <li class="li-marg">
-                    <a class="nav-link top-link"><%= auction.name %> (<%= auction.pin %>)</a>
-                </li>
-                <li class="li-marg">
-                    <a class="nav-link top-link">Clerk Dashboard</a>
-                </li>
-				<li>
-                    <a class="btn btn-outline-primary btn-logout" href="/users/logout">Logout</a>
-                </li>
-			</ul>
+		<div id="top-nav" class="d-flex flex-row bg-light justify-content-between align-items-center py-3">
+				<div class="col-2">
+					<div class="brand">elizabid</div>
+				</div>	
+				<div class="col-2 text-center">
+					<a href="/<%=auction%>/event" class="auction-nav"><%= auction.name %> (<%= auction.pin %>)</a> 
+				</div> 
+				<!-- <div class="col-6> -->
+					<!-- <ul class="navbar-nav"> -->
+						<div>
+							<a class="mr-2 top-link" href="/auctions/clerkDash">Clerk Dashboard</a>
+						</div>
+						<div>
+							<a class="mr-2" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+						</div>
+					<!-- </ul> -->
+				<!-- </div> -->
+		</div>
     </nav>
   	<!-- Organizer Secondary Navbar-->
   	<nav id="second-nav" class="navbar navbar-expand-md navbar-dark pl-4">
