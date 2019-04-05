@@ -6,7 +6,6 @@ h2.supporter-view {
 	text-align: center; 
 	text-transform: uppercase;
 	padding-top: 10px; 
-
 }
 
 .search-pkg {
@@ -35,6 +34,14 @@ h2.supporter-view {
 	height: 6rem; 
 }
 
+.pkg-img {
+	width: 120px;
+	height: 90px; 
+	display: block; 
+	/* align-self: flex-start;   */
+}
+
+
 .pkg-num {
 	width: 46px; 
 	height: 32px; 
@@ -50,16 +57,69 @@ h2.supporter-view {
 	left: 0.7rem; 
 }
 
-.pkg-img {
-	width: 120;
-	height: 90px; 
-	display: block; 
-	/* align-self: flex-start;   */
+.featured-priority {
+	width: 46px; 
+	height: 22px; 
+	background-color: #eb2f06;
+	color: #fff; 
+	font-size: 0.75rem ; 
+	font-weight: 500; 
+	border-radius: 2px;  
+	border-bottom-right-radius: 14px;  
+	position: absolute; 
+	padding: 3px; 
+	text-align: center;
+	top: 0.3rem; 
+	left: 0.7rem; 
 }
 
-.featured-box {
- 	display: inline-block; 
+.featured-num {
+	width: 46px; 
+	height: 32px; 
+	background-color: #003d79;
+	color: #fff; 
+	font-size: 0.75rem ; 
+	font-weight: 500; 
+	border-radius: 2px; 
+	position: absolute; 
+	padding: 7px; 
+	text-align: center;
+	top: 1.4rem; 
+	left: 1rem; 
 }
+
+.featured-arrowBox {
+    width: 90px;
+    height: 24px; 
+    background-color: #eb2f06;
+    position: absolute;
+    top: 7.5rem;
+    left: 0.7rem; 
+    padding: 4px 0px 1px 0px; 
+    font-family: Lato, sans-serif;
+    font-size: 0.7rem; 
+    color: #fff; 
+	text-align: center; 
+	border-radius: 2px; 
+	/* border-bottom-right-radius: 14px;  */
+}
+
+.arrow-box::before {
+    content: '';
+    width: 0px;
+    height: 0px;
+    border-top: 10px solid transparent;
+    border-left: 10px solid #eb2f06; /* border pointing to the right */
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid transparent;
+    position: absolute; 
+    left: 100%;
+    top: 50%;
+    margin-top: -10px; 
+}
+
+
+
 
 .pkg-title { 
 	font-size: 0.95rem; 
@@ -130,11 +190,11 @@ ul {
 } 
 
 .form-control.btn-no-bids {
-	background-color: #ff6746; 
-	color: #f8f9fa;
+	background-color: #fff; 
+	border: solid 1px #ff6746; 
+	color: #ff6746;
 	font-size: 0.95rem !important; 
 	font-weight:400; 
-	border: none;
 }
 
 .btn-add-watchlist:hover {
@@ -146,7 +206,7 @@ ul {
 }
 
 .form-control.btn-no-bids:hover {
-	background-color: #c30000; 
+	background-color: #ff6746; 
 	color: #f8f9fa;
 	font-size: 0.95rem !important; 
 	font-weight:400; 

@@ -45,11 +45,17 @@
 				<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
 					<div class="card pkg-card">	
 						<div class="card-body">
-							<div class="pkg-num">
+							<div class="featured-num">
 								#<%= packages[f]._id %>
 							</div> 
+							<div class="featured-priority">
+								<%= packages[f].priority %>
+							</div>
+							<div class="featured-arrowBox">
+								FEATURED
+							</div> 
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-								<img class="pkg-img mr-3" src="/test_gopro_480.jpg">
+								<img class="pkg-img mr-3" src="/<%= packages[f].photo %>">
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[f]._id %>"><%= packages[f].name %></a>
 									<p class="category mt-1">Category: <%=packages[f]._category%></p>
@@ -66,7 +72,7 @@
 										<li class="mt-1 no-bid">No bids yet! </li>
 									<%}%>
 									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
-									<li class="donated mt-1">Donated by: Ms. P. Alisson, ABC Tour, Dr. D.Johnson</li>
+									<li class="donated mt-1">Donors: Ms. P. Alisson; ABC Tour; Dr. N. Johnson</li>
 								</ul>
 							</div>
 							<hr>
@@ -76,8 +82,8 @@
 								<% for(var i = 0; i < user._packages.length; i++){ %>
 									<% if(featured[f]._id == user._packages[i]) {%>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested/<%=featured[f]._id%>'">Remove from Watchlist</button>
-										<!-- <a href="/<%=auction%>/users/uninterested/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
+										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button>
+										<!-- <a href="/<%=auction%>/users/uninterested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
 										<% flag = true %>
 											<% break %>
 										<% } %>
@@ -85,8 +91,8 @@
 
 									<% if(flag === false) {%>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested/<%=featured[f]._id%>'">Add to Watchlist</button>
-									<!-- <a href="/<%=auction%>/users/interested/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
+										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button>
+									<!-- <a href="/<%=auction%>/users/interested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
 									<%}%>
 								<%}%>			
 							</div>
