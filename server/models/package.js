@@ -5,8 +5,6 @@ var mongoose = require('mongoose'),
 	autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
-
-
 var packageSchema = new Schema({
 
 	// took out all 'required = true' validations except for name
@@ -17,7 +15,6 @@ var packageSchema = new Schema({
 
 	//for testing package create/edit category comma snafu
 	cat: {type: String},
-	
 	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	value: {type: Number},  //prepopulated field with for item in package._items { value += item.value }
 	amount: {type: Number}, //starting bid
