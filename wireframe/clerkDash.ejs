@@ -31,31 +31,35 @@
         </head>
     <body>
         <%- include('clerkHeader') -%>
+     
+        
+        <div class="demo-placeholder">
+            <button type="button" id="checkinButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
+                    Check in
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Check out
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Retrieve won packages
+                    </button>
+            
+        </div>
+        <script>
+                function loadSupportedSearch(){
+                    
+                <div id="search-lastname">
+                    <label for "lastname" class="label-search">Search by Last Name</label>
+                    <input class="form-control" type="search" id="lastname" placeholder="Last Name"> </input>
+                    
+                </div>
+                    
+                }
+        </script>
         <div class="container-fluid">
             <!-- <h2>Supporters</h2> -->
             <!-- <form action="/clerkDash" id="itemsSearch" method="post"> -->
-                <div id="supporter-search">
-                    <!-- Find supporters by last name -->
-                    <div id="search-lastname">
-                        <label for "lastname" class="label-search">Search by Last Name</label>
-                        <input class="form-control" type="search" id="lastname" placeholder="Last Name">
-                        <!-- <input type="search" class="form-control search-input" id="lastname" placeholder="Last Name"> -->
-                    </div>
-
-                    <!-- <div id="search-keyword">
-                        <label for "keyword" class="label-search">Search by keyword:</label>
-                        <input class="form-control" type="search" id="keyword" placeholder="Keyword">
-                    </div> -->
-
-
-                    <!-- Find package by package name -->
-                    <div id="search-packagename">
-                        <label for "packagename" class="label-search">Search by Package Name</label>
-                        <input class="form-control" type="search" id="packagename" placeholder="Package Name">
-                    </div>
-                    
-                    
-                </div>
+               
                 
             <!-- </form> for Supporters-->
             <div id="supportertable">
@@ -135,6 +139,12 @@
                     </tbody>
                 </table>
             </div>
+            <div class="demo-placeholder">
+                <button type="button" id="sendLinkButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
+                        Send link
+                        </button>
+                    
+            </div>
         </div>
         <!-- json parse scripts -->
         <script type="text/javascript">
@@ -147,7 +157,9 @@
                 console.log("100 clerkDash.js script document.ready start");
                 // $(".packageRow").show();
             //    $("#packagetable").hide();
-               $("#supportertable").hide();
+            
+            
+            $("#supportertable").hide();
                $("#lastname").on("keyup", function () {
                    var value = $(this).val().toLowerCase();
                    if (value == '') {
@@ -230,5 +242,6 @@
 
 
         </script>
+        
     </body>
 </html>
