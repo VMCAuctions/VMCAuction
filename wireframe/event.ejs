@@ -21,13 +21,17 @@
 			</div>
 			<!-- Right Top Navbar -->
 			<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
+				<!--
 				<li class="mr-3">
 					<a class="nav-link  btn btn-ctlg" href="/<%=auction%>/packages">View Auction Catalog</a>
-				</li>
+				</li> -->
 				<li class="mr-3">
-					<a class="nav-link btn btn btn-nav-reg" href="/users/register"></i> Register</a> 
+					<a class="nav-link btn btn btn-nav-reg" href="/users/register"></i> Call to Register</a> 
+				</li>	
+				<!--
 				<li class="mr-3">
 					<a class="nav-link btn btn btn-nav-login" href="/users/login"> <i class="fas fa-lock"></i> Login</a>
+			  </li>	-->
 				</div>
 				</li>
 				</li>
@@ -56,9 +60,9 @@
 
 			<!-- AUCTION TITLE AND HEADER INFO -->
 			<div class="container display-header mt-5">
-				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
-				<p class="header-info"><%= startDateToDisplay %></p>	
-				<p class="header-info"><%= auctionDetails.venue %></p>	
+				<h1 class="display-4 title-background my-3"><%= auctionDetails.name %></h1>
+				<p class="header-info title-background"><%= startDateToDisplay %></p>
+				<p class="header-info title-background mt-2"><%= auctionDetails.venue %></p>	
 
 				<!-- invisible paragraph - just using the id and data for the countdown clock -->
 				<p id="event-start"> <%= auctionDetails.startClock %></p>
@@ -168,7 +172,7 @@
 				<a href="#">Back to top</a>
 				
 		</footer>
-
+6
 		<script>
 			function Calculate() {
 				let now = new Date().getTime();

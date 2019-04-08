@@ -12,29 +12,26 @@ body {
   padding-left: 10px; 
 }
 .btn-ctlg {
-  border: solid 2px #99004d !important;  
-  background-color: #99004d !important;
+  border: solid 2px #ff2719 !important;  
+  background-color: #ff2719 !important;
   color: #fff !important;  
   font-weight: 500; 
   width: 180px; 
 }
 .btn-reg {
-  border: solid 2px #fff!important; 
-  color: #fff !important;
-  font-weight: 500; 
+  background-color: #ff2719;
+  color:#fff !important;
   width: 180px; 
   padding: 0.75rem 0 !important;  
 }
 .btn-nav-reg {
-  border: solid 2px #4d9900 !important; 
-  background-color: #4d9900 !important; 
-  color: #fff !important;
-  font-weight: 500; 
-  width: 90px; 
+  border: solid 2px #ff2719 !important;
+  color:#ff2719 !important;
+  width: 150px; 
 }
 .btn-nav-login {
-  border: solid 2px #003d79 !important; 
-  color: #003d79 !important; 
+  border: solid 2px #0080ff !important; 
+  color: #0080ff !important; 
   font-weight: 500; 
   width: 90px; 
 }
@@ -46,18 +43,17 @@ a.btn-ctlg:hover {
 a.btn-reg:hover {
   color: #fff !important;
   font-weight: 500;
-  background-color: #66cc00 !important;
-  border: solid 2px #66cc00 !important; 
+  background-color: #003d79 !important;
 }
 a.btn-nav-reg:hover {
   color: #fff !important;
-  background-color: #66cc00 !important;
-  border: solid 2px #66cc00 !important; 
+  background-color: #003d79 !important;
+  border: solid 2px #003d79 !important; 
 }
 a.btn-nav-login:hover {
   color: #fff !important;
-  background-color: #003d79 !important;
-  border: solid 2px #003d79 !important; 
+  background-color: #0055cb !important;
+  border: solid 2px #0055cb !important; 
   color: #fff; 
 }
 .btn-centr{
@@ -70,23 +66,42 @@ a.btn-nav-login:hover {
 .header-img {
   /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
   /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
-  background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg"); 
-  background-blend-mode: multiply;
+  /* background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg");  */
+  /* background-blend-mode: multiply; */
   background-size: cover; 
   opacity: .95;  
   width: 100%; 
-  height: 75vh;
+  height: 80vh;
 }
-h1, h3 {
+
+.title-background  {
+  /* background-color: rgba(225, 230, 234, 0.55);  */
+  background-color: rgba(255, 255, 255, 0.70); 
+   
+}
+
+h1{
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 2.8rem !important;
+  font-weight: 700 !important; 
+  margin: 0 auto; 
+  color:#003d79 !important;  
+  text-align: center;
+  
+}
+
+h3 {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   margin: 0 auto; 
-  color: #fff !important;  
+  color:#003d79 !important;  
   text-align: center;
+  background-color: #fff; 
 }
+
 h2 {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   color: #003d79 !important;
-  font-weight: 700 !important; 
+  font-weight: 500 !important; 
   font-size: 2.4rem !important; 
   margin: 0 auto; 
   text-align: center; 
@@ -96,10 +111,11 @@ h2 {
 .header-info {
   margin: 0 auto; 
   color: #fff !important;  
-  font-size: 1.1rem; 
+  font-size: 1rem; 
   line-height: 2rem; 
   text-align: center; 
-  font-weight: 200; 
+  font-weight: 700; 
+  color:#003d79 !important; 
 }
 
 .welcome-message {
