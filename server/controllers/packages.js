@@ -145,15 +145,6 @@ function PackagesController() {
 		})
 	};
 
-
-
-
-
-
-
-
-
-
 	this.list = function (req, res) {
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
@@ -226,7 +217,7 @@ function PackagesController() {
 			}
 		})
 	};
-
+	
 	this.edit = function (req, res) {
 		// console.log(Date.now()," - 209 packages.js this.edit start.  req.params = ",req.params);
 		// console.log(Date.now()," - 210 packages.js this.edit start.  req.body = ",req.body);
@@ -237,7 +228,6 @@ function PackagesController() {
 			var itemsArray = [];
 			var total = 0;
 
-
 			Package.findById(req.params.id).populate("_items").exec(function (err, result) {
 				if (err) {
 					console.log(err);
@@ -245,7 +235,6 @@ function PackagesController() {
 				else {
 					// console.log(Date.now()," - 214 packages.js this.edit pkg.findById.  result._items = ",result._items);
 					// console.log(Date.now()," - 215 packages.js this.edit pkg.findById.  result._id = ",result._id);
-
 					Category.find({}, function (err, categories) {
 						if (err) {
 							console.log(err);
@@ -260,15 +249,11 @@ function PackagesController() {
 									res.status(500).send('packages.js this.edit.  Failed to find items in this package');
 								}
 								else {
-
 									packageItems = packageItems;
 									// console.log(Date.now()," - 216 packages.js this.edit pkg.findById.  packageItems = ",packageItems);
-
 									for (var i in packageItems) {
 										// console.log("packageItems[i].name = ", packageItems[i].name);
 									}
-
-
 								}
 							})
 
@@ -296,7 +281,6 @@ function PackagesController() {
 										if (err) {
 											console.log(err)
 										} else {
-
 											res.render('packageEdit', {
 												package: result,
 
@@ -331,7 +315,6 @@ function PackagesController() {
 		if (globals.adminValidation(req, res)) {
 			// var itemsArray = [];
 			Item.find({ _auctions: req.params.auctions }, function (err, items) {
-
 				if (err) {
 					console.log(Date.now() + " - 001 packages.js this.new Items.find error. err = ", err);
 					res.status(500).send('Failed to Load Items');
@@ -350,7 +333,6 @@ function PackagesController() {
 								if (err) {
 									console.log(err)
 								} else {
-
 									res.render('packageCreate', {
 										current: 'createPackage',
 										categories: categories,
@@ -361,7 +343,6 @@ function PackagesController() {
 										auctionDetails: auctionDetails
 									})
 								}
-
 							})
 						}
 						// console.log(Date.now() + " - 009 packages.js this.new end.  rendering packageCreate.ejs");

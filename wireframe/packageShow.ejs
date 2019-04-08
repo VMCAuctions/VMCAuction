@@ -71,8 +71,8 @@
         <!-- <%= prevPos %> -->
 
         <!-- package object data !-->
-        <!-- <p>One Package Object Here:<%= package %></p>
-        <p>One Package ID Object Here:<%= package._id %></p> -->
+         <!-- <p>One Package Object Here:<%= package %></p> -->
+        <!-- <p>One Package ID Object Here:<%= package._id %></p> -->
 
         <!-- user email -->
         <!-- <p><%= userName %></p> -->
@@ -99,13 +99,17 @@
           <%= (package.createdAt.getMonth()+1) + "/" + package.createdAt.getDate() + "/" + package.createdAt.getFullYear() %>
         </p> -->
 
-        <p> Package Value: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
+        <p>Top Bidder: </p>
 
-        <p> Starting Bid: <%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> </p>
+        <p> Package Value: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
+
+        <p> Starting Bid: <%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 
         <% if (package.bids.length == 0){ %>
         <!-- <p id ='currentBid'>Current Bid: <%= "$" + package.value.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p> -->
+
         <!-- 1-17 Bug Fix List Item 22 Make opening current bid field default to package.amount instead of package value -->
+
         <p id='currentBid'>Current Bid:
           <%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 
@@ -117,14 +121,9 @@
           <!-- by: <%= package.bids[package.bids.length-1].name%>   -->
           by: <%= user.firstName.charAt(0) %>. <%= user.lastName %>
         </p>
-
         <% } %>
 
-        <p> Bid Increment: <%= "$" + package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
-        </p>
-
         <p> Next Bid:</p>
-
         <!-- Placing Bids -->
         <form class="w-50" action='/<%= auction %>/packages/<%= package._id %>' id='bidding'>
           <% if (package.bids == false) { %>
@@ -134,13 +133,14 @@
           <input id='bidAmount' readonly
             value='<%= "$" + (package.bids[package.bids.length-1].bidAmount + package.bidIncrement).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> '>
           <% } %>
-
           <% if (!userName) { %>
           <a href='/users/login'>Login</a>
           <% }else if(userName !== "Clerk"){ %>
           <input class="btn" id="submitButton" type='submit' value='Place Bid'>
           <% } %>
         </form>
+
+        <p>Bid <%= "$" + package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
 
         <!-- <% var flag = false %> -->
 
@@ -161,10 +161,8 @@
           </a>
 
           <% if (flag == false){ %>
-        
             <a href="/<%= auction %>/users/interested/<%= package._id %>"><button type="button" class="btn"
                 name="interested">Add to Watchlist</button></a>
-                
                 <% } %>
 
         <% } %>
@@ -207,33 +205,52 @@
 
         <a href="/<%= auction %>/packages"><button type="button" class="btn" name="interested">
             Back</button></a>
-
         <a href="/<%= auction %>/packages/<%= prevPos %>"><button type="button" class="btn"
             name="interested">Previous</button></a>
-
         <a href="/<%= auction %>/packages/<%= nextPos %>"><button type="button" class="btn"
             name="interested">Next</button></a>
+        <p>Description: <%= package.description %> </p>
+        <p>Restriction(s): <%= package.restrictions %> </p>
 
-        <p>Description:</p>
-        <textarea class="text-dark w-50" style="overflow:hidden;">
-          <%= package.description %> </textarea>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong">
+          Bid History
+        </button>
 
-        <p>Bid History:</p>
-        <textarea class="text-dark w-50">  <%= package.bids %> </textarea>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Bid History</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Bob placed a bid of $50.00 on Apr-05-19 08:26:34 PDT 
+                  
+                </p>
 
+                <%= package.bids %>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-
-
   <script type="text/javascript">
-
     // $('#custom').click(function () {
-
     //   if ($('#bidAmount').attr('readonly') === 'readonly') {
     //     if (<%= ourBids %> === true) {
-
     //   $('#bidAmount').attr({
     //     'readonly': false,
     //     'placeholder': "$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
@@ -258,7 +275,6 @@
     //     'readonly': 'readonly',
     //     'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
     //   });
-
     //   $('#bidAmount').val("$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
     // }
     //   }
@@ -281,7 +297,6 @@
     //   event.preventDefault()
     //   }
     // })
-
     // $('#addWatchList').click(function (event) {
     //   $.get("/<%= auction %>/users/interested/<%= package._id %>",
     //     function (data, status) {
@@ -290,21 +305,19 @@
     //     });
     //   return false;
     // })
-
     $('#addWatchList').click(function (event) {
       $.get("/<%= auction %>/users/interested/<%= package._id %>",
         function (data, status) {
           // document.getElementById("addSuccess").fadeIn() = "Added to Watch List!";
           // $("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
           $("#addWatchList").replaceWith("<p class='text-success' id='addSuccess'>Added to Watch List!</p><form id='removeWatchList' action='/<%= auction %>/users/uninterested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
+          // $('#removeWatchList').fadeIn("slow");
           event.preventDefault();
           // location.reload(true);
         });
       // location.reload(true);
       event.preventDefault();
     })
-
-
     $('#removeWatchList').click(function (event) {
       $.get("/<%= auction %>/users/uninterested/<%= package._id %>",
         function (data, status) {
@@ -323,9 +336,5 @@
         return false;
       }
     })
-
-
-
   </script>
-
 </body>
