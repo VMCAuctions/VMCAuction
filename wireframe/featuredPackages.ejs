@@ -41,30 +41,30 @@
 		<h2 class="supporter-view">Featured Packages</h2>
 
 		<div class="d-flex flex-row flex-wrap justify-content-start">
-			<% for (var f in featured){%>
+			<% for (var f in featured) {%>
 				<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
 					<div class="card pkg-card">	
 						<div class="card-body">
 							<div class="featured-num">
-								#<%= packages[f]._id %>
+								#<%= featured[f]._id %>
 							</div> 
 							<div class="featured-priority">
-								<%= packages[f].priority %>
+								<%= featured[f].priority %>
 							</div>
-							<div class="featured-arrowBox">
+							<div class="featured-box">
 								FEATURED
 							</div> 
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-								<img class="pkg-img mr-3" src="/<%= packages[f].photo %>">
+								<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
 								<div>  
-									<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[f]._id %>"><%= packages[f].name %></a>
-									<p class="category mt-1">Category: <%=packages[f]._category%></p>
+									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
+									<p class="category mt-1">Category: <%=featured[f]._category%></p>
 								</div>	
 							</div>
 							<hr>
 							<div class="row ml-1">
 								<ul>
-								<!--<li>Value: <span class="value"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
+								<!--<li>Value: <span class="value"><%= "$" + featured[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
 									<li>Opening Bid: <span class="opening-bid"> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(featured[f].bids[featured[f].bids.length-1]){%>
 										<li class="mt-1">Highest Bid: <span class="highest-bid"> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></li>

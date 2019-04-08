@@ -17,7 +17,6 @@ h2.supporter-view {
     display:inline-block;
 }
 
-
 .pkg-card {
 	height: 21rem;
 	background-color: #f8f9fa !important;
@@ -41,7 +40,6 @@ h2.supporter-view {
 	/* align-self: flex-start;   */
 }
 
-
 .pkg-num {
 	width: 46px; 
 	height: 32px; 
@@ -60,12 +58,13 @@ h2.supporter-view {
 .featured-priority {
 	width: 46px; 
 	height: 22px; 
-	background-color: #eb2f06;
+	/* background-color: #eb2f06; */
+	background-image: linear-gradient(to bottom right, #eb2f06, #fb846a);
 	color: #fff; 
 	font-size: 0.75rem ; 
 	font-weight: 500; 
 	border-radius: 2px;  
-	border-bottom-right-radius: 14px;  
+	/* border-bottom-right-radius: 14px;   */
 	position: absolute; 
 	padding: 3px; 
 	text-align: center;
@@ -88,10 +87,11 @@ h2.supporter-view {
 	left: 1rem; 
 }
 
-.featured-arrowBox {
+.featured-box {
     width: 90px;
     height: 24px; 
-    background-color: #eb2f06;
+	/* background-color: #eb2f06; */
+	background-image: linear-gradient(to bottom right, #eb2f06, #fb846a); 
     position: absolute;
     top: 7.5rem;
     left: 0.7rem; 
@@ -104,22 +104,19 @@ h2.supporter-view {
 	/* border-bottom-right-radius: 14px;  */
 }
 
-.arrow-box::before {
+/* .featured-box::before {
     content: '';
     width: 0px;
     height: 0px;
     border-top: 10px solid transparent;
-    border-left: 10px solid #eb2f06; /* border pointing to the right */
+    border-left: 10px solid #eb2f06; 
     border-bottom: 10px solid transparent;
     border-right: 10px solid transparent;
     position: absolute; 
     left: 100%;
     top: 50%;
     margin-top: -10px; 
-}
-
-
-
+} */
 
 .pkg-title { 
 	font-size: 0.95rem; 
