@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="/css/footer.css"> 
+
+<!-- <div class="footer-container">
+	<p class="header-text">Time left:</p>
+	<p class="timer" data-startClock="<%= auctionDetails.startClock %>"></p>
+</div> -->
+
+<div class="desktop-clock">
+	Time left:
+	<p class="timer" data-startClock="<%= auctionDetails.startClock %>"></p>
+</div>
+
+<!-- <div class="mobile-clock">
+	<p class="timer"></p>
+</div> -->
+<script>
+	const desktopClock = document.getElementsByClassName('timer')[0];
+	// const mobileClock = document.getElementsByClassName('timer')[1];
+	
+	function countdown(endDate) {
+		let timer, days, hours, minutes, seconds;
+	
+		endDate = new Date(endDate).getTime();
+	
+		if (isNaN(endDate)) {
+		return;
+		}
+	
+		timer = setInterval(calculate, 1000);
+	
+		function calculate() {
+		let startDate = new Date().getTime();
+	
+		let timeRemaining = endDate - startDate;
+	
+		if (timeRemaining >= 0) {
+	
+			days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+			hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+			seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+		
+			if (days < 1) {
+			desktopClock.innerHTML = `
+				<span>${hours}</span> hours,
+				<span>${("0" + minutes).slice(-2)}</span> minutes,
+				<span>${("0" + seconds).slice(-2)}</span> Seconds
+				`
+			// mobileClock.innerHTML = `
+			// 	<span>${hours}</span> Hours
+			// 	<span>${("0" + minutes).slice(-2)}</span> Minutes
+			// 	<span>${("0" + seconds).slice(-2)}</span> Seconds
+			// 	`  
+			} else {
+			desktopClock.innerHTML = `
+				<span>${days}</span> days,
+				<span>${("0" + hours).slice(-2)}</span> hours,
+				<span>${("0" + minutes).slice(-2)}</span> minutes,
+				<span>${("0" + seconds).slice(-2)}</span> seconds
+			`
+			// mobileClock.innerHTML = `
+			// 	<span>${days}</span> D
+			// 	<span>${("0" + hours).slice(-2)}</span> H
+			// 	<span>${("0" + minutes).slice(-2)}</span> M
+			// 	<span>${("0" + seconds).slice(-2)}</span> S
+			// `
+			}
+		} else {
+			desktopClock.style.color = 'orangered';
+			// mobileClock.style.color = 'orangered';
+			desktopClock.style.fontWeight = 'bold';
+			// mobileClock.style.fontWeight = 'bold';
+			desktopClock.innerHTML = 'Auction has ended';
+			// mobileClock.innerHTML = 'Auction has ended';
+		}
+		}
+	}
+	
+	(function () {
+		let startTime = desktopClock.dataset.startclock;
+	
+		countdown(startTime);
+	}());
+	</script>
