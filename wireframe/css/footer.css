@@ -1,0 +1,17 @@
+.footer {
+    background-color: #69afff;
+    color: #fff;
+    text-align: center;
+	font-family: 'Century Gothic Bold', sans-serif;
+	position:fixed;
+	bottom:0;
+	z-index: 1;
+	width:100%;
+	font-size: 1em;
+	padding: 10px;
+}
+
+.timer {
+	font-size: 1.3em;
+	margin: 0px;
+}
