@@ -41,10 +41,11 @@
 						<span>${hours}</span> hour,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 						`
-					} else if (hours < 1) {
-						desktopClock.innerHTML = `
+						if (hours < 1) {
+							desktopClock.innerHTML = `
 							<span>${("" + minutes).slice(-2)}</span> minutes
 							`
+						}
 						if (minutes < 3) {
 							desktopClock.innerHTML = `
 								<span>${("" + minutes).slice(-2)}</span> minutes,
