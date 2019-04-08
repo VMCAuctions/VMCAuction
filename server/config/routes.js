@@ -254,6 +254,9 @@ module.exports = function(app) {
 	app.get('/:auctions/featured-packages', function(req, res) {
 		packages.featuredPackages(req, res)});	
 
+	app.get('/:auctions/packages/uprights/:id', function(req, res) {
+		packages.uprights(req, res)});
+
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
 	app.get('/:auctions/categories', function(req,res){

@@ -151,6 +151,46 @@ function PackagesController() {
 		})
 	};
 
+	this.uprights = function(req,res){
+		var user
+		User.findOne({userName:req.session.userName}, function(err, result){
+			if(err){
+				console.log(err)
+			}else{
+				user = result
+				Package.findById(req.params.id).populate("_items").exec(function(err,package){
+					if(err){
+						console.log(err);
+					}
+					else{
+						var ourBids = false
+						var lastBid = package.amount
+						if(package.bids.length > 0){
+							ourBids = true;
+							lastBid = package.bids[package.bids.length -1 ].bidAmount
+						}
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+							} else {
+								res.render('packageUprights', {
+									package: package,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									user: user,
+									ourBids: ourBids,
+									lastBid: lastBid,
+									auction: req.params.auctions,
+									auctionDetails: auctionDetails,
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+	};
+
 	this.list = function (req, res) {
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
