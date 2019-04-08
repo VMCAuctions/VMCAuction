@@ -227,24 +227,16 @@ function PackagesController(){
 	};
 
 	this.edit = function(req,res){
-		// console.log(Date.now()," - 209 packages.js this.edit start.  req.params = ",req.params);
-		// console.log(Date.now()," - 210 packages.js this.edit start.  req.body = ",req.body);
-		// console.log(Date.now()," - 211 packages.js this.edit start.  req.file = ",req.file);
 		if (globals.adminValidation(req, res)){
-      var categoryArray = [];
       var packageItems =[];
 			var itemsArray = [];
       var total = 0;
       
-    
 			Package.findById(req.params.id).populate("_items").exec(function(err,result){
 				if(err){
 					console.log(err);
 				}
-				else{
-					// console.log(Date.now()," - 214 packages.js this.edit pkg.findById.  result._items = ",result._items);
-					// console.log(Date.now()," - 215 packages.js this.edit pkg.findById.  result._id = ",result._id);
-					
+				else{					
 					Category.find({}, function(err, categories) {
             if(err) {
               console.log(err);
@@ -258,16 +250,10 @@ function PackagesController(){
                   console.log(err);
                   res.status(500).send('packages.js this.edit.  Failed to find items in this package');
                 }
-                else {
-                 
+                else {                
                   packageItems = packageItems;
-                  // console.log(Date.now()," - 216 packages.js this.edit pkg.findById.  packageItems = ",packageItems);
-
                   for (var i in packageItems){
-                    // console.log("packageItems[i].name = ", packageItems[i].name);
                   }
-
-
                 }
               })
               
@@ -277,19 +263,14 @@ function PackagesController(){
 											res.status(500).send('packages.js this.edit.  Failed to Load Items');
 									}
 									else {
-										// console.log(total);
 										for(let i = 0; i<items.length; i++){
-											//  if(!items[i].packaged){
 											 if(!items[i].packaged || items[i]._package == req.params.id){
 												 itemsArray.push(items[i]);
-												//  console.log("===========================");
-												//  console.log("218 - packages.js this.edit itemsArray for loop.  items[i] = ",items[i]);
 										 	}
 										}
-										// console.log(Date.now()," - 218 packages.js this.edit itemsArray = ",itemsArray);
+
 										for(let i = 0; i < result._items.length; i++){
 											total += result._items[i].value;
-										 	// console.log(result._items[i]);
 										}
 										Auction.findById(req.params.auctions, function (err, auctionDetails) {
 											if (err) {
@@ -298,9 +279,7 @@ function PackagesController(){
 												
 												res.render('packageEdit', {
                           package: result,
-                          
-													packageItems: packageItems,
-													
+													packageItems: packageItems,													
                           categories: categories,
 													items: itemsArray,
 													total: total,
@@ -308,7 +287,6 @@ function PackagesController(){
 													admin: req.session.admin,
 													auction: req.params.auctions,
 													auctionDetails: auctionDetails,
-
 													photo: result.photo
 												})
 											}
@@ -328,7 +306,8 @@ this.new = function(req,res){
 	console.log(Date.now() + " - 000 packages.js this.new start.  req.body = ",req.body);
 	console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
 	if (globals.adminValidation(req, res)){
-		// var itemsArray = [];
+		var total = 0;
+		var itemsArray = [];
 		Item.find({_auctions: req.params.auctions}, function(err, items) {
 
 				if(err) {
@@ -343,8 +322,12 @@ this.new = function(req,res){
 							res.status(500).send('Failed to find categories');
 						}
 						else {
-							console.log("007 packages.js this.new category.find. categories = ",categories);
-							console.log("008 packages.js this.new category.find. categories[0].name = ",categories[0].name);
+							for(let i = 0; i<items.length; i++){
+								if(!items[i].packaged || items[i]._package == req.params.id){
+									itemsArray.push(items[i]);
+								}
+						 }
+
 							Auction.findById(req.params.auctions, function (err, auctionDetails){
 								if (err) {
 									console.log(err)
@@ -353,7 +336,8 @@ this.new = function(req,res){
 									res.render('packageCreate', {
 										current: 'createPackage',
 										categories: categories,
-										items: items,
+										items: itemsArray,
+										total: total,
 										userName: req.session.userName,
 										admin: req.session.admin,
 										auction: req.params.auctions,
@@ -394,7 +378,8 @@ this.new = function(req,res){
 			description: req.body.packageDescription,
 			value: req.body.totalValue,
 			bidIncrement: req.body.increments,
-			_category: req.body.category,
+			// _category: req.body.category,
+			donors: req.body.donors,
 			cat: req.body.cat,
 			bid: [],
 			amount: req.body.openingBid,
@@ -459,6 +444,8 @@ this.new = function(req,res){
 									package: package,
 									userName: req.session.userName,
 									admin: req.session.admin,
+									// packageItems: packageItems,
+									// total: total,
 									user: user,
 									ourBids: ourBids,
 									lastBid: lastBid,
@@ -508,7 +495,7 @@ this.new = function(req,res){
 					package.value = req.body.totalValue || package.value;
 					package.amount = req.body.openingBid || package.amount;
 			    package.bidIncrement = req.body.increments || package.bidIncrement;
-			    package._category = req.body.category || package._category;
+			    // package._category = req.body.category || package._category;
 			    package.cat = req.body.cat || package.cat;
 			    package._category = req.body.category;
 					package.priority = req.body.priority || package.priority;

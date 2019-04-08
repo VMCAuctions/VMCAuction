@@ -25,6 +25,7 @@ var packageSchema = new Schema({
 	featured: {type: Boolean},
 	bidIncrement: {type: Number},
 	bids: {type: Array},
+	donors: {type: String},
 	// {bidAmount: 50, name: yarik }
 	photo: String,
 	restrictions: { type: String }
