@@ -58,7 +58,7 @@
 								<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
-									<p class="category mt-1">Category: <%=featured[f]._category%></p>
+									<p class="category mt-1">Category: <%=featured[f].category %></p>
 								</div>	
 							</div>
 							<hr>
@@ -72,7 +72,7 @@
 										<li class="mt-1 no-bid">No bids yet! </li>
 									<%}%>
 									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
-									<li class="donated mt-1">Donors: Ms. P. Alisson; ABC Tour; Dr. N. Johnson</li>
+									<li class="donated mt-1">Donors: <%=featured[f].donors %></li>
 								</ul>
 							</div>
 							<hr>
