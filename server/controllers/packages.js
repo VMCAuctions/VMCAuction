@@ -11,9 +11,9 @@ var multer = require('multer')
 function PackagesController() {
 
 	this.index = function (req, res) {
-		console.log("000 packages.js this.index start. req.session = ", req.session);
+		// console.log("000 packages.js this.index start. req.session = ", req.session);
 		if (!req.session.userName) {
-			console.log('001 packages.js this.index in if !req.session.username');
+			// console.log('001 packages.js this.index in if !req.session.username');
 			req.session.auction = req.params.auctions
 		}
 		var user
@@ -24,7 +24,7 @@ function PackagesController() {
 			else {
 				User.findOne({ userName: req.session.userName }, function (err, result) {
 
-					console.log("004 packages.js this.index user.findOne.  result = ", result)
+					// console.log("004 packages.js this.index user.findOne.  result = ", result)
 
 					if (err) {
 						console.log(err)
@@ -414,7 +414,7 @@ function PackagesController() {
 
 	this.show = function (req, res) {
 
-		console.log('packages.js this.show PackagesController show');
+		console.log('this.show packages.ejs');
 
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in
@@ -440,6 +440,7 @@ function PackagesController() {
 				resultPackages = packages;
 			}
 		});
+
 		var user
 		User.findOne({ userName: req.session.userName }, function (err, result) {
 			if (err) {
@@ -462,7 +463,6 @@ function PackagesController() {
 							if (err) {
 								console.log(err)
 							} else {
-								console.log("STARTING TO DO THIS RIGHT HERE");
 								//Gets current position of the package in the resultPackages object
 								for( var i =0; i<resultPackages.length;i++){
 									if(resultPackages[i]._id == package._id){
@@ -471,18 +471,19 @@ function PackagesController() {
 										var pos = resultPackages.map(function(e) { return e._id; }).indexOf(resultPackages[i]._id);
 									}
 								}
-								//increment position for next page
+								//increments position for next page
 								if(pos < resultPackages.length-1){
 									nextPos = pos+1;
 								}else{
 									nextPos = 0;
 								}
-								//logic to go to previous page
+								//decrements position to go to previous page
 								if(pos < resultPackages.length && pos > 0){
 									prevPos = pos-1;
 								}else{
 									prevPos = resultPackages.length-1;
 								}
+								console.log(req.session);
 								res.render('packageShow', {
 									nextPos: resultPackages[nextPos]._id,
 									prevPos: resultPackages[prevPos]._id,
@@ -491,7 +492,7 @@ function PackagesController() {
 									admin: req.session.admin,
 									user: user,
 									ourBids: ourBids,
-									lastBid: lastBid,
+									lastBid: parseInt(lastBid),
 									auction: req.params.auctions,
 									auctionDetails: auctionDetails,
 								})
@@ -500,11 +501,6 @@ function PackagesController() {
 					}
 				})
 			}
-
-
-
-
-
 		})
 	};
 
@@ -728,6 +724,17 @@ function PackagesController() {
 			})
 		}
 	}
+
+	// this.createBid = function (req, res) {
+	// 	console.log("#################### Creating Bid ################");
+
+	// 	console.log(req.body);
+		
+
+
+
+	// }
+	 
 
 
 	this.cancelBid = function (req, res) {

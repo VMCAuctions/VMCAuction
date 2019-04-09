@@ -107,6 +107,8 @@ io.sockets.on('connection', function(socket){
 		// USING UNIQUE CHANNELS WITH PACKAGE IDs
 	socket.on("msgSent", function(data) {
 
+		console.log("Message Received By Server the Bid");
+
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
 		// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
@@ -123,7 +125,7 @@ io.sockets.on('connection', function(socket){
 			// NOW NOBODY WILL BE ALLOWED TO MAKE A BID IN THIS PACKAGE UNTILL
 			// WE FINISHED TO UPDATE DATABASE SERVER OBJECT ETC.
 			packagesButtonStates[data.packId].buttonstate = false;
-			var userBid = data.bid;
+			var userBid = parseInt(data.bid);
 			var userName = data.userName;
 
 			if(allBidsBigObj[data.packId] == undefined){
@@ -206,7 +208,7 @@ io.sockets.on('connection', function(socket){
 
 	})
 
-	socket.on("disconnect", () => console.log("Client disconnected"));
+	socket.on("disconnect", () => console.log("Server.js Client disconnected"));
 })
 
 
