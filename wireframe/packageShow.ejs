@@ -70,6 +70,7 @@
       <%}else{%>
         <%- include('header') -%>
       <%}%>
+
       <%if(admin == 0){%>
         <%- include('footerClock') -%>
       <%}%>
@@ -144,10 +145,13 @@
 
         <p>Package Value: US $<%= package.amount %></p>
 
-        <p>Start Clock: <%= auctionDetails.startClock %></p>
-        <p>End Clock: <%= auctionDetails.endClock %></p>
-
         <p><%= Math.abs(auctionDetails.endClock - auctionDetails.startClock) %></p>
+
+        <p><%= auctionDetails.startClock %></p>
+
+        <p><%= auctionDetails.endClock %></p>
+
+
         <!-- <p>Hours: <%= auctionDetails.endClock %> - <%= auctionDetails.startClock %></p>
         <p>Minutes: <%= auctionDetails.endClock %> - <%= auctionDetails.startClock %></p>
         <p>Time Left: <%= auctionDetails.endClock %> - <%= auctionDetails.startClock %></p> -->
