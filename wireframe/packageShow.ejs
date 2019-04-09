@@ -17,8 +17,6 @@
 			$(document).ready(function(){
 				$('#submitButton').click( function(){
 
-				
-
 					if(($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false) || ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids%> === true)){
 						
 						socket.emit('msgSent', {packId: '<%= package._id %>', bid: parseInt($('#bidAmount')[0].value), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
