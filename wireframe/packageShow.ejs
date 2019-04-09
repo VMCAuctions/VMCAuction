@@ -64,11 +64,15 @@
 </head>
 
 <body>
-  <% if(admin){ %>
-  <%- include('adminHeader') -%>
-  <% }else{ %>
-  <%- include('header') -%>
-  <% } %>
+  
+    <%if(admin){%>
+      <%- include('adminHeader') -%>
+      <%}else{%>
+        <%- include('header') -%>
+      <%}%>
+      <%if(admin == 0){%>
+        <%- include('footerClock') -%>
+      <%}%>
 
   <div class="card">
     <div>
