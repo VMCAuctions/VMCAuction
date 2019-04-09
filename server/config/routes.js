@@ -203,7 +203,7 @@ module.exports = function(app) {
 
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
-		console.log("ROUTE - GET PAGE FOR SPECIFIC PACKAGE");
+		// console.log("ROUTE - GET PAGE FOR SPECIFIC PACKAGE");
 		// console.log(req.params.name);
 		// console.log(res);
 		packages.show(req,res)});
