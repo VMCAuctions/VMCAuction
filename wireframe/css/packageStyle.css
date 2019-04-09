@@ -1,7 +1,7 @@
 h2.supporter-view {
-	/* font-family: Kameron, serif;  */
-	color: #333!important;
-	font-size: 1rem;
+	font-family: Kameron, serif;  
+	color:  #003d79!important;
+	font-size: 1.2rem;
 	font-weight: 700;
 	text-align: center; 
 	text-transform: uppercase;
@@ -161,6 +161,11 @@ ul {
 	list-style: none; /* Remove list bullets */
 	padding: 0;
 }
+
+.margin-tofooter  {
+	margin-bottom: 80px; 
+}
+
 
 /* buttons
 -------------------------------------------------------------- */

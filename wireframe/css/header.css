@@ -1,7 +1,10 @@
 /* top nav bar 
 ---------------------------------------------------------------*/
 #top-nav-supporter {
-    background-color: #003d79;
+    /* background-color: #003d79; */
+    /* background-image: linear-gradient(to bottom right, #003d79,  #0080ff); */
+    background-image: linear-gradient(to bottom right, #00184c, #003d79);
+    color: #fff;
     color: #f9f8fa;
     font-weight: 400 !important; 
     

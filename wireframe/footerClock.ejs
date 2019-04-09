@@ -53,7 +53,7 @@
 								`
 						}
 						if (minutes < 1) {
-							desktopClock.style.color = 'orangered';
+							desktopClock.style.color = '#c30000';
 							desktopClock.style.fontWeight = 'bold';
 							desktopClock.innerHTML = `
 								<span>${("" + seconds).slice(-2)}</span> seconds
@@ -75,7 +75,7 @@
 					}
 				}
 			} else {
-				desktopClock.style.color = 'orangered';
+				desktopClock.style.color = '#c30000';
 				desktopClock.style.fontWeight = 'bold';
 				desktopClock.innerHTML = 'Auction has ended';
 				document.getElementsByTagName('span')[0].style.display = 'none';

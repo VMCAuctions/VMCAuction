@@ -59,7 +59,7 @@
 		<%- include('footerClock') -%>
 	<%}%>
 
-	<div class="container">
+	<div class="container margin-tofooter">
 	<h2 class="supporter-view">Auction Catalog</h2>
 
 	<div class="d-flex flex-row flex-wrap justify-content-start mt-4">
@@ -86,7 +86,7 @@
 			<%}else{%>
 				<div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
 			<%}%>	
-					<div class="card pkg-card">		
+					<div id="<%= packages[n]._id %>" class="card pkg-card">		
 						<div class="card-body">
 							<div class="pkg-num">
 								#<%= packages[n]._id %>

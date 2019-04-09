@@ -536,7 +536,7 @@ function UsersController(){
 						flag = false;
 					}
 				}
-				res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
 			})
 		}
 	};
@@ -563,7 +563,7 @@ function UsersController(){
 				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-				res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
 				
 			}
 		})
@@ -594,7 +594,7 @@ function UsersController(){
 						flag = false;
 					}
 				}
-				res.redirect('/' + req.params.auctions  + '/featured-packages')
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
 			})
 		}
 	};
@@ -621,7 +621,7 @@ function UsersController(){
 				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-				res.redirect('/' + req.params.auctions  + '/featured-packages')
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
 				
 			}
 		})
