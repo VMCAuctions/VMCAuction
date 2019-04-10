@@ -46,7 +46,7 @@
 
 		<script type="text/javascript">
 			$('#submit').click(function(event){
-        console.log("entered pin function")
+				console.log("100 clerks.ejs submit fx.  initiate clerk/pin route to auctions.js this.pinCheck")
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
@@ -54,7 +54,7 @@
 					// url: 'http://dv1.elizabid.com/clerk/pin',
 					data: {"pin":$('#pin').val()},
 					success: function(data){
-						console.log('ho');
+						console.log('100 clerks.ejs submit fx clerk/pin success.');
 						if(data.match == false){
 							alert('Please enter a valid pin.')
 						} else {

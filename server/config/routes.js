@@ -333,8 +333,8 @@ module.exports = function(app) {
 		users.update(req, res)});
 
 	// Send SMS text link to supporter at auction checkin
-	app.post('/:auctions/users/sendSMS/:id', function(req,res) {
-		console.log("350 routes.js auc/users/sendSMS/un.  req.params = ",req.params)
+	app.post('/users/sendSMS', function(req,res) {
+		// console.log("351 routes.js /users/sendSMS  req.body = ",req.body)
 		users.sendSMS(req,res)});
 
 	// update a specific user (profile/info)- this function might be replaced by the one above

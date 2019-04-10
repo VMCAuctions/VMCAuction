@@ -7,6 +7,11 @@ var mongoose = require('mongoose'),
 	globals = require('../controllers/globals.js')
 const csv=require('csvtojson')
 
+// Twilio SMS text code:
+const accountSid = 'AC523650b69d58e42965099ad0082127cf';
+const authToken = '2ad9793f2d94cea3d2318af5f2374901';
+const client = require('twilio')(accountSid, authToken);
+
 function UsersController(){
 
 	function registrationValidation(input) {
@@ -476,30 +481,21 @@ function UsersController(){
 	
 	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
 	this.sendSMS = function(req,res){
-		User.findOne({userName: req.params.userName}).exec( function(err, user){
-			if(err){
-				console.log(err)
-			}else {
-				console.log("100 users.js this.sendSMS User.findOne.  user = ",user)
-				Auction.findById(req.params.auctions, function (err, auctionDetails) {
-					if (err) {
-						console.log(err)
-					} else {
-						console.log("101 users.js this.sendSMS Auction.findById.  auction = ",auction)
-						res.render('sms-modal', {
-							user: user,
-							phone: user.phone,
-							admin: req.session.admin,
-							auction: req.params.auctions,
-							userName: req.session.userName,
-							auctionDetails: auctionDetails,
-						})
-					}
-				})
-			}
+		// console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
+		// console.log("409 users.js this.sendSMS.  Begin message send")
+		let phone = req.body.phone;
+		client.messages
+		.create({
+			body: 'Here\'s the link to the auction!: https://dv1.elizabid.com',
+			from: '+14084146081',
+			to: '+1'+phone
 		})
-	};
+		.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
+		
+		// console.log("410 users.js this.sendSMS.  End message send")
+		res.redirect('/' + req.body.auction + '/clerkDash')
 
+	};
 
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){

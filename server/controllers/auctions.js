@@ -310,7 +310,7 @@ function AuctionsController() {
 
 
 	this.clerk = function(req, res) {
-		console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+		// console.log("230 auctions.js this.clerk  Clerk landing page start");
 		var items = [];
 		if (globals.clerkValidation(req, res)) {
 			var cart = {};
@@ -352,15 +352,15 @@ function AuctionsController() {
 									if (err){
 										console.log(err);
 									} else{
-									// hardcoded user for sms link testing
+									// hardcoded user for sms link testing - must change to pick up current supporter!!!
 										let id = '5cacd65b14a5e627943391d4';
 										User.findById(id, function(err, user) {
 										// User.findById({_id}, function(err, user) {
 											if (err) {
 												console.log(err);
 											} else {
-												console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
-												console.log('110 auctions.js this.clerk userfindById. user = ', user);  
+												// console.log('238 auctions.js this.clerk auctionfindById. auction = ', auction);  
+												// console.log('239 auctions.js this.clerk userfindById. user = ', user);  
 												res.render("clerkDash", {
 													current: "Clerk Dashboard",
 													users: users,
@@ -389,22 +389,23 @@ function AuctionsController() {
     res.render("clerks");
   };
 
-  //This code is archived in case we ever go back to manually selecting pins for auctions; will probably be used for auction edit when the user selects a new pin
-  this.pinCheck = function(req, res) {
-    //Make a check on auction entry that verifies that pin is unique
-    Auction.findOne({ pin: req.body.pin }, function(err, auction) {
-      if (err) {
-        console.log(err);
-      } else if (!auction) {
-        res.json({ match: false });
-      } else {
-        req.session.userName = "Clerk";
-        //Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
-        req.session.admin = 1;
-        res.json({ match: true, auctions: auction._id });
-      }
-    });
-  };
+	//This code is archived in case we ever go back to manually selecting pins for auctions; will probably be used for auction edit when the user selects a new pin
+	this.pinCheck = function(req, res) {
+		// console.log("400 auctions.js this.pinCheck.  req.body = ",req.body)
+		//Make a check on auction entry that verifies that pin is unique
+		Auction.findOne({ pin: req.body.pin }, function(err, auction) {
+			if (err) {
+				console.log(err);
+			} else if (!auction) {
+				res.json({ match: false });
+			} else {
+				req.session.userName = "Clerk";
+				//Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
+				req.session.admin = 1;
+				res.json({ match: true, auctions: auction._id });
+			}
+		});
+	};
 }
 
 module.exports = new AuctionsController();

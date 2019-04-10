@@ -129,52 +129,50 @@
                         <% } %>
                     </tbody>
                 </table>
-            </div>
-            <div class="demo-placeholder">
-                   <!-- Button trigger modal -->
-				<button type="button" class="btn btn-add show-modal mt-2 mb-2" df data-toggle="modal" data-target="#SMSModal">Send Auction Link</button>
 			</div>
 			
-			<!-- SMS Send Text Link Modal -->
-			<div class="container mt-4">
-				<form id="sendSMSForm" action="/<%=auction%>/users/sendSMS/<%=user._id%>" method="POST">
-					<div class="modal fade bd-example-modal-lg" id="SMSModal" role="dialog">
-						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title">
-									<i class="fas fa-sms"></i> Send SMS Auction Link</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<div><%= user.firstName %></div>
-									</div>
-									<div class="form-group col-md-6">
-										<div><%= user.lastName %></div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="phoneNumber">Cell Phone Number</label>
-									<input type="tel" name="phone" class="form-control" id="phoneTarget" value="<%= user.phone %>">
-								</div>
-								<div class="modal-footer">
-									<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
-									<div class="demo-placeholder">
-									<!-- Button trigger modal -->
-										<button type="submit" class="btn btn-add show-modal mt-2 mb-2" df>Send Auction Link</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+			<!-- Send Auction Link to Supporters via SMS Text -->
+			<div>
+				<form action="">
+					<input type="hidden" id="phone" name="phone" value="<%= user.phone %>">
+					<input type="hidden" id="auction" name="auction" value="<%= auction._id %>">
+					<button type="button" class="btn btn-add mt-2 mb-2" id="smsButton">Send Auction Link</button>
 				</form>
 			</div>
-
-
-        </div>
+		</div>
+		
+		<!-- Send Auction Link SMS Text Message to Supporter -->
+		<script type="text/javascript">
+			$('#smsButton').click(function(event){
+				// console.log("400 clerksDash.ejs smsButton fx.")
+				var phone = $('#phone').val();
+				// console.log('401 clerkDash.ejs send SMS.  phone start = ',phone);
+				
+				// removes dashes from phone number
+				var phoneStub = '';
+				for (var i = 0; i < phone.length; i++){
+					var code = phone.charCodeAt(i);
+					if (code >= 48 && code <= 57) {
+						phoneStub += String.fromCharCode(code);
+					} 
+					// else console.log("406  clerkDash.ejs send SMS.Code not in lower-case range 48-57.  Code = ",code)
+				}
+				// console.log("407  clerkDash.ejs send SMS. phoneStub final = ",phoneStub)
+				var auction = $('#auction').val();
+				// console.log('409 clerkDash.ejs send SMS.  auction = ',auction);
+				event.preventDefault();
+				$.ajax({
+					type: "POST",
+					url: 'http://localhost:8000/users/sendSMS',
+					// url: 'http://dv1.elizabid.com/users/sendSMS',
+					data: {"phone": phoneStub, "auction": auction },
+					success: function(data){
+						// console.log('410 clerkDash.ejs send SMS success.');
+						window.location.replace('/' + auction + '/clerkDash')
+					}
+				})
+			});
+		</script>
         <!-- json parse scripts -->
         <script type="text/javascript">
             var cart = <%-JSON.stringify(cart)%>;
@@ -183,7 +181,7 @@
         <!-- search box scripts -->
         <script type="text/javascript">
             $(document).ready(function () {
-                console.log("100 clerkDash.js script document.ready start");
+                console.log("100 clerkDash.ejs script document.ready start");
                 // $(".packageRow").show();
             //    $("#packagetable").hide();
             
@@ -270,7 +268,8 @@
             })
 
 
-        </script>
+		</script>
+
         
     </body>
 </html>
