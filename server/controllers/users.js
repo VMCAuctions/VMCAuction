@@ -473,6 +473,34 @@ function UsersController(){
 		}).then(res.redirect('/' + req.params.auctions + '/users'));
 	}
 
+	
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
+	this.sendSMS = function(req,res){
+		User.findOne({userName: req.params.userName}).exec( function(err, user){
+			if(err){
+				console.log(err)
+			}else {
+				console.log("100 users.js this.sendSMS User.findOne.  user = ",user)
+				Auction.findById(req.params.auctions, function (err, auctionDetails) {
+					if (err) {
+						console.log(err)
+					} else {
+						console.log("101 users.js this.sendSMS Auction.findById.  auction = ",auction)
+						res.render('sms-modal', {
+							user: user,
+							phone: user.phone,
+							admin: req.session.admin,
+							auction: req.params.auctions,
+							userName: req.session.userName,
+							auctionDetails: auctionDetails,
+						})
+					}
+				})
+			}
+		})
+	};
+
+
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){
 			// console.log('UsersController admin change')

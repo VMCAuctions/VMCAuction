@@ -131,11 +131,49 @@
                 </table>
             </div>
             <div class="demo-placeholder">
-                <button type="button" id="sendLinkButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
-                        Send link
-                        </button>
-                    
-            </div>
+                   <!-- Button trigger modal -->
+				<button type="button" class="btn btn-add show-modal mt-2 mb-2" df data-toggle="modal" data-target="#SMSModal">Send Auction Link</button>
+			</div>
+			
+			<!-- SMS Send Text Link Modal -->
+			<div class="container mt-4">
+				<form id="sendSMSForm" action="/<%=auction%>/users/sendSMS/<%=user._id%>" method="POST">
+					<div class="modal fade bd-example-modal-lg" id="SMSModal" role="dialog">
+						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">
+									<i class="fas fa-sms"></i> Send SMS Auction Link</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<div><%= user.firstName %></div>
+									</div>
+									<div class="form-group col-md-6">
+										<div><%= user.lastName %></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="phoneNumber">Cell Phone Number</label>
+									<input type="tel" name="phone" class="form-control" id="phoneTarget" value="<%= user.phone %>">
+								</div>
+								<div class="modal-footer">
+									<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+									<div class="demo-placeholder">
+									<!-- Button trigger modal -->
+										<button type="submit" class="btn btn-add show-modal mt-2 mb-2" df>Send Auction Link</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+
         </div>
         <!-- json parse scripts -->
         <script type="text/javascript">

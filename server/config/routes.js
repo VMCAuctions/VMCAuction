@@ -332,6 +332,11 @@ module.exports = function(app) {
 	app.post('/:auctions/users/account/:userName', function(req, res){
 		users.update(req, res)});
 
+	// Send SMS text link to supporter at auction checkin
+	app.post('/:auctions/users/sendSMS/:id', function(req,res) {
+		console.log("350 routes.js auc/users/sendSMS/un.  req.params = ",req.params)
+		users.sendSMS(req,res)});
+
 	// update a specific user (profile/info)- this function might be replaced by the one above
 	app.put('/:auctions/users/:id(\d+)', function(req,res){
 		users.update(req,res)});
@@ -402,20 +407,25 @@ module.exports = function(app) {
 	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
 		auctions.deleteAuction(req, res)});
+
 	//Event landing page the supporters will see; has links to supporter login and registration
 	app.get('/:auctions/event', function(req, res) {
 		auctions.event(req, res)});
+
 	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
 	app.get('/:auctions/clerkDash', function(req,res) {
 		auctions.clerk(req,res)});
+
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
+
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
 
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
+
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
 		console.log('routes.js * route');
