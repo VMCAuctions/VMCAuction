@@ -34,6 +34,9 @@
 
         } else if (!$("#bidAmount").val() && <%= ourBids %> === true ){
           console.log("Placing Bid Amount of Package and Bid Increment");
+          console.log("Hello World");
+          console.log($("#bidAmount").val());
+          // console.log(<%= lastBid + package.bidIncrement %>);
           socket.emit('msgSent', { packId: '<%= package._id %>', bid: '<%= lastBid + package.bidIncrement %>', userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
           // event.preventDefault();
 
@@ -47,7 +50,7 @@
 
         //Else checks if user input from textbox is greater than or equal to the last bid + bid increment and if there are bids
         } else if ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids %> === true ) {
-            console.log("Placing Bid Else If");
+            console.log("Placing Bid If Userbid is Greater than or Equal to last Bid plsu bid increment");
             console.log($('#bidAmount').val());
             socket.emit('msgSent', { packId: '<%= package._id %>', bid: $('#bidAmount').val(), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
             // event.preventDefault();
@@ -67,18 +70,26 @@
           $('#minBid').text("Bid US $"+(parseInt(data.bid) + <%= package.bidIncrement %>).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more")
           $('#bidAmount').attr('min',parseInt(data.bid) + <%= package.bidIncrement %>)
         }
-
-
       });
 
+      //Updates submit button only after bidding has been saved in database 
       socket.on('buttonStateChannel', function (data) {
-        
         if (data.packId == <%= package._id %>) {
           console.log("This is the data button " + data.button);
-          $('#submitButton2').attr('disabled', data.button)
-            }
-          });
+          if( data.button == 'disabled'){
+            console.log("Disabled");
+            $('#submitButton2').attr('disabled','disabled')
+          } else {
+            console.log("Enabled");
+            $("#submitButton2").removeAttr('disabled');
+             }
+             event.preventDefault();
 
+            }
+
+
+
+          });
         }
       )
 

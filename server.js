@@ -83,6 +83,7 @@ var packagesButtonStates = {};
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
 				packagesButtonStates[pkgs[i]._id].buttonstate = true;
+				// console.log(packagesButtonStates);
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
 				if (pkgs[i].bids.length != 0) {
@@ -110,7 +111,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on("msgSent", function (data) {
 
 		console.log("Message Received By Server the Bid");
-		console.log(data);
+		console.log(data.bid);
 
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
@@ -157,8 +158,8 @@ io.sockets.on('connection', function (socket) {
 			// WE FINISHED TO UPDATE DATABASE SERVER OBJECT ETC.
 			console.log("Server Talks Back");
 			packagesButtonStates[data.packId].buttonstate = false;
-			var userBid = data.bid;
-			var userName = data.userName;
+			let userBid = parseInt(data.bid);
+			let userName = data.userName;
 
 			if (allBidsBigObj[data.packId] == undefined) {
 				allBidsBigObj[data.packId] = [];
@@ -174,16 +175,36 @@ io.sockets.on('connection', function (socket) {
 				if (err) {
 					console.log("error occured " + err);
 				} else if (data != null) {
+					
+					let lastBid = parseInt(data.bids[data.bids.length - 1].bidAmount);
+					let packageAmt = data.amount;
+					let bidIncrement = data.bidIncrement;
+
+					// console.log("UserBid coming from EJS: ")
+					// console.log(userBid);
+					// console.log(userBid+99);
+					// console.log("Last Bid from BackEnd: ")
+					// console.log(lastBid);
+					// console.log(lastBid+99);
+					// console.log("Package from BackEND: ")
+					// console.log(packageAmt);
+					// console.log(packageAmt+99);
+					// console.log("Bid Increment: ")
+					// console.log(bidIncrement);
+					// console.log(bidIncrement+99);
 
 					//if there are no bids on the package, we check if the userBid from  is greater than package amount
-					if (data.bids.length == 0 && userBid >= data.amount) {
+					if (data.bids.length == 0 && userBid >= packageAmt) {
 						data.bids.push({
 							bidAmount: userBid,
 							name: userName,
 							date: date
 						});
+
 					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
-					} else if (userBid >= data.bids[data.bids.length - 1].bidAmount + data.bidIncrement) {
+					} else if (userBid >= lastBid + bidIncrement) {
+						console.log("ELSE IF");
+
 						data.bids.push({
 							bidAmount: userBid,
 							name: userName,
@@ -235,7 +256,7 @@ io.sockets.on('connection', function (socket) {
 		// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 		setTimeout(function () {
 			io.emit('buttonStateChannel', {
-				button: null,
+				button: 'enabled',
 				packId: data.packId
 			});
 		}, 1000);
