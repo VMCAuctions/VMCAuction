@@ -39,14 +39,14 @@
 		<%- include('footerClock') -%>
 	<%}%>
 
-	<div class="container">
+	<div class="container margin-tofooter">
 
 		<h2 class="supporter-view">Featured Packages</h2>
 
 		<div class="d-flex flex-row flex-wrap justify-content-start">
 			<% for (var f in featured) {%>
 				<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
-					<div class="card pkg-card">	
+					<div id ="<%= featured[f]._id %>" class="card pkg-card">	
 						<div class="card-body">
 							<div class="featured-num">
 								#<%= featured[f]._id %>
@@ -61,7 +61,7 @@
 								<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
-									<p class="category mt-1">Category: <%=featured[f].category %></p>
+									<p class="category mt-1">Category: <%=featured[f]._category %></p>
 								</div>	
 							</div>
 							<hr>
@@ -104,5 +104,6 @@
 				</div>	
 			<%}%>
 		</div>
+		<div>
 	</body>
 </html>
