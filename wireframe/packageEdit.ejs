@@ -83,10 +83,11 @@
           </div>
           <div class="form-group col-md-4">
             <label class="label-name">Category</label>
-            <select class="form-control" id="category" name="cat">
-              <option value="<%=package.cat%>"><%=package.cat%></option>
+            <!-- <select class="form-control" id="category" name="cat"> -->
+            <select class="form-control" id="category" name="category">
+              <option value="<%=package._category%>"><%=package._category%></option>
               <%for (var c in categories){%> 
-                <%if(package.cat != categories[c]){%>
+                <%if(package._category != categories[c].name){%>
                   <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
                 <%}%> 
               <%}%>

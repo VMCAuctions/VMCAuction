@@ -198,7 +198,7 @@ function PackagesController(){
 									}
 								}
 								sortedPackages = sortedPackages.concat(nonFeatured)
-									console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
+									// console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
 								
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
@@ -228,71 +228,71 @@ function PackagesController(){
 
 	this.edit = function(req,res){
 		if (globals.adminValidation(req, res)){
-      var packageItems =[];
+			var packageItems =[];
 			var itemsArray = [];
-      var total = 0;
-      
+			var total = 0;
+
 			Package.findById(req.params.id).populate("_items").exec(function(err,result){
 				if(err){
 					console.log(err);
 				}
-				else{					
+				else{
 					Category.find({}, function(err, categories) {
-            if(err) {
-              console.log(err);
-              res.status(500).send('packages.js this.edit.  Failed to Load Categories');
-            }
-            else {
+						if(err) {
+							console.log(err);
+							res.status(500).send('packages.js this.edit.  Failed to Load Categories');
+						}
+						else {
 							console.log("100 packages.js this.edit Cat.find.  categories = ",categories)
-							console.log("101 packages.js this.edit categories[0].name = ",categories[0].name);
-              Item.find({_package: result._id  }, function(err, packageItems) {
-                if(err) {
-                  console.log(err);
-                  res.status(500).send('packages.js this.edit.  Failed to find items in this package');
-                }
-                else {                
-                  packageItems = packageItems;
-                  for (var i in packageItems){
-                  }
-                }
-              })
-              
-								Item.find({_auctions: req.params.auctions}, function(err, items) {
-									if(err) {
-											console.log(err);
-											res.status(500).send('packages.js this.edit.  Failed to Load Items');
+							// console.log("101 packages.js this.edit categories[0].name = ",categories[0].name);
+							Item.find({_package: result._id  }, function(err, packageItems) {
+								if(err) {
+									console.log(err);
+									res.status(500).send('packages.js this.edit.  Failed to find items in this package');
+								}
+								else {
+									packageItems = packageItems;
+									for (var i in packageItems){
 									}
-									else {
-										for(let i = 0; i<items.length; i++){
-											 if(!items[i].packaged || items[i]._package == req.params.id){
-												 itemsArray.push(items[i]);
-										 	}
-										}
+								}
+							})
 
-										for(let i = 0; i < result._items.length; i++){
-											total += result._items[i].value;
+							Item.find({_auctions: req.params.auctions}, function(err, items) {
+								if(err) {
+									console.log(err);
+									res.status(500).send('packages.js this.edit.  Failed to Load Items');
+								}
+								else {
+									for(let i = 0; i<items.length; i++){
+										if(!items[i].packaged || items[i]._package == req.params.id){
+											itemsArray.push(items[i]);
 										}
-										Auction.findById(req.params.auctions, function (err, auctionDetails) {
-											if (err) {
-												console.log(err)
-											} else {
-												
-												res.render('packageEdit', {
-                          package: result,
-													packageItems: packageItems,													
-                          categories: categories,
-													items: itemsArray,
-													total: total,
-													userName: req.session.userName,
-													admin: req.session.admin,
-													auction: req.params.auctions,
-													auctionDetails: auctionDetails,
-													photo: result.photo
-												})
-											}
-										})
-
 									}
+
+									for(let i = 0; i < result._items.length; i++){
+										total += result._items[i].value;
+									}
+									Auction.findById(req.params.auctions, function (err, auctionDetails) {
+										if (err) {
+											console.log(err)
+										} else {
+
+											res.render('packageEdit', {
+												package: result,
+												packageItems: packageItems,
+												categories: categories,
+												items: itemsArray,
+												total: total,
+												userName: req.session.userName,
+												admin: req.session.admin,
+												auction: req.params.auctions,
+												auctionDetails: auctionDetails,
+												photo: result.photo
+											})
+										}
+									})
+
+								}
 
 								})
 							}
@@ -361,6 +361,9 @@ this.new = function(req,res){
 		console.log("101 packages.js this.create start. req.file = ",req.file);
 		console.log("100 packages.js this.create start. req.body = ",req.body);
 		console.log("102 packages.js this.create start. req.params = ",req.params);
+
+		var cat = req.body.category[0];
+		console.log("102 packages.js this.create start. cat=r.b.category[0]  cat = ",cat);
 		
 		// var cat = req.body.category[0]
 		// console.log("103 packages.js this.create cat = ",cat);
@@ -380,7 +383,8 @@ this.new = function(req,res){
 			bidIncrement: req.body.increments,
 			// _category: req.body.category,
 			donors: req.body.donors,
-			cat: req.body.cat,
+			cat: cat,
+			_category: cat,
 			bid: [],
 			amount: req.body.openingBid,
 			featured: req.body.featured,
@@ -463,16 +467,16 @@ this.new = function(req,res){
 	this.update = function(req,res){
 		console.log("220 packages.js this.update start.  req.body = ",req.body);
 		console.log("220 packages.js this.update start.  req.body.category = ",req.body.category);
-		console.log("221 packages.js this.update start.  req.file = ",req.file);
+		// console.log("221 packages.js this.update start.  req.file = ",req.file);
 		var cat = req.body.category[0];
-		console.log("222 packages.js this.update start.  cat = ",cat);
+		console.log("222 packages.js this.update start. cat=r.b.category[0]  cat = ",cat);
 		
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function (err, package) {
-				console.log(Date.now()," - 224 packages.js this.update pkg.findById result = ",package);
+				console.log("224 packages.js this.update pkg.findById.  package = ",package);
 				if (err) {
-			        res.status(500).send(err);
-			    }else {
+					res.status(500).send(err);
+				}else {
 					Item.find({_id: package._items}, function(err, items) {
 						if (err) {
 							console.log(err);
@@ -488,28 +492,28 @@ this.new = function(req,res){
 					})
 					// Update each attribute with value that was submitted in the body of the request
 					// If that attribute isn't in the request body, default back to whatever it was before.
-			  	package.name = req.body.name || package.name;
+					package.name = req.body.name || package.name;
 					package.description = req.body.packageDescription || package.description;
 					package.restrictions = req.body.packageRestrictions || package.restrictions;
 					package.bids[0] = req.body.openingBid || package.bids[0];
 					package.value = req.body.totalValue || package.value;
 					package.amount = req.body.openingBid || package.amount;
-			    package.bidIncrement = req.body.increments || package.bidIncrement;
-			    // package._category = req.body.category || package._category;
-			    package.cat = req.body.cat || package.cat;
-			    package._category = req.body.category;
+					package.bidIncrement = req.body.increments || package.bidIncrement;
+					package._category = cat || package._category;
+					// package._category = req.body.category || package._category;
+					// package.cat = req.body.category || package.cat;
 					package.priority = req.body.priority || package.priority;
 					package._items = req.body.selectedItems;
+					package.donors = req.body.donors  || package.donors;
 
 					// For image upload
 					package.photo = req.body.imgFileName || package.photo;
 
-
-			        package.save(function (err, package) {
-			            if (err) {
-	                    console.log(err)
-			                res.status(500).send(err)
-			            }else{
+					package.save(function (err, package) {
+						if (err) {
+							console.log(err)
+							res.status(500).send(err)
+						}else{
 							console.log(Date.now()," - 226 packages.js this.update post pkg.save.  package = ",package);
 							for(let i = 0; i < package._items.length; i++ ){
 								Item.findOne({_id: package._items[i]} , function(err, item){
