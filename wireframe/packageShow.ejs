@@ -16,6 +16,7 @@
   <link rel="stylesheet" type="text/css" href="/css/packageShow.css">
 
   <script type='text/javascript'>
+
     var socket = io.connect('http://localhost:8000/');
     // var socket = io.connect('http://dv1.elizabid.com/');
 
@@ -66,12 +67,15 @@
           $('#minBid').text("Bid US $"+(parseInt(data.bid) + <%= package.bidIncrement %>).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more")
           $('#bidAmount').attr('min',parseInt(data.bid) + <%= package.bidIncrement %>)
         }
+
+
       });
 
       socket.on('buttonStateChannel', function (data) {
+        
         if (data.packId == <%= package._id %>) {
-          console.log("This is the data button" + data.button);
-          $('#submitButton').attr('disabled', data.button)
+          console.log("This is the data button " + data.button);
+          $('#submitButton2').attr('disabled', data.button)
             }
           });
 
@@ -175,92 +179,28 @@
           Current Bid: $<%= lastBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
         <% } %>
 
-
-        <!-- <p> Next Bid:</p> -->
-
         <!-- Placing Bids -->
+        <% if (!admin){ %>
         <form class="mt-2" id='submitButton' class="w-50" action='/<%= auction %>/packages/<%= package._id %>'>
-            <% if (package.bids.length === 0){ %>
+          <% if (package.bids.length === 0){ %>
           <input input id='bidAmount' type="number" name="quantity" step=".01" min='<%= package.amount.toFixed(2) %>'>
           <% }else{ %>
           <input input id='bidAmount' type="number" name="quantity" step=".01"
             min='<%= lastBid + package.bidIncrement %>'>
           <% } %>
-          <input class="ml-2 btn" type='submit' value='Place Bid'>
+          <input class="ml-2 btn" type='submit' value='Place Bid' id='submitButton2'>
         </form>
-
-        <!-- <form id="addWatchList" action="/<%= auction %>/users/interested/<%= package._id %>" method='GET'>
-          <input class="btn" type='submit' value='Add to Watch List'>
-        </form> -->
-
-
-        <!-- 
-        <form id="placeBid" action="/<%= auction %>/packages/placebid/<%= package._id %>" method='POST'>
-
-          <input type="text"><br>
-          <input class="btn" type='submit' value='Place Bid'>
-
-        </form> -->
+        <% } %>
 
         <% if (package.bids.length === 0){ %>
-
-        <p>Bid US $<%= package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
-        <% }else{ %>
-
-        <p id ='minBid'>Bid US $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
-          or more </p>
-
+          <p>Bid US $<%= package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
+          <% }else{ %>
+          <p id ='minBid'>Bid US $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+            or more </p>
         <% } %>
-
-        <!-- <% var flag = false %> -->
-
-        <!-- clerk logic -->
-
-        <!-- <% if(userName !== "Clerk"){ %>
-
-    <button class="btn" type="button" name="Custom" id="custom">
-        Bid</button>
-
-      <% for (i in user._packages){ %>
-
-        <% if (package._id == user._packages[i]){ %>
-
-          <a href="/<%= auction %>/users/uninterested/<%= package._id %>">
-            <button class="btn" type="button"
-            name="interested">Remove from Watchlist</button>
-          </a>
-
-          <% if (flag == false){ %>
-            <a href="/<%= auction %>/users/interested/<%= package._id %>"><button type="button" class="btn"
-                name="interested">Add to Watchlist</button></a>
-                <% } %>
-
-        <% } %>
-   
-      <% } %>
-
-    <% } %> -->
-
-        <!-- admin logic -->
-
-        <!-- <% if (admin === true){ %>
-
-      <form action="/<%= auction %>/packages/cancelbid/<%= package._id %>" method='POST'>
-        <input type='text' value='' placeholder='username of bidder' name='user'>
-        <input class='btn' id='cancelBid' type='submit' value='Delete Bid'>
-      </form>
-
-      <a href='/<%= auction %>/packages/edit/<%= package._id %>'>
-        <button>Edit</button></a>
-
-      <% } %> -->
 
         <!-- Buttons -->
-
         <p class="text-success" id="addSuccess"></p>
-
-        <!-- <p class="text-success" id="addSuccess">Added to Watch List!</p> -->
-
         <p class="text-success" id="removeSuccess"></p>
 
         <% if (user._packages.length > 0) { %>
@@ -303,7 +243,7 @@
                 <% if( package.bids.length === 0){ %>
                   <p>No one has bid on this package yet.</p>
                 <% }else{ %>
-                  <p><%= package.bids[package.bids.length-1].name %> placed a bid of <%= lastBid %> on </p>
+                  <p class = "bidHistory"><%= package.bids[package.bids.length-1].name %> placed a bid of <%= lastBid %> on </p>
                 <% } %>
               </div>
               <div class="modal-footer">
@@ -318,60 +258,6 @@
   </div>
 
   <script type="text/javascript">
-
-    // $('#custom').click(function () {
-    //   if ($('#bidAmount').attr('readonly') === 'readonly') {
-    //     if (<%= ourBids %> === true) {
-    //   $('#bidAmount').attr({
-    //     'readonly': false,
-    //     'placeholder': "$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
-    // });
-    // $('#bidAmount').val(null);
-    //     }else {
-    //   $('#bidAmount').attr({
-    //     'readonly': false,
-    //     'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
-    //   });
-    //   $('#bidAmount').val(null);
-    // }
-    //   }else {
-    // if (<%= ourBids %>=== true) {
-    //   $('#bidAmount').attr({
-    //     'readonly': 'readonly',
-    //     'placeholder': "$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
-    // });
-    //   $('#bidAmount').val("$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-    // }else {
-
-    //   $('#bidAmount').attr({
-    //     'readonly': 'readonly',
-    //     'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
-    //   });
-    //   $('#bidAmount').val("$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-    // }
-    //   }
-    // $(this).text($(this).text() == 'Preset Bid' ? 'Custom Bid' : 'Preset Bid')
-    //   })
-
-    //There is also a socket function for submitButton.click above, with the rest of the socket stuff
-    // $("#submitButton").click(function () {
-    //   if ( $("#bidAmount").val() < <%= package.amount %> && <%= ourBids %> === false ){
-    //     alert("Please enter a bid above $" + <%= package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)
-    //     event.preventDefault()
-    //   } else if ( $("#bidAmount").val() < <%= lastBid + package.bidIncrement %> && <%=ourBids %> === true ){
-    //   alert("Please enter a bid above $" + <%= lastBid + package.bidIncrement %> )
-    //   event.preventDefault()
-    //   }
-    // })
-
-    // $('#addWatchList').click(function (event) {
-    //   $.get("/<%= auction %>/users/interested/<%= package._id %>",
-    //     function (data, status) {
-    //       document.getElementById("addSuccess").innerHTML = "Added to Watch List!";
-    //       $("#addWatchList").replaceWith("<a id = 'removeWatchList' href='/<%= auction %>/users/uninterested/<%= package._id %>'><button id='removeWatchList' class='btn' type='button' name='uninterested'>Remove from Watchlist</button></a>");
-    //     });
-    //   return false;
-    // })
 
     $('#addWatchList').submit(function (event) {
       $.get("/<%= auction %>/users/interested/<%= package._id %>",

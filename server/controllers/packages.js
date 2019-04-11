@@ -726,19 +726,7 @@ function PackagesController() {
 			})
 		}
 	}
-
-	// this.createBid = function (req, res) {
-	// 	console.log("#################### Creating Bid ################");
-
-	// 	console.log(req.body);
-		
-
-
-
-	// }
-	 
-
-
+	
 	this.cancelBid = function (req, res) {
 		if (globals.adminValidation(req, res)) {
 			Package.findById(req.params.id, function (err, package) {
