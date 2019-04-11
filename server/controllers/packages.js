@@ -443,18 +443,17 @@ function PackagesController() {
 			}
 		});
 
-		var user
-		User.findOne({ userName: req.session.userName }, function (err, result) {
+		User.findOne({ userName: req.session.userName }, function (err, user) {
 			if (err) {
 				console.log(err)
 			} else {
-				user = result
+				// console.log("100 packages.js this.show User.findOne.  user = ",user)
 				Package.findById(req.params.id).populate("_items").exec(function (err, package) {
 					if (err) {
 						console.log(err);
 					}
 					else {
-						// console.log(package);
+						// console.log("100 packages.js this.show Package.findById.  package = ",package)
 						var ourBids = false
 						var lastBid = package.amount
 						if (package.bids.length > 0) {

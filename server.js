@@ -111,7 +111,8 @@ io.sockets.on('connection', function (socket) {
 	socket.on("msgSent", function (data) {
 
 		console.log("Message Received By Server the Bid");
-		console.log(data.bid);
+		console.log("100 server.js io.sockets.  data.bid = ",data.bid);
+		console.log("100 server.js io.sockets.  data = ",data);
 
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
@@ -156,7 +157,7 @@ io.sockets.on('connection', function (socket) {
 		if (packagesButtonStates[data.packId].buttonstate) {
 			// NOW NOBODY WILL BE ALLOWED TO MAKE A BID IN THIS PACKAGE UNTILL
 			// WE FINISHED TO UPDATE DATABASE SERVER OBJECT ETC.
-			console.log("Server Talks Back");
+			// console.log("Server Talks Back");
 			packagesButtonStates[data.packId].buttonstate = false;
 			let userBid = parseInt(data.bid);
 			let userName = data.userName;
@@ -171,31 +172,24 @@ io.sockets.on('connection', function (socket) {
 				date: date
 			})
 
-			Package.findById(data.packId).exec(function (err, data) {
+			Package.findById(data.packId).exec(function (err, package) {
 				if (err) {
 					console.log("error occured " + err);
-				} else if (data != null) {
+				} else if (package != null) {
+					let lastBid;
+					if (package.bids.length == 0){
+						lastBid = package.amount;
+					} else {
+						lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount);
+					}
 					
-					let lastBid = parseInt(data.bids[data.bids.length - 1].bidAmount);
-					let packageAmt = data.amount;
-					let bidIncrement = data.bidIncrement;
+					// let lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount) || package.amount;
+					let packageAmt = package.amount;
+					let bidIncrement = package.bidIncrement;
 
-					// console.log("UserBid coming from EJS: ")
-					// console.log(userBid);
-					// console.log(userBid+99);
-					// console.log("Last Bid from BackEnd: ")
-					// console.log(lastBid);
-					// console.log(lastBid+99);
-					// console.log("Package from BackEND: ")
-					// console.log(packageAmt);
-					// console.log(packageAmt+99);
-					// console.log("Bid Increment: ")
-					// console.log(bidIncrement);
-					// console.log(bidIncrement+99);
-
-					//if there are no bids on the package, we check if the userBid from  is greater than package amount
-					if (data.bids.length == 0 && userBid >= packageAmt) {
-						data.bids.push({
+					//if there are no bids on the package, we check if the userBid from is greater than package amount
+					if (package.bids.length == 0 && userBid >= packageAmt) {
+						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
 							date: date
@@ -203,9 +197,9 @@ io.sockets.on('connection', function (socket) {
 
 					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
 					} else if (userBid >= lastBid + bidIncrement) {
-						console.log("ELSE IF");
+						// console.log("ELSE IF");
 
-						data.bids.push({
+						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
 							date: date
@@ -213,7 +207,7 @@ io.sockets.on('connection', function (socket) {
 					}
 				}
 				// SAVE ALL STUFF
-				data.save(function (err) {
+				package.save(function (err) {
 					if (err) {
 						console.log("error when saving: " + err);
 					}
