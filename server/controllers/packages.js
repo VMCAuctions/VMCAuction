@@ -5,6 +5,8 @@ var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
+
+	
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
 

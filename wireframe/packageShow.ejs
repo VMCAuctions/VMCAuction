@@ -24,44 +24,59 @@
     $(document).ready(function () {
 
       $('#submitButton').submit(function (event) {
-        if ($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false ){
-        console.log("Placing Bid If");
-        console.log($('#bidAmount').val());
+        //If user just clicks on the Place Bid button without putting anything in the input textbox
+        //It will place a bid on the current bid plus increment
+        if (!$("#bidAmount").val() && <%= ourBids %> === false ){
+          console.log("Placing Bid Amount of Package Amount");
+          socket.emit('msgSent', { packId: '<%= package._id %>', bid: '<%= package.amount %>' , userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
+          // event.preventDefault();
 
-        socket.emit('msgSent', { packId: '<%= package._id %>', bid: $('#bidAmount').val(), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
-        event.preventDefault();
+        } else if (!$("#bidAmount").val() && <%= ourBids %> === true ){
+          console.log("Placing Bid Amount of Package and Bid Increment");
+          socket.emit('msgSent', { packId: '<%= package._id %>', bid: '<%= lastBid + package.bidIncrement %>', userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
+          // event.preventDefault();
 
-      } else if ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids %> === true ){
-      console.log("Placing Bid Else If");
-      console.log($('#bidAmount').val());
-      socket.emit('msgSent', { packId: '<%= package._id %>', bid: $('#bidAmount').val(), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>' })
-      event.preventDefault();
-    }
-      
+        //Custom Orders in TextBox
+        //Checks if user input from textbox is greater than or equal to package amount and if there are no bids
+        } else if ($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false ) {
+            console.log("Placing Bid If Bid is Greater than PackageAmount ");
+            console.log($('#bidAmount').val());
+            socket.emit('msgSent', { packId: '<%= package._id %>', bid: $('#bidAmount').val(), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
+            // event.preventDefault();
+
+        //Else checks if user input from textbox is greater than or equal to the last bid + bid increment and if there are bids
+        } else if ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids %> === true ) {
+            console.log("Placing Bid Else If");
+            console.log($('#bidAmount').val());
+            socket.emit('msgSent', { packId: '<%= package._id %>', bid: $('#bidAmount').val(), userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
+            // event.preventDefault();
+        }
     });
 
-    socket.on("serverTalksBack", function (data) {
+      // Updates packageShow page with bid price
+      socket.on("serverTalksBack", function (data) {
+        // console.log("Server Talks Back for Data.bid "+ data.bid);
+        // console.log("Server Talks Back for Data.packId "+ data.packId);
+        // console.log("Server Talks Back for package._id "+ <%= package._id %>);
+        console.log(data);
 
-      console.log(data.bid);
+        if ( data.packId == <%= package._id %>) {
+          $('#currentBid').text("Current Bid: $" + data.bid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+          $('#topBidder').text("Top Bidder: " + data.userName)
+          $('#minBid').text("Bid US $"+(parseInt(data.bid) + <%= package.bidIncrement %>).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more")
+          $('#bidAmount').attr('min',parseInt(data.bid) + <%= package.bidIncrement %>)
+        }
+      });
 
-      if (data.packId === <%= package._id %>) {
+      socket.on('buttonStateChannel', function (data) {
+        if (data.packId == <%= package._id %>) {
+          console.log("This is the data button" + data.button);
+          $('#submitButton').attr('disabled', data.button)
+            }
+          });
 
-      $('#currentBid').text("Current Bid: $" + data.bid.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " by: " + data.userName)
-
-      $('#bidAmount').replaceWith("<input id='bidAmount' readonly value='" + String(parseInt(data.bid) + <%= parseInt(package.bidIncrement) %>) + " ' >")
-      customPlaceholder = data.bid;
-    }
-    })
-
-    socket.on('buttonStateChannel', function (data) {
-      if (data.packId == <%= package._id %>) {
-      console.log("This is the data button" +data.button);
-
-      $('#submitButton').attr('disabled', data.button)
-    }
-        })
-			}
-    )
+        }
+      )
 
   </script>
 </head>
@@ -73,8 +88,6 @@
       <%}else{%>
         <%- include('header') -%>
       <%}%>
-
-      
       <!-- <%if(admin == 0){%>
         <%- include('footerClock') -%>
       <%}%> -->
@@ -83,12 +96,10 @@
     <div>
       <h3 class="card-header"><%= package.name %> </h3>
       <div>
-
         <img class="w-50 h-50" src="/<%= package.photo %>">
       </div>
 
       <div class="card-body">
-
         <!-- nextPos -->
         <!-- <p><%= nextPos %></p> -->
         <!-- prevPos -->
@@ -117,7 +128,7 @@
         <!-- <p>Package ID: <%= package._id %></p> -->
 
 
-        <!-- <p>Bid Increment: <%= package.bidIncrement %></p> -->
+
         <!-- 
         <p>Last Bid + Bid Increment <%= lastBid + package.bidIncrement %> </p> -->
 
@@ -148,11 +159,12 @@
         </p> -->
 
         <p>Package Value: US $<%= package.amount %></p>
+        <p>Bid Increment: $<%= package.bidIncrement %></p>
       
         <% if(package.bids.length === 0){ %>
           <p>Top Bidder: </p>
         <% }else{ %>
-          <p>Top Bidder: <%= package.bids[package.bids.length - 1].name %></p>
+          <p id = 'topBidder'>Top Bidder: <%= package.bids[package.bids.length - 1].name %></p>
         <% } %>
 
         <% if (package.bids.length === 0){ %>
@@ -168,16 +180,13 @@
 
         <!-- Placing Bids -->
         <form class="mt-2" id='submitButton' class="w-50" action='/<%= auction %>/packages/<%= package._id %>'>
-          <!-- <input id='bidAmount' readonly
-            value='<%= "$" + package.amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'> -->
-          <% if (package.bids.length === 0){ %>
+            <% if (package.bids.length === 0){ %>
           <input input id='bidAmount' type="number" name="quantity" step=".01" min='<%= package.amount.toFixed(2) %>'>
           <% }else{ %>
           <input input id='bidAmount' type="number" name="quantity" step=".01"
             min='<%= lastBid + package.bidIncrement %>'>
           <% } %>
           <input class="ml-2 btn" type='submit' value='Place Bid'>
-
         </form>
 
         <!-- <form id="addWatchList" action="/<%= auction %>/users/interested/<%= package._id %>" method='GET'>
@@ -194,10 +203,13 @@
         </form> -->
 
         <% if (package.bids.length === 0){ %>
+
         <p>Bid US $<%= package.bidIncrement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
         <% }else{ %>
-        <p>Bid US $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+
+        <p id ='minBid'>Bid US $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
           or more </p>
+
         <% } %>
 
         <!-- <% var flag = false %> -->
@@ -330,6 +342,7 @@
     // });
     //   $('#bidAmount').val("$" + (customPlaceholder + <%=package.bidIncrement %>).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
     // }else {
+
     //   $('#bidAmount').attr({
     //     'readonly': 'readonly',
     //     'placeholder': "$" + customPlaceholder.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' or higher'
@@ -373,7 +386,6 @@
       // location.reload(true);
       event.preventDefault();
     })
-
 
     $('#removeWatchList').submit(function (event) {
       $.get("/<%= auction %>/users/uninterested/<%= package._id %>",
