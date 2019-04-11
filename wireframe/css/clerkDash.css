@@ -6,9 +6,23 @@ h2 {
   padding: 1.2rem 0;
   color: #003a70 !important;
 }
-
+img{
+  width: 100px;
+  
+}
 #search-lastname {
   width: 280px;
+  margin: 0 0.5rem 0 0;
+  display: inline-block;
+}
+#search-packagename {
+  width: 280px;
+  margin: 0 0.5rem 0 0;
+  display: inline-block;
+}
+#search-button{
+  padding: 10,0,10,0;
+  width: 220px;
   margin: 0 0.5rem 0 0;
   display: inline-block;
 }

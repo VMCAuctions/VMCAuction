@@ -31,7 +31,7 @@ function PackagesController(){
 					}else{
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
 							if(err) {
 								console.log('packages.js this.index Package Index Error');
 								res.status(500).send('packages.js this.index Failed to Load Packages');
@@ -97,7 +97,7 @@ function PackagesController(){
 					}else{
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
 							if(err) {
 								console.log('packages.js this.index Package Index Error');
 								res.status(500).send('packages.js this.index Failed to Load Packages');
@@ -115,6 +115,7 @@ function PackagesController(){
 										nonfeatured.push(packages[i]);
 									}
 								}
+						
 								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {

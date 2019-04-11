@@ -342,12 +342,21 @@ module.exports = function(app) {
 	// displays user cart info
 	app.get('^/users/admin$', function(req,res){
 		users.admin(req,res)});
-  	//adds to watchlist
+
+  	//adds to watchlist from Catalog
 	app.get('/:auctions/users/interested/:id', function(req, res) {
 		users.interested(req, res)});
-	//removes from watchlist
+	//removes from watchlist from Catalog
 	app.get('/:auctions/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)});
+
+	//adds to watchlist from Featured Packages	
+	app.get('/:auctions/users/interested-in-featured/:id', function(req, res) {
+		users.interestedInFeatured(req, res)});
+	//removes from watchlist Featured Packages	
+	app.get('/:auctions/users/uninterested-in-featured/:id', function (req,res) {
+		users.uninterestedInFeatured(req, res)});
+
   	//saves list of packages on users personal page as user likes it
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});

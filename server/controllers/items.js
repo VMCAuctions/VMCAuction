@@ -440,11 +440,11 @@ function ItemsController(){
 
 	this.itemsCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
-		// console.log("400 items.js this.itemsCsv start")
-		// console.log("401 items.js this.itemsCsv.  req.body = ", req.body)
-		// console.log("401 items.js this.itemsCsv.  req.body.csvFileName = ", req.body.csvFileName)
-		// console.log("401 items.js this.itemsCsv.  req.session = ", req.session)
-		// console.log("401 items.js this.itemsCsv.  req.params = ", req.params)
+		console.log("400 items.js this.itemsCsv start")
+		console.log("401 items.js this.itemsCsv.  req.body = ", req.body)
+		console.log("401 items.js this.itemsCsv.  req.body.csvFileName = ", req.body.csvFileName)
+		console.log("401 items.js this.itemsCsv.  req.session = ", req.session)
+		console.log("401 items.js this.itemsCsv.  req.params = ", req.params)
 		
 
 		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
