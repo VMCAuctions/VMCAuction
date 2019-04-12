@@ -10,82 +10,88 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script> 
 
 	<style>  
-			.upright {
-				width: 459px;
-				height: 594px;
-				text-align: center;
-				background: rgb(32, 108, 194);
-				color: #fff;
-				padding: 20px 0px;
-			}
-	
-			.donor {
-				background: black;
-				width: 100%;
-				height: 5%;
-				position: relative;
-				font-size: 20px;
-			}
-	
-			.resized-text {
-				width: 90%;
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-			}
-	
-			.title {
-				width: 100%;
-				height: 10%;
-				font-size: 40px;
-				position: relative;
-				margin: 3% 0px;
-				font-weight: bold;
-				letter-spacing: 0.5px;
-			}
-	
-			.image {
-				width: 100%;
-				height: 40%;
-				margin-bottom: 5%;
-			}
-	
-			.flexible-photo {
-				max-width: 90%;
-				max-height: 100%;
-				border: 5px solid black;
-			}
-	
-			.packageId {
-				background: black;
-				position: relative;
-				bottom: 93%;
-				width: 30%;
-				text-align: right;
-				padding: .7% 5% .7% 0px;
-			}
-	
-			.value {
-				background: black;
-				position: relative;
-				bottom: 31%;
-				left: 70%;
-				width: 30%;
-				text-align: left;
-				padding-left: 5%;
-				padding: .7% 0px .7% 5%;
-			}
-	
-			#fitin {
-				font-size: 20px;
-				background: black;
-				width: 100%;
-				height: 35%;
-				position: relative;
-				padding: 2% 0px;
-			}
-		</style> 
+		/* .hide {
+			display: hidden;
+		} */
+		
+		.upright {
+			width: 816px;
+			height: 1054px;
+			text-align: center;
+			background: rgb(32, 108, 194);
+			color: #fff;
+			padding: 25px 0px;
+		}
+
+		.donor {
+			background: black;
+			width: 100%;
+			height: 8%;
+			position: relative;
+			font-size: 30px;
+		}
+
+		.resized-text {
+			width: 90%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.title {
+			width: 100%;
+			height: 9%;
+			font-size: 60px;
+			position: relative;
+			margin: 2% 0px;
+			font-weight: bold;
+			letter-spacing: 0.5px;
+			/* background: pink; */
+		}
+
+		.image {
+			width: 100%;
+			height: 40%;
+			margin-bottom: 5%;
+			font-size: 30px;
+		}
+
+		.flexible-photo {
+			max-width: 90%;
+			max-height: 100%;
+			border: 5px solid black;
+		}
+
+		.packageId {
+			background: black;
+			position: relative;
+			bottom: 93%;
+			width: 30%;
+			text-align: right;
+			padding: .7% 5% .7% 0px;
+		}
+
+		.value {
+			background: black;
+			position: relative;
+			bottom: 32%;
+			left: 70%;
+			width: 30%;
+			text-align: left;
+			padding-left: 5%;
+			padding: .7% 0px .7% 5%;
+		}
+
+		#fitin {
+			font-size: 40px;
+			background: black;
+			width: 100%;
+			height: 35%;
+			position: relative;
+			padding: 3% 0px;
+		}
+	</style> 
 
 	<script>
 		$(function() {
@@ -113,55 +119,52 @@
   </head>
 
 	<body>
-		<%if(admin){%>
-		<%- include('adminHeader') -%>
-		<%}else{%>
-		<%- include('header') -%>
-		<%}%>
-		<form class="form">
-			<div class="upright">
 
+		<input type="button" id="create_pdf" value="Open PDF">
+		<div class="hide">
+			<form class="form">
+				<div class="upright">
 
-				<div class="donor">
-					<div class="resized-text">
-						Donors: Mr. & Mrs. Jones, Larry Graham, John and Jane Doe, Toys 'R' Us
+					<div class="donor">
+						<div class="resized-text">
+							Donors: Mr. & Mrs. Jones, Larry Graham, John and Jane Doe, Toys 'R' Us, Michael and Jennifer Ng
+						</div>
+					</div>
+
+					<div class="title">
+						<div class="resized-text">
+							<%= package.name %>
+						</div>
+					</div>
+
+					<div class="image">
+						<img class="flexible-photo" src="/<%= package.photo %>">
+						
+						<div class="packageId">
+							#<%= package._id%>
+						</div>
+
+						<div class="value">
+							Value: $<%= package.value%>
+						</div>
+					</div>
+
+					<div id="fitin">
+						<div class="resized-text">
+							<%= package.description %>
+						</div>
 					</div>
 				</div>
-
-				<div class="title">
-					<div class="resized-text">
-						<%= package.name %>
-					</div>
-				</div>
-
-				<div class="image">
-					<img class="flexible-photo" src="/<%= package.photo %>">
-					
-					<div class="packageId">
-						#<%= package._id%>
-					</div>
-
-					<div class="value">
-						Value: $<%= package.value%>
-					</div>
-				</div>
-
-				<div id="fitin">
-					<div class="resized-text">
-						<%= package.description %>
-					</div>
-				</div>
-			</div>
-		</form>
-
-		<input type="button" id="create_pdf" value="Generate PDF"> 
+			</form>
+		</div>
+ 
 		
 		<script>  
 			(function () {  
 				var  
 					form = $('.form'),  
 					cache_width = form.width(),  
-					a4 = [459, 594]; // for a4 size paper width and height  
+					a4 = [2550, 3300]; // for a4 size paper width and height  
 			
 				$('#create_pdf').on('click', function () {  
 					$('body').scrollTop(0);  
@@ -174,12 +177,15 @@
 						var  
 							img = canvas.toDataURL("image/png"),  
 							doc = new jsPDF({  
-								unit: 'px',  
-								format: [459, 594] 
+								unit: 'in',  
+								// format: 'letter' 
+								format: [8.5, 11]
 							});  
 						doc.addImage(img, 'JPEG', 0, 0);  
-						doc.save('css-test.pdf');  
-						form.width(459);  
+						// doc.addImage(img, 0, 0);
+						// doc.save('css-test.pdf'); 
+						window.open(URL.createObjectURL(doc.output("blob")));
+						form.width(cache_width);  
 					});  
 				}  
 			
