@@ -237,12 +237,7 @@ function UsersController(){
 								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
-							var tableOwner = req.body.tableOwner;
-							if (tableOwner === "on") {
-								tableOwner = req.body.firstName
-							} else {
-								tableOwner = undefined
-							}
+
 							User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
@@ -257,7 +252,9 @@ function UsersController(){
 								password: hash,
 								admin: adminStatus,
 								table: req.body.table,
-								tableOwner: tableOwner,
+								tableOwner: req.body.tableOwner,
+								tableOwnerName: req.body.tableOwnerName,
+								// seats: req.body.seats,
 								userOrg: req.body.userOrg
 							},
 							function(err, user){
@@ -298,26 +295,19 @@ function UsersController(){
 				// console.log("002 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
-				// console.log(Date.now(),"004 users.js checkLogin.  user = ",user)
-				// bcrypt.compare(req.body.password, user.password, function(err, match) {
-				// console.log(Date.now(),"004 users.js checkLogin.  match = ",match)
-					if(err){
-						console.log(err)
-					}else {
-						// console.log("user._auctions", user._auctions)
-						// console.log("Auction "+  user._auctions);
-						req.session.auction = user._auctions
-						req.session.userName = user.userName
-						req.session.admin = user.admin
-						// console.log(req.session.auction);
-						res.json({match: true, auction: user._auctions, admin:user.admin})
-					// }else{
-					// 	res.json({match: false})
-					}
-				// })
+
+				console.log("004 users.js checkLogin.  user = ",user)
+				console.log("005 user._auctions = ", user._auctions)
+				// req.session.auction = user._auctions
+				req.session.userName = user.userName
+				req.session.admin = user.admin
+				res.json({match: true, auction: user._auctions, admin:user.admin})
+
 			}
 		})
 	}
+
+	
 
 	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
 	this.show = function(req,res){
@@ -369,26 +359,26 @@ function UsersController(){
 	//3.2019 update - instead, using this for supporter to be able to edit their account.
 	//code for changing password is commented out.
 	this.update = function(req,res){
+		
+		console.log("380 users.js this.update.  req.body = ", req.body)
+		console.log("381 users.js this.update.  req.session = ", req.session)
+		console.log("382 users.js this.update.  req.params = ", req.params)
 		User.findOne({userName: req.body.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
 			} else {
-				var tableOwner = req.body.tableOwner;
-				if (tableOwner) {
-					tableOwner = req.body.firstName
-				} else {
-					tableOwner = undefined
-				}
-
 				user.firstName = req.body.firstName;
 				user.lastName = req.body.lastName;
 				user.streetAddress = req.body.address;
+				user.userOrg = req.body.userOrg;
 				user.city = req.body.city;
 				user.states = req.body.states;
 				user.zip = req.body.zip;
 				user.table = req.body.table;
-				user.tableOwner = tableOwner;
-				user.userOrg = req.body.userOrg;
+
+				user.tableOwner = req.body.tableOwner;
+				user.tableOwnerName = req.body.tableOwnerName;
+
 				user.save();
 				res.redirect("/" + req.params.auctions + "/users/account/" + req.body.userName);
 			}
@@ -425,11 +415,11 @@ function UsersController(){
 	this.usersCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
-		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
-		// console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
-		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
-		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
-		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
+		console.log("400 users.js this.usersCsv.  req.body = ", req.body)
+		console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
+		console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		console.log("403 users.js this.usersCsv.  req.session = ", req.session)
+		console.log("404 users.js this.usersCsv.  req.params = ", req.params)
 		
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
@@ -451,18 +441,22 @@ function UsersController(){
 
 				if (jsonObj[i]){
 
-					// console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
+					console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
 
 					User.create({
 						userName: jsonObj[i]["User Name"],
 						firstName: jsonObj[i]["First Name"],
 						lastName: jsonObj[i]["Last Name"],
 						phone: jsonObj[i]["Phone"],
+						userOrg: jsonObj[i]["Organization"],
 						streetAddress: jsonObj[i]["Street"],
 						city: jsonObj[i]["City"],
 						states: jsonObj[i]["State"],
 						zip: jsonObj[i]["Zip"],
 						admin: jsonObj[i]["Admin"],
+						table: jsonObj[i]["Table"],
+						tableOwner: jsonObj[i]["Table Owner"],
+						tableOwnerName: jsonObj[i]["Table Owner Name"],
 						_auctions: req.params.auctions
 						
 						
@@ -550,7 +544,6 @@ function UsersController(){
 		}
 	};
 
-
 	this.uninterested= function(req,res) {
 		// console.log("in uninterested");
 		User.findOne({userName: req.session.userName}, function(err, user) {
@@ -568,12 +561,81 @@ function UsersController(){
 						break
 					}
 				};
+
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
 				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+// 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+				
+
 			}
 		})
 	};
+
+	this.interestedInFeatured = function(req, res) {
+		if (globals.notClerkValidation(req, res)){
+			// console.log("Interested");
+			User.findOne({userName: req.session.userName}, function(err, user) {
+				if (err) {
+					console.log(err);
+				}else {
+					let flag = false
+					for (var i = 0; i < user._packages.length; i++) {
+						if (user._packages[i] == req.params.id) {
+							flag = true;
+							break
+						}
+					}
+					if (flag === false) {
+						user._packages.push(req.params.id);
+						user.save(function(err, result) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}else{
+						flag = false;
+					}
+				}
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
+			})
+		}
+	};
+
+
+	this.uninterestedInFeatured = function(req,res) {
+		// console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
+					}
+				};
+				// 1-17 Bug Fix List Item 16 Set redirect back to Watch List instead of packages
+				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
+				
+			}
+		})
+	};
+
+
+
+
+
 
 
 	this.updateList = function(req,res){
