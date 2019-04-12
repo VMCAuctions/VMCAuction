@@ -83,10 +83,11 @@
           </div>
           <div class="form-group col-md-4">
             <label class="label-name">Category</label>
-            <select class="form-control" id="category" name="cat">
-              <option value="<%=package.cat%>"><%=package.cat%></option>
+            <!-- <select class="form-control" id="category" name="cat"> -->
+            <select class="form-control" id="category" name="category">
+              <option value="<%=package._category%>"><%=package._category%></option>
               <%for (var c in categories){%> 
-                <%if(package.cat != categories[c]){%>
+                <%if(package._category != categories[c].name){%>
                   <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
                 <%}%> 
               <%}%>
@@ -114,7 +115,7 @@
               id="openingBid"
               class="form-control"
               name="openingBid"
-              value="<%=package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')%>"
+              value="<%=package.amount%>"
             />
             <!-- <input type="number" id='openingBid' class="form-control" name="openingBid" value="<%= package.amount %>"> -->
           </div>
@@ -133,6 +134,14 @@
         </div>
 
         <!-- Row 3 -->
+        <div class="form-row">
+          <div class="form-group col-12">
+            <label for="name" class="label-name">Donors</label>
+            <input type="text" name="donors" id="donors" class="form-control" value="<%=package.donors%>">
+          </div>
+        </div>
+
+        <!-- Row 4 -->
         <div class="form-row">
           <div class="form-group col-md-6">
             <label class="label-name">Package Description</label>
@@ -240,9 +249,6 @@
                                 <input class="styled-checkbox" checked="true" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
                                 <label for="<%=items[i]._id%>"><%=items[i].name%></label>
                               </td>
-                              <!-- <td>
-                                <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                              </td> -->
                               <td>
                                 <%=items[i].value %>
                               </td>
@@ -344,11 +350,12 @@
         var counter = 0;
         var pkgDesc = "";
         var pkgRest = "";
+        var donorList = "";
 
         $('#itemList').html("")
         $('#packageDescription').val(pkgDesc);
         $('#packageRestrictions').val(pkgRest);
-        console.log("300 packageEdit.ejs script updateList.  pkgDesc.val = ",$('#packageDescription').value)
+        $('#donors').val(donorList);
         
         for (var i = 0; i < items.length; i++) {
             var checkbox = document.getElementById(items[i]._id);
@@ -359,7 +366,8 @@
          
                 pkgDesc = pkgDesc + (items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n");
                 pkgRest = pkgRest + (items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n");
-
+                donorList = donorList + (items[i].donorDisplay + ", ");
+  
                 checkedItems[items[i]._id]= 1;
               }
               else if((checkbox.checked === false) && (checkedItems.hasOwnProperty(items[i]._id) === true)){
@@ -369,9 +377,7 @@
             }
             $('#packageDescription').val(pkgDesc);
             $('#packageRestrictions').val(pkgRest);
-            console.log("309 packageEdit.ejs script updateList.  $pkgDesc.val = ",$('#packageDescription').value)
-            console.log("310 packageEdit.ejs script updateList.  checkedItems = ",checkedItems)
-            console.log("312 packageEdit.ejs script updateList.  pkgDesc = ",pkgDesc)
+            $('#donors').val(donorList);
       }
     })
 

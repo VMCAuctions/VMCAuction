@@ -12,7 +12,10 @@
     <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
-    <%}%>
+	<%}%>
+	<%if(admin == 0){%>
+		<%- include('footerClock') -%>
+	<%}%>
     <div class="container">
       <h3>Your Watch List</h3>
       <p>Favorite packages you're currently watching.</p> 
@@ -53,6 +56,7 @@
 
       <h3 id = "cartTotal">Total: $<%=cartTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></h3>
     </div> <!-- End of container -->
+    
     <script>
     	var socket = io.connect('http://localhost:8000/');
       var cartTotal = <%=cartTotal%>

@@ -183,7 +183,6 @@ module.exports = function(app) {
 	app.get('/:auctions/packages/new', function(req,res){
 		packages.new(req,res)});
 
-
 	// post the new package form and create the new package - ORIGINAL
 	// app.post('/:auctions/packages', function(req,res){
 	// 	packages.create(req,res)});
@@ -204,6 +203,9 @@ module.exports = function(app) {
 
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
+		// console.log("ROUTE - GET PAGE FOR SPECIFIC PACKAGE");
+		// console.log(req.params.name);
+		// console.log(res);
 		packages.show(req,res)});
 
 	// update a single package
@@ -233,9 +235,17 @@ module.exports = function(app) {
 	//removing a package from the DB
 	app.get('/:auctions/packages/remove/:id', function(req, res){
 		packages.removePackage(req, res)});
+	
+	// //BIDS //
+	// //Creates Bid on Package
+	// app.post('/:auctions/packages/placebid/:id', function(req,res){
+	// 	packages.createBid(req,res)});
+
 	//removes last bid on package
 	app.post('/:auctions/packages/cancelbid/:id', function(req,res){
 		packages.cancelBid(req,res)});
+
+
 	//makes a package featured (toggle on or off)
 	app.get('/:auctions/packages/featured/:id', function(req, res) {
 		packages.featured(req, res)});
@@ -267,7 +277,7 @@ module.exports = function(app) {
 		users.register(req,res)});
 	// get the login form
 	app.get('/users/login', function(req,res){
-		console.log('routes.js users/login');
+		// console.log('routes.js users/login');
 		users.login(req,res)});
 
 	//get the user account page
@@ -342,12 +352,21 @@ module.exports = function(app) {
 	// displays user cart info
 	app.get('^/users/admin$', function(req,res){
 		users.admin(req,res)});
-  	//adds to watchlist
+
+  	//adds to watchlist from Catalog
 	app.get('/:auctions/users/interested/:id', function(req, res) {
 		users.interested(req, res)});
-	//removes from watchlist
+	//removes from watchlist from Catalog
 	app.get('/:auctions/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)});
+
+	//adds to watchlist from Featured Packages	
+	app.get('/:auctions/users/interested-in-featured/:id', function(req, res) {
+		users.interestedInFeatured(req, res)});
+	//removes from watchlist Featured Packages	
+	app.get('/:auctions/users/uninterested-in-featured/:id', function (req,res) {
+		users.uninterestedInFeatured(req, res)});
+
   	//saves list of packages on users personal page as user likes it
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
 		users.updateList(req,res)});
@@ -416,9 +435,10 @@ module.exports = function(app) {
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
+		
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
-		console.log('routes.js * route');
+		// console.log('routes.js * route');
 		res.redirect('/users/login')
 	})
 }

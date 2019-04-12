@@ -284,7 +284,7 @@ function UsersController(){
 
 
 	this.checkLogin = function(req, res){
-		console.log("in check login");
+		// console.log("in check login");
 		var name = req.body.userName;
 		// console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
@@ -295,12 +295,14 @@ function UsersController(){
 				// console.log("002 users.js checkLogin.  !user block");
 				res.json({match: false})
 			}else if(user){
+
 				console.log("004 users.js checkLogin.  user = ",user)
 				console.log("005 user._auctions = ", user._auctions)
 				// req.session.auction = user._auctions
 				req.session.userName = user.userName
 				req.session.admin = user.admin
 				res.json({match: true, auction: user._auctions, admin:user.admin})
+
 			}
 		})
 	}
@@ -536,11 +538,11 @@ function UsersController(){
 						flag = false;
 					}
 				}
-				res.redirect('/' + req.params.auctions  + '/packages')
+
+				res.redirect('/' + req.params.auctions  + '/packages/' +req.params.id)
 			})
 		}
 	};
-
 
 	this.uninterested= function(req,res) {
 		// console.log("in uninterested");
@@ -559,12 +561,81 @@ function UsersController(){
 						break
 					}
 				};
+
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+// 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+				
+
 			}
 		})
 	};
+
+	this.interestedInFeatured = function(req, res) {
+		if (globals.notClerkValidation(req, res)){
+			// console.log("Interested");
+			User.findOne({userName: req.session.userName}, function(err, user) {
+				if (err) {
+					console.log(err);
+				}else {
+					let flag = false
+					for (var i = 0; i < user._packages.length; i++) {
+						if (user._packages[i] == req.params.id) {
+							flag = true;
+							break
+						}
+					}
+					if (flag === false) {
+						user._packages.push(req.params.id);
+						user.save(function(err, result) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}else{
+						flag = false;
+					}
+				}
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
+			})
+		}
+	};
+
+
+	this.uninterestedInFeatured = function(req,res) {
+		// console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
+					}
+				};
+				// 1-17 Bug Fix List Item 16 Set redirect back to Watch List instead of packages
+				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
+				
+			}
+		})
+	};
+
+
+
+
+
 
 
 	this.updateList = function(req,res){

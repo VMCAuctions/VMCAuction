@@ -55,15 +55,20 @@
 	<%}else{%>
 		<%- include('header') -%>
 	<%}%>
+	<%if(admin == 0){%>
+		<%- include('footerClock') -%>
+	<%}%>
 
-	<div class="container">
+	<div class="container margin-tofooter">
 	<h2 class="supporter-view">Auction Catalog</h2>
 
-	<div class="row align-items-start ml-1 mt-4">
-		<div class="col-md-4 col-sm-6 mr-2 mb-3">
+
+	<div class="d-flex flex-row flex-wrap justify-content-start mt-4">
+		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
+
 			<input type="search" id="keyword" class="form-control search-pkg" placeholder="Keyword Search">
 		</div>
-		<div class="col-md-4 col-sm-6 mr-2 mb-3">
+		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
 			<select name="category" id="category" class="form-control search-inner search-pkg">
 				<option value="">All Categories</option>
 					<% for(var c in categories) {%>
@@ -71,65 +76,77 @@
 					<%}%>
 				</select>
 		</div>
-		<div class="col-md-4 col-sm-6 mr-2 mb-3">	
+		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
 			<button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
 		</div>	
 	</div>	
 
 	<div class="d-flex flex-row flex-wrap justify-content-start">
 		<% for (var n in packages){%>
-			<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
-				<div class="card pkg-card">		
-					<div class="card-body">
-						<div class="pkg-num">
-							#<%= packages[n]._id %>
-						</div> 
-						<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-							<img class="pkg-img mr-3" src="/test_gopro_480.jpg">
-							<div>  
-								<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[n]._id %>"><%= packages[n].name %></a>
-								<p class="category mt-1">Category: <%=packages[n]._category%></p>
-							</div>	
-						</div>
-						<hr>
-						<div class="row ml-1">
-							<ul>
-							<!--<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
-								<li>Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
-								<%if(packages[n].bids[packages[n].bids.length-1]){%>
-									<li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></li>
-								<%}else{%>
-									<li class="mt-1 no-bid">No bids yet! </li>
-								<%}%>
-								<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
-								<li class="donated mt-1">Donated by: Ms. P. Alisson, ABC Tour, Dr. D.Johnson</li>
-							</ul>
-						</div>
-						<hr>
-						<div class="text-center">
-							<!-- <%if(userName && userName !== "Clerk"){%> -->
-							<% var flag = false %>
-							<% for(var i = 0; i < user._packages.length; i++){ %>
-								<% if(packages[n]._id == user._packages[i]) {%>
-									<!--do this in ajax call instead-->
-									<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</button>
-									<!-- <a href="/<%=auction%>/users/uninterested/<%= packages[n]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
-									<% flag = true %>
-										<% break %>
-									<% } %>
-								<%}%>
 
-								<% if(flag === false) {%>
-									<!--do this in ajax call instead-->
-									<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">Add to Watchlist</button>
-									<!-- <a href="/<%=auction%>/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
-								<%}%>
+			<%if(packages[n].bids.length>0){%>
+				<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+			<%}else{%>
+				<div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+			<%}%>	
+					<div id="<%= packages[n]._id %>" class="card pkg-card">		
+						<div class="card-body">
+							<div class="pkg-num">
+								#<%= packages[n]._id %>
+							</div> 
+								<%if(packages[n].featured===true){%>
+									<div class="featured-box">
+										FEATURED
+									</div> 
+
 							<%}%>			
+							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
+								<img class="pkg-img mr-3" src="/<%= packages[n].photo %>">
+								<div>  
+									<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[n]._id %>"><%= packages[n].name %></a>
+									<p class="category mt-1">Category: <%=packages[n]._category%></p>
+								</div>	
+							</div>
+							<hr>
+							<div class="row ml-1">
+								<ul>
+								<!--<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
+									<li>Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
+									<%if(packages[n].bids[packages[n].bids.length-1]){%>
+										<li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></li>
+									<%}else{%>
+										<li class="mt-1 no-bid">No bids yet! </li>
+									<%}%>
+									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
+									<li class="donated mt-1">Donors: <%=packages[n].donors%></li>
+								</ul>
+							</div>
+							<hr>
+							<div class="text-center">
+								<!-- <%if(userName && userName !== "Clerk"){%> -->
+								<% var flag = false %>
+								<% for(var i = 0; i < user._packages.length; i++){ %>
+									<% if(packages[n]._id == user._packages[i]) {%>
+										<!--do this in ajax call instead-->
+										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</button>
+										<!-- <a href="/<%=auction%>/users/uninterested/<%= packages[n]._id %>'"><button type="button" name="interested">Remove from Watchlist</button></a> -->
+										<% flag = true %>
+											<% break %>
+										<% } %>
+									<%}%>
+
+									<% if(flag === false) {%>
+										<!--do this in ajax call instead-->
+										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">Add to Watchlist</button>
+										<!-- <a href="/<%=auction%>/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
+									<%}%>
+								<%}%>			
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>	
+				</div>	
 		<%}%>
 	</div>
+
 </body>
 </html>
