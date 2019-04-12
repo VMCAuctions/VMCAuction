@@ -12,7 +12,10 @@
     <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
-    <%}%>
+	<%}%>
+	<%if(admin == 0){%>
+		<%- include('footerClock') -%>
+	<%}%>
     <div class="container">
       <h3>Your Watch List</h3>
       <p>Favorite packages you're currently watching.</p> 
