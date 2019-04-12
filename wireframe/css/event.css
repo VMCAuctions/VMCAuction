@@ -1,137 +1,73 @@
+.body {
+  font-size: 0.9rem; 
+}
 
-body {
-  line-height: 1.7rem !important; 
-}
-.vmcf-brand {
-  height: 2.3rem;
-}
 .brand{
   font-family: "Kameron", Georgia, "Times New Roman", serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #003d79;
   padding-left: 10px; 
 }
-.btn-ctlg {
-  border: solid 2px #ff2719 !important;  
-  background-color: #ff2719 !important;
-  color: #fff !important;  
-  font-weight: 500; 
-  width: 180px; 
-}
-.btn-reg {
-  background-color: #ff2719;
-  color:#fff !important;
-  width: 175px;
-  padding: 0.75rem 0 !important;  
-}
 
-.btn-nav-reg {
-  border: solid 2px #ff6747 !important;
-  color:#ff2719 !important;
-  width: 150px; 
-}
-.btn-nav-login {
-  border: solid 2px #0080ff !important; 
-  color: #0080ff !important; 
-  font-weight: 500; 
-  width: 90px; 
-}
-a.btn-ctlg:hover {
-  color: #fff !important;
-  background-color: #cc0066 !important;
-  border: solid 2px #cc0066 !important; 
-}
-a.btn-reg:hover {
-  color: #fff !important;
-  font-weight: 500;
-  background-color: #003d79 !important;
-}
-a.btn-nav-reg:hover {
-  color: #fff !important;
-  background-color: #003d79 !important;
-  border: solid 2px #003d79 !important; 
-}
-a.btn-nav-login:hover {
-  color: #fff !important;
-  background-color: #0055cb !important;
-  border: solid 2px #0055cb !important; 
-  color: #fff; 
-}
-.btn-centr{
-  margin: 0 auto; 
-  display: block;
-}
-
-/* HEADER AN AUCTION CONTENT */
-
-.header-img {
-  /* background-image: linear-gradient(to right,#003d79 20%,#8c2c8b 80%), url("/test_img.jpg");  */
-  /* background-image: linear-gradient(to right,#0059b3 20%, #ae37ac 80%), url("/test_img.jpg"); */
-  /* background-image: linear-gradient(to right,#0066cc 40%, #ce0066 90%), url("/test_header_img.jpg");  */
-  /* background-blend-mode: multiply; */
-  background-size: cover; 
-  opacity: .95;  
-  width: 100%; 
-  height: 80vh;
-}
-
-.title-background  {
-  /* background-color: rgba(225, 230, 234, 0.55);  */
-  background-color: rgba(255, 255, 255, 0.70); 
-  padding: 3px; 
-   
-}
-
-h1{
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 2.8rem !important;
-  font-weight: 700 !important; 
-  margin: 0 auto; 
-  color: #00184c !important;  
-  text-align: center;
-  
-}
-
-h3 {
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  margin: 0 auto; 
-  color:#003d79 !important;  
-  text-align: center;
-  background-color: #fff; 
-}
-
-h2 {
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  color: #003d79 !important;
-  font-weight: 500 !important; 
-  font-size: 2.4rem !important; 
-  margin: 0 auto; 
-  text-align: center; 
-  width: 85%;
+.vmcf-brand {
+  height: 2.3rem;
 }
 
 .contact  {
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   color:#003d79 !important;  
-  font-size: 1rem;
-  font-weight: 500 !important; 
-
+  font-size: 500 !important; 
 }
-.header-info {
+
+
+/* BANNER IMAGE AND AUCTION CONTENT */
+.header-img {
+  background-size: cover; 
+  width: 100%; 
+  height: 80vh;
+}
+
+.title-background  {
+  background-color: rgba(248, 249, 250, 0.75);  
+}
+
+h1{
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 2.8rem !important;
+  font-weight: 500 !important; 
   margin: 0 auto; 
+  color: #00184c !important;  
+  text-align: center;
+}
+
+.header-info {
   color: #fff !important;  
   font-size: 1rem; 
   line-height: 2rem; 
   text-align: center; 
-  font-weight: 700; 
+  font-weight: 500; 
   color:#00184c !important; 
 }
 
-
+/* AUCTION CONTENT  */
+h2 {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  color: #003d79 !important;
+  font-weight: 500 !important; 
+  font-size: 2.2rem !important; 
+  margin: 0 auto; 
+  text-align: center; 
+  width: 85%;
+}
 
 .welcome-message {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700; 
+}
+
+.auction-description {
+  font-size: 0.9rem;
+  
 }
 
 .btn-div {
@@ -139,73 +75,29 @@ h2 {
   display: block; 
 }
 
-/* FEATURED PACKAGES CARDS */
 
-.featured-card {
-  height: 15rem;
-  background-color: #f8f9f8 !important;
-  border:solid 1px #f1f3f1 !important;  
-  box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
-	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
-  -moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .3);
-  display: flex; 
-  flex-flow: row wrap; 
-  justify-content: start; 
-  align-content: center;  
-  position: relative; 
-  text-overflow: hidden;  
+/* Buttons */
+.btn-reg {
+  border: solid 2px#ff6746 !important;
+  background-color: rgba(248, 249, 250, 0.75); 
+  color:#ff6746 !important;
+  font-size: 0.9rem !important; 
+  font-weight: 500 !important; 
+  width: 175px;
+  padding: 0.7rem !important; 
 }
 
-.featured-img {
-  height: 100px;
-  display: block; 
-  align-self: flex-start;  
+a.btn-reg:hover {
+  color: #fff !important;
+  font-weight: 500;
+  background-color: #ff6746 !important;
 }
 
-.featured-box {
-  display: inline-block; 
+.btn-centr{
+  margin: 0 auto; 
+  display: block;
 }
 
-.featured-title {
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 1.1rem; 
-  font-weight: 700; 
-}
-
-.featured-bid {
-  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
-  font-size: 1.1rem; 
-  font-weight: 900; 
-  color: #4d9900 !important;
-}
-
-.featured-text {
-  font-size: 0.8rem;
-  line-height: 1.4rem; 
-  color: #737373; 
-  
-}
-
-.featured-num {
-  width: 52px; 
-  background-color: #99004d;
-  color: #fff; 
-  font-size: 0.8rem ; 
-  font-weight: 500;  
-  position: absolute; 
-  padding: 10px; 
-  text-align: center;
-  top: 10px; 
-  left: 10px; 
-}
-
-hr {
-  display:block;
-  border: none; 
-  height: 1px; 
-  background-color: #e3e8e3;
-  /* background-color: radial-gradient(#f8f9f8, #5e6e5e, #f8f9f8);   */
-} 
 
 /* FOOTER */
 .event-footer {
@@ -241,9 +133,23 @@ hr {
 }
 
 #event-end {
-  color: #f31;
+  color: #ff6746;
   font-size: 1.6rem; 
   text-align: center; 
   text-transform: uppercase;
   letter-spacing: 0.2rem; 
 }
+
+
+/* FEATURED PACKAGES(Only what differen than the style in packageStyle.css */
+
+.description {
+  font-weight: 300; 
+}
+
+.value-display {
+	font-weight: 700; 
+  color: #003d79;
+}
+
+
