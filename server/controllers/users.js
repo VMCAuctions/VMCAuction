@@ -539,7 +539,7 @@ function UsersController(){
 					}
 				}
 
-				res.redirect('/' + req.params.auctions  + '/packages/' +req.params.id)
+				res.redirect('/' + req.params.auctions  + '/packages/#' +req.params.id)
 			})
 		}
 	};
@@ -564,7 +564,7 @@ function UsersController(){
 
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
 // 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
