@@ -100,7 +100,7 @@
 									<ul>
 										<li>Value: <span class="value-display"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> 
 										<li>Opening Bid: <span class="value-display"> <%="$" + packages[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
-										<li class="donated mt-1">Donated by: Ms. P. Alisson, ABC Tour, Dr. D.Johnson</li>
+										<li class="donated mt-1">Donated by: <%=packages[f].donors%> </li>
 									</ul>
 								</div>
 								<hr>
