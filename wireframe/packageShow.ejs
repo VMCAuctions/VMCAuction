@@ -1,75 +1,76 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <title>Package Show</title>
-  
-  <script src="/socket.io/socket.io.js"></script>
-
-  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-  
+	<meta charset="utf-8">
+	<title>Package Show</title>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/css/packageShow.css">
 
-  <link rel="stylesheet" type="text/css" href="/css/packageShow.css">
-
-  <script type='text/javascript'>
+<script type='text/javascript'>
 
 	var socket = io.connect('http://localhost:8000/');
 	// var socket = io.connect('http://dv1.elizabid.com/');
 
 	$(document).ready(function () {
-
 		// no bids and no value entered in bid form field
 		$('#submitButton').submit(function (event) {
-			let bid;
+			let sendBid;
+			let bidAmt = parseInt($("#bidAmount").val());
+			let packageAmt = <%= package.amount %>;
+			let newBid = parseInt(<%= lastBid + package.bidIncrement %>);
+			let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
+			let hasBids = <%= ourBids %>;
+			let userName = "<%= user.firstName + ' ' + user.lastName %>";
 			event.preventDefault();
-			//If user just clicks on the Place Bid button without putting anything in the input textbox
-			//It will place a bid on the current bid plus increment
-			if (!$("#bidAmount").val() && <%= ourBids %> === false ){
-				bid = <%= package.amount %>;
 
-			// has bids but no value entered in bid form field
-			} else if (!$("#bidAmount").val() && <%= ourBids %> === true ){
-		
-			if (<%= package.bidIncrement + lastBid %> > $("#hiddenBidAmt").val()) {
-				bid = <%= package.bidIncrement + lastBid %>;
-			} else {
-				bid = parseInt($("#hiddenBidAmt").val());
-			}
-			
+			//No input and no bids, "Place Bid" will place bid of current bid plus increment
+			if ( !bidAmt && hasBids === false ) {
+				sendBid = packageAmt;
+			//No input and has bids, "Place Bid" will place bid of current bid plus increment
+			} else if ( !bidAmt && hasBids === true ) {
+				//No hidden big amount use newBid from Controller else use the hidden bid amount from Server
+				if (!hiddenBidAmt) {
+					sendBid = newBid;
+				} else {
+					sendBid = hiddenBidAmt;
+				}
 			// no bids but with value entered in bid form field
-			} else if ($("#bidAmount").val() >= <%= package.amount %> && <%= ourBids %> === false ) {
-			bid = $('#bidAmount').val();
-		
+			} else if ( bidAmt >= packageAmt && hasBids === false ) {
+				sendBid = bidAmt;
 			// has bids and has value entered in bid form field
-			} else if ($("#bidAmount").val() >= <%= lastBid + package.bidIncrement %> && <%= ourBids %> === true ) {
-				bid = $('#bidAmount').val();
+			} else if ( bidAmt >= newBid && hasBids === true ) {
+				sendBid = bidAmt;
 			}
-			socket.emit('msgSent', { packId: '<%= package._id %>', bid: bid , userName: '<%= user.firstName.charAt(0) %>. <%= user.lastName %>', name: '<%= package.name %>'})
-		});
 
+			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>'})
+		});
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
 			console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
+			//check on this
+			console.log(data.bid);
+			let currentBid = (data.bid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			let topBidder = data.userName;
+			let newBid = parseInt(data.bid) + <%= package.bidIncrement %>;
 
-			if ( data.packId == <%= package._id %>) {
-				$('#currentBid').text("Current Bid: $" + data.bid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-				$('#topBidder').text("Top Bidder: " + data.userName)
-				$('#minBid').text("Bid US $"+(parseInt(data.bid) + <%= package.bidIncrement %>).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more")
-				$('#bidAmount').attr('min',parseInt(data.bid) + <%= package.bidIncrement %>)
-				$('#bidAmount').val(parseInt(data.bid) + <%= package.bidIncrement %>)
-				$('#hiddenBidAmt').val(parseInt(data.bid) + <%= package.bidIncrement %>)
-				console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
+			if ( data.packId == <%= package._id %> ) {
+
+				$('#currentBid').text("Current Bid: $" + currentBid);
+				$('#topBidder').text("Top Bidder: " + topBidder);
+				$('#minBid').text("Bid US $"+ newBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more");
+				$('#bidAmount').attr('min',newBid);
+				$('#bidAmount').val(newBid);
+				$('#hiddenBidAmt').val(newBid);
+				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
 
 		//Updates submit button only after bidding has been saved in database 
 		socket.on('buttonStateChannel', function (data) {
-			if (data.packId == <%= package._id %>) {
-				if( data.button == 'disabled'){
+			if ( data.packId == <%= package._id %> ) {
+				if( data.button == 'disabled' ){
 					$('#submitButton2').attr('disabled','disabled')
 				} else {
 					$("#submitButton2").removeAttr('disabled');
@@ -102,8 +103,8 @@
 
 			<div class="card-body">
 
-				<p>Package Value: US $<%= package.amount %></p>
-				<p>Bid Increment: $<%= package.bidIncrement %></p>
+				<p>Package Value: US $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
+				<p>Bid Increment: $<%= package.bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 
 				<% if(package.bids.length === 0){ %>
 					<p>Top Bidder: </p>
@@ -121,11 +122,11 @@
 				<% if (!admin){ %>
 					<form class="mt-2" id='submitButton' class="w-50">
 						<% if (package.bids.length === 0){ %>
-							<input input id='bidAmount' type="number" name="quantity" min='<%= package.amount %>'>
+							<input type="number" id='bidAmount' type="number" min='<%= package.amount %>' value=''>
 						<% }else{ %>
-							<input input id='bidAmount' type="number" name="quantity" min='<%= lastBid + package.bidIncrement %>'>
-							<input input id='hiddenBidAmt' type="hidden" name="hiddenBidAmt" value=''>
+							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value=''>
 						<% } %>
+							<input id='hiddenBidAmt' type="hidden" value=''>
 							<input class="ml-2 btn" type='submit' value='Place Bid' id='submitButton2'>
 					</form>
 				<% } %>
@@ -142,11 +143,11 @@
 
 				<% if (user._packages.length > 0) { %>
 					<form id="removeWatchList" action="/<%= auction %>/users/uninterested/<%= package._id %>" method='GET'>
-						<input class="btn" type='submit' value='Remove from Watch List'>
+						<input class="btn" type='button' value='Remove from Watch List'>
 					</form>
 				<% } else { %>
 					<form id="addWatchList" action="/<%= auction %>/users/interested/<%= package._id %>" method='GET'>
-						<input class="btn" type='submit' value='Add to Watch List'>
+						<input class="btn" type='button' value='Add to Watch List'>
 					</form>
 				<% } %>
 
@@ -189,26 +190,22 @@
 
 	<script type="text/javascript">
 		$('#addWatchList').submit(function (event) {
+			event.preventDefault();
+			event.stopPropagation();
 			$.get("/<%= auction %>/users/interested/<%= package._id %>", function (data, status) {
 				$("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
-				event.preventDefault();
+					// event.preventDefault();
 			});
-			event.preventDefault();
 		})
 
 		$('#removeWatchList').submit(function (event) {
+			event.preventDefault();
+			event.stopPropagation();
 			$.get("/<%= auction %>/users/uninterested/<%= package._id %>", function (data, status) {
 				$("#removeWatchList").replaceWith("<form id='addWatchList' action='/<%= auction %>/users/interested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Add to Watch List'></form>");
-				event.preventDefault();
-			});
-			event.preventDefault();
+					// event.preventDefault();
+			});	
 		})
 
-		$('#cancelBid').submit(function () {
-			var cancelBidConfirm = window.confirm('Are you sure you want to cancel')
-			if (cancelBidConfirm === false) {
-				return false;
-			}
-		})
 	</script>
-	</body>
+</body>
