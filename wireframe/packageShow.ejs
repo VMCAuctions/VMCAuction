@@ -14,7 +14,6 @@
 	// var socket = io.connect('http://dv1.elizabid.com/');
 
 	$(document).ready(function () {
-
 		// no bids and no value entered in bid form field
 		$('#submitButton').submit(function (event) {
 			let sendBid;
@@ -26,10 +25,10 @@
 			let userName = "<%= user.firstName + ' ' + user.lastName %>";
 			event.preventDefault();
 
-			//No input and no bids, "Place Bid", will place bid of current bid plus increment
+			//No input and no bids, "Place Bid" will place bid of current bid plus increment
 			if ( !bidAmt && hasBids === false ) {
 				sendBid = packageAmt;
-			//No input and has bids, "Place Bid", will place bid of current bid plus increment
+			//No input and has bids, "Place Bid" will place bid of current bid plus increment
 			} else if ( !bidAmt && hasBids === true ) {
 				//No hidden big amount use newBid from Controller else use the hidden bid amount from Server
 				if (!hiddenBidAmt) {
@@ -47,7 +46,6 @@
 
 			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>'})
 		});
-
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
 			console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
