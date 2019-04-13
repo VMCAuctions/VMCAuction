@@ -43,18 +43,18 @@ function UsersController(){
 					console.log(err)
 				}else if(req.session.admin){
 						// console.log("012 users.js this.index User.find.  users = ",users);
-						Package.find({_auctions: req.params.auctions}, function(err, result){
+						Package.find({_auctions: req.params.auctions}, function(err, packages){
 							if (err){
 								console.log(err)
 							}else{
 								for (var i = 0; i < users.length; i++) {
 									var packages = []
 									var total = 0
-									for (var j = 0; j < result.length; j++) {
-										if (result[j].bids[result[j].bids.length-1]){
-											if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
-												packages.push(result[j])
-												total +=result[j].bids[result[j].bids.length-1].bidAmount
+									for (var j = 0; j < packages.length; j++) {
+										if (packages[j].bids[packages[j].bids.length-1]){
+											if(packages[j].bids[packages[j].bids.length-1].name===users[i].userName) {
+												packages.push(packages[j])
+												total +=packages[j].bids[packages[j].bids.length-1].bidAmount
 											}
 										}
 									}
@@ -70,7 +70,7 @@ function UsersController(){
 											current: 'supporters', 
 											users: users, 
 											cart: cart, 
-											packages: result, 
+											packages: packages, 
 											userName: req.session.userName, 
 											admin: req.session.admin, 
 											auction: req.params.auctions,
