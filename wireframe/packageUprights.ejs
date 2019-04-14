@@ -4,23 +4,22 @@
     <meta charset="utf-8">
 	<title>Package Show</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-    <!-- <link rel="stylesheet" type="text/css" href="/css/packageUprights.css"> -->
-	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script> 
+	<link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
+	<link rel="stylesheet" type="text/css" href="/css/packageUprights.css">
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script> 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+	<script src="http://cdn.dhtmlx.com/edge/dhtmlx.js" type="text/javascript"></script>
+	<style>
 
-	<style>  
-		/* .hide {
-			display: hidden;
-		} */
-		
 		.upright {
-			width: 816px;
-			height: 1054px;
+			/* width: 816px;
+			height: 1054px; */
+			width: 400px;
+			height: 518px;
 			text-align: center;
 			background: rgb(32, 108, 194);
 			color: #fff;
-			padding: 25px 0px;
+			padding: 15px 0px;
 		}
 
 		.donor {
@@ -28,7 +27,8 @@
 			width: 100%;
 			height: 8%;
 			position: relative;
-			font-size: 30px;
+			font-size: 12px;
+			padding: 1% 0px;
 		}
 
 		.resized-text {
@@ -54,12 +54,14 @@
 			width: 100%;
 			height: 40%;
 			margin-bottom: 5%;
-			font-size: 30px;
+			/* font-size: 30px; */
+			font-size: 14px;
 		}
 
 		.flexible-photo {
 			max-width: 90%;
 			max-height: 100%;
+			/* border: 15px solid black; */
 			border: 5px solid black;
 		}
 
@@ -69,22 +71,22 @@
 			bottom: 93%;
 			width: 30%;
 			text-align: right;
-			padding: .7% 5% .7% 0px;
+			padding: 1% 4% 1% 0px;
 		}
 
 		.value {
 			background: black;
 			position: relative;
-			bottom: 32%;
+			bottom: 36.5%;
 			left: 70%;
 			width: 30%;
 			text-align: left;
 			padding-left: 5%;
-			padding: .7% 0px .7% 5%;
+			padding: 1% 0px 1% 4%;
 		}
 
 		#fitin {
-			font-size: 40px;
+			font-size: 20px;
 			background: black;
 			width: 100%;
 			height: 35%;
@@ -114,57 +116,133 @@
 			}
 			
 		});
+
+		var myCP;
+		function doOnLoad() {
+			myCP = new dhtmlXColorPicker({
+				parent: "cpObj",
+				custom_colors: ["#206cc2", "#000000", "#FFFFFF"],
+				closeable: false
+			});
+			myCP.attachEvent("onChange", setColor);
+		};
+		
+		function doOnUnload() {
+			if (myCP != null) {
+				myCP.unload();
+				myCP = null;
+			}
+		};
+		
+		function setColor(color) {
+			var ct = document.getElementById("colorType");
+			var inp = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor");
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor');
+
+			switch (ct.value) {
+				case "text":
+					mainTextColors.forEach(function(item) {
+						item.style.color = color;
+					});
+					break;
+				case "bg":
+					inp.style.backgroundColor =  color;
+					break;
+				case "title":
+					titleColor.style.color = color;
+					break;
+				case "secondary":
+					secondary.forEach(function(item) {
+						item.style.backgroundColor =  color;
+					});
+					secondaryBorder.style.border = `5px solid ${color}`;
+					break;
+			}
+		};
 	</script>
 	
   </head>
 
-	<body>
+	<body onload="doOnLoad();" onunload="doOnUnload();">
+		<%if(admin){%>
+			<%- include('adminHeader') -%>
+			<%}else{%>
+				<%- include('header') -%>
+		<%}%>
+		<%if(admin == 0){%>
+			<%- include('footerClock') -%>
+		<%}%>
 
-		<input type="button" id="create_pdf" value="Open PDF">
-		<div class="hide">
-			<form class="form">
-				<div class="upright">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<h2 class="my-4 ml-1">Package Upright</h2>
 
-					<div class="donor">
-						<div class="resized-text">
-							Donors: Mr. & Mrs. Jones, Larry Graham, John and Jane Doe, Toys 'R' Us, Michael and Jennifer Ng
+					<form class="form">
+						<div class="upright bg" id="bg">
+		
+							<div class="donor secondaryColor mainTextColor">
+								<div class="resized-text">
+									Donors: Mr. & Mrs. Jones, Larry Graham
+								</div>
+							</div>
+		
+							<div class="title" id="titleText">
+								<div class="resized-text">
+									<%= package.name %>
+								</div>
+							</div>
+		
+							<div class="image">
+								<img class="flexible-photo" id="photoBorder" src="/<%= package.photo %>">
+								
+								<div class="packageId secondaryColor mainTextColor">
+									#<%= package._id%>
+								</div>
+		
+								<div class="value secondaryColor mainTextColor">
+									Value: $<%= package.value%>
+								</div>
+							</div>
+		
+							<div id="fitin" class="secondaryColor mainTextColor">
+								<div class="resized-text">
+									<%= package.description %>
+								</div>
+							</div>
 						</div>
-					</div>
-
-					<div class="title">
-						<div class="resized-text">
-							<%= package.name %>
-						</div>
-					</div>
-
-					<div class="image">
-						<img class="flexible-photo" src="/<%= package.photo %>">
-						
-						<div class="packageId">
-							#<%= package._id%>
-						</div>
-
-						<div class="value">
-							Value: $<%= package.value%>
-						</div>
-					</div>
-
-					<div id="fitin">
-						<div class="resized-text">
-							<%= package.description %>
-						</div>
-					</div>
+					</form>
 				</div>
-			</form>
+			
+				<div class="col mt-5">
+					<div class="mt-4">
+						<h5>Edit Colors: </h5>
+						<select id="colorType">
+							<option value="bg">Background color</option>
+							<option value="text">Text color</option>
+							<option value="title">Title color</option>
+							<option value="secondary">Secondary color</option>
+						</select>
+					</div>
+			
+					<div id="cpObj"></div>
+			
+					<input type="button" id="create_pdf" value="Open PDF">
+				</div>
+			</div>
 		</div>
- 
 		
 		<script>  
 			(function () {  
 				var  
 					form = $('.form'),  
 					cache_width = form.width(),  
-					a4 = [2550, 3300]; // for a4 size paper width and height  
+					// a4 = [2550, 3300];
+					// a4 = [563, 750];
+					a4 = [400, 518];
 			
 				$('#create_pdf').on('click', function () {  
 					$('body').scrollTop(0);  
@@ -179,11 +257,10 @@
 							doc = new jsPDF({  
 								unit: 'in',  
 								// format: 'letter' 
-								format: [8.5, 11]
+								// format: [8.5, 11]
+								format: [4.17, 5.4]
 							});  
 						doc.addImage(img, 'JPEG', 0, 0);  
-						// doc.addImage(img, 0, 0);
-						// doc.save('css-test.pdf'); 
 						window.open(URL.createObjectURL(doc.output("blob")));
 						form.width(cache_width);  
 					});  
@@ -192,12 +269,14 @@
 				// create canvas object  
 				function getCanvas() {  
 					form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');  
-					return html2canvas(form, {  
+					return html2canvas(form, {
+						scale: 2,
 						imageTimeout: 2000,  
 						removeContainer: true  
 					});  
 				}  
 			
 			}());  
-		</script>  
+		</script>
 	</body>
+</html>
