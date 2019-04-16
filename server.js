@@ -21,7 +21,8 @@ app.use(session({
 	secret: secret.secret,
 	resave: false,
 	saveUninitialized: true,
-	rolling: true
+	rolling: true,
+	cookie: { maxAge: 3600000 }
 	//resets session timeout everytime the user interacts with the site
 }));
 
