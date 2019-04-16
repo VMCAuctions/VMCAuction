@@ -25,18 +25,14 @@ function PackagesController() {
 			}
 			else {
 				User.findOne({ userName: req.session.userName }, function (err, result) {
-
 					// console.log("004 packages.js this.index user.findOne.  result = ", result)
-
 					if (err) {
 						console.log(err)
 					} else {
 						user = result
 						// This is the method that finds all of the packages from the database
-
 						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
 							if(err) {
-
 								console.log('packages.js this.index Package Index Error');
 								res.status(500).send('packages.js this.index Failed to Load Packages');
 								console.error();
@@ -306,59 +302,59 @@ function PackagesController() {
 	}
 
 
-this.new = function(req,res){
-	console.log(Date.now() + " - 000 packages.js this.new start.  req.body = ",req.body);
-	console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
-	if (globals.adminValidation(req, res)){
-		var total = 0;
-		var itemsArray = [];
-		Item.find({_auctions: req.params.auctions}, function(err, items) {
+	this.new = function(req,res){
+		console.log(Date.now() + " - 000 packages.js this.new start.  req.body = ",req.body);
+		console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
+		if (globals.adminValidation(req, res)){
+			var total = 0;
+			var itemsArray = [];
+			Item.find({_auctions: req.params.auctions}, function(err, items) {
 
-				if(err) {
-					console.log(Date.now() + " - 001 packages.js this.new Items.find error. err = ",err);
+					if(err) {
+						console.log(Date.now() + " - 001 packages.js this.new Items.find error. err = ",err);
 
-					res.status(500).send('Failed to Load Items');
-				}
-				else {
-					// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
-					Category.find({}, function (err, categories) {
-						if (err) {
-							console.log("006 packages.js this.new category.find error. err = ", err);
-							res.status(500).send('Failed to find categories');
-						}
-						else {
+						res.status(500).send('Failed to Load Items');
+					}
+					else {
+						// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
+						Category.find({}, function (err, categories) {
+							if (err) {
+								console.log("006 packages.js this.new category.find error. err = ", err);
+								res.status(500).send('Failed to find categories');
+							}
+							else {
 
-							for(let i = 0; i<items.length; i++){
-								if(!items[i].packaged || items[i]._package == req.params.id){
-									itemsArray.push(items[i]);
-								}
-						 }
+								for(let i = 0; i<items.length; i++){
+									if(!items[i].packaged || items[i]._package == req.params.id){
+										itemsArray.push(items[i]);
+									}
+							}
 
-							Auction.findById(req.params.auctions, function (err, auctionDetails){
+								Auction.findById(req.params.auctions, function (err, auctionDetails){
 
-								if (err) {
-									console.log(err)
-								} else {
-									res.render('packageCreate', {
-										current: 'createPackage',
-										categories: categories,
-										items: itemsArray,
-										total: total,
-										userName: req.session.userName,
-										admin: req.session.admin,
-										auction: req.params.auctions,
-										auctionDetails: auctionDetails
-									})
-								}
-							})
-						}
-						
-					})
-				}
+									if (err) {
+										console.log(err)
+									} else {
+										res.render('packageCreate', {
+											current: 'createPackage',
+											categories: categories,
+											items: itemsArray,
+											total: total,
+											userName: req.session.userName,
+											admin: req.session.admin,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails
+										})
+									}
+								})
+							}
+							
+						})
+					}
 
-			})
-		}
-	};
+				})
+			}
+		};
 
 	//post method that creates packages
 
@@ -415,11 +411,8 @@ this.new = function(req,res){
 		});
 	};
 
-
 	this.show = function (req, res) {
-
 		console.log('this.show packages.ejs');
-
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in
 		//resultPackages
@@ -486,15 +479,12 @@ this.new = function(req,res){
 								}else{
 									prevPos = resultPackages.length-1;
 								}
-								console.log(req.session);
 								res.render('packageShow', {
 									nextPos: resultPackages[nextPos]._id,
 									prevPos: resultPackages[prevPos]._id,
 									package: package,
 									userName: req.session.userName,
 									admin: req.session.admin,
-									// packageItems: packageItems,
-									// total: total,
 									user: user,
 									ourBids: ourBids,
 									lastBid: parseInt(lastBid),
