@@ -15,6 +15,7 @@
 
 	$(document).ready(function () {
 		// no bids and no value entered in bid form field
+		event.preventDefault();
 		$('#submitButton').submit(function (event) {
 			let sendBid;
 			let bidAmt = parseInt($("#bidAmount").val());
@@ -23,8 +24,7 @@
 			let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
 			let hasBids = <%= ourBids %>;
 			let userName = "<%= user.firstName + ' ' + user.lastName %>";
-			event.preventDefault();
-
+			
 			//No input and no bids, "Place Bid" will place bid of current bid plus increment
 			if ( !bidAmt && hasBids === false ) {
 				sendBid = packageAmt;
