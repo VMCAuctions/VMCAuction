@@ -31,30 +31,34 @@
         </head>
     <body>
         <%- include('clerkHeader') -%>
-     
-        
-        <div class="demo-placeholder">
-            <button type="button" id="checkinButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
-                    Check in
-                    </button>
-            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-                    Check out
-                    </button>
-            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-                    Retrieve won packages
-                    </button>
-            
-        </div>
-       
-        </script>
+<<<<<<< Updated upstream
         <div class="container-fluid">
-            <div id="clerk_search">
-                    <%- include('clerkSearch') -%>
-            </div>    
-            
-               
+            <!-- <h2>Supporters</h2> -->
+            <!-- <form action="/clerkDash" id="itemsSearch" method="post"> -->
+                <div id="supporter-search">
+                    <!-- Find supporters by last name -->
+                    <div id="search-lastname">
+                        <label for "lastname" class="label-search">Search by Last Name</label>
+                        <input class="form-control" type="search" id="lastname" placeholder="Last Name">
+                        <!-- <input type="search" class="form-control search-input" id="lastname" placeholder="Last Name"> -->
+                    </div>
+
+                    <!-- <div id="search-keyword">
+                        <label for "keyword" class="label-search">Search by keyword:</label>
+                        <input class="form-control" type="search" id="keyword" placeholder="Keyword">
+                    </div> -->
+
+
+                    <!-- Find package by package name -->
+                    <div id="search-packagename">
+                        <label for "packagename" class="label-search">Search by Package Name</label>
+                        <input class="form-control" type="search" id="packagename" placeholder="Package Name">
+                    </div>
+                    
+                    
+                </div>
                 
-            <!-- Search for Supporters-->
+            <!-- </form> for Supporters-->
             <div id="supportertable">
             <h3>Supporters</h3>
             <table class="table table-striped table-bordered package-table">
@@ -132,72 +136,38 @@
                     </tbody>
                 </table>
             </div>
-           
-            <!-- Form for the supporters Update information -->
-            <div class="card regist-card mb-4" id="user-info" data="Organizer">
-                <div class="card-body">
-                    <h5>Here is your information:</h5>
-                    <h6 class="pin mb-3">*Please fill in any missing fields.</h6>
-                    <form id="registrationForm" action="/5c880415198d960e25f613c9/users/account/Organizer" method="post" novalidate="novalidate" _lpchecked="1">
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="firstName">First Name</label>
-                                <input type="text" name="firstName" class="form-control valid" value="Julie" aria-required="true" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" aria-invalid="false">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" name="lastName" class="form-control valid" value="Ott" aria-required="true" aria-invalid="false">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="userName">Email/Username</label>
-                            <input type="email" name="userName" class="form-control" id="userNameTarget" readonly="" value="Organizer"><label id="userNameTarget-error" class="error" for="userNameTarget" style="display: none;"></label>
-                            <span id="hide1">Please note that this field cannot be edited.</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phoneNumber">Cell Phone Number</label>
-                            <input type="number" name="phone" class="form-control" id="phoneTarget" readonly="" value="555-555-5555">
-                            <span id="hide2">Please note that this field cannot be edited.</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="streetAddress">Address</label>
-                            <input type="text" name="address" class="form-control" value="123 Main Street">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="city">City</label>
-                                <input type="text" name="city" class="form-control" value="Sunnyvale">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="states">State</label>
-                                <input type="text" name="states" class="form-control" value="CA">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="zip">Zip</label>
-                                <input type="text" name="zip" class="form-control" value="55555">
-                            </div>
-                            
-                        </div>
-           
-                        <div class="form-group">
-                        <input type="submit" name="submit" value="Update" class="btn btn-submit mt-1">
-                        </div>
-                    </form>
-                </div>
-            </div>
+=======
+     
         
-               
-            <div class="demo-placeholder">
-                <button type="button" id="sendLinkButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
-                        Send link
-                        </button>
-                    
-            </div>
+			<div class="demo-placeholder">
+				<button type="button" id="checkInButton" onclick="loadClerkCheckIn()" class="btn btn-add mb-4">Check in</button>
+				<button type="button" id="checkOutButton" onclick="loadClerkCheckOut()"class="btn btn-add mb-4">Check out</button>
+				<button type="button" id="retrieveButton" onclick="loadClerkRetrieve()"class="btn btn-add mb-4">Retrieve won packages</button>
+			</div>
+	   
+		
+		
+
+		
+		<div id="clerkCheckin">
+			<div id="checkInLastNameSearch">
+				<label for "lastname" class="label-search">Search by Last Name</label>
+				<input class="form-control" type="search" id="lastname" placeholder="Last Name">
+			</div>
+			<%- include('clerkCheckin') -%>
+		</div>
+		<div id="clerkCheckout">
+			<div id="checkOutLastNameSearch">
+				<label for "lastname" class="label-search">Search by Last Name</label>
+				<input class="form-control" type="search" id="lastname" placeholder="Last Name">
+			</div>
+			<%- include('clerkCheckout') -%>
+		</div>
+
+
+           
+
+>>>>>>> Stashed changes
         </div>
         <!-- json parse scripts -->
         <script type="text/javascript">
@@ -210,9 +180,7 @@
                 console.log("100 clerkDash.js script document.ready start");
                 // $(".packageRow").show();
             //    $("#packagetable").hide();
-            
-            
-            $("#supportertable").hide();
+               $("#supportertable").hide();
                $("#lastname").on("keyup", function () {
                    var value = $(this).val().toLowerCase();
                    if (value == '') {
@@ -294,84 +262,56 @@
             })
 
 
-        </script>
-        <!-- Supporter informatin retrieved -->
         <script>
-            <div class="card regist-card" id="user-info" data="Organizer">
-							<div class="card-body">
-								<h5>Here is your personal information:</h5>
-								<h6 class="pin mb-3">*Please fill in any missing fields.</h6>
-								<form id="registrationForm" action="/5c880415198d960e25f613c9/users/account/Organizer" method="post" novalidate="novalidate" _lpchecked="1">
+			$(document).ready(function () {
+				console.log("100 clerkDash.js script document.ready start");
+				// $(".packageRow").show();
+				// $("#packagetable").hide();
 
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label for="firstName">First Name</label>
-											<input type="text" name="firstName" class="form-control valid" value="Julie" aria-required="true" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" aria-invalid="false">
-										</div>
-										<div class="form-group col-md-6">
-											<label for="lastName">Last Name</label>
-											<input type="text" name="lastName" class="form-control valid" value="Ott" aria-required="true" aria-invalid="false">
-										</div>
-									</div>
+				$("#clerkCheckin").hide();
+				$("#clerkCheckout").hide();
+				$("#checkinButton").click(function() {
+					$("#clerkCheckin").show();
+					$("#clerkCheckout").hide();
+				});
 
-									<div class="form-group">
-										<label for="userName">Email/Username</label>
-										<input type="email" name="userName" class="form-control" id="userNameTarget" readonly="" value="Organizer"><label id="userNameTarget-error" class="error" for="userNameTarget" style="display: none;"></label>
-										<span id="hide1">Please note that this field cannot be edited.</span>
-									</div>
-
-									<div class="form-group">
-										<label for="phoneNumber">Cell Phone Number</label>
-										<input type="number" name="phone" class="form-control" id="phoneTarget" readonly="" value="555-555-5555">
-										<span id="hide2">Please note that this field cannot be edited.</span>
-									</div>
-
-									<div class="form-group">
-										<label for="streetAddress">Address</label>
-										<input type="text" name="address" class="form-control" value="123 Main Street">
-									</div>
-
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label for="city">City</label>
-											<input type="text" name="city" class="form-control" value="Sunnyvale">
-										</div>
-										<div class="form-group col-md-3">
-											<label for="states">State</label>
-											<input type="text" name="states" class="form-control" value="CA">
-										</div>
-										<div class="form-group col-md-3">
-											<label for="zip">Zip</label>
-											<input type="text" name="zip" class="form-control" value="55555">
-                                        </div>
-                                        
-                                    </div>
-                                    <!-- these fields visible to admin only								 -->
-									
-                                    <!-- <form class="reg-form" id="passChangeForm" method="post" action="/5c880415198d960e25f613c9/users/account/Organizer"> -->
-                                        <h6>This can be done by Admin only!</h6>
-                                            <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <input type="password" name="newPass" class="form-control" placeholder="new password" required="" readonly="" aria-required="true"><label id="newPass-error" class="error" for="newPass" style="display: none;"></label>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <input type="password" name="confirmPass" class="form-control" placeholder="confirm new password" required="" readonly="" aria-required="true"><label id="confirmPass-error" class="error" for="confirmPass" style="display: none;"></label>
-                                            </div>
-                                            <!-- <div class="form-group col-md-6">
-                                                <button type="submit" id="changePassBtn" class="btn btn-primary">Save</button>
-                                            </div> -->
-                                        </div>
-                                    <!-- </form> -->
-                                
-
-                                    <div class="form-group">
-                                    <input type="submit" name="submit" value="Update" class="btn btn-submit mt-1">
-                                    </div>
-                                </form>
-                        </div>
-                    </div>
-
+				$("#checkoutButton").click(function() {
+					$("#clerkCheckin").hide();
+					$("#clerkCheckout").show();
+				});
+				
+				
+				
+				
+				$("#supportertable").hide();
+				$("#lastname").on("keyup", function () {
+					var value = $(this).val().toLowerCase();
+					if (value == '') {
+						$("#supportertable").hide();
+					} else {
+						$("#supportertable").show();
+						$(".supporterRow").filter(function () {
+							$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+						});
+					};
+				});
+				// $(".packageRow").show();
+				$("#packagetable").hide();
+				$("#packagename").on("keyup", function () {
+					var value = $(this).val().toLowerCase();
+					if (value == '') {
+						// $(".packageRow").show();
+						$("#packagetable").hide();
+					} else {
+						$("#packagetable").show();
+						$(".packageRow").filter(function () {
+							$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+						});
+					};
+				});
+			})
         </script>
-        
+       
+
     </body>
 </html>
