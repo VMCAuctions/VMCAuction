@@ -322,6 +322,7 @@ function UsersController(){
 					if (result[i].bids.length > 0){
 						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
 							cartArray.push(result[i])
+							console.log(cartArray);
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}
@@ -339,12 +340,13 @@ function UsersController(){
                   current: 'watch-list',
                   userName: req.session.userName,
                   admin: req.session.admin,
-                  user: user,
+									user: user,
                   cartTotal: cartTotal,
                   cartArray: cartArray,
                   auction: req.params.auctions,
                   auctionDetails: auctionDetails,
-                })
+								})
+								console.log("User info: ", user);
               }
             })
           }else{
