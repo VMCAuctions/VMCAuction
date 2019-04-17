@@ -151,39 +151,64 @@ function PackagesController() {
 		})
 	};
 
-	this.uprights = function(req,res){
+	this.uprights = function (req, res) {
+		if (!req.session.userName) {
+			req.session.auction = req.params.auctions
+		}
 		var user
-		User.findOne({userName:req.session.userName}, function(err, result){
-			if(err){
-				console.log(err)
-			}else{
-				user = result
-				Package.findById(req.params.id).populate("_items").exec(function(err,package){
-					if(err){
-						console.log(err);
-					}
-					else{
-						var ourBids = false
-						var lastBid = package.amount
-						if(package.bids.length > 0){
-							ourBids = true;
-							lastBid = package.bids[package.bids.length -1 ].bidAmount
-						}
-						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, result) {
+					if (err) {
+						console.log(err)
+					} else {
+						user = result
+
+						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _id: 'ascending' }).exec(function (err, packages) {
 							if (err) {
-								console.log(err)
+								console.log('packages.js this.list Package Register Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
 							} else {
-								res.render('packageUprights', {
-									package: package,
-									userName: req.session.userName,
-									admin: req.session.admin,
-									user: user,
-									ourBids: ourBids,
-									lastBid: lastBid,
-									auction: req.params.auctions,
-									auctionDetails: auctionDetails,
-								})
-							}
+								console.log("packages.js this.list req.session is", req.session)
+								let featured = [];
+								let nonFeatured = [];
+								for (let i=0; i < packages.length; i++) {
+									if (packages[i].featured){
+										//currently, package priorities range from 1 to 10
+										featured[packages[i].priority - 1] = packages[i]
+									}else{
+										nonFeatured.push(packages[i])
+									}
+								}
+								sortedPackages = []
+								for (index in featured){
+									if (featured[index] != undefined){
+										sortedPackages.push(featured[index])
+									}
+								}
+								sortedPackages = sortedPackages.concat(nonFeatured)
+									console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
+								
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										res.render('packageUprights', {
+											packages: sortedPackages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+											categories: categories,
+										})
+									}
+								}	
+							)}
 						})
 					}
 				})

@@ -5,16 +5,43 @@
 	display: block;
 }
 
-#create_pdf {
-	position: relative;
-	top: 400px;
-	z-index: 1;
-}
-
 td {
 	height: 9px !important;
 }
 
 .dhtmlxcp_material div.dhxcp_g_area div.dhxcp_sub_area div.dhxcp_g_input_area table.dhxcp_inputs_cont {
 	right: 25px !important;
+}
+
+.hide {
+	display: none;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+tr:hover {
+	background-color: #0055cb !important;
+	color: #FFFFFF !important;
+}
+
+.fa-info-circle {
+	font-size: 15px;
+}
+
+.to-save {
+	color: #a2b209;
+	font-size: 1.2rem; 
+	margin-left: 0.5rem; 
+	margin-right: 0.5rem;
+	position: relative;
+	top: 1.1px;
+	cursor: pointer;
+}
+
+.to-pdf {
+	color: #a2b209;
+	font-size: 1rem; 
+	cursor: pointer;
 }

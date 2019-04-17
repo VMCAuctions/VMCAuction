@@ -170,6 +170,9 @@ module.exports = function(app) {
 	//Modifying the featured status and priority of an item
 	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
+	// show package uprights page
+	app.get('/:auctions/packages/uprights', function(req, res) {
+		packages.uprights(req, res)});
 	// show catalog (all packages)
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
@@ -253,9 +256,6 @@ module.exports = function(app) {
 	//TO BE ADDED (a page just for the featured pacakges):	
 	app.get('/:auctions/featured-packages', function(req, res) {
 		packages.featuredPackages(req, res)});	
-
-	app.get('/:auctions/packages/uprights/:id', function(req, res) {
-		packages.uprights(req, res)});
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
