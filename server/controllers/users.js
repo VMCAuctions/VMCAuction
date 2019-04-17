@@ -574,6 +574,58 @@ function UsersController(){
 		})
 	};
 
+	this.interestedInPackage = function(req, res) {
+		if (globals.notClerkValidation(req, res)){
+			// console.log("Interested");
+			User.findOne({userName: req.session.userName}, function(err, user) {
+				if (err) {
+					console.log(err);
+				}else {
+					let flag = false
+					for (var i = 0; i < user._packages.length; i++) {
+						if (user._packages[i] == req.params.id) {
+							flag = true;
+							break
+						}
+					}
+					if (flag === false) {
+						user._packages.push(req.params.id);
+						user.save(function(err, result) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}else{
+						flag = false;
+					}
+				}
+				res.redirect('/' + req.params.auctions  + '/packages/' +req.params.id)
+			})
+		}
+	};
+
+	this.uninterestedInPackage = function(req,res) {
+		// console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
+					}
+				};
+				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+			}
+		})
+	};
+
 	this.interestedInFeatured = function(req, res) {
 		if (globals.notClerkValidation(req, res)){
 			// console.log("Interested");

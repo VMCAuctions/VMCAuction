@@ -360,6 +360,13 @@ module.exports = function(app) {
 	app.get('/:auctions/users/uninterested/:id', function (req,res) {
 		users.uninterested(req, res)});
 
+  	//adds to watchlist from Package Show
+	  app.get('/:auctions/users/interested-in-package/:id', function(req, res) {
+		users.interestedInPackage(req, res)});
+	//removes from watchlist from Package Show
+	app.get('/:auctions/users/uninterested-in-package/:id', function (req,res) {
+		users.uninterestedInPackage(req, res)});
+
 	//adds to watchlist from Featured Packages	
 	app.get('/:auctions/users/interested-in-featured/:id', function(req, res) {
 		users.interestedInFeatured(req, res)});
