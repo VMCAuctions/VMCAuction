@@ -31,7 +31,7 @@
   <!-- check with client to verify all admin/clerk priveledges, regarding deleting and editing other non admin users -->
 	<div class="container-fluid">
     <h2 class="my-4">Supporters Register</h2>
-		<div class="d-flex justify-content-end mt-4">
+		<!-- <div class="d-flex justify-content-end mt-4">
 			<a href="/<%=auction%>/users/new">
 				<button class="btn btn-add">Add a Supporter</button>
 			</a>
@@ -39,14 +39,27 @@
 			<a href="/<%=auction%>/users/csv">
 				<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
 			</a>
-		</div>
+		</div> -->
       <div class="my-4" id="search-container">
-        <!-- Find supporters by keyword -->
-        <div id="search-keyword">
-          <label for "keyword" class="label-search">Search by keyword:</label>
-          <input class="form-control" type="search" id="keyword" placeholder="Keyword">
-        </div>
-      </div>
+		<div class="row">
+			<div class="col">
+				<!-- Find supporters by keyword -->
+				<div id="search-keyword">
+					<label for "keyword" class="label-search">Search by keyword:</label>
+					<input class="form-control" type="search" id="keyword" placeholder="Keyword">
+				</div>
+			</div>
+			<div class="col d-flex justify-content-end mt-4 pt-1">
+				<a href="/<%=auction%>/users/new">
+					<button class="btn btn-add">Add a Supporter</button>
+				</a>
+	
+				<a href="/<%=auction%>/users/csv">
+					<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
+				</a>
+			</div>
+		</div>
+	</div>
 
   <table class="table table-striped table-bordered mt-4" id="sup-table">
     <thead>
