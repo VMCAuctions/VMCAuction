@@ -13,7 +13,7 @@
 <header>
     <div id="buttons">
         <div class="">
-            <button type="button" id="checkinButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+            <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
                     Check in
                     </button>
             <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
@@ -24,4 +24,17 @@
                     </button>
         </div>    
     </div>
+    <div id="resultCheckin">
+
+    </div>
+    <script>
+        var $result = $('#result');
+        $('#resultCheckin').hide();
+
+        $('#checkinButton').click(function(){
+            // $result.load('/clerkCheckIn');
+            document.getElementById('resultCheckin').innerHTML = <%- include('clerkCheckIn') -%>
+            $('#resultCheckin').show();
+        });
+    </script>
 </header>

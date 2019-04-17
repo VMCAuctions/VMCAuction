@@ -10,10 +10,20 @@ img{
   width: 100px;
   
 }
-.demo-placeholder {
-  display: block;
+.col-2 {
+  width 240px;
+  height: 42px;
+  display: inline-block;
   }
-
+.form-group1 {
+  width 240px;
+  height: 42px;
+  display: inline-block;
+}
+#submitButton, #sendLinkButton {
+  width: 240px;
+  display: inline-block;
+}
 #search-lastname {
   width: 280px;
   margin: 0 0.5rem 0 0;

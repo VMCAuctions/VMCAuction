@@ -412,7 +412,8 @@ module.exports = function(app) {
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
-
+	app.get('/clerkCheckIn', function(req, res){
+		auctions.clerkcheckin(req,res)});
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
