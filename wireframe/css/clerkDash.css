@@ -107,3 +107,17 @@ a:hover,
 /* .packageRow {
   display: none;
 } */
+
+/* for testing clerkCheckOut jQuery */
+#clerkCheckOutDiv{
+	border: 1px black solid;
+  }
+
+  #suppoorterTable{
+	border: 1px red solid;
+  }
+
+  #packageTable{
+	border: 1px blue solid;
+  }
+

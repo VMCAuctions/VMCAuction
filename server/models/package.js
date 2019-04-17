@@ -27,7 +27,10 @@ var packageSchema = new Schema({
 	bids: {type: Array},
 	// {bidAmount: 50, name: yarik }
 	photo: String,
-	restrictions: { type: String }
+	restrictions: { type: String },
+	
+	highBidder: {type: String},
+	highBid: {type: Number},
 
 	// original fields
 	// name: {type: String, required: true, minlength: 4},

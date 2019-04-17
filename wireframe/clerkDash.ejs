@@ -35,28 +35,42 @@
                 <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
                         Check in
                         </button>
-                <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-                        Check out
-                        </button>
-                <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                <!-- <a  id="checkOutButton" class="btn btn-add mb-4" href="'/'+req.session.auction+'/clerkCheckOut-shell'">Check out</a> -->
+                <a  id="checkOutButton" class="btn btn-add mb-4" href="clerkCheckOut-shell">Check out</a>
+                <button type="button" id="retrieveButton" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
                         Retrieve won packages
                         </button>
             </div>    
         </div>
         <div id="resultCheckin">
                 <%- include('clerkCheckIn') -%>
-        </div>
+		</div>
+		<div id="clerkCheckOutDiv">
+			Clerk Checkout Div
+			<div>
+				include('clerkCheckOut')
+			</div>
+		</div>
         <script>
             $(document).ready(function(){
                 var $result = $('#result');
+                var $checkout = $('#clerkCheckOutDiv');
                 $('#resultCheckin').hide();
+                $('#clerkCheckOutDiv').hide();
 
                 $('#checkinButton').click(function(){
                      $result.load('/clerkCheckIn');
                    
                     // $('#resultCheckin').show();
-                });
-            }
+				});
+				
+				$('#checkOutButton').click(function(event){
+        			// event.preventDefault();
+					// window.location.replace('/' + req.session.auction + '/clerkCheckOut-shell')
+					
+				})
+			});
+
         </script>
     </body>
 </html>

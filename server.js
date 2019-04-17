@@ -135,31 +135,64 @@ io.sockets.on('connection', function(socket){
 				name: data.userName
 			})
 
-			Package.findById(data.packId).exec(function(err, data){
+			Package.findById(data.packId).exec(function(err, package){
 				if (err){
 					console.log("error occured " + err);
-				} else if(data != null){
-					console.log("120 Sockets.  Pkg.findbyId data = ",data)
-					if(data.bids.length == 0 ){
-						data.bids.push({
+				} else if(package != null){
+					console.log("120 Sockets.  Pkg.findbyId package = ",package)
+					if(package.bids.length == 0 ){
+						package.highBid = data.bid;
+						package.highBidder = data.userName;
+						package.bids.push({
 							bidAmount: userBid,
 							name: userName
 						});
-					} else if(data.bids[data.bids.length - 1].bidAmount < userBid ) {
+					} else if(package.bids[package.bids.length - 1].bidAmount < userBid ) {
 						//if our bids array NOT EMPTY
-						data.bids.push({
+						package.highBid = data.bid;
+						package.highBidder = data.userName;
+						package.bids.push({
 							bidAmount: userBid,
 							name: userName
 						});
 					}
 				}
 				// SAVE ALL STUFF
-				data.save(function(err){
+				package.save(function(err, package){
 					if(err){
-						console.log("error when saving: " + err);
+						console.log("130 server.js error when saving package.  err = " + err);
+					} else {
+						console.log("131 server.js package.save result. package = ",package)
 					}
 				})
 			})
+
+			// This is a copy of above code - changed query result object name from 'data' to 'package' 
+			// Package.findById(data.packId).exec(function(err, data){
+			// 	if (err){
+			// 		console.log("error occured " + err);
+			// 	} else if(data != null){
+			// 		console.log("120 Sockets.  Pkg.findbyId data = ",data)
+			// 		if(data.bids.length == 0 ){
+			// 			data.bids.push({
+			// 				bidAmount: userBid,
+			// 				name: userName
+			// 			});
+			// 		} else if(data.bids[data.bids.length - 1].bidAmount < userBid ) {
+			// 			//if our bids array NOT EMPTY
+			// 			data.bids.push({
+			// 				bidAmount: userBid,
+			// 				name: userName
+			// 			});
+			// 		}
+			// 	}
+			// 	// SAVE ALL STUFF
+			// 	data.save(function(err){
+			// 		if(err){
+			// 			console.log("error when saving: " + err);
+			// 		}
+			// 	})
+			// })
 		}
 			
 		User.findOne({userName: data.userName}).exec(function(err, user){
