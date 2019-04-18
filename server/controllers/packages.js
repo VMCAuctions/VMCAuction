@@ -147,6 +147,71 @@ function PackagesController() {
 		})
 	};
 
+	this.uprights = function (req, res) {
+		if (!req.session.userName) {
+			req.session.auction = req.params.auctions
+		}
+		var user
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, result) {
+					if (err) {
+						console.log(err)
+					} else {
+						user = result
+
+						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _category: 'ascending' }).sort({_id:'ascending'}).exec(function (err, packages) {
+							if (err) {
+								console.log('packages.js this.list Package Register Error');
+								res.status(500).send('Failed to Load Packages');
+								console.error();
+							} else {
+								console.log("packages.js this.list req.session is", req.session)
+								let featured = [];
+								let nonFeatured = [];
+								for (let i=0; i < packages.length; i++) {
+									if (packages[i].featured){
+										//currently, package priorities range from 1 to 10
+										featured[packages[i].priority - 1] = packages[i]
+									}else{
+										nonFeatured.push(packages[i])
+									}
+								}
+								sortedPackages = []
+								for (index in featured){
+									if (featured[index] != undefined){
+										sortedPackages.push(featured[index])
+									}
+								}
+								sortedPackages = sortedPackages.concat(nonFeatured)
+									console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
+								
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										res.render('packageUprights', {
+											packages: sortedPackages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+											categories: categories,
+										})
+									}
+								}	
+							)}
+						})
+					}
+				})
+			}
+		})
+	};
+
 	this.list = function (req, res) {
 		if (!req.session.userName) {
 			req.session.auction = req.params.auctions
@@ -699,6 +764,67 @@ function PackagesController() {
 							// res.redirect('/' + req.params.auctions  + '/packages');
 							// 1-17 Bug Fix List Item 45 change delete package redirect to packages register
 							res.redirect('/' + req.params.auctions + '/packages/list');
+						}
+					})
+				}
+			})
+		}
+	}
+
+	this.removePackageFromUprights = function (req, res) {
+		if (globals.adminValidation(req, res)) {
+			console.log('packages.js this.removePackage in remove package')
+			Package.findOne({ _id: req.params.id }, function (err, package) {
+				if (err) {
+					console.log(err)
+				} else {
+					//everything in the User.find will probably never be used
+					//this searches all users and removes package from their watchlist
+					//it should only happen if an in the middle of an auction if item is reported as stolen
+					//or provider of service suddenly goes out of buisness
+					User.find({ _auctions: req.params.auctions }, function (err, users) {
+						if (err) {
+							console.log(err)
+						} else {
+							for (var k = 0; k < users; k++) {
+								for (var i = 0; i < users[k]._package.length; i++) {
+									if (package._id === users[k]._packages[i]) {
+										users[k]._packages.splice(i, 1)
+									}
+								}
+							}
+							if (users[k]) {
+								users[k].save(function (err, result) {
+									if (err) {
+										console.log(err)
+										res.status(500).send(err)
+									}
+								})
+							}
+							Auction.findById(package._auctions, function (err, auction) {
+								if (err) {
+									console.log(err)
+								}
+								else {
+									auction._packages.splice(auction._packages.indexOf(package._auctions), 1)
+								}
+							})
+						}
+					})
+					for (var i = 0; i < package._items.length; i++) {
+						Item.update({ _id: package._items[i] }, { $set: { packaged: false, _package: null } }, function (err, result) {
+							if (err) {
+								console.log(err)
+							}
+						});
+					}
+					Package.remove({ _id: req.params.id }, function (err, package) {
+						if (err) {
+							console.log(err)
+						} else {
+							// res.redirect('/' + req.params.auctions  + '/packages');
+							// 1-17 Bug Fix List Item 45 change delete package redirect to packages register
+							res.redirect('/' + req.params.auctions + '/packages/uprights');
 						}
 					})
 				}

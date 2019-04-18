@@ -170,6 +170,9 @@ module.exports = function(app) {
 	//Modifying the featured status and priority of an item
 	app.get('/:auctions/packages/priority/:id/:featured/:priority', function(req, res){
 		packages.priority(req, res)});
+	// show package uprights page
+	app.get('/:auctions/packages/uprights', function(req, res) {
+		packages.uprights(req, res)});
 	// show catalog (all packages)
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
@@ -235,6 +238,10 @@ module.exports = function(app) {
 	//removing a package from the DB
 	app.get('/:auctions/packages/remove/:id', function(req, res){
 		packages.removePackage(req, res)});
+
+	//removing a package from the DB through uprights page
+	app.get('/:auctions/packages/uprights/remove/:id', function(req, res){
+		packages.removePackageFromUprights(req, res)});
 	
 	// //BIDS //
 	// //Creates Bid on Package
