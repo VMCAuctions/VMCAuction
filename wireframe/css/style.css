@@ -57,8 +57,12 @@ a:hover {
 	text-decoration: none;
 }
 
+.phone {
+	color: #ff2719;
+
+}
 .pin {
-	color: #003d79; 
+	color: #00184c;
 }
 
 /* Common Styling Headers
