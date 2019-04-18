@@ -14,6 +14,21 @@
 	// var socket = io.connect('http://dv1.elizabid.com/');
 
 	$(document).ready(function () {
+
+		$('#addWatchList').submit(function (event) {
+			event.preventDefault();
+			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>", function (data, status) {
+				$("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
+			});
+		})
+
+		$('#removeWatchList').submit(function (event) {
+			event.preventDefault();
+			$.get("/<%= auction %>/users/uninterested-in-package/<%= package._id %>", function (data, status) {
+				$("#removeWatchList").replaceWith("<form id='addWatchList' action='/<%= auction %>/users/interested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Add to Watch List'></form>");
+			});
+		})
+
 		// no bids and no value entered in bid form field
 		$('#submitButton').submit(function (event) {
 			event.preventDefault();
@@ -62,7 +77,7 @@
 				$('#bidAmount').val(newBid);
 				$('#hiddenBidAmt').val(newBid);
 				$('#afterBidMessage').text('');
-				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
+				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+"$"+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
 				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
@@ -223,22 +238,4 @@
 			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-
-		$('#addWatchList').submit(function (event) {
-			event.preventDefault();
-			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>", function (data, status) {
-				$("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
-			});
-		})
-
-		$('#removeWatchList').submit(function (event) {
-			event.preventDefault();
-			$.get("/<%= auction %>/users/uninterested-in-package/<%= package._id %>", function (data, status) {
-				$("#removeWatchList").replaceWith("<form id='addWatchList' action='/<%= auction %>/users/interested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Add to Watch List'></form>");
-			});
-		})
-
-	</script>
 </body>
