@@ -1,12 +1,62 @@
+body {
+	font-size: 0.8rem !important;
+}
+
+.info {
+	border: 1px solid #ff6746;
+	border-radius: 10px;
+	padding: 14px 14px 8px 14px;
+	color: #ff6746;
+	font-size: .8rem;
+	margin-bottom: 15px;
+}
+
+.borderTitle {
+	position: absolute;
+	top: 59px;
+	background: #FFF;
+	padding: 6px;
+	font-size: 1.2rem;
+}
+
+ol {
+	padding-inline-start: 15px !important;
+	margin-bottom: 5px !important;
+}
+
 #cpObj {
 	position: relative;
 	box-sizing: unset;
-	top: 30px;
+	top: 10px;
 	display: block;
+}
+
+#tableRow {
+	width: 100% !important;
+}
+
+tr:hover {
+	background-color: #0055cb !important;
+	color: #FFFFFF !important;
 }
 
 td {
 	height: 9px !important;
+	vertical-align: top !important;
+    padding: 0.4rem !important;
+    font-size: 0.8rem !important;
+}
+
+.narrow {
+	width: 5% !important;
+}
+
+.medium {
+	width: 15% !important;
+}
+
+.large {
+	width: 20% !important;	
 }
 
 .dhtmlxcp_material div.dhxcp_g_area div.dhxcp_sub_area div.dhxcp_g_input_area table.dhxcp_inputs_cont {
@@ -21,9 +71,9 @@ td {
 	visibility: hidden;
 }
 
-tr:hover {
-	background-color: #0055cb !important;
-	color: #FFFFFF !important;
+.dhxcp_inputs_cont td {
+	vertical-align: inherit !important;
+    padding: 0rem .3rem !important;
 }
 
 .fa-info-circle {
@@ -44,4 +94,13 @@ tr:hover {
 	color: #a2b209;
 	font-size: 1rem; 
 	cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 0.5em 0.3em !important;
+}
+
+.saved-colors {
+	position: relative;
+	top: 350px;
 }

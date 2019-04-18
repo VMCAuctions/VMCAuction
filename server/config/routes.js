@@ -238,6 +238,10 @@ module.exports = function(app) {
 	//removing a package from the DB
 	app.get('/:auctions/packages/remove/:id', function(req, res){
 		packages.removePackage(req, res)});
+
+	//removing a package from the DB through uprights page
+	app.get('/:auctions/packages/uprights/remove/:id', function(req, res){
+		packages.removePackageFromUprights(req, res)});
 	
 	// //BIDS //
 	// //Creates Bid on Package
