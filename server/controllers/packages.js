@@ -42,7 +42,7 @@ function PackagesController() {
 								var nonfeatured = [];
 								for (var i = 0; i < packages.length; i++) {
 									if (packages[i].featured === true) {
-										featured.push(packages[i]);
+								-		featured.push(packages[i]);
 									}
 									//Not actually using nonfeatured packages right now
 									else {
