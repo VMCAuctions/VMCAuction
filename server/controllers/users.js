@@ -2,6 +2,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
+	Category = require('../models/category.js'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
@@ -43,18 +44,18 @@ function UsersController(){
 					console.log(err)
 				}else if(req.session.admin){
 						// console.log("012 users.js this.index User.find.  users = ",users);
-						Package.find({_auctions: req.params.auctions}, function(err, result){
+						Package.find({_auctions: req.params.auctions}, function(err, packages){
 							if (err){
 								console.log(err)
 							}else{
 								for (var i = 0; i < users.length; i++) {
 									var packages = []
 									var total = 0
-									for (var j = 0; j < result.length; j++) {
-										if (result[j].bids[result[j].bids.length-1]){
-											if(result[j].bids[result[j].bids.length-1].name===users[i].userName) {
-												packages.push(result[j])
-												total +=result[j].bids[result[j].bids.length-1].bidAmount
+									for (var j = 0; j < packages.length; j++) {
+										if (packages[j].bids[packages[j].bids.length-1]){
+											if(packages[j].bids[packages[j].bids.length-1].name===users[i].userName) {
+												packages.push(packages[j])
+												total +=packages[j].bids[packages[j].bids.length-1].bidAmount
 											}
 										}
 									}
@@ -70,7 +71,7 @@ function UsersController(){
 											current: 'supporters', 
 											users: users, 
 											cart: cart, 
-											packages: result, 
+											packages: packages, 
 											userName: req.session.userName, 
 											admin: req.session.admin, 
 											auction: req.params.auctions,
@@ -322,6 +323,7 @@ function UsersController(){
 					if (result[i].bids.length > 0){
 						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
 							cartArray.push(result[i])
+							console.log(cartArray);
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}
@@ -334,17 +336,30 @@ function UsersController(){
               if (err) {
                 console.log(err)
               } else {
-                // console.log("req.session is", req.session)
-                res.render('userPage', {
-                  current: 'watch-list',
-                  userName: req.session.userName,
-                  admin: req.session.admin,
-                  user: user,
-                  cartTotal: cartTotal,
-                  cartArray: cartArray,
-                  auction: req.params.auctions,
-                  auctionDetails: auctionDetails,
-                })
+								Category.find({}, function(err, categories){
+									if (err){
+										console.log(err)
+									}
+									else if (result.length === 0){
+										console.log("running categoriesinitialize")
+										categories.initialize()
+									}
+									else{
+										// console.log("req.session is", req.session)
+										res.render('userPage', {
+											current: 'watch-list',
+											userName: req.session.userName,
+											admin: req.session.admin,
+											user: user,
+											categories: categories,
+											cartTotal: cartTotal,
+											cartArray: cartArray,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})
+										console.log("User info: ", user);
+									}
+								})
               }
             })
           }else{
@@ -562,12 +577,8 @@ function UsersController(){
 					}
 				};
 
-				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
-				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id)
-
-				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-// 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+	        //As of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
 				
 
 			}
@@ -680,6 +691,36 @@ function UsersController(){
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
 				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
 				
+			}
+		})
+	};
+
+	this.uninterestedWatchList = function(req,res) {
+		// console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
+					}
+				};
+
+				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
+				// res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				// res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+				
+
 			}
 		})
 	};

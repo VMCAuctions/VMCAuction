@@ -6,6 +6,7 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 			<link rel="stylesheet" type="text/css" href="/css/style.css" >
 			<link rel="stylesheet" type="text/css" href="/css/event.css" >
+			<link rel="stylesheet" type="text/css" href="/css/packageStyle.css" >
 		
 			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 			<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
@@ -14,28 +15,19 @@
 
   	<body>
 
-		<!-- EVENT LANDING PAGE NAV BAR / The page is accesible by everyone, prior to login or registration -->
-		<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row ">
-			<div class="brand py-2">elizabid |
-					<a href="https://vmcfoundation.org/"><img class="vmcf-brand" src="/VMCF_Logo_Blue_rgb.png"></a> 
-			</div>
-			<!-- Right Top Navbar -->
-			<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">
-				<li class="mr-3">
-					<a class="nav-link  btn btn-ctlg" href="/<%=auction%>/packages">View Auction Catalog</a>
-				</li>
-				<li class="mr-3">
-					<a class="nav-link btn btn btn-nav-reg" href="/users/register"></i> Register</a> 
-				<li class="mr-3">
-					<a class="nav-link btn btn btn-nav-login" href="/users/login"> <i class="fas fa-lock"></i> Login</a>
+			<!-- EVENT LANDING PAGE NAV BAR / The page is accesible by everyone, prior to login or registration -->
+			<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row ">
+				<div class="brand py-1">elizabid |
+						<a href="https://vmcfoundation.org/"><img class="vmcf-brand" src="/VMCF_Logo_Blue_rgb.png"></a> 
 				</div>
-				</li>
-				</li>
-			</ul>
-		</nav>
+				<!-- Right Top Navbar -->
+				<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">	
+					<li class="contact mr-3">
+						<i class="fas fa-phone"></i> Contact: Julie Ott  | 408-282-2687 | <a href="mailto: Julie.Ott@hhs.sccgov.org">email</a>
+					</li>	
+				</ul>
+			</nav>
 
-		
-		
 			<!-- EVENT LANDING PAGE HEADER -->
 			<div style="background-image: url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
 			
@@ -55,10 +47,10 @@
 			<div id="event-end"></div>
 
 			<!-- AUCTION TITLE AND HEADER INFO -->
-			<div class="container display-header mt-5">
-				<h1 class="display-4 my-3"><%= auctionDetails.name %></h1>
-				<p class="header-info"><%= startDateToDisplay %></p>	
-				<p class="header-info"><%= auctionDetails.venue %></p>	
+			<div class="container mt-5">
+				<h1 class="title-background my-3"><%= auctionDetails.name %></h1>
+				<p class="header-info title-background"><%= startDateToDisplay %></p>
+				<p class="header-info title-background mt-2"><%= auctionDetails.venue %></p>	
 
 				<!-- invisible paragraph - just using the id and data for the countdown clock -->
 				<p id="event-start"> <%= auctionDetails.startClock %></p>
@@ -66,100 +58,65 @@
 				<div class="btn-div my-3">
 					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
 				</div>
+
 			</div>
 		</div> <!-- End Header -->
 
-		<!-- CONTAINER FOR CONTENT AND FEATURED PACKAGES-->
-		<div class="container-fluid">
-			
-
-			<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
-			<div class="row">
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-md-12 col-lg-9">
+		<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
+		<div class="container">
+			<div class="row">		
+				<div class="col-md-12 col-lg-12">
 					<div class="card-body">
 						<h2><%= auctionDetails.subtitle %></h2>						
 						<p class="welcome-message mt-4"><%= auctionDetails.welcomeMessage %></p>
-						<p><%= auctionDetails.description %></p>
+						<p class="auction-description"><%= auctionDetails.description %></p>
 					</div>	
 				</div>	
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
 			</div>
+		</div>	
 
-			<!-- FEATURED PACKAGES SECTION-->
-		
-			<div class="row">
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-md-12 col-lg-9">
-					<div class="card-body">
-						<h2 class="mb-3">Featured Packages</h2>
-						
-						<% for (var i = 0; i < packages.length; i+=2) {%>
-							<div class="row">
-								<div class="col-md-6 mt-4">
-									<div class="card featured-card">
-										<div class="card-body">
-											<div class="featured-num">
-													#<%= packages[i]._id%>
-											</div>
-											<div class="d-flex flex-row justify-content-start align-items-start">
-												<div>
-													<img class="featured-img mr-3" src="/test_gopro_480.jpg">
-												</div>
-												<div>
-													<h5 class="featured-title"><%= packages[i].name %></h5>
-													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i].amount %></span></p>
-												</div>
-											</div>
-											<div>
-												<hr>
-												<p class="featured-text text-truncate mt-2" style="max-height: 6rem;"><%= packages[i].description %></p>
-											</div>		
-										</div>
-									</div>
+		<!-- FEATURED PACKAGES SECTION-->
+		<div class="container">
+
+			<h2 class="mt-2">Featured Packages</h2>		
+
+			<div class="d-flex flex-row flex-wrap justify-content-start mt-3">
+				<% for (var f in packages) {%>
+					<div class="col-lg-6 col-md-12 col-sm-12 mt-3 mb-3">
+						<div class="card pkg-card">	
+							<div class="card-body">
+								<div class="pkg-num">
+									#<%= packages[f]._id %>
+								</div> 
+								<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
+									<img class="pkg-img mr-3" src="/test_gopro_480.jpg">
+									<div>  
+										<p class="pkg-title"> <%= packages[f].name %></p>
+										<p class="category">Category: <%=packages[f]._category%></p>
+									</div>	
 								</div>
-								<div class="col-md-6 mt-4">
-								<% if (i+1 < packages.length) { %>
-									<div class="card featured-card">
-										<div class="card-body">
-											<div class="d-flex flex-row justify-content-start align-items-start">
-												<div class="featured-num">
-													#<%= packages[i+1]._id%>
-												</div>
-												<div>
-													<img class="featured-img mr-3" src="/test_cuba_480.jpg">
-												</div>
-												<div>
-													<h5 class="featured-title"><%= packages[i+1].name %></h5>
-													<p><span class="featured-text">Opening Bid: </span><span class="featured-bid">$<%= packages[i+1].amount %></span></p>
-												</div>
-											</div>
-											
-											<div>
-												<hr>
-				
-													
-													
-												<p class="featured-text text-truncate mt-2"><%= packages[i+1].description %></p>
-											</div>
-										</div>
-									</div>
-								<% } %>
-  								</div>
-						
-						</div> <!-- End of row of featured packages -->
-						<% } %>
-
-						<!-- View Catalog Button -->
-						<div class="btn-div mt-5 mb-4">
-							<a class="btn btn-ctlg btn-centr mr-3" href="/<%=auction%>/packages">View Full Catalog</a>	
+								<hr>
+								<div class="row ml-1">
+									<ul>
+										<li>Value: <span class="value-display"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> 
+										<li>Opening Bid: <span class="value-display"> <%="$" + packages[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
+										<li class="donated mt-1">Donated by: <%=packages[f].donors%> </li>
+									</ul>
+								</div>
+								<hr>
+								<div class="description"><%= packages[f].description %>
+								</div>
+							</div>
 						</div>
+					</div>
+				<%}%>	
+			</div>	
+		</div>
 
-					</div> <!-- End of card-body -->
-				</div>	
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-			</div> <!-- End of row section holding Featured Packages -->
-		</div> <!-- End of container -->
+		
+		<div class="btn-div my-3">
+					<a class="btn btn-reg my-4" href="/users/register">REGISTER NOW</a>
+		</div>					
 
 		<!-- FOOTER -->
 		<footer class="container-fluid event-footer">

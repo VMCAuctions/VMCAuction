@@ -70,7 +70,6 @@ h2.supporter-view {
 	text-align: center;
 	top: 0.3rem; 
 	left: 0.7rem; 
-
 }
 
 .featured-num {
@@ -127,13 +126,15 @@ h2.supporter-view {
 .category {
 	 color: #808080; 
 	 font-weight: 300; 
+	 margin: 0;
 }
 
 .value {
-	font-weight: 700; 
-	/* color: #003d79; */
-	font-size: 0.95rem; 
+	color: #808080; 
+	font-weight: 300; 
+	margin: 0;
 }
+
 .opening-bid {
 	font-weight: 700; 
 	/* color: #003d79; */
@@ -181,11 +182,30 @@ ul {
 	margin: 0 auto; 
 } 
 
+.btn-bid{
+	background-color: #0080ff; 
+	color: #f8f9fa;
+	border: none;
+	font-size: 0.95rem !important; 
+	font-weight:700; 
+	display: block;
+	margin: 0 auto; 
+} 
+
+.btn-set-max-bid {
+	background-color: #a2b209; 
+	color: #f8f9fa;
+	border: none;
+	font-size: 0.95rem !important; 
+	font-weight:700; 
+	display: block;
+	margin: 0 auto; 
+} 
+
 .btn-remove-watchlist {
 	background-color: #a6a6a6; 
 	color: #f8f9fa;
 	border: none;
-	width: 200px;
 	font-size: 0.95rem !important; 
 	font-weight:700; 
 	display: block;

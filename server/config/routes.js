@@ -373,6 +373,10 @@ module.exports = function(app) {
 	//removes from watchlist Featured Packages	
 	app.get('/:auctions/users/uninterested-in-featured/:id', function (req,res) {
 		users.uninterestedInFeatured(req, res)});
+	
+		//removes package from users watchlist and stays on users watchlist page
+	app.get('/:auctions/users/uninterestedWatchList/:id', function (req,res) {
+		users.uninterestedWatchList(req, res)});
 
   	//saves list of packages on users personal page as user likes it
 	app.get('/:auctions/users/updateList/:result/:userId', function(req,res){
