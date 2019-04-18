@@ -167,6 +167,7 @@ io.sockets.on('connection', function (socket) {
 				if (err) {
 					console.log("error occured " + err);
 				} else if (package != null) {
+					console.log("120 Sockets.  Pkg.findbyId package = ",package)
 					let lastBid;
 					if (package.bids.length == 0){
 						lastBid = package.amount;
@@ -180,6 +181,8 @@ io.sockets.on('connection', function (socket) {
 
 					//if there are no bids on the package, we check if the userBid from is greater than package amount
 					if (package.bids.length == 0 && userBid >= packageAmt) {
+						package.highBid = data.bid;
+						package.highBidder = data.userName;
 						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
@@ -189,7 +192,8 @@ io.sockets.on('connection', function (socket) {
 
 					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
 					} else if (userBid >= lastBid + bidIncrement) {
-						// console.log("ELSE IF");
+						package.highBid = data.bid;
+						package.highBidder = data.userName;
 						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
@@ -201,7 +205,9 @@ io.sockets.on('connection', function (socket) {
 				// SAVE ALL STUFF
 				package.save(function (err) {
 					if (err) {
-						console.log("error when saving: " + err);
+						console.log("130 server.js error when saving package.  err = " + err);
+					} else {
+						console.log("131 server.js package.save result. package = ",package)
 					}
 				})
 			})

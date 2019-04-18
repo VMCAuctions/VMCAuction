@@ -19,19 +19,19 @@
 				<div class="col-2">
 					<div class="brand">elizabid</div>
 				</div>	
-				<div class="col-2 text-center">
-					<a href="/<%=auction%>/event" class="auction-nav"><%= auction.name %> (<%= auction.pin %>)</a> 
+				<div class="col-8 text-center">
+					<a href="/<%=auction%>/event" class="auction-nav"><%= auction.name%> (<%= auction.pin %>)</a> 
 				</div> 
-				<!-- <div class="col-6> -->
-					<!-- <ul class="navbar-nav"> -->
-						<div>
-							<a class="mr-2 top-link" href="/auctions/clerkDash">Clerk Dashboard</a>
-						</div>
-						<div>
-							<a class="mr-2" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-						</div>
-					<!-- </ul> -->
-				<!-- </div> -->
+				<div class="col-5">
+					<ul class="navbar-nav">
+						<li>
+							<a class="row-2 top-link" href="/auctions/clerkDash">Clerk Dashboard</a>
+						</li><br>
+						<li>
+							<a class="row-2" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+						</li>
+					</ul>
+				</div>
 		</div>
     </nav>
   	<!-- Organizer Secondary Navbar-->
@@ -46,10 +46,13 @@
 					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Supporters </a>
 				</li>	
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Catalog</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'packages') { %> active2 <% } %>" href="/<%=auction%>/packages">Packages</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'item-register') { %> active2 <% } %>" href="/<%=auction%>/items">Packages</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/catalog">Catalog</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/catalog">Catalog</a>
 				</li>
 				
           	</ul>

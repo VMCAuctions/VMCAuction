@@ -247,7 +247,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+    console.log("230 auctions.js this.clerk  Clerk landing page start");
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
@@ -337,6 +337,87 @@ function AuctionsController() {
       }
     });
   };
+  this.clerkcheckin = function(req, res) {
+	res.render("clerkCheckIn");
+	};
+
+	// this.clerkCheckOut = function(req, res) {
+	// 	res.render("clerkCheckOut-shell");
+	// };
+
+	this.clerkCheckOut = function(req, res) {
+		console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+		var items = [];
+		if (globals.clerkValidation(req, res)) {
+		  var cart = {};
+		  User.find({ _auctions: req.params.auctions }, function(err, users) {
+			if (err) {
+			  console.log(err);
+			} else if (req.session.admin) {
+			  Package.find({ _auctions: req.params.auctions })
+				.populate("_items")
+				.sort({ _category: "ascending" })
+				.sort({ priority: "ascending" })
+				.sort({ _id: "descending" })
+				.exec(function(err, packages) {
+				  if (err) {
+					console.log(err);
+				  } else {
+					for (var x = 0; x < users.length; x++) {
+					  var packagesArr = [];
+
+					  var total = 0;
+					  for (var y = 0; y < packages.length; y++) {
+						//Not sure if we need this "if" statement for bids.length > 0; needs testing
+						if (packages[y].bids.length > 0){
+						  if (
+							packages[y].bids[packages[y].bids.length - 1].name ===
+							users[x].firstName.charAt(0)+'. '+users[x].lastName
+						  ) {
+							packagesArr.push(packages[y]);
+							items.push.apply(items,packages[y]._items);
+							total +=
+							  packages[y].bids[packages[y].bids.length - 1].bidAmount;
+						  }
+						}
+
+					  }
+					  cart[users[x].userName] = {
+						packages: packagesArr,
+						items: items,
+						total: total
+					  };
+					}
+					//Current is a flag showing which page is active
+					Auction.findById({_id:req.params.auctions}, function(err, auction){
+					  if (err){
+						console.log(err);
+
+					  } else{
+						console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
+						res.render("clerkCheckOut-shell", {
+						  current: "Clerk Dashboard",
+						  users: users,
+						  cart: cart,
+						  packages: packages,
+						  items: items,
+						  userName: req.session.userName,
+						  admin: req.session.admin,
+						  auction: auction
+						});
+					  }
+					});
+
+				  }
+				});
+			} else {
+			  res.redirect("/" + req.params.auctions + "/event");
+			}
+		  });
+		}
+	  };
+
+
 }
 
 module.exports = new AuctionsController();

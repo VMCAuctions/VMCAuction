@@ -438,6 +438,16 @@ module.exports = function(app) {
 	// Clerk landing page that summarizes users, packages won, items contained, and hopefully and invoice
 	app.get('/:auctions/clerkDash', function(req,res) {
 		auctions.clerk(req,res)});
+	
+	
+	app.get('/clerkCheckIn', function(req, res){
+		auctions.clerkcheckin(req,res)});
+
+	// Loads clerk checkout page
+	app.get('/:auctions/clerkCheckOut-shell', function(req,res) {
+		auctions.clerkCheckOut(req,res)});
+
+
 	app.get('/clerk/login', function(req, res){
 		auctions.pinEntry(req,res)});
 	app.post('/clerk/pin', function(req, res){
