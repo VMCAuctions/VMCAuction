@@ -62,7 +62,7 @@
 				$('#bidAmount').val(newBid);
 				$('#hiddenBidAmt').val(newBid);
 				$('#afterBidMessage').text('');
-				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
+				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+"$"+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
 				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
