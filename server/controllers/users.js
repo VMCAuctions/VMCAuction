@@ -579,10 +579,10 @@ function UsersController(){
 
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-// 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
 				
 
 			}
@@ -643,6 +643,36 @@ function UsersController(){
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
 				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
 				
+			}
+		})
+	};
+
+	this.uninterestedWatchList = function(req,res) {
+		// console.log("in uninterested");
+		User.findOne({userName: req.session.userName}, function(err, user) {
+			if (err) {
+				console.log(err);
+			}else{
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == req.params.id) {
+						user._packages.splice(i,1)
+						user.save(function (err, result) {
+							if (err) {
+								console.log(err);
+							}
+						})
+						break
+					}
+				};
+
+				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
+				// res.redirect('/' + req.params.auctions  + '/packages')
+				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+
+				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				// res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
+				
+
 			}
 		})
 	};
