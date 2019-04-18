@@ -75,9 +75,9 @@ function AuctionsController() {
 					} else {
 						console.log(Date.now()," - 203 auctions.js pre auction create.  req.body = ",req.body);
             // console.log(Date.now()," - 204 auctions.js pre auction create.  req.file = ",req.file);
-            var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00Z";
+            var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
             var start = new Date(startDate);
-            var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00Z";
+            var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
             var end = new Date(endDate);
 						Auction.create({
 							name: req.body.name,
@@ -138,15 +138,17 @@ function AuctionsController() {
 	// console.log(Date.now()," - 211 auctions.js this.edit.  req.file = ",req.file);
     Auction.findById(req.params.auctions, function(err, auction) {
     // console.log(Date.now()," - 212 auctions.js this.edit.  auction = ",auction);
-      stringStartClock = auction.startClock.toISOString();
-      stringEndClock = auction.endClock.toISOString();
-      // console.log("stringStartClock is", stringStartClock)
-      startDate = stringStartClock.substring(0, 10);
-      startClock = stringStartClock.substring(11, 16);
+      stringStartClock = dateFormat(auction.startClock, "yyyy-mm-dd HH:MM");
+      stringEndClock = dateFormat(auction.endClock, "yyyy-mm-dd HH:MM");
+      console.log("Db",auction.startClock)
+      console.log("stringStartClock is", stringStartClock)
+      startDate = stringStartClock.substring(0,10);
+      startClock = stringStartClock.substring(11,16);
       // console.log("startDate is", startDate)
       // console.log("startClock is", startClock)
       endDate = stringEndClock.substring(0, 10);
       endClock = stringEndClock.substring(11, 16);
+      // console.log("enddate", endDate)
       res.render("editAuction", {
         auctionDetails: auction,
         admin: req.session.admin,
@@ -167,9 +169,10 @@ function AuctionsController() {
   this.update = function(req, res) {
 	// console.log(Date.now()," - 220 auctions.js this.update.  req.body = ",req.body);
 	// console.log(Date.now()," - 221 auctions.js this.update.  req.file = ",req.file);
-    var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00Z";
+    var startDate = req.body.startClockDate + "T" + req.body.startClockTime + ":00";
     var start = new Date(startDate);
-    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00Z";
+    console.log("Start", start)
+    var endDate = req.body.endClockDate + "T" + req.body.endClockTime + ":00";
     var end = new Date(endDate);
     Auction.findById(req.params.auctions, function(err, auction) {
 	  // console.log(Date.now()," - 222 auctions.js this.update.  auction = ",auction);
@@ -191,6 +194,7 @@ function AuctionsController() {
         auction.save()
 	    // console.log(Date.now()," - 224 auctions.js this.update post save.  auction = ",auction);
       // console.log(Date.now()," - 225 auctions.js this.update post save.  req.params.auctions = ",req.params.auctions);
+      console.log(auction)
         res.redirect("/" + req.params.auctions + "/organizerMenu")
       }
     });
