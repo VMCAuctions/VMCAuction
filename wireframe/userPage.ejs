@@ -33,17 +33,21 @@
       </div> -->
 
       <div class="d-flex flex-row flex-wrap justify-content-start mt-4">
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
-    
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <input type="search" id="keyword" class="form-control search-pkg" placeholder="Search Packages">
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
+
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <select name="category" id="category" class="form-control search-inner search-pkg">
             <option value="">All Categories</option>
-            <%for(let i =0; i<user._packages.length; i++){%>
-                <option value="<%=user._packages[i]._category%>"><%=user._packages[i]._category%></option>
-            <%}%>	
+              <% for(var c in categories) {%>
+                <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+              <%}%>
           </select>
+        </div>
+
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
+          <button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
         </div>
       </div>
 
@@ -61,6 +65,13 @@
               <div class="pkg-num">
                   #<%=user._packages[i].id%>
               </div>
+
+              <%if(user._packages[i].featured===true){%>
+              <div class="featured-box">
+                FEATURED
+              </div> 
+              <%}%>		
+
               <div class="d-flex flex-row justify-content-start align-items-start card-top"> 
                   <% if(user._packages[i]) {%>
                   <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
@@ -73,22 +84,21 @@
               <hr>
               <div class="row ml-1">
                   <ul>	
-                  <% if(user._packages[i].bids.length > 0) {%>
-                    <%if(user._packages[i].bids[user._packages[i].bids.length-1].bidAmount > 0 ){%>
+                    <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
                       <li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= user._packages[i].bids[user._packages[i].bids.length-1].name%>)</span></li>
                     <%}else{%>
-                      <li class="mt-1">Status: <span class="no-bid">No bids yet! </span></li>
+                      <li class="mt-1 no-bid">No bids yet! </li>
                     <%}%>
-                  <%}%>
+                    <li>Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
                     <li>Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
-                    <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
                   </ul>
               </div>
               <hr>
               <%}%>
               <div class="text-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mb-3" name="uninterested">Remove from Watchlist</button></a>
+                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
+                <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a>
               </div>
           </div>
         </div>
@@ -96,29 +106,36 @@
     <%}%>
     </div> <!-- End of container -->
 
-    <tbody id='selections'>
-        <%for(let i =0; i<user._packages.length; i++){%>
-          <tr data-id= '<%=user._packages[i]._id %>' class='selection' style='cursor: move'>
-          <% if(user._packages[i]) {%>
-          <td><a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a></td>
-          <% if(user._packages[i].bids.length > 0) {%>
-            <%if(user._packages[i].bids[user._packages[i].bids.length-1].userName == user.userName){%>
-                <td id = "<%=user._packages[i]._id%>">YOU!!</td>
-            <%}else{%>
-                <td id = "<%=user._packages[i]._id%>"><%=user._packages[i].bids[user._packages[i].bids.length-1].name%></td>
-              <%}%>
-            <%}else{%>
-              <td>No Bids Yet!</td>
-            <%}%>
-          <%}%>
-          <td><a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
-          </tr>
-          <%}%>
-      </tbody>
+    <script>
+      $(document).ready(function(){
+        $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+        });
 
+        $('#update').click(function(){
+          var result = sortable.toArray()
+          console.log(result)
+          $.ajax({type: 'GET',
+            url:'/<%=auction%>/users/updateList/' + result + '/' + userId
+          })
+        })
 
+        $("#noBids").click(function() {
+          $(".bids").toggle();
+          $(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
+        });
 
-    
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $(".package").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+      })
+    </script>
     
     <script>
     	var socket = io.connect('http://localhost:8000/');
@@ -126,19 +143,17 @@
       var userId = '<%= user._id%>';
       var el = document.getElementById('selections')
       var sortable = Sortable.create(el)
-      $('#update').click(function(){
-        var result = sortable.toArray()
-        console.log(result)
-        $.ajax({type: 'GET',
-          url:'/<%=auction%>/users/updateList/' + result + '/' + userId
-        })
-      })
+        
       socket.on("serverTalksBack", function(data){
         var isDone = false;
         <%for (var j = 0; j < user._packages.length; j++){%>
           if(<%=user._packages[j]._id%> == data.packId){
-            if(data.userName === "<%=userName%>"){
+            // if(data.userName === "<%=userName%>"){
+            if(data.userName === userName){
+              console.log("data.userName = ", data.userName)
+              console.log("userName = ", userName)
               $("#<%=user._packages[j]._id%>").text("You!!!")
+              $("#user._packages[j]._id").text("You dude!!!")
             }
             else{
               $("#<%=user._packages[j]._id%>").text(data.userName)
@@ -169,15 +184,6 @@
           //If the newest bidder is you, then you will add the new amount to cartTotal
         <%}%>
       })
-
-      $("select[name='category']").change( function() {
-			  var value = $(this).val().toLowerCase();
-			  $(".package").filter(function(){
-				  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			  })
-		  });
-
     </script>
-
   </body>
 </html>

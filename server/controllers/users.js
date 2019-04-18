@@ -2,6 +2,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
+	Category = require('../models/category.js'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
@@ -335,18 +336,30 @@ function UsersController(){
               if (err) {
                 console.log(err)
               } else {
-                // console.log("req.session is", req.session)
-                res.render('userPage', {
-                  current: 'watch-list',
-                  userName: req.session.userName,
-                  admin: req.session.admin,
-									user: user,
-                  cartTotal: cartTotal,
-                  cartArray: cartArray,
-                  auction: req.params.auctions,
-                  auctionDetails: auctionDetails,
+								Category.find({}, function(err, categories){
+									if (err){
+										console.log(err)
+									}
+									else if (result.length === 0){
+										console.log("running categoriesinitialize")
+										categories.initialize()
+									}
+									else{
+										// console.log("req.session is", req.session)
+										res.render('userPage', {
+											current: 'watch-list',
+											userName: req.session.userName,
+											admin: req.session.admin,
+											user: user,
+											categories: categories,
+											cartTotal: cartTotal,
+											cartArray: cartArray,
+											auction: req.params.auctions,
+											auctionDetails: auctionDetails,
+										})
+										console.log("User info: ", user);
+									}
 								})
-								console.log("User info: ", user);
               }
             })
           }else{
@@ -566,7 +579,7 @@ function UsersController(){
 
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
 // 				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
