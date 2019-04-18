@@ -14,15 +14,14 @@ var mongoose = require('mongoose'),
 	autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
-
 // Test change for github branch serverjs
-
 app.use(session({
+
 	secret: secret.secret,
-	resave: false,
-	saveUninitialized: true,
-	rolling: true
-	//resets session timeout everytime the user interacts with the site
+	resave: false, //Resave the session to store if it's changed
+	saveUninitialized: true, //Creates session for anonymous users
+	rolling: true //Resets the cookie Max-Age on every user request
+	// cookie : { maxAge : 36000000 } //timeout for session time 1 hour
 }));
 
 var bodyParser = require('body-parser');
@@ -58,9 +57,7 @@ var server = app.listen(port, function () {
 var Package = require('./server/models/package.js')
 var User = require('./server/models/user.js');
 
-
 var io = require('socket.io').listen(server);
-
 
 var allBidsBigObj = {
 	// package1: [
@@ -83,7 +80,6 @@ var packagesButtonStates = {};
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
 				packagesButtonStates[pkgs[i]._id].buttonstate = true;
-				// console.log(packagesButtonStates);
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
 				if (pkgs[i].bids.length != 0) {
@@ -109,11 +105,8 @@ io.sockets.on('connection', function (socket) {
 	// THE CHANNEL "msgSent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
 	// USING UNIQUE CHANNELS WITH PACKAGE IDs
 	socket.on("msgSent", function (data) {
-
-		console.log("Message Received By Server the Bid");
-		console.log("100 server.js io.sockets.  data.bid = ",data.bid);
-		console.log("100 server.js io.sockets.  data = ",data);
-
+		console.log("Message Received By Server the Bid",data);
+		// console.log("100 server.js io.sockets.  data = ",data);
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
 		// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
@@ -129,9 +122,9 @@ io.sockets.on('connection', function (socket) {
 
 		//function to calculate time ex: '7:30 PM'
 		function formatAMPM(date) {
-				var hours = date.getHours();
-				var minutes = date.getMinutes();
-				var ampm;
+				let hours = date.getHours();
+				let minutes = date.getMinutes();
+				let ampm;
 				if (hours >= 12) {
 					ampm = 'pm';
 				} else {
@@ -147,12 +140,10 @@ io.sockets.on('connection', function (socket) {
 				} else {
 					minutes;
 				}
-				var strTime = hours + ':' + minutes + ' ' + ampm;
+				let strTime = hours + ':' + minutes + ' ' + ampm;
 				return strTime;
 			}
-		var time = formatAMPM(date);
-
-		io.emit("serverTalksBack", { packId: data.packId, bid: data.bid, userName: data.userName, name: data.name, date: date, time: time})
+		let bidTime = formatAMPM(date);
 
 		if (packagesButtonStates[data.packId].buttonstate) {
 			// NOW NOBODY WILL BE ALLOWED TO MAKE A BID IN THIS PACKAGE UNTILL
@@ -192,17 +183,18 @@ io.sockets.on('connection', function (socket) {
 						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
-							date: date
+							date: date,
+							bidTime: bidTime
 						});
 
 					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
 					} else if (userBid >= lastBid + bidIncrement) {
 						// console.log("ELSE IF");
-
 						package.bids.push({
 							bidAmount: userBid,
 							name: userName,
-							date: date
+							date: date,
+							bidTime:bidTime
 						});
 					}
 				}
@@ -219,7 +211,7 @@ io.sockets.on('connection', function (socket) {
 			if (err) {
 				console.log("error occured " + err);
 			} else if (user != null) {
-				// console.log("140 Sockets.  User.findbyId user = ",user)
+				console.log("140 Sockets.  User.findbyId user = ",user)
 				var duplicatePackage = false;
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == data.packId) {
@@ -239,13 +231,7 @@ io.sockets.on('connection', function (socket) {
 		})
 
 		// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
-		io.emit(uniqChatUpdateId, {
-			lastBid: data.bid,
-			userBidLast: data.userName,
-			bidTime: data.time
-		});
-
-		// console.log("180 Sockets.  uniqChatUpdateId = ",uniqChatUpdateId," lastBid(data.bid) = ",data.bid," userBidLast(data.userName) = ",data.userName);
+		io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
 
 		// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 		setTimeout(function () {

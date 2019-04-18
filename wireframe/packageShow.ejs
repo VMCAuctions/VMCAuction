@@ -16,6 +16,7 @@
 	$(document).ready(function () {
 		// no bids and no value entered in bid form field
 		$('#submitButton').submit(function (event) {
+			event.preventDefault();
 			let sendBid;
 			let bidAmt = parseInt($("#bidAmount").val());
 			let packageAmt = <%= package.amount %>;
@@ -23,8 +24,7 @@
 			let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
 			let hasBids = <%= ourBids %>;
 			let userName = "<%= user.firstName + ' ' + user.lastName %>";
-			event.preventDefault();
-
+			
 			//No input and no bids, "Place Bid" will place bid of current bid plus increment
 			if ( !bidAmt && hasBids === false ) {
 				sendBid = packageAmt;
@@ -43,26 +43,26 @@
 			} else if ( bidAmt >= newBid && hasBids === true ) {
 				sendBid = bidAmt;
 			}
-
 			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>'})
 		});
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
-			console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
-			//check on this
-			console.log(data.bid);
-			let currentBid = (data.bid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			let topBidder = data.userName;
-			let newBid = parseInt(data.bid) + <%= package.bidIncrement %>;
+			// console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
+			let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			let topBidder = data.userBidLast;
+			let newBid = parseInt(data.lastBid) + <%= package.bidIncrement %>;
+			let packageId = <%= package._id %>;
+			let packId = parseInt(data.packId);
 
-			if ( data.packId == <%= package._id %> ) {
-
+			if ( packId == packageId ) {
 				$('#currentBid').text("Current Bid: $" + currentBid);
 				$('#topBidder').text("Top Bidder: " + topBidder);
-				$('#minBid').text("Bid US $"+ newBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more");
+				$('#minBid').text("Bid $"+ newBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more");
 				$('#bidAmount').attr('min',newBid);
 				$('#bidAmount').val(newBid);
 				$('#hiddenBidAmt').val(newBid);
+				$('#afterBidMessage').text('');
+				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
 				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
@@ -75,24 +75,22 @@
 				} else {
 					$("#submitButton2").removeAttr('disabled');
 				}
-				event.preventDefault();
 			}
 		});
 	})
-
 	</script>
 </head>
 
 <body>
 
-	<%if(admin){%>
+	<% if(admin){ %>
 		<%- include('adminHeader') -%>
-	<%}else{%>
+	<% } else { %>
 		<%- include('header') -%>
-	<%}%>
-	<!-- <%if(admin == 0){%>
+	<% } %>
+	<!-- <% if(admin == 0){ %>
 	<%- include('footerClock') -%>
-	<%}%> -->
+	<% } %> -->
 
 	<div class="card">
 		<div>
@@ -103,17 +101,17 @@
 
 			<div class="card-body">
 
-				<p>Package Value: US $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
+				<p>Package Value: $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 				<p>Bid Increment: $<%= package.bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 
 				<% if(package.bids.length === 0){ %>
-					<p>Top Bidder: </p>
+					<p id='topBidder'>Top Bidder: </p>
 				<% }else{ %>
 					<p id = 'topBidder'>Top Bidder: <%= package.bids[package.bids.length - 1].name %></p>
 				<% } %>
 
 				<% if (package.bids.length === 0){ %>
-					<p> Starting Bid: <%= "$" + package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
+					<p id='currentBid'> Starting Bid: <%= "$" + package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 				<% }else{ %>
 					<p id='currentBid'>Current Bid: $<%= lastBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></p>
 				<% } %>
@@ -122,9 +120,9 @@
 				<% if (!admin){ %>
 					<form class="mt-2" id='submitButton' class="w-50">
 						<% if (package.bids.length === 0){ %>
-							<input type="number" id='bidAmount' type="number" min='<%= package.amount %>' value=''>
+							<input type="number" id='bidAmount' type="number" min='<%= package.amount %>' value='<%= package.amount%>'>
 						<% }else{ %>
-							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value=''>
+							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value='<%= lastBid + package.bidIncrement %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
 							<input class="ml-2 btn" type='submit' value='Place Bid' id='submitButton2'>
@@ -132,34 +130,36 @@
 				<% } %>
 
 				<% if (package.bids.length === 0){ %>
-					<p>Bid US $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
+					<p id = 'minBid'>Bid $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more</p>
 				<% }else{ %>
-					<p id ='minBid'>Bid US $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more </p>
+					<p id ='minBid'>Bid $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more </p>
 				<% } %>
 
 				<!-- Buttons -->
-				<p class="text-success" id="addSuccess"></p>
-				<p class="text-success" id="removeSuccess"></p>
+				<!-- <p class="text-success" id="addSuccess"></p>
+				<p class="text-success" id="removeSuccess"></p> -->
 
 				<% if (user._packages.length > 0) { %>
-					<form id="removeWatchList" action="/<%= auction %>/users/uninterested/<%= package._id %>" method='GET'>
-						<input class="btn" type='button' value='Remove from Watch List'>
+					<form class = "d-inline" id="removeWatchList" action="/<%= auction %>/packages/<%= package._id %>" method='GET'>
+						<input class="btn" type='submit' value='Remove from Watch List'>
 					</form>
 				<% } else { %>
-					<form id="addWatchList" action="/<%= auction %>/users/interested/<%= package._id %>" method='GET'>
-						<input class="btn" type='button' value='Add to Watch List'>
+					<form class = "d-inline" id="addWatchList" action="/<%= auction %>/packages/<%= package._id %>" method='GET'>
+						<input class="btn" type='submit' value='Add to Watch List'>
 					</form>
 				<% } %>
+				
+				<!-- Button trigger modal -->
+				<button type="button" class="d-inline btn" data-toggle="modal" data-target="#exampleModalLong">Bid History</button>
 
-				<a href="/<%= auction %>/packages"><button type="button" class="mt-2 btn" name="interested">Back</button></a>
-				<a href="/<%= auction %>/packages/<%= prevPos %>"><button type="button" class="mt-2 ml-2 btn" name="interested">Previous</button></a>
-				<a href="/<%= auction %>/packages/<%= nextPos %>"><button type="button" class="mt-2 ml-2 btn" name="interested">Next</button></a>
+				<div class = "ml-1 row">
+					<a href="/<%= auction %>/packages"><button type="button" class="mt-2 btn" name="interested">Back</button></a>
+					<a href="/<%= auction %>/packages/<%= prevPos %>"><button type="button" class="mt-2 ml-2 btn" name="interested">Previous</button></a>
+					<a href="/<%= auction %>/packages/<%= nextPos %>"><button type="button" class="mt-2 ml-2 btn" name="interested">Next</button></a>
+				</div>
 
 				<p class = "mt-2">Description: <%= package.description %> </p>
 				<p>Restriction(s): <%= package.restrictions %> </p>
-
-				<!-- Button trigger modal -->
-				<button type="button" class="btn" data-toggle="modal" data-target="#exampleModalLong">Bid History</button>
 
 				<!-- Modal -->
 				<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -172,10 +172,46 @@
 								</button>
 							</div>
 							<div class="modal-body">
+								<p>Bidders: <strong><%= [...new Set(package.bids.map(x => x.name))].length; %></strong>&nbsp&nbsp&nbsp Bids: <strong><%= package.bids.length %></strong>&nbsp&nbsp&nbsp Time Left: &nbsp&nbsp&nbsp Duration:</p>
+
 								<% if( package.bids.length === 0){ %>
-									<p>No one has bid on this package yet.</p>
+									<p id ="afterBidMessage">No one has bid on this package yet.</p>
+
+									<div class="mh-200">
+											<table id = "history">
+												<tr>
+													<th>Bidder</th>
+													<th>BidAmount</th>
+													<th>Bid Time</th>
+												</tr>
+											<% for (var i = package.bids.length-1; i > -1; i--){ %>
+												<tr>
+													<td><%= package.bids[i].name %></td>
+													<td><%= package.bids[i].bidAmount %></td>
+													<td><%= package.bids[i].bidTime %></td>
+												</tr>
+											<% } %>
+											</table>
+										</div>
+
 								<% }else{ %>
-									<p class = "bidHistory"><%= package.bids[package.bids.length-1].name %> placed a bid of <%= lastBid %> on </p>
+
+									<div class="mh-200">
+										<table id = "history">
+											<tr>
+												<th>Bidder</th>
+												<th>BidAmount</th>
+												<th>Bid Time</th>
+											</tr>
+										<% for (var i = package.bids.length-1; i > -1; i--){ %>
+											<tr>
+												<td><%= package.bids[i].name %></td>
+												<td>$<%= package.bids[i].bidAmount %></td>
+												<td><%= package.bids[i].bidTime %></td>
+											</tr>
+										<% } %>
+										</table>
+									</div>
 								<% } %>
 							</div>
 							<div class="modal-footer">
@@ -189,22 +225,19 @@
 	</div>
 
 	<script type="text/javascript">
+
 		$('#addWatchList').submit(function (event) {
 			event.preventDefault();
-			event.stopPropagation();
-			$.get("/<%= auction %>/users/interested/<%= package._id %>", function (data, status) {
-				$("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
-					// event.preventDefault();
+			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>", function (data, status) {
+				$("#addWatchList").replaceWith("<form id='removeWatchList' action='/<%= auction %>/users/uninterested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Remove from Watch List'></form>");
 			});
 		})
 
 		$('#removeWatchList').submit(function (event) {
 			event.preventDefault();
-			event.stopPropagation();
-			$.get("/<%= auction %>/users/uninterested/<%= package._id %>", function (data, status) {
-				$("#removeWatchList").replaceWith("<form id='addWatchList' action='/<%= auction %>/users/interested/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Add to Watch List'></form>");
-					// event.preventDefault();
-			});	
+			$.get("/<%= auction %>/users/uninterested-in-package/<%= package._id %>", function (data, status) {
+				$("#removeWatchList").replaceWith("<form id='addWatchList' action='/<%= auction %>/users/interested-in-package/<%= package._id %>' method='GET'><input class='btn' type='submit' value='Add to Watch List'></form>");
+			});
 		})
 
 	</script>
