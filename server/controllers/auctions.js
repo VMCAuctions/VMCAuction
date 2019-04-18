@@ -346,7 +346,9 @@ function AuctionsController() {
 	// };
 
 	this.clerkCheckOut = function(req, res) {
-		console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+		console.log("230 auctions.js this.clerk start.  req.body = ",req.body);
+		console.log("231 auctions.js this.clerk start.  req.params = ",req.params);
+		console.log("232 auctions.js this.clerk start.  req.session = ",req.session);
 		var items = [];
 		if (globals.clerkValidation(req, res)) {
 		  var cart = {};
@@ -360,62 +362,56 @@ function AuctionsController() {
 				.sort({ priority: "ascending" })
 				.sort({ _id: "descending" })
 				.exec(function(err, packages) {
-				  if (err) {
+					if (err) {
 					console.log(err);
-				  } else {
-					for (var x = 0; x < users.length; x++) {
-					  var packagesArr = [];
-
-					  var total = 0;
-					  for (var y = 0; y < packages.length; y++) {
-						//Not sure if we need this "if" statement for bids.length > 0; needs testing
-						if (packages[y].bids.length > 0){
-						  if (
-							packages[y].bids[packages[y].bids.length - 1].name ===
-							users[x].firstName.charAt(0)+'. '+users[x].lastName
-						  ) {
-							packagesArr.push(packages[y]);
-							items.push.apply(items,packages[y]._items);
-							total +=
-							  packages[y].bids[packages[y].bids.length - 1].bidAmount;
-						  }
+					} else {
+						console.log("234 auctions.js this.clerk Package.find.  packages = ",JSON.stringify(packages, null, 2));
+						for (var x = 0; x < users.length; x++) {
+							var packagesArr = [];
+							var total = 0;
+							for (var y = 0; y < packages.length; y++) {
+								//Not sure if we need this "if" statement for bids.length > 0; needs testing
+								if (packages[y].bids.length > 0){
+									if (packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName.charAt(0)+'. '+users[x].lastName || packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName+' '+users[x].lastName) {
+										packagesArr.push(packages[y]);
+										items.push.apply(items,packages[y]._items);
+										total += packages[y].bids[packages[y].bids.length - 1].bidAmount;
+									}
+								}
+							}
+							cart[users[x].userName] = {
+								packages: packagesArr,
+								items: items,
+								total: total
+							};
 						}
-
-					  }
-					  cart[users[x].userName] = {
-						packages: packagesArr,
-						items: items,
-						total: total
-					  };
-					}
-					//Current is a flag showing which page is active
-					Auction.findById({_id:req.params.auctions}, function(err, auction){
-					  if (err){
-						console.log(err);
-
-					  } else{
-						console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
-						res.render("clerkCheckOut-shell", {
-						  current: "Clerk Dashboard",
-						  users: users,
-						  cart: cart,
-						  packages: packages,
-						  items: items,
-						  userName: req.session.userName,
-						  admin: req.session.admin,
-						  auction: auction
+						//Current is a flag showing which page is active
+						Auction.findById({_id:req.params.auctions}, function(err, auction){
+							if (err){
+								console.log(err);
+							} else{
+								console.log('236 auctions.js this.clerk auctionfindById. auction = ', auction);  
+								console.log('237 auctions.js this.clerk auctionfindById. cart = ', JSON.stringify(cart, null, 2));  
+								res.render("clerkCheckOut-shell", {
+									current: "Clerk Dashboard",
+									users: users,
+									cart: cart,
+									packages: packages,
+									items: items,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									auction: auction
+								});
+							}
 						});
-					  }
-					});
-
-				  }
+					}
 				});
 			} else {
-			  res.redirect("/" + req.params.auctions + "/event");
+				res.redirect("/" + req.params.auctions + "/event");
 			}
-		  });
+		});
 		}
-	  };
+	};
 
 
 }
