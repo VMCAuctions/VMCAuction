@@ -27,27 +27,24 @@
   height: 80vh;
 }
 
-.title-background  {
-  background-color: rgba(248, 249, 250, 0.75);  
-}
+
 
 h1{
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   font-size: 2.8rem !important;
   font-weight: 500 !important; 
   margin: 0 auto; 
-  color: #00184c !important;  
+  color: #fff!important;  
   text-align: center;
 }
 
 .header-info {
   color: #fff !important;  
   font-size: 1rem; 
-  line-height: 2rem; 
   text-align: center; 
-  font-weight: 500; 
-  color:#00184c !important; 
+  font-weight: 400; 
 }
+
 
 /* AUCTION CONTENT  */
 h2 {
@@ -78,9 +75,9 @@ h2 {
 
 /* Buttons */
 .btn-reg {
-  border: solid 2px#ff6746 !important;
-  background-color: rgba(248, 249, 250, 0.75); 
-  color:#ff6746 !important;
+  border: solid 2px#ff2719 !important;
+  background-color: #ff2719;
+  color:#fff !important;
   font-size: 0.9rem !important; 
   font-weight: 500 !important; 
   width: 175px;
@@ -90,7 +87,8 @@ h2 {
 a.btn-reg:hover {
   color: #fff !important;
   font-weight: 500;
-  background-color: #ff6746 !important;
+  border: solid 2px #c30000 !important;
+  background-color: #c30000 !important;
 }
 
 .btn-centr{
@@ -103,8 +101,8 @@ a.btn-reg:hover {
 .event-footer {
   padding: 2.5rem 0;
   text-align: center;
-  background-color: #f1f3f1;
-  border-top: .05rem solid #e3e8e3;
+  background-color: #edf1f8; 
+  border-top: .05rem solid #dbe2f0;
 }
 
 
@@ -123,17 +121,18 @@ a.btn-reg:hover {
   /* color: #cce6ff; */
   color: #fff; 
   font-size: 0.8rem;
-  font-weight: 200; 
+  font-weight: 300; 
   text-transform: uppercase;
   width: 5rem; 
   height: 2.7rem;
+  padding-top: 1.4rem; 
 }
 #event-start {
   display: none;  
 }
 
 #event-end {
-  color: #ff6746;
+  color: #ff2719;
   font-size: 1.6rem; 
   text-align: center; 
   text-transform: uppercase;
@@ -145,6 +144,8 @@ a.btn-reg:hover {
 
 .description {
   font-weight: 300; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 
 .value-display {

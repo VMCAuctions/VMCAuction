@@ -23,13 +23,13 @@
 				<!-- Right Top Navbar -->
 				<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">	
 					<li class="contact mr-3">
-						<i class="fas fa-phone"></i> Contact: Julie Ott  | 408-282-2687 | <a href="mailto: Julie.Ott@hhs.sccgov.org">email</a>
+						<i class="fas fa-phone"></i>&nbsp;Contact: Julie Ott  | 408-282-2687 | <a href="mailto: Julie.Ott@hhs.sccgov.org">email</a>
 					</li>	
 				</ul>
 			</nav>
 
 			<!-- EVENT LANDING PAGE HEADER -->
-			<div style="background-image: url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
+			<div style="background-image: linear-gradient(to right, rgba(0, 61, 121, 0.9), rgba(69, 103, 168, 0.5)), url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
 			
 
 			<!-- COUNTDOWN CLOCK -->
@@ -47,10 +47,10 @@
 			<div id="event-end"></div>
 
 			<!-- AUCTION TITLE AND HEADER INFO -->
-			<div class="container mt-5">
-				<h1 class="title-background my-3"><%= auctionDetails.name %></h1>
-				<p class="header-info title-background"><%= startDateToDisplay %></p>
-				<p class="header-info title-background mt-2"><%= auctionDetails.venue %></p>	
+			<div class="container mt-4">
+				<h1 class="mt-5"><%= auctionDetails.name %></h1>
+				<p class="header-info"><%= startDateToDisplay %></p>
+				<p class="header-info"><%= auctionDetails.venue %></p>	
 
 				<!-- invisible paragraph - just using the id and data for the countdown clock -->
 				<p id="event-start"> <%= auctionDetails.startClock %></p>
@@ -85,11 +85,17 @@
 					<div class="col-lg-6 col-md-12 col-sm-12 mt-3 mb-3">
 						<div class="card pkg-card">	
 							<div class="card-body">
-								<div class="pkg-num">
+								<div class="featured-num">
 									#<%= packages[f]._id %>
 								</div> 
+								<div class="featured-priority">
+									<%= packages[f].priority %>
+								</div>
+								<div class="featured-box">
+									FEATURED
+								</div> 
 								<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-									<img class="pkg-img mr-3" src="/test_gopro_480.jpg">
+									<img class="pkg-img mr-3" src="/<%= packages[f].photo %>">
 									<div>  
 										<p class="pkg-title"> <%= packages[f].name %></p>
 										<p class="category">Category: <%=packages[f]._category%></p>
@@ -97,15 +103,14 @@
 								</div>
 								<hr>
 								<div class="row ml-1">
-									<ul>
-										<li>Value: <span class="value-display"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> 
-										<li>Opening Bid: <span class="value-display"> <%="$" + packages[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
+									<ul class="mt-4">
+										<li>Value: <span class="value-display"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> | 
+										    Opening Bid: <span class="value-display"> <%="$" + packages[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
 										<li class="donated mt-1">Donated by: <%=packages[f].donors%> </li>
 									</ul>
 								</div>
 								<hr>
-								<div class="description"><%= packages[f].description %>
-								</div>
+								<p class="description text-wrap" style="max-height: 3.5rem;"><%= packages[f].description %></p>
 							</div>
 						</div>
 					</div>
@@ -129,7 +134,8 @@
 		<script>
 			function Calculate() {
 				let now = new Date().getTime();
-				let timeRemaining = countDownDate - now; 
+				let timeRemaining = countDownToStartDate - now; 
+		   
 				// console.log("time remaining:", timeRemaining);
 				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
 				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -163,9 +169,9 @@
 			}
 			var eventStart = document.getElementById("event-start");
 			console.log("100 event.ejs eventStart = ",eventStart); 
-			var countDownDate = new Date(eventStart.innerText).getTime();
+			var countDownToStartDate = new Date(eventStart.innerText).getTime();
 			// Use the folowing format to test for less than one day to the event
-			// var countDownDate = new Date("October 25, 2018 22:13:00").getTime(); 
+			// var countDownToStartDate = new Date("October 25, 2018 22:13:00").getTime(); 
 			
 			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
 			Calculate(); 
