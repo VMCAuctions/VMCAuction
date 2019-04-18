@@ -58,7 +58,7 @@ a:hover {
 }
 
 .pin {
-	color: #ff2719; 
+	color: #003d79; 
 }
 
 /* Common Styling Headers
@@ -70,7 +70,7 @@ a:hover {
 -------------------------------------------------------------- */
 .mini-nav {
 	background-color: #00184c;
-	height: 6vh; 
+	height: 7vh; 
 	position: relative;
 	padding: 0px; 
 	margin-bottom: 4rem; 
@@ -79,7 +79,7 @@ a:hover {
 .mini-header {
 	background-color: #003d79;
 	color: #fff; 
-	height: 4rem; 
+	height: rem; 
 	width: 100% ; 
 	padding: 1rem 3rem; 
 	display: block; 

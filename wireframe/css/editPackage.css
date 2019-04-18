@@ -14,7 +14,7 @@
     font-size: 0.9rem; 
     color: #808080; 
     padding: 8px 8px 8px 12px; 
-    background-color: #fbfde8;
+    background-color: #f0f2f4; 
 }
 
 .thumbnail{
@@ -55,13 +55,13 @@ th.large-col {
     background: lightgray;
   }
   .styled-checkbox:hover + label:before {
-    background: #007bff;
+    background: #0080ff;
   }
   .styled-checkbox:focus + label:before {
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
   }
   .styled-checkbox:checked + label:before {
-    background: #007bff;
+    background: #0080ff;
   }
   .styled-checkbox:disabled + label {
     color: #b8b8b8;

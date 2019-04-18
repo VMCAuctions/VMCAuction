@@ -44,7 +44,7 @@
 				<div id="item6" class="text-center clock-letters">item6</div>	
 			</div>		
 
-			<div id="event-end"></div>
+			<div id="event-status"></div>
 
 			<!-- AUCTION TITLE AND HEADER INFO -->
 			<div class="container mt-4">
@@ -54,6 +54,7 @@
 
 				<!-- invisible paragraph - just using the id and data for the countdown clock -->
 				<p id="event-start"> <%= auctionDetails.startClock %></p>
+				<p id="event-end"> <%= auctionDetails.endClock %></p>
 
 				<div class="btn-div my-3">
 					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
@@ -134,13 +135,15 @@
 		<script>
 			function Calculate() {
 				let now = new Date().getTime();
-				let timeRemaining = countDownToStartDate - now; 
-		   
-				// console.log("time remaining:", timeRemaining);
+
+				let timeRemaining = countDownDate - now; 
 				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
 				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
 				let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+				let timeToEnd = endDate - now; 
+			
 				if (days > 1) {
 					document.getElementById("item1").innerText = `${days}`;
 					document.getElementById("item2").innerText = `${hours}`;
@@ -148,6 +151,7 @@
 					document.getElementById("item4").innerText = "days";
 					document.getElementById("item5").innerText = "hours";
 					document.getElementById("item6").innerText = "minutes";	
+
 				} else if (timeRemaining >=0 && days <= 1) {
 					document.getElementById("item1").innerText = `${hours}`;
 					document.getElementById("item2").innerText = `${minutes}`;
@@ -156,6 +160,16 @@
 					document.getElementById("item5").innerText = "minutes";
 					document.getElementById("item6").innerText = "seconds";
 				
+				} else if (timeRemaining <0 && timeToEnd > Math.abs(timeRemaining)) {
+					document.getElementById("item1").innerText = "";
+					document.getElementById("item2").innerText = "";
+					document.getElementById("item3").innerText = "";
+					document.getElementById("item4").innerText = "";
+					document.getElementById("item5").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("event-status").innerText = "This event is in progress";
+
 				} else {
 					document.getElementById("item1").innerText = "";
 					document.getElementById("item2").innerText = "";
@@ -164,19 +178,26 @@
 					document.getElementById("item5").innerText = "";
 					document.getElementById("item6").innerText = "";
 					document.getElementById("item6").innerText = "";
-					document.getElementById("event-end").innerText = "This event has ended";
+					document.getElementById("event-status").innerText = "This event has ended";
 				}
 			}
-			var eventStart = document.getElementById("event-start");
-			console.log("100 event.ejs eventStart = ",eventStart); 
-			var countDownToStartDate = new Date(eventStart.innerText).getTime();
-			// Use the folowing format to test for less than one day to the event
-			// var countDownToStartDate = new Date("October 25, 2018 22:13:00").getTime(); 
+
+			let eventStart = document.getElementById("event-start");
+			// console.log("100 event.ejs eventStart = ",eventStart); 
+			let countDownDate = new Date(eventStart.innerText).getTime();
+
+			let eventEnd = document.getElementById("event-end");
+			let endDate = new Date(eventEnd.innerText).getTime();
 			
-			//Call function Calculate to display immediately the time info, otherwise if only setInterval is used, it will take a few seconds to for the countdown clock to appear
+			// Use the folowing format to test for less than one day to the event
+			// let countDownToStartDate = new Date("October 25, 2018 22:13:00").getTime(); 
+			
+			// Call function Calculate to display immediately the time info, otherwise if 
+			// only setInterval is used, it will take a few seconds to for the countdown clock to appear
 			Calculate(); 
+			
 			//setInterval will show the minutes/seconds changing
-			var timer = setInterval(Calculate, 1000);	
+			let timer = setInterval(Calculate, 1000);	
 		</script>
 
   	</body>
