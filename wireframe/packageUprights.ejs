@@ -455,41 +455,95 @@
 			});  
 
 			// PDF
-			(function () {  
-				var  
-					form = $('.form'),  
-					cache_width = form.width()
+			// (function () {  
+			// 	var  
+			// 		form = $('.form'),  
+			// 		cache_width = form.width()
 			
-				$('.create_pdf').on('click', function () {  
-					$('body').scrollTop(0);  
-					createPDF();  
-				});  
+			// 	$('.create_pdf').on('click', function () {  
+			// 		$('body').scrollTop(0);  
+			// 		createPDF();  
+			// 	});  
 
-				//create pdf  
-				function createPDF() {  
-					getCanvas().then(function (canvas) {  
-						var  
-							img = canvas.toDataURL("image/png"),  
-							doc = new jsPDF({  
-								unit: 'in',  
-								format: [4.17, 5.4]
-							});  
-						doc.addImage(img, 'JPEG', 0, 0);  
-						window.open(URL.createObjectURL(doc.output("blob")));
-						form.width(cache_width);  
-					});  
-				}  
+			// 	//create pdf  
+			// 	function createPDF() {  
+			// 		getCanvas().then(function (canvas) {  
+			// 			var  
+			// 				img = canvas.toDataURL("image/png"),  
+			// 				doc = new jsPDF({  
+			// 					unit: 'in',  
+			// 					format: [4.17, 5.4]
+			// 				});  
+			// 			doc.addImage(img, 'JPEG', 0, 0);  
+			// 			window.open(URL.createObjectURL(doc.output("blob")));
+			// 			form.width(cache_width);  
+			// 		});  
+			// 	}  
 			
-				// create canvas object  
-				function getCanvas() {  
-					return html2canvas(form, {
-						scale: 2,
-						imageTimeout: 2000,  
-						removeContainer: true
-					});  
-				}  
+			// 	// create canvas object  
+			// 	function getCanvas() {  
+			// 		return html2canvas(form, {
+			// 			scale: 2,
+			// 			imageTimeout: 2000,  
+			// 			removeContainer: true
+			// 		});  
+			// 	}  
 			
-			}());  
+			// }());  
+
+		$('.create_pdf').on('click', function () {  
+			$('body').scrollTop(0);  
+			createScreenShot();  
+		});  
+
+		function createScreenShot() {
+			var scaleBy = 5;
+			var w = 398;
+			var h = 517;
+			var div = document.querySelector('#form');
+			var canvas = document.createElement('canvas');
+			canvas.width = w * scaleBy;
+			canvas.height = h * scaleBy;
+			canvas.style.width = w + 'px';
+			canvas.style.height = h + 'px';
+			var context = canvas.getContext('2d');
+			context.scale(scaleBy, scaleBy);
+
+			div.style.position = 'absolute';
+			div.style.top = '-140px';
+			div.style.left = '-454px';
+
+			// html2canvas(div, {
+			// 	canvas:canvas,
+			// 	removeContainer: true,
+			// 	onrendered: function (canvas) {
+			// 		// theCanvas = canvas;
+			// 		// document.body.appendChild(canvas);
+
+			// 		// Canvas2Image.saveAsPNG(canvas);
+			// 		// $(body).append(canvas);
+
+			// 		var a = document.createElement('a');
+			// 		// toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+			// 		a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+			// 		a.download = 'somefilename.jpg';
+			// 		a.click();
+			// 	}
+			// });
+
+			html2canvas(document.querySelector("#form"), {
+				canvas:canvas,
+				removeContainer: true
+			}).then(canvas => {
+				// document.body.appendChild(canvas);
+				// console.log(canvas);
+				var a = document.createElement('a');
+				// toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+				a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+				a.download = 'somefilename.jpg';
+				a.click();
+			});
+		}
 		</script>
 	</body>
 </html>
