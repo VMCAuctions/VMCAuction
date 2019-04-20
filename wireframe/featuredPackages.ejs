@@ -14,8 +14,7 @@
 
 	<!-- Sockets and JavaScript -->
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
+	<script   src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
 	<script type='text/javascript'>
 		var socket = io.connect('http://localhost:8000/');
 		// var socket = io.connect('http://dv1.elizabid.com/');
@@ -66,9 +65,9 @@
 							</div>
 							<hr>
 							<div class="row ml-1">
-								<ul>
-								<!--<li>Value: <span class="value"><%= "$" + featured[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
-									<li>Opening Bid: <span class="opening-bid"> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
+								<ul class="mt-2">
+									<li>Value: <span class="value"><%= "$" + featured[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
+									Opening Bid: <span class="opening-bid"> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(featured[f].bids[featured[f].bids.length-1]){%>
 										<li class="mt-1">Highest Bid: <span class="highest-bid"> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></li>
 									<%}else{%>

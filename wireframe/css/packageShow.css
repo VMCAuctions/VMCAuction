@@ -1,15 +1,150 @@
-.card {
-  border: none !important;
+body {
+  font-size: 0.8rem; 
 }
 
-.btn {
+h3.package-view {
+	font-family: Kameron, serif;  
+  color:  #003d79 !important;
+  font-size: 1.1rem;
+  font-weight: 700; 
+	text-align: center; 
+	text-transform: uppercase;
+  padding-top: 10px; 
+  /* letter-spacing: 0.12rem;  */
+} 
+
+#display-top {
+  position: relative;
+}
+
+.pkg-img-show {
+	width: 120px;
+	height: 90px; 
+  display: inline-block; 
+  vertical-align: middle;
+  margin: 0 auto; 
+}
+
+.featured-box-show {
+  width: 90px;
+  height: 24px; 
+  background-image: linear-gradient(to bottom right, #eb2f06, #fb846a); 
+  display: block; 
+  margin: 0 auto;
+  padding: 4px 0px 1px 0px; 
+  font-family: Lato, sans-serif;
+  font-size: 0.7rem; 
+  color: #fff; 
+  text-align: center; 
+  border-radius: 2px; 
+  margin-bottom: 4px; 
+} 
+
+
+.value-show {
+	font-weight: 700; 
+	/* color: #00184c;  */
+	font-size: 0.95rem; 
+}
+.opening-bid-show {
+	font-weight: 700; 
+	/* color: #00184c;  */
+	font-size: 0.95rem; 
+}
+
+.highest-bid-show {
+	font-weight: 700; 
+	color :#69afff;
+	font-size: 0.95rem;
+}
+
+.highest-bidder{
+	font-weight: 500; 
+	color :#69afff;
+	font-size: 0.95rem;
+}
+
+.no-bid-show {
+	font-weight: 700; 
+	color :#ff6746;
+	font-size: 0.95rem;  
+}
+
+input[type=number] {
+  border-radius: 5px; 
+  height: 40px; 
+  width: 200px;
+}
+
+.bid-more{
+	font-style: italic;
+  font-weight: 300; 
+  font-size: 0.85rem;
+  color:#003d79; 
+  padding-top: 5px; 
+}
+
+.description-show {
+  font-weight: 300; 
+}
+
+.restrictions-show {
+  font-weight: 300; 
+  font-style: italic; 
+}
+
+/* buttons
+-------------------------------------------------------------- */
+.btn-bid {
+  color: white;
+  font-size: 0.95rem !important; 
+  background-color: #ff2719;
+  height: 42px; 
+  width: 100px;
+  border:  2px solid  #ff2719; 
+  border-radius: 30px !important; 
+}
+
+.btn-history {
   color: white;
   background-color: #003d79;
+  width: 100px;
+  height: 38px;
+  font-size: 0.95rem !important;  
+} 
+
+.btn-bid:hover {
+  color: white;
+  background-color: #c30000;
+  border: 2px solid #c30000; 
+  border-radius: 30px !important; 
 }
 
-.restrictions {
-  margin-top: 2em;
-}
+.btn-history:hover {
+  color: white;
+  background-color: #0055cb;
+  font-size: 0.95rem !important; 
+} 
+
+.btn-next {
+  color:#003d79;
+  background-color: #fff; 
+  border: 1px solid #fff; 
+  width: 80px;  
+  height: 40px; 
+  border-radius: 50% !important; 
+  display: inline-block;
+} 
+
+.btn-next:hover {
+  color: #0055cb; 
+  background-color: #fff; 
+  border: 1px solid #fff; 
+  width: 80px;  
+  height: 40px; 
+  border-radius: 50% important; 
+} 
+
 
 #submitButton {
   margin-bottom: 0.5em;

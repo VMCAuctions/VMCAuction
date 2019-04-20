@@ -37,7 +37,6 @@ h2.supporter-view {
 	width: 120px;
 	height: 90px; 
 	display: block; 
-	/* align-self: flex-start;   */
 }
 
 .pkg-num {
@@ -105,20 +104,6 @@ h2.supporter-view {
 	/* border-bottom-right-radius: 14px;  */
 }
 
-/* .featured-box::before {
-    content: '';
-    width: 0px;
-    height: 0px;
-    border-top: 10px solid transparent;
-    border-left: 10px solid #eb2f06; 
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid transparent;
-    position: absolute; 
-    left: 100%;
-    top: 50%;
-    margin-top: -10px; 
-} */
-
 .pkg-title { 
 	font-size: 0.95rem; 
 	font-weight: 700; 
@@ -131,27 +116,27 @@ h2.supporter-view {
 
 .value {
 	font-weight: 700; 
-	/* color: #003d79; */
-	font-size: 0.95rem; 
+	/* color: #00184c;  */
+	font-size: 0.8rem; 
 }
 .opening-bid {
 	font-weight: 700; 
-	/* color: #003d79; */
+	/* color: #00184c;  */
 	font-size: 0.8rem; 
 }
 
 .highest-bid {
 	font-weight: 700; 
 	color :#69afff;
-	font-size: 0.8rem; 
+	font-size: 0.8; 
 }
 
 .no-bid {
 	font-weight: 700; 
 	color :#ff6746;
-	font-size: 0.8rem; 
-
+	font-size: 0.8;  
 }
+
 .donated {
 	color: #808080; 
 	font-style: italic;
@@ -164,7 +149,7 @@ ul {
 }
 
 .margin-tofooter  {
-	margin-bottom: 80px; 
+	margin-bottom: 90px; 
 }
 
 
@@ -174,9 +159,9 @@ ul {
 	background-color: #a2b209; 
 	color: #f8f9fa;
 	border: none;
+	height: 40px; 
 	width: 200px;
 	font-size: 0.75rem; 
-	font-weight:700; 
 	display: block;
 	margin: 0 auto; 
 } 
@@ -185,9 +170,9 @@ ul {
 	background-color: #a6a6a6; 
 	color: #f8f9fa;
 	border: none;
+	height: 40px;
 	width: 200px;
 	font-size: 0.95rem !important; 
-	font-weight:700; 
 	display: block;
 	margin: 0 auto; 
 } 
@@ -198,6 +183,15 @@ ul {
 	color: #ff6746;
 	font-size: 0.95rem !important; 
 	font-weight:400; 
+}
+
+.btn-bid {
+	color: #fff;
+	font-size: 0.95rem !important; 
+	background-color: #ff2719;
+	height: 40px; 
+	width: 100px;
+	border-radius: 5px !important; 
 }
 
 .btn-add-watchlist:hover {
@@ -216,7 +210,11 @@ ul {
 	border: none;
 }
 
-.cardHover:hover{
+.btn-bid:hover {
+	background-color: #c30000;
+}	
+
+/* .cardHover:hover{
 	cursor: pointer;
 	background-color:#f0f2f4 ; 
-} 
+}  */
