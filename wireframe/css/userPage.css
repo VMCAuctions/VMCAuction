@@ -182,15 +182,14 @@ ul {
 	margin: 0 auto; 
 } 
 
-.btn-bid{
-	background-color: #0080ff; 
-	color: #f8f9fa;
-	border: none;
+.btn-bid {
+	color: #fff;
 	font-size: 0.95rem !important; 
-	font-weight:700; 
-	display: block;
-	margin: 0 auto; 
-} 
+	background-color: #ff2719;
+	height: 40px; 
+	width: 100px;
+	border-radius: 5px !important; 
+}
 
 .btn-set-max-bid {
 	background-color: #a2b209; 
@@ -218,6 +217,10 @@ ul {
 	color: #ff6746;
 	font-size: 0.95rem !important; 
 	font-weight:400; 
+}
+
+.btn-bid:hover {
+	background-color: #c30000;
 }
 
 .btn-add-watchlist:hover {

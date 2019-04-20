@@ -2,17 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%=user.userName%>'s Watch List</title>
+    <title>Watch List</title>
   </head>
-  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script  src="https://code.jquery.com/jquery-3.4.0.min.js"   integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
  
   <!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="/css/style.css">  
-  <link rel="stylesheet" type="text/css" href="/css/userPage.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css"> 
+  <link rel="stylesheet" type="text/css" href="/css/packageStyle.css"> 
+  <!--<link rel="stylesheet" type="text/css" href="/css/UserPage.css">-->
   
   <body>
     <%if(admin){%>
@@ -23,8 +24,8 @@
 	<%if(admin == 0){%>
 		<%- include('footerClock') -%>
 	<%}%>
-    <div class="container">
-      <h2 class="supporter-view">Watching</h2>
+    <div class="container margin-tofooter">
+      <h2 class="supporter-view">My Watch List</h2>
 
       <!-- <div class="row text-center">
         <i class="fas fa-check-circle">High Bid</i>
@@ -32,7 +33,8 @@
         <i class="fas fa-times-circle">Unavailable</i>
       </div> -->
 
-      <div class="d-flex flex-row flex-wrap justify-content-start mt-4">
+     
+      <div class="d-flex flex-row flex-wrap justify-content-start mt-2">
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <input type="search" id="keyword" class="form-control search-pkg" placeholder="Search Packages">
         </div>
@@ -49,7 +51,7 @@
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
           <button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
         </div>
-      </div>
+      </div> 
 
       <div class="d-flex flex-row flex-wrap justify-content-start">
       <%for(let i =0; i<user._packages.length; i++){%>
@@ -77,29 +79,29 @@
                   <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
                   <div>
                     <a class="pkg-title" href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
-                    <p class="category">Category: <%=user._packages[i]._category%></p>
-                    <p class="value">Value: <span class="opening-bid"> <%="$" + user._packages[i].value%></span></p>
+                    <p class="category mt-1">Category: <%=user._packages[i]._category%></p>
                   </div>
               </div>
               <hr>
               <div class="row ml-1">
-                  <ul>	
+                  <ul class="mt-1">	
+                    <li>Value: <span class="opening-bid"> <%="$" + user._packages[i].value%></span> &nbsp;|&nbsp;
+                    Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
+                    <li class="category">Minimum Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
                     <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
-                      <li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= user._packages[i].bids[user._packages[i].bids.length-1].name%>)</span></li>
+                      <li>Highest Bid: <span class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= user._packages[i].bids[user._packages[i].bids.length-1].name%>)</span></li>
                     <%}else{%>
-                      <li class="mt-1 no-bid">No bids yet! </li>
+                      <li class="no-bid">No bids yet! </li>
                     <%}%>
-                    <li>Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
-                    <li>Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
-                  </ul>
+                   </ul>
               </div>
               <hr>
               <%}%>
               <div class="text-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
                 <!-- <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a> -->
-                <a href="/<%=auction%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a>
+                <a href="/<%=auction%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mr-2" name="uninterested">Remove from Watchlist</button></a>
+                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
               </div>
           </div>
         </div>
