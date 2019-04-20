@@ -173,10 +173,12 @@ module.exports = function(app) {
 	// show package uprights page
 	app.get('/:auctions/packages/uprights', function(req, res) {
 		packages.uprights(req, res)});
+	
 	// show catalog (all packages)
 	app.get('/:auctions/packages', function(req,res){
 		packages.index(req,res)});
-	// show featured packages
+	
+		// show featured packages
 	app.get('/:auctions/featured-packages', function(req,res){
 		packages.featuredPackages(req,res)});
 	// show package register
@@ -432,9 +434,9 @@ module.exports = function(app) {
 		upload(req, res, function(err) {
 			// console.log(Date.now()," - 112 routes.js /auctions/update.  req.body = ",req.body);
 			// console.log(Date.now()," - 113 routes.js /auctions/update.  req.file = ",req.file);
-			auctions.update(req, res)})
-			
+			auctions.update(req, res)
 		})
+	})
 	
 	// Deletes auction
 	app.get('/:auctions/remove', function(req, res) {
@@ -454,6 +456,21 @@ module.exports = function(app) {
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
 		
+		
+	// FOR OUR RESUMES!  ROUTES THAT WILL LAUNCH A SESSION WITHOUT HAVING TO LOG IN
+	// Guest routes: /guest is supporter; /admin is organizer
+	// hardcoded auction and user
+	// going to dv1.elizabid.com/guest will launch supporter session.  packages.guest is a copy of packages.index but without auction and user queries
+	app.get('/guest', function(req,res){
+		console.log('500 routes.js /guest route');
+	packages.guest(req,res)});
+	
+	// going to dv1.elizabid.com/admin will launch organizer session on hardcoded auction
+	// auctions.admin is a copy of auctions.menu but without auction and user queries
+	app.get('/admin', function(req,res){
+		console.log('501 routes.js /admin route');
+		auctions.admin(req,res)});
+
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
 		// console.log('routes.js * route');

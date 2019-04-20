@@ -227,7 +227,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			console.log(Date.now()," - 230 auctions.js this.event Package.find packages = ",packages);
+			// console.log('230 auctions.js this.event Package.find packages = ',packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -337,6 +337,36 @@ function AuctionsController() {
       }
     });
   };
+
+	this.admin = function(req, res) {
+		console.log('500 auctions.js this.admin start.  set req.session auction and admin = 2');
+		
+		// hard code auction - Getting the Shiny Gold
+		req.session.auctions = "5c59f82b181b703674c1eca5"; // localhost Getting the Shiny Gold auction
+		// hard code admin = 2
+		req.session.admin = "2";
+		// hard code userName = Organizer
+		req.session.userName = "Organizer";
+		console.log("501 auctions.js this.admin .  req.session = ",req.session);
+
+		
+		Auction.findById(req.session.auctions, function(err, auctionDetails) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log("504 auctions.js this.admin Auction.findById.  auctionDetails = ",auctionDetails);
+				res.render("organizerMenu", {
+					current: "organizerMenu",
+					admin: req.session.admin,
+					auction: req.session.auctions,
+					auctionDetails: auctionDetails, //might be use to display auction name 
+					userName: req.session.userName
+				});
+			}
+		});
+		
+	};
+
 }
 
 module.exports = new AuctionsController();
