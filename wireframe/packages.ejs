@@ -20,6 +20,17 @@
 	var socket = io.connect('http://localhost:8000/');
 	// var socket = io.connect('http://dv1.elizabid.com/');
 
+	function change(packageId) {
+		var watchlistButton = document.getElementById("watchlistButton");
+		if ( watchlistButton.value == "Remove from Watch List" ) {
+			$.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+			watchlistButton.value = "Add to Watch List";
+		} else {
+			$.get("/<%= auction %>/users/interested-in-package/"+packageId);
+			watchlistButton.value = "Remove from Watch List";
+		}
+	}
+
 		$(document).ready(function(){
 			socket.on("serverTalksBack", function(data){
 			$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
@@ -126,9 +137,11 @@
 								<!-- <%if(userName && userName !== "Clerk"){%> -->
 								<% var flag = false %>
 								<% for(var i = 0; i < user._packages.length; i++){ %>
+
 									<% if(packages[n]._id == user._packages[i]) {%>
 										<!--do this in ajax call instead-->
 										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</button>
+										<input class = "btn btn-remove-watchlist mb-3" onclick="change(<%=packages[n]._id%>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
 										<!-- <a href="/<%=auction%>/users/uninterested/<%= packages[n]._id %>'"><button type="button" name="interested">Remove from Watchlist</button></a> -->
 										<% flag = true %>
 											<% break %>
@@ -138,9 +151,12 @@
 									<% if(flag === false) {%>
 										<!--do this in ajax call instead-->
 										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">Add to Watchlist</button>
+										<input class = "btn btn-add-watchlist mb-3" onclick="change(<%=packages[n]._id%>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
 										<!-- <a href="/<%=auction%>/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
 									<%}%>
-								<%}%>			
+
+								<%}%>
+
 							</div>
 						</div>
 					</div>

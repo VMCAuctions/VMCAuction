@@ -136,7 +136,7 @@ io.sockets.on('connection', function (socket) {
 					hours = 12;
 				}
 				if (minutes < 10) {
-					'0' + minutes;
+					minutes = '0' + minutes;
 				} else {
 					minutes;
 				}
@@ -205,8 +205,9 @@ io.sockets.on('connection', function (socket) {
 					}
 				})
 
+				//checks if the person connected to the socket is the top bidder and emits message to all users connected to the socket
 				if(data.userName == package.bids[package.bids.length-1].name){
-					console.log("Packages",package);
+					// console.log("Packages",package);
 					setTimeout(function () {
 						socket.broadcast.emit('outBidNotice', {
 							package:package
