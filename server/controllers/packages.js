@@ -477,7 +477,6 @@ function PackagesController() {
 	};
 
 	this.show = function (req, res) {
-		console.log('this.show packages.ejs');
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in
 		//resultPackages

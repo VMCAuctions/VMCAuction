@@ -14,7 +14,8 @@
 
 	<!-- Sockets and JavaScript -->
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://code.jquery.com/jquery-3.4.0.js"   integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="   crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
 	<script type='text/javascript'>
 	var socket = io.connect('http://localhost:8000/');
 	// var socket = io.connect('http://dv1.elizabid.com/');
@@ -108,9 +109,9 @@
 							</div>
 							<hr>
 							<div class="row ml-1">
-								<ul class="mt-1">
-									<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
-									Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>	
+								<ul>
+								<!--<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
+									<li>Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(packages[n].bids[packages[n].bids.length-1]){%>
 										<li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></li>
 									<%}else{%>

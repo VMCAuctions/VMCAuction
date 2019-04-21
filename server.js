@@ -178,7 +178,7 @@ io.sockets.on('connection', function (socket) {
 					let packageAmt = package.amount;
 					let bidIncrement = package.bidIncrement;
 
-					//if there are no bids on the package, we check if the userBid from is greater than package amount
+					//if there are no bids on the package, we check if the userBid is greater than package amount
 					if (package.bids.length == 0 && userBid >= packageAmt) {
 						package.bids.push({
 							bidAmount: userBid,
@@ -187,7 +187,7 @@ io.sockets.on('connection', function (socket) {
 							bidTime: bidTime
 						});
 
-					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
+					//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
 					} else if (userBid >= lastBid + bidIncrement) {
 						// console.log("ELSE IF");
 						package.bids.push({
@@ -198,12 +198,22 @@ io.sockets.on('connection', function (socket) {
 						});
 					}
 				}
-				// SAVE ALL STUFF
+				//save all stuff
 				package.save(function (err) {
 					if (err) {
 						console.log("error when saving: " + err);
 					}
 				})
+
+				if(data.userName == package.bids[package.bids.length-1].name){
+					console.log("Packages",package);
+					setTimeout(function () {
+						socket.broadcast.emit('outBidNotice', {
+							package:package
+						});
+					}, 10000);
+				}
+
 			})
 		}
 
@@ -211,7 +221,7 @@ io.sockets.on('connection', function (socket) {
 			if (err) {
 				console.log("error occured " + err);
 			} else if (user != null) {
-				console.log("140 Sockets.  User.findbyId user = ",user)
+				// console.log("140 Sockets.  User.findbyId user = ",user)
 				var duplicatePackage = false;
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == data.packId) {

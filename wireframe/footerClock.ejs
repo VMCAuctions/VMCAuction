@@ -1,11 +1,24 @@
 <link rel="stylesheet" href="/css/footer.css"> 
 
 <div class="footer">
+	<p id = "outBid"></p>
 	<span>Time left:</span>
 	<p class="timer" data-endClock="<%= auctionDetails.endClock %>"></p>
 </div>
 
 <script>
+
+	var socket = io.connect('http://localhost:8000/');
+	// Updates packageShow page with bid price
+
+	$(document).ready(function () {
+		socket.on("outBidNotice", function (package) {
+			console.log("socket working", package);
+			$('#outBid').text("You've been outbid by"+ package.bids[package.bids.length-1].name+" for package "+package.name+". <a href='/"+package._auctions+"/packages/"+package._id);
+		});
+
+	});
+
 	const desktopClock = document.getElementsByClassName('timer')[0];
 	
 	function countdown(endDate) {
