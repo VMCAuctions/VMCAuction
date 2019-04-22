@@ -6,6 +6,15 @@
   overflow-y: auto;
 }
 
+.item-list {
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  font-size: 0.9rem; 
+  color: #808080; 
+  padding: 8px 8px 8px 12px; 
+  background-color: #f0f2f4; 
+}
+
 th.small-col {
   width: 2%;
 }
@@ -67,3 +76,4 @@ th.large-col {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+

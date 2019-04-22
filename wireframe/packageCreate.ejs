@@ -90,19 +90,27 @@
         </div>
       </div>
       <!-- Row 4 -->
-      <div class="form-group">
+      <div class="form-row">
+        <div class="form-group col-12">
           <label for="packageDescription" class="label-name">Package Description*</label>
           <textarea class="form-control" name="packageDescription" id="packageDescription" rows="5" cols="40"></textarea>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="packageRestrictions" class="label-name">Package Restrictions</label>
-        <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
+      <!-- Row 5 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="packageRestrictions" class="label-name">Package Restrictions</label>
+          <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="packageImage" class="label-name text-black-50">Package Image</label>
-        <input type="file" name="packageImage" id="packageImage" class="form-control">
+      <!-- Row 6 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="packageImage" class="label-name text-black-50">Package Image</label>
+          <div class="form-group">
+            <input type="file" name="packageImage" id="packageImage" class="form-control">
+          </div>
+        </div>
       </div>
 
       <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
@@ -289,6 +297,7 @@
 
               }
           }
+          donorList = donorList.replace(/,\s*$/, "");
           $('#packageDescription').val(pkgDesc);
           $('#packageRestrictions').val(pkgRest);
           $('#donors').val(donorList);

@@ -169,15 +169,16 @@
           <div class="form-group col-md-12">
             <label class="label-name">Package Image</label>
             <fieldset class="item-list">
-              <div class="form-group">
+              <div class="form-group ml-3">
                 <label class="label-name">
-                  Current Photo: <%= package.photo%></label
+                  Current Image: <%= package.photo%></label
                 >
               </div>
               <div class="col-1 form-group">
-                <img class="thumbnail ml-3" src="/<%= package.photo%>" alt="" />
+                <img class="thumbnail" src="/<%= package.photo%>" alt="" />
               </div>
-              <div class="col-11 form-group">
+              <div class="col-11 form-group upload-btn-wrapper">
+                <button class="btn btn-add">Choose File</button>
                 <input
                   type="file"
                   name="packageImage"
@@ -366,8 +367,9 @@
          
                 pkgDesc = pkgDesc + (items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n");
                 pkgRest = pkgRest + (items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n");
+
                 donorList = donorList + (items[i].donorDisplay + ", ");
-  
+
                 checkedItems[items[i]._id]= 1;
               }
               else if((checkbox.checked === false) && (checkedItems.hasOwnProperty(items[i]._id) === true)){
@@ -375,6 +377,7 @@
 
               }
             }
+            donorList = donorList.replace(/,\s*$/, "");
             $('#packageDescription').val(pkgDesc);
             $('#packageRestrictions').val(pkgRest);
             $('#donors').val(donorList);
