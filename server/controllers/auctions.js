@@ -337,6 +337,58 @@ function AuctionsController() {
       }
     });
   };
+
+  //Clerk registering new supporter
+  this.clerkRegSup = function(req,res){
+    //this page can only be accessed if clerk checked in as
+    if(req.session.admin && req.session.admin == 1){
+      Auction.findById(req.params.auctions, function(err, auction){
+        if(err){
+          console.log(err);
+        }else{
+          res.render('clerkRegSupp',{auction: auction,})
+        }
+      })
+    }else{
+      res.redirect('/')
+    }
+  };
+  this.clerkRegSupCreate = function(req,res){
+    
+    Auction.findById(req.params.auctions, function(err, auction){
+      if(err){
+        console.log(err)
+      }else{
+        console.log("Got the auction")
+        User.findOne({userName: req.body.userName}, function (err, user){
+          if(user){
+            console.log("Got here", user)
+            res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+          }else{
+            console.log("As far as here?")
+            User.create({
+              userName: req.body.userName,
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
+              phone: req.body.phoneNumber,
+              streetAddress: req.body.streetAddress,
+              city: req.body.city,
+              states: req.body.states,
+              zip: req.body.zip,
+              _auctions: auction,
+              admin: 0,
+              table: req.body.table,
+              tableOwner: req.body.tableOwner,
+              tableOwnerName: req.body.tableOwnerName,
+              userOrg: req.body.userOrg
+            })
+            res.redirect("/"+req.params.auctions+"/clerkDash")
+          }
+        })
+      }
+    })
+  };
+
 }
 
 module.exports = new AuctionsController();

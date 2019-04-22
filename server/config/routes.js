@@ -450,6 +450,15 @@ module.exports = function(app) {
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
 
+	//Start Clear Supporter Registration
+	app.get('/:auctions/clerk/register-supporter', function(req,res){
+		auctions.clerkRegSup(req,res)
+	});
+	app.post('/:auctions/clerk/register-supporter', function(req,res){
+		auctions.clerkRegSupCreate(req,res)
+	});
+	//End Clerk Supporter Registration
+	
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});
