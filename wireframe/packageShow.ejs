@@ -180,9 +180,9 @@
 			<!-- Buttons -->
 			<div class="text-center">
 				<% if (user._packages.length > 0) { %>
-					<input class = "d-inline btn" onclick="change(<%= package._id %>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
+					<input class = "d-inline btn btn-remove-watchlist" onclick="change(<%= package._id %>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
 				<% } else { %>
-					<input class = "d-inline btn" onclick="change(<%= package._id %>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
+					<input class = "d-inline btn btn-add-watchlist" onclick="change(<%= package._id %>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
 				<% } %>
 				<button type="button" class="d-inline ml-2 btn btn-history" data-toggle="modal" data-target="#exampleModalLong">Bid History</button>
 			</div>
