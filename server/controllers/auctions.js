@@ -359,13 +359,10 @@ function AuctionsController() {
       if(err){
         console.log(err)
       }else{
-        console.log("Got the auction")
         User.findOne({userName: req.body.userName}, function (err, user){
           if(user){
-            console.log("Got here", user)
             res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
           }else{
-            console.log("As far as here?")
             User.create({
               userName: req.body.userName,
               firstName: req.body.firstName,
