@@ -10,6 +10,71 @@ var multer = require('multer')
 
 function PackagesController(){
 
+	this.liveAuction = function(req,res){
+		console.log("000 packages.js this.liveAuction start. req.params = ",req.params);
+		Category.find({}, function(err, categories) {
+			if(err) {
+				console.log(err);
+			}
+			else {
+				User.findById(req.params.id, function(err, user){
+					console.log("002 packages.js this.liveAuction user.findById.  user = ",user)
+					if(err){
+						console.log(err)
+					}else{
+						req.session.userName = user.userName;
+						req.session.user = user;
+						req.session.auctions = user._auctions;
+						console.log("004 packages.js this.liveAuction. req.session = ",req.session);
+						// This is the method that finds all of the packages from the database
+						Package.find({_auctions: user._auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+							if(err) {
+								console.log('packages.js this.liveAuction Package.find Package Index Error');
+								res.status(500).send('packages.js this.liveAuction Package.find Failed to Load Packages');
+								console.error();
+							}else {
+								// console.log('this is user again', user)
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++){
+									if(packages[i].featured === true){
+										featured.push(packages[i]);
+									}
+									//Not actually using nonfeatured packages right now
+									else{
+										nonfeatured.push(packages[i]);
+									}
+								}
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+								Auction.findById(user._auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log(err)
+									} else {
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
+										res.render('packages', {
+											current: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+											userDisplay: userDisplay, 
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.session.auctions,
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+	}
+
 	this.index = function(req,res){
 		console.log("000 packages.js this.index start. req.session = ",req.session);
 		if (!req.session.userName){

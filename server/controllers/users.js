@@ -481,16 +481,21 @@ function UsersController(){
 	
 	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
 	this.sendSMS = function(req,res){
-		// console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
+		console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
 		// console.log("409 users.js this.sendSMS.  Begin message send")
 		let phone = req.body.phone;
-		client.messages
-		.create({
-			body: 'Here\'s the link to the auction!: https://dv1.elizabid.com',
-			from: '+14084146081',
-			to: '+1'+phone
-		})
-		.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
+		// let id = req.body.id;
+		let id = '5cbdf4a5da34485f78eca07a';
+		let msgBody = 'Here\'s the link to the auction!: https://dv1.elizabid.com/supporter/' + id;
+		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
+
+		// client.messages
+		// .create({
+		// 	body: msgBody,
+		// 	from: '+14084146081',
+		// 	to: '+1'+phone
+		// })
+		// .then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
 		
 		// console.log("410 users.js this.sendSMS.  End message send")
 		res.redirect('/' + req.body.auction + '/clerkDash')

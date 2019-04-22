@@ -160,12 +160,14 @@
 				// console.log("407  clerkDash.ejs send SMS. phoneStub final = ",phoneStub)
 				var auction = $('#auction').val();
 				// console.log('409 clerkDash.ejs send SMS.  auction = ',auction);
+				var userId = $('#userId').val();
+				// console.log('410 clerkDash.ejs send SMS.  userId = ',userId);
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
 					url: 'http://localhost:8000/users/sendSMS',
 					// url: 'http://dv1.elizabid.com/users/sendSMS',
-					data: {"phone": phoneStub, "auction": auction },
+					data: {"phone": phoneStub, "auction": auction, "userId": userId },
 					success: function(data){
 						// console.log('410 clerkDash.ejs send SMS success.');
 						window.location.replace('/' + auction + '/clerkDash')
