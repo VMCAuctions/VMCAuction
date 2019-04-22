@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add Supporter</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    
+    <!-- Java Script -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+
+	<script>
+		$(document).ready(function() {
+		validator.resetForm();
+			});
+	</script>
+
+  </head>
+
+  <body>
+		<%- include('clerkHeader') -%>
+	<div class="container mt-4">
+		<h2>Add a Supporter</h2>
+		<p class="err-info">The fields marked with (*) are required.</p>
+
+		<form method="POST" action="/<%=auction.id%>/clerk/register-supporter" id="registrationForm">
+			<div class="form-row mt-3">
+				<div class="form-group col-md-6">
+					<label for="firstName" class="label-name">First Name*</label>
+					<input id="firstName" type="text" name="firstName" class="form-control" onchange="firstNameAdd()">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="lastName" class="label-name">Last Name*</label>
+					<input id="lastName" type="text" name="lastName" class="form-control">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-2">
+					<label for="table" class="label-name">Table #</label>
+					<input id="table" type="text" name="table" class="form-control">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="tableOwner" class="label-name" id="supporterName">Is Supporter a Table Owner?</label>
+					<select name="tableOwner" id="tableOwner" class="form-control" onchange="tableOwnerChange()">
+					  <option value="false">No</option>
+					  <option value="true">Yes</option>
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="tableOwnerName" class="label-name">Table Owner (First and Last Name)</label>
+					<input id="tableOwnerName" type="text" name="tableOwnerName" class="form-control">
+				</div>
+				<!-- <div class="form-group col-md-2">
+					<label for="seats" class="label-name"># of Seats</label>
+					<input id="seats" type="number" name="seats" class="form-control">
+				</div> -->
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="userName" class="label-name">Email*</label>
+					<input id="email" type="email" name="userName" class="form-control" rows="4">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="userOrg" class="label-name">Organization</label>
+					<input id="userOrg" type="text" name="userOrg" class="form-control" rows="4">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					<label for="phoneNumber" class="label-name">Cell Phone Number*</label>
+					<input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" rows="4">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					<label for="streetAddress" class="label-name">Address</label>
+					<input id="streetAddress" name="streetAddress" class="form-control" rows="4">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="city">City</label>
+					<input  id="city" type="text" name="city" class="form-control">
+				</div>
+				<div class="form-group col-md-3">
+					<label for="states">State</label>
+					<input id="states" type="text" name="states" class="form-control">
+				</div>
+				<div class="form-group col-md-3">
+					<label for="zip">Zip</label>
+					<input id="zip" type="text" name="zip" class="form-control">
+				</div>
+			</div>
+
+			<input type="submit" name="" value="Submit" class="btn btn-submit mt-1 mb-5">
+
+		</form>
+	</div>
+
+	<script>
+		function tableOwnerChange() {
+			var value = document.getElementById("tableOwner").value;
+			var firstName = document.getElementById("firstName").value;
+			var lastName = document.getElementById("lastName").value;
+			
+			if (value === "true") {
+				document.getElementById("tableOwnerName").value = `${firstName} ${lastName}`;
+			} else {
+				document.getElementById("tableOwnerName").value = "";
+			}
+		}
+
+		function firstNameAdd() {
+			var name = document.getElementById("supporterName");
+			var firstName = document.getElementById("firstName").value;
+			name.innerHTML = `Is ${firstName} a Table Owner?`;
+			// alert(`Is ${firstName} a Table Owner?`);
+		}
+
+		$("#phoneNumber").inputmask("999-999-9999");
+		
+		var validator = $("#registrationForm").validate({
+			rules: {
+				firstName: {
+					required: true,
+					rangelength: [2, 50]
+				},
+				lastName: {
+					required: true,
+					rangelength: [2, 50]
+				},
+				phoneNumber: {
+					required: true,
+					phoneUS: true,
+				},
+				email: {
+					required: true,
+					email: true
+				},
+				userName: {
+					required: true,
+					user: true,
+					nowhitespace: true,
+					remote: '/users/duplicate'
+				},
+				userOrg: {
+					rangelength: [2, 50]
+				},
+				tableOwnerName: {
+					rangelength: [2, 50]
+				},
+			}
+		});
+
+		$.validator.methods.email = function( value, element ) {
+			return this.optional( element ) || /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test( value );
+		}
+		jQuery.validator.addMethod("street", function(value, element) {
+			return this.optional(element) || /^\s*\S+(?:\s+\S+){2}/.test(value);
+		}, "Please specify a valid street address");
+
+		jQuery.validator.addMethod("state", function(value, element) {
+			return this.optional(element) || /^(A[AEKLPRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY]|a[aeklprz]|c[aot]|d[ce]|fl|ga|hi|i[adln]|k[sy]|la|m[adeinost]|n[cdehjmvy]|o[hkr]|pa|ri|s[cd]|t[nx]|ut|v[at]|w[aivy])$/.test(value);
+		}, "Please specify the two-digit code for a US state");
+
+		jQuery.validator.addMethod("user", function(value, element) {
+			return this.optional( element ) || /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test( value );
+		});
+
+		validator.form();
+	</script>
+
+  </body>
+</html>
