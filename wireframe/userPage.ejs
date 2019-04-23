@@ -57,9 +57,9 @@
       <%for(let i =0; i<user._packages.length; i++){%>
         
         <%if(user._packages[i].bids.length>0){%>
-          <div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+          <div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
         <%}else{%>
-          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
         <%}%>	
         
         <div id="<%=user._packages[i]._id %>" class="card pkg-card">	
@@ -100,8 +100,7 @@
               <%}%>
               <div class="text-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <!-- <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a> -->
-                <a href="/<%=auction%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mr-2" name="uninterested">Remove from Watchlist</button></a>
+                <input class = "btn btn-remove-watchlist mb-3" onClick="change(<%= user._packages[i]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>"></input>
                 <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
               </div>
           </div>
@@ -111,6 +110,12 @@
     </div> <!-- End of container -->
 
     <script>
+
+      function change(packageId) {
+        var x = document.getElementById("removeWatchList-"+packageId);
+        x.style.display = "none";
+        $.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+          }
 
       $(document).ready(function(){
 
