@@ -6,10 +6,8 @@ mongoose.Promise = global.Promise;
 
 var auctionSchema = new Schema({
 	name: {type: String, required: true},
-
 	// will be used to replace auction._id hash string in URLs with text stub of auction name
 	urlStub: {type: String},
-
 	//the subtitle or the tagline is the place for a catchy phrase for the auction
 	subtitle: {type: String},
 	welcomeMessage: {type: String},

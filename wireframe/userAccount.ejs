@@ -19,8 +19,11 @@
 		<%}else{%>
 			<%- include('header') -%>
 		<%}%>
+		<%if(admin == 0){%>
+			<%- include('footerClock') -%>
+		<%}%>
 
-		<div class="container regist-container">
+		<div class="container regist-container mb-5">
 			<%if(admin == 0){%>
 				<h3 class="pt-4 mb-4"><%=user.firstName%>, Welcome to the Auction</h3>
 			<%} else if (admin >= 1 && user.userName != userName){%>
@@ -56,7 +59,7 @@
 							</div>
 						<%}%>
 
-						<div class="card regist-card" id="user-info" data=<%= user.userName%>>
+						<div class="card regist-card mb-5" id="user-info" data=<%= user.userName%>>
 							<div class="card-body">
 								<%if (admin >= 1 && user.userName != userName){%>
 									<h5>Here is their personal information:</h5>

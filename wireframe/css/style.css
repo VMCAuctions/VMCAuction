@@ -1,6 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,900');
-@import url('https://fonts.googleapis.com/css?family=Kameron:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500, 700,900');
+@import url('https://fonts.googleapis.com/css?family=Kameron:300,400,500,700');
 
 /* Border box fix
 -------------------------------------------------------------- */
@@ -57,8 +57,12 @@ a:hover {
 	text-decoration: none;
 }
 
+.phone {
+	color: #ff2719;
+
+}
 .pin {
-	color: #ff2719; 
+	color: #00184c;
 }
 
 /* Common Styling Headers
@@ -70,7 +74,7 @@ a:hover {
 -------------------------------------------------------------- */
 .mini-nav {
 	background-color: #00184c;
-	height: 6vh; 
+	height: 7vh; 
 	position: relative;
 	padding: 0px; 
 	margin-bottom: 4rem; 
@@ -79,7 +83,7 @@ a:hover {
 .mini-header {
 	background-color: #003d79;
 	color: #fff; 
-	height: 4rem; 
+	height: rem; 
 	width: 100% ; 
 	padding: 1rem 3rem; 
 	display: block; 
@@ -113,6 +117,11 @@ input[type="text"].input-priority {
 }
 
 input[type="text"]::placeholder {
+	font-size: 0.9rem !important; 
+	color: #808080; 
+}
+
+input[type="search"]::placeholder {
 	font-size: 0.9rem !important; 
 	color: #808080; 
 }

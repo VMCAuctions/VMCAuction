@@ -38,10 +38,12 @@
 </head>
 
 <body>
-    <%if(admin){%>
+	<%if(admin == 2){%>
         <%- include('adminHeader') -%>
-    <%}else{%>
-        <%- include('header') -%>
+    <%}else if (admin == 1) {%>
+		<%- include('clerkHeader') -%>
+	<%}else  {%>
+		<%- include('header') -%>
     <%}%>
 
     <div class="container-fluid">
@@ -102,6 +104,7 @@
                         <th scope="col" class="large-col">Package Description</th>
                         <th scope="col" class="medium-col">Package Restrictions</th>
                         <th scope="col" class="medium-col">Items</th>
+                        <th scope="col" class="medium-col">Donors</th>
                         <th scope="col" class="narrow-col">Fair Market Value</th>
                         <th scope="col" class="narrow-col">Starting Bid</th>
                         <th scope="col" class="narrow-col">Bid Increment</th>
@@ -122,7 +125,7 @@
 
 							<td> <img src="/<%= packages[i].photo%>" alt=""> </td>
                             
-                            <td><%= packages[i].cat%></td>   
+                            <td><%= packages[i]._category%></td>   
                             <td><%= packages[i].description%></td>
                             <td><%= packages[i].restrictions%></td>
                             <td>
@@ -132,6 +135,7 @@
                                 <% } %>
                                 </ul>
                             </td>
+                            <td><%= packages[i].donors%></td>
 							<td class="text-center"><%= "$" + packages[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                             <td class="text-center"><%= "$" + packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
                             <td class="text-center"><%= "$" + packages[i].bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>

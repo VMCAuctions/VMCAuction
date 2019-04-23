@@ -14,15 +14,14 @@ var mongoose = require('mongoose'),
 	autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
-
 // Test change for github branch serverjs
-
 app.use(session({
-  secret: secret.secret,
-  resave: false,
-  saveUninitialized: true,
-  rolling: true
-	//resets session timeout everytime the user interacts with the site
+
+	secret: secret.secret,
+	resave: false, //Resave the session to store if it's changed
+	saveUninitialized: true, //Creates session for anonymous users
+	rolling: true //Resets the cookie Max-Age on every user request
+	// cookie : { maxAge : 36000000 } //timeout for session time 1 hour
 }));
 
 var bodyParser = require('body-parser');
@@ -34,9 +33,9 @@ var path = require("path");
 app.use(express.static("./public"));
 
 if (process.env.NODE_ENV === "production") {
-		app.use(express.static(path.join(__dirname, "/wireframe")));
-}else{
-		app.use(express.static(path.join(__dirname, "/wireframe")));
+	app.use(express.static(path.join(__dirname, "/wireframe")));
+} else {
+	app.use(express.static(path.join(__dirname, "/wireframe")));
 }
 
 app.set('views', path.join(__dirname, './wireframe'));
@@ -50,22 +49,20 @@ routesSetter(app);
 
 
 var port = process.env.PORT || 8000;
-var server = app.listen(port, function() {
- console.log("listening on port "+port);
+var server = app.listen(port, function () {
+	console.log("listening on port " + port);
 })
 
 /////////////// SOCKETS /////////////////
 var Package = require('./server/models/package.js')
 var User = require('./server/models/user.js');
 
-
 var io = require('socket.io').listen(server);
-
 
 var allBidsBigObj = {
 	// package1: [
-	//     {bid: 150, name: "Yarik"},
-	//     {bid: 200 name: "Brendan"}
+	//     {bid: 150, name: "Yarik",date:"2019-04-11T01:41:26.488Z"},
+	//     {bid: 200 name: "Brendan", date" "2019-04-11T01:41:26.488Z"}
 	//   ]
 }
 // oblect to store the state of "place bid" button enabled/disabled
@@ -74,139 +71,182 @@ var packagesButtonStates = {};
 // SELF INVOCING FUNCTION WHICH SHOULD BE CALLED ONCE JUST AFTER SERVER STARTED
 // IT WILL FILL UP OUR SERVER OBJECTS "allBidsBigObj" and "packagesButtonStates" WITH
 // INFO AND ALL BUTTON ENABLED FLAGS
-(function(){
-	Package.find({}).exec(function(err,pkgs){
-		if(err) {
+(function () {
+	Package.find({}).exec(function (err, pkgs) {
+		if (err) {
 			console.log("init Server object error", err)
-		}else{
-			for(let i=0; i<pkgs.length; i++){
+		} else {
+			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
 				packagesButtonStates[pkgs[i]._id].buttonstate = true;
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
-					if(pkgs[i].bids.length != 0){
-							allBidsBigObj[pkgs[i]._id].push({
-								bid: pkgs[i].bids[pkgs[i].bids.length-1].bidAmount,
-								name: pkgs[i].bids[pkgs[i].bids.length-1].name
-							});
-					}else{
-						allBidsBigObj[pkgs[i]._id].push({
-							bid: "none",
-							name: "nobody"
-						});
-					}
+				if (pkgs[i].bids.length != 0) {
+					allBidsBigObj[pkgs[i]._id].push({
+						bid: pkgs[i].bids[pkgs[i].bids.length - 1].bidAmount,
+						name: pkgs[i].bids[pkgs[i].bids.length - 1].name,
+						date: pkgs[i].bids[pkgs[i].bids.length - 1].date
+					});
+				} else {
+					allBidsBigObj[pkgs[i]._id].push({
+						bid: "none",
+						name: "nobody",
+						date: "none"
+					});
+				}
 			}
 		}
 	})
 })()
 
 
-io.sockets.on('connection', function(socket){
-		// THE CHANNEL "msgSent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
-		// USING UNIQUE CHANNELS WITH PACKAGE IDs
-	socket.on("msgSent", function(data) {
-
+io.sockets.on('connection', function (socket) {
+	// THE CHANNEL "msgSent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
+	// USING UNIQUE CHANNELS WITH PACKAGE IDs
+	socket.on("msgSent", function (data) {
+		console.log("Message Received By Server the Bid",data);
+		// console.log("100 server.js io.sockets.  data = ",data);
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
 		// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
 		var buttonStateChannel = 'buttonState' + data.packId;
-		
+
 		io.emit('buttonStateChannel', {
 			button: 'disabled',
 			packId: data.packId
 		});
 
-		io.emit("serverTalksBack", {packId: data.packId, bid: data.bid, userName: data.userName, name: data.name})
+		//creates dates
+		var date = new Date();
 
-		if(packagesButtonStates[data.packId].buttonstate){
+		//function to calculate time ex: '7:30 PM'
+		function formatAMPM(date) {
+				let hours = date.getHours();
+				let minutes = date.getMinutes();
+				let ampm;
+				if (hours >= 12) {
+					ampm = 'pm';
+				} else {
+					ampm = 'am';
+				}
+				hours = hours % 12;
+
+				if (hours == 0) {
+					hours = 12;
+				}
+				if (minutes < 10) {
+					'0' + minutes;
+				} else {
+					minutes;
+				}
+				let strTime = hours + ':' + minutes + ' ' + ampm;
+				return strTime;
+			}
+		let bidTime = formatAMPM(date);
+
+		if (packagesButtonStates[data.packId].buttonstate) {
 			// NOW NOBODY WILL BE ALLOWED TO MAKE A BID IN THIS PACKAGE UNTILL
 			// WE FINISHED TO UPDATE DATABASE SERVER OBJECT ETC.
+			// console.log("Server Talks Back");
 			packagesButtonStates[data.packId].buttonstate = false;
-			var userBid = data.bid;
-			var userName = data.userName;
+			let userBid = parseInt(data.bid);
+			let userName = data.userName;
 
-			if(allBidsBigObj[data.packId] == undefined){
+			if (allBidsBigObj[data.packId] == undefined) {
 				allBidsBigObj[data.packId] = [];
 			}
 
 			allBidsBigObj[data.packId].push({
 				bid: data.bid,
-				name: data.userName
+				name: data.userName,
+				date: date
 			})
 
-			Package.findById(data.packId).exec(function(err, data){
-				if (err){
+			Package.findById(data.packId).exec(function (err, package) {
+				if (err) {
 					console.log("error occured " + err);
-				} else if(data != null){
-					console.log("120 Sockets.  Pkg.findbyId data = ",data)
-					if(data.bids.length == 0 ){
-						data.bids.push({
+				} else if (package != null) {
+					let lastBid;
+					if (package.bids.length == 0){
+						lastBid = package.amount;
+					} else {
+						lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount);
+					}
+					
+					// let lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount) || package.amount;
+					let packageAmt = package.amount;
+					let bidIncrement = package.bidIncrement;
+
+					//if there are no bids on the package, we check if the userBid from is greater than package amount
+					if (package.bids.length == 0 && userBid >= packageAmt) {
+						package.bids.push({
 							bidAmount: userBid,
-							name: userName
+							name: userName,
+							date: date,
+							bidTime: bidTime
 						});
-					} else if(data.bids[data.bids.length - 1].bidAmount < userBid ) {
-						//if our bids array NOT EMPTY
-						data.bids.push({
+
+					//else if there are bids, we check if the userBid from views is greater than the lastbid plus the increment 
+					} else if (userBid >= lastBid + bidIncrement) {
+						// console.log("ELSE IF");
+						package.bids.push({
 							bidAmount: userBid,
-							name: userName
+							name: userName,
+							date: date,
+							bidTime:bidTime
 						});
 					}
 				}
 				// SAVE ALL STUFF
-				data.save(function(err){
-					if(err){
+				package.save(function (err) {
+					if (err) {
 						console.log("error when saving: " + err);
 					}
 				})
 			})
 		}
-			
-		User.findOne({userName: data.userName}).exec(function(err, user){
-			if(err){
+
+		User.findOne({ userName: data.userName }).exec(function (err, user) {
+			if (err) {
 				console.log("error occured " + err);
-			} else if(user != null){
+			} else if (user != null) {
 				console.log("140 Sockets.  User.findbyId user = ",user)
 				var duplicatePackage = false;
-				for(var i = 0; i < user._packages.length; i++){
-					if (user._packages[i] == data.packId){
+				for (var i = 0; i < user._packages.length; i++) {
+					if (user._packages[i] == data.packId) {
 						duplicatePackage = true;
 						break;
 					}
 				}
-				if (duplicatePackage === false){
+				if (duplicatePackage === false) {
 					user._packages.push(parseInt(data.packId))
-					user.save(function(err){
-						if(err){
+					user.save(function (err) {
+						if (err) {
 							console.log("error when saving: " + err);
 						}
 					})
 				}
 			}
 		})
-		
-		// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
-		io.emit(uniqChatUpdateId, {
-			lastBid: data.bid,
-			userBidLast: data.userName
-		});
 
-		console.log("180 Sockets.  uniqChatUpdateId = ",uniqChatUpdateId," lastBid(data.bid) = ",data.bid," userBidLast(data.userName) = ",data.userName);
-		
+		// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
+		io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+
 		// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
-		setTimeout(function(){
+		setTimeout(function () {
 			io.emit('buttonStateChannel', {
-				button: null,
+				button: 'enabled',
 				packId: data.packId
 			});
-		},1000);
-		
+		}, 1000);
+
 		// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 		packagesButtonStates[data.packId].buttonstate = true;
 
 	})
 
-	socket.on("disconnect", () => console.log("Client disconnected"));
+	socket.on("disconnect", () => console.log("Server.js Client disconnected"));
 })
 
 

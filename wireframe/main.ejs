@@ -20,7 +20,7 @@
   	<body>
 		<!-- Auction Organizer Dashboard-->
 		
-		<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #003d79";>
+		<nav class="navbar navbar-expand-lg navbar-dark navbar-main" >
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -30,7 +30,7 @@
 				<ul class="navbar-nav mr-auto py-1">
 					<li class="brand-white">elizabid</li>
 				</ul>
-				<a class="btn btn-outline-light my-2 my-sm-0 btn-logout" href="/users/logout">Logout</a>
+				<a class="main-logout my-2 my-sm-0" href="/users/logout"><i class="fas fa-sign-out-alt"></i>&nbsp; Logout</a></a>
 			</div>
 		</nav>
 
@@ -43,12 +43,12 @@
 			</div>
 		</div>
 
-		<!-- 2-column selections-->
+		<!-- 3-column selections-->
 		<div class="container mb-5">
 			<div class="row">
-				<div class="col-sm">
+				<div class="col-3 col-sm">
 					<div class ="card border-0 m-4">
-						<h4 class="card-header auction-list"><i class="fas fa-hand-holding-usd"></i> &nbsp; Resume Auction</h4>												
+						<h4 class="card-header auction-list"><i class="fas fa-chalkboard-teacher"></i> &nbsp; Auctions in Progress</h4>												
 						<ul class="list-group list-group-flush">
 							<% for (var a in auctions) { %>
 								<li class="list-group-item"> <a href="/<%= auctions[a]._id %>/organizerMenu" class="dash-link"> <%= auctions[a].name %> </a></li>
@@ -57,9 +57,9 @@
 					</div>
 				</div>
 
-				<div class="col-sm">
+				<div class="col-3 col-sm">
 					<div class ="card border-0 m-4">
-						<h4 class="card-header auction-list"><i class="fas fa-piggy-bank"></i> &nbsp; View Archived Auctions</h4>
+						<h4 class="card-header auction-list"><i class="fas fa-piggy-bank"></i> &nbsp; Archived Auctions</h4>
 							<ul class="list-group list-group-flush text-black-50">
 								<% for (var a in archivedAuctions) { %>
 									<li class="list-group-item"> <%= archivedAuctions[a].name %></li>
@@ -68,9 +68,21 @@
 						
 					</div>
 				</div>
+
+				<div class="col-3 col-sm">
+					<div class ="card border-0 m-4">
+						<h4 class="card-header auction-list"><i class="fas fa-user-cog"></i> &nbsp; Settings</h4>
+							<ul class="list-group list-group-flush text-black-50">
+								<li class="list-group-item"> <a href="#"><i class="fas fa-list-ol"></i>&nbsp; Edit Categories</a></li>
+								<li class="list-group-item"> <a href="#"><span class="text-black-50"><i class="fas fa-unlock-alt"></i> &nbsp; Admin Rights</a></span></li>
+								<li class="list-group-item"> <a href="#"><span class="text-black-50"><i class="fas fa-database"></i> &nbsp; Customize Data Fields</a></span></li>
+							</ul>
+						
+					</div>
+				</div>
 		</div>
 
-		</div> <!-- end of 2-column container-->
+		</div> <!-- end of 3-column container-->
 
 		
 

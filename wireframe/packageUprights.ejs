@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<title>Package Uprights</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
+	<link rel="stylesheet" type="text/css" href="/css/packageUprights.css">
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script> 
+	
+	<!-- PDF -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+	
+	<!-- Color Picker -->
+	<script src="http://cdn.dhtmlx.com/edge/dhtmlx.js" type="text/javascript"></script>
+
+	<!-- Data Tables  -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+	<style>
+
+		.upright {
+			width: 400px;
+			height: 518px;
+			text-align: center;
+			background: rgb(32, 108, 194);
+			color: #fff;
+			padding: 15px 0px;
+		}
+
+		.donor, .packageId, .value, #fitin {
+			background: black;
+			position: relative;
+		}
+
+		.donor {
+			width: 100%;
+			height: 8%;
+			font-size: 12px;
+			padding: 1% 0px;
+		}
+
+		.resized-text {
+			width: 90%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.title {
+			width: 100%;
+			height: 9%;
+			font-size: 60px;
+			position: relative;
+			margin: 2% 0px;
+			font-weight: bold;
+			letter-spacing: 0.5px;
+		}
+
+		.image {
+			width: 100%;
+			height: 40%;
+			margin-bottom: 5%;
+			font-size: 14px;
+		}
+
+		.flexible-photo {
+			max-width: 90%;
+			max-height: 100%;
+			border: 5px solid black;
+		}
+
+		.packageId {
+			bottom: 93%;
+			width: 30%;
+			text-align: right;
+			padding: 1% 4% 1% 0px;
+		}
+
+		.value {
+			bottom: 36.5%;
+			left: 70%;
+			width: 30%;
+			text-align: left;
+			padding-left: 5%;
+			padding: 1% 0px 1% 4%;
+		}
+
+		#fitin {
+			font-size: 20px;
+			width: 100%;
+			height: 35%;
+			padding: 3% 0px;
+		}
+	</style> 
+
+	<script>
+		// color picker
+		var myCP;
+		function doOnLoad() {
+			myCP = new dhtmlXColorPicker({
+				parent: "cpObj",
+				custom_colors: ["#206cc2"],
+				closeable: false
+			});
+			myCP.attachEvent("onChange", setColor);
+		};
+		
+		function doOnUnload() {
+			if (myCP != null) {
+				myCP.unload();
+				myCP = null;
+			}
+		};
+		
+		function setColor(color) {
+			var ct = document.getElementById("colorType");
+			var background = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor");
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor');
+
+			switch (ct.value) {
+				case "text":
+					mainTextColors.forEach(function(item) {
+						item.style.color = color;
+					});
+					break;
+				case "bg":
+					background.style.backgroundColor =  color;
+					break;
+				case "title":
+					titleColor.style.color = color;
+					break;
+				case "secondary":
+					secondary.forEach(function(item) {
+						item.style.backgroundColor =  color;
+					});
+					secondaryBorder.style.border = `5px solid ${color}`;
+					break;
+			}
+		};
+		// color picker END
+
+		function retrieveData(x) {
+			var upright = document.getElementsByClassName("form")[0];
+			upright.classList.remove("hidden");
+
+			// creates upright from getting data from the table
+			var index = x.rowIndex;
+			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+			var packageId = document.getElementById("packageId");
+
+			var photo = document.getElementById("tableRow").rows[index].cells[4].innerHTML;
+			var photoBox = document.getElementById("photoBorder");
+
+			var title = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+			var titleBox = document.getElementsByClassName("resized-text")[1];
+
+			var value = document.getElementById("tableRow").rows[index].cells[5].innerHTML;
+			var valueBox = document.getElementsByClassName("value")[0];
+
+			var desc = document.getElementById("tableRow").rows[index].cells[6].innerHTML;
+			var descBox = document.getElementsByClassName("resized-text")[2];
+
+			packageId.textContent = "#" + id;
+			photoBox.src = `/${photo}`
+			titleBox.innerHTML = title;
+			valueBox.innerHTML = `Value: ${value}`;
+			descBox.innerHTML = desc;
+
+			// highlights selected table row
+			var rowsNotSelected = tableRow.getElementsByTagName('tr');
+			for (var row = 0; row < rowsNotSelected.length; row++) {
+				rowsNotSelected[row].style.backgroundColor = "";
+				rowsNotSelected[row].style.color = "#404040";
+				rowsNotSelected[row].classList.remove('selected');
+			}
+			var rowSelected = tableRow.getElementsByTagName('tr')[index];
+			rowSelected.style.backgroundColor = '#003d79';
+			rowSelected.style.color = "#FFFFFF";
+			rowSelected.className += 'selected';
+
+			// font resizing on uprights
+			$('#fitin div').css('font-size', '1em');
+			
+			while( $('#fitin div').height() > $('#fitin').height() ) {
+				$('#fitin div').css('font-size', (parseInt($('#fitin div').css('font-size')) - 1) + "px" );
+			}
+
+			$('.donor div').css('font-size', '1em');
+			
+			while( $('.donor div').height() > $('.donor').height() ) {
+				$('.donor div').css('font-size', (parseInt($('.donor div').css('font-size')) - 1) + "px" );
+			}
+
+			$('.title div').css('font-size', '1em');
+			
+			while( $('.title div').height() > $('.title').height() ) {
+				$('.title div').css('font-size', (parseInt($('.title div').css('font-size')) - 1) + "px" );
+			}
+
+			// display colors if they have been saved on a specific upright
+			var background = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor");
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor');
+
+			var savedColorInputs = document.getElementsByClassName("saved-colors")[0];
+
+			var jsonColors = JSON.parse(localStorage.getItem(id));
+
+			document.getElementById("inputBg").value = "";
+			document.getElementById("inputText").value = "";
+			document.getElementById("inputSecondBg").value = "";
+			document.getElementById("inputTitle").value = "";
+
+			if (jsonColors){
+				
+				savedColorInputs.classList.remove("hide");
+
+				background.style.backgroundColor = "rgb(32, 108, 194)";
+				mainTextColors.forEach(function(item) {
+					item.style.color = "#FFF";
+				});
+				secondary.forEach(function(item) {
+					item.style.backgroundColor = "#000";
+				});
+				secondaryBorder.style.border = `5px solid #000`;
+				titleColor.style.color = "#FFF";
+
+				if (jsonColors.bgColor !== ""){
+					background.style.backgroundColor = jsonColors.bgColor;
+					document.getElementById("inputBg").value = jsonColors.bgColor;
+					document.getElementById("circleBg").style.color = jsonColors.bgColor;
+				}
+				if (jsonColors.mainTextColor !== "") {
+					mainTextColors.forEach(function(item) {
+						item.style.color = jsonColors.mainTextColor;
+					});
+					document.getElementById("inputText").value = jsonColors.mainTextColor;
+					document.getElementById("circleText").style.color = jsonColors.mainTextColor;
+				}
+				if (jsonColors.secondary !== ""){
+					secondary.forEach(function(item) {
+						item.style.backgroundColor = jsonColors.secondary;
+					});
+					secondaryBorder.style.border = `5px solid ${jsonColors.secondary}`;
+					document.getElementById("inputSecondBg").value = jsonColors.secondary;
+					document.getElementById("circleText").style.color = jsonColors.secondary;
+				}
+				if (jsonColors.titleColor !== ""){
+					titleColor.style.color = jsonColors.titleColor;
+					document.getElementById("inputTitle").value = jsonColors.titleColor;
+					document.getElementById("circleTitle").style.color = jsonColors.titleColor;
+				}
+			} else {
+				savedColorInputs.classList.add("hide");
+			}
+		}
+
+		// store colors on save in local storage
+		function saveColors(x) {
+			var index = x.parentNode.parentNode.rowIndex;
+			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+
+			var background = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor")[0];
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor')[0];
+
+			var bgColor = background.style.backgroundColor;
+			var title = titleColor.style.color;
+			var secondaryColor = secondary.style.backgroundColor;
+			var photoBorder = secondaryBorder.style.borderColor;
+			var mainText = mainTextColors.style.color;
+
+			localStorage.setItem(id, JSON.stringify({
+				bgColor: colorToHex(bgColor),
+				titleColor: colorToHex(title),
+				secondary: colorToHex(secondaryColor),
+				secondaryBorder: colorToHex(photoBorder),
+				mainTextColor: colorToHex(mainText)
+			}));
+		}
+
+		function deleteColors(x) {
+			var index = x.parentNode.parentNode.rowIndex;
+			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+			localStorage.removeItem(id);
+		}
+
+		function colorToHex(color) {
+			if (color) {
+				if (color.substr(0, 1) === '#') {
+					return color;
+				}
+				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+				
+				var rgb = blue | (green << 8) | (red << 16);
+				return digits[1] + '#' + rgb.toString(16).padStart(6, '0');
+			}
+		};
+
+	</script>
+	
+  </head>
+
+	<body onload="doOnLoad();" onunload="doOnUnload();">
+		<%if(admin){%>
+			<%- include('adminHeader') -%>
+			<%}else{%>
+				<%- include('header') -%>
+		<%}%>
+		<%if(admin == 0){%>
+			<%- include('footerClock') -%>
+		<%}%>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col">
+					<h2 class="my-4 ml-1">Package Upright</h2>
+					<div class="info">
+						<span class="borderTitle">Instructions:</span>
+						<ol>
+							<li>Select a package to bring up its corresponding upright, to change its colors, and to perform an action.</li>
+							<li>Click on the third action "<i class="far fa-save"></i>" to save your color choices.</li>
+							<li>Once an upright is finalized, click on the last action "<i class="fas fa-external-link-alt"></i>" of the row to open and print the pdf.</li>
+						</ol>
+						* Please note an upright without any saved color changes will inherit the colors from the last upright you viewed.
+
+					</div>
+					<!-- <table class="table table-bordered table-sm summary-table mt-4" id="tableRow"> -->
+					<table class="table table-bordered" id="tableRow">
+						<thead>
+							<tr class="text-center">
+								<th scope="col" class="narrow">#</th>
+								<th scope="col" class="large">Name</th>
+								<th scope="col" class="medium">Category</th>
+								<th scope="col" class="large">Actions</th>
+								<th scope="col" class="hide">Image</th>
+								<th scope="col" class="hide">Value</th>
+								<th scope="col" class="hide">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% for (var i in packages){%>
+		
+								<tr class="packageRow" onclick="retrieveData(this)">
+									<td><%= packages[i]._id%></td>
+									<td><%=packages[i].name%></td>
+									
+									<td><%= packages[i]._category%></td>   
+									
+									<td class="text-center">
+										<a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit" title="Edit Package"></i></a>
+										<a href='/<%=auction%>/packages/uprights/remove/<%=packages[i]._id%>' onclick="deleteColors(this)"><i class="far fa-trash-alt to-delete" title="Delete Package"></i></a>
+										<i class="far fa-save to-save" title="Save Colors" onclick="saveColors(this)"></i>
+										<i class="fas fa-external-link-alt to-pdf create_pdf" title="Open PDF"></i>
+									</td>
+									<td class="hide"><%= packages[i].photo%></td>
+									<td class="hide">$<%=packages[i].value%></td>
+									<td class="hide"><%= packages[i].description%></td>
+
+								</tr>
+								<%}%>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="col mt-2 d-flex justify-content-center align-items-center">
+
+					<form class="form mt-4 hidden">
+						<div class="upright bg" id="bg">
+		
+							<div class="donor secondaryColor mainTextColor">
+								<div class="resized-text">
+									Donors: Mr. & Mrs. Jones, Larry Graham
+								</div>
+							</div>
+		
+							<div class="title" id="titleText">
+								<div class="resized-text"></div>
+							</div>
+		
+							<div class="image">
+								<img class="flexible-photo" id="photoBorder" src="">
+								
+								<div class="packageId secondaryColor mainTextColor" id="packageId"></div>
+		
+								<div class="value secondaryColor mainTextColor"></div>
+							</div>
+		
+							<div id="fitin" class="secondaryColor mainTextColor">
+								<div class="resized-text"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			
+				<div class="col">
+					<div class="mt-4">
+						<h5>Edit Colors: </h5>
+						<select id="colorType">
+							<option value="bg">Background color</option>
+							<option value="secondary">Secondary color</option>
+							<option value="text">Text color</option>
+							<option value="title">Title color</option>
+						</select>
+					</div>
+			
+					<div id="cpObj"></div>
+					<!-- <input type="button" id="saveColors" onclick="saveColors()" value="Save This Upright Color Scheme"> -->
+					<!-- <input type="button" id="create_pdf" value="Open PDF"> -->
+
+					<form class="saved-colors hide">
+						<h5>The saved colors for this upright: </h5>
+						
+						<input type="text" id="inputBg" name="background" value=""> <i class="fa fa-circle" id="circleBg"></i> Background color<br>
+						
+						<input type="text" id="inputSecondBg" name="secondary" value=""> <i class="fa fa-circle" id="circleSecond"></i> Secondary color<br>
+						
+						<input type="text" id="inputTitle" name="title" value=""> <i class="fa fa-circle" id="circleTitle"></i> Title color<br>
+						
+						<input type="text" id="inputText" name="text" value=""> <i class="fa fa-circle" id="circleText"></i> Main text color<br>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<script> 
+			$(document).ready(function() {
+				
+				// Initializes Data Tables plugin
+				$('#tableRow').DataTable(
+					{
+						"searching": false,
+						"order": [[ 0, "asc" ]],
+						"pageLength": 5,
+						"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+						"pagingType": "full_numbers",
+						"columnDefs": [
+							{ "orderable": false, "targets": 3 }
+						]
+				}
+				);
+			});  
+
+			// PDF
+			(function () {  
+				var  
+					form = $('.form'),  
+					cache_width = form.width()
+			
+				$('.create_pdf').on('click', function () {  
+					$('body').scrollTop(0);  
+					createPDF();  
+				});  
+
+				//create pdf  
+				function createPDF() {  
+					getCanvas().then(function (canvas) {  
+						var  
+							img = canvas.toDataURL("image/png"),  
+							doc = new jsPDF({  
+								unit: 'in',  
+								format: [4.17, 5.4]
+							});  
+						doc.addImage(img, 'JPEG', 0, 0);  
+						window.open(URL.createObjectURL(doc.output("blob")));
+						form.width(cache_width);  
+					});  
+				}  
+			
+				// create canvas object  
+				function getCanvas() {  
+					return html2canvas(form, {
+						scale: 2,
+						imageTimeout: 2000,  
+						removeContainer: true
+					});  
+				}  
+			
+			}());  
+		</script>
+	</body>
+</html>

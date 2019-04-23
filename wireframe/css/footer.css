@@ -1,0 +1,21 @@
+.footer {
+
+	background-color: rgba(105, 175, 255, 0.85);   
+	/* background-image: linear-gradient(to bottom right, #69afff,  #a2b209);  */
+    color: #f9f8fa;
+    text-align: center;
+	font-family: 'Kameron', serif; 
+
+	position:fixed;
+	bottom:0;
+	z-index: 1;
+	width:100%;
+	font-size: 0.9rem;
+
+	padding: 10px;
+}
+
+.timer {
+	font-size: 1rem;
+	margin: 0px;
+}

@@ -1,23 +1,26 @@
+.navbar-main {
+background-color:  #003d79;
+}
 
 .brand-white{
 	font-family: "Kameron", serif;
-	font-size: 1.75rem;
+	font-size: 1.6rem;
 	color: #fff;
 }
 .dash-home{
 	padding-left: 20px; 
 }
-.btn-logout {	
-	border: solid 2px #fff;
+
+a.main-logout {
 	color: #fff;
-	padding: 4px 10px;  
-	font-weight: 400;
+	font-size: 1rem; 
 }
-.btn-logout:hover {
-	background: #0080ff;
-	border: solid 2px #0080ff;
-	color: #fff;
+
+a.main-logout:hover {
+	color: #69afff; 
+	font-size: 1rem; 
 }
+
 /* Organizer's Dashboard styles 
 -------------------------------------------------------------- */
 .jumbo-head {
