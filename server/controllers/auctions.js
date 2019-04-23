@@ -347,7 +347,7 @@ function AuctionsController() {
         if(err){
           console.log(err);
         }else{
-          res.render('clerkRegSupp',{auction: auction,})
+          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction})
         }
       })
     }else{
@@ -362,7 +362,8 @@ function AuctionsController() {
       }else{
         User.findOne({userName: req.body.userName}, function (err, user){
           if(user){
-            res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+            // res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+            res.redirect('/'+req.params.auctions+'/clerkDash');
           }else{
             User.create({
               userName: req.body.userName,
