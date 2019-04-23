@@ -38,10 +38,12 @@
 </head>
 
 <body>
-    <%if(admin){%>
+    <%if(admin == 2){%>
         <%- include('adminHeader') -%>
-    <%}else{%>
-        <%- include('header') -%>
+    <%}else if (admin == 1) {%>
+		<%- include('clerkHeader') -%>
+	<%}else  {%>
+		<%- include('header') -%>
     <%}%>
 
     <div class="container-fluid">
@@ -119,7 +121,8 @@
 
                         <tr class="packageRow">
                             <td><%= packages[i]._id%></td>
-                            <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+                            <!-- <td><a href="/<%=auction._id%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td> -->
+                            <td><a href="/<%=auction._id%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
 
 							<td> <img src="/<%= packages[i].photo%>" alt=""> </td>
                             
@@ -162,8 +165,10 @@
                                 </form>
                                 <td class="text-center">
                                    <button id="<%= packages[i].id%>" class="confirmChanges mr-2 mb-3">Save Priority</button>
-                                    <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
-                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
+                                    <!-- <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
+                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a> -->
+                                    <a href='/<%=auction._id%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
+                                    <a href='/<%=auction._id%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
                                 </td>
                             <%}else{%>
                                 <td><%= packages[i].featured%></td>
@@ -224,8 +229,10 @@
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
 			  // 1-17 Bug Fix List Item 6 Insert deployed URL so 'Save Changes' button works on deployed version
-              $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+            //   $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
             //   $.get(`http://dv1.elizabid.com/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+              $.get(`http://localhost:8000/<%=auction._id%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+            //   $.get(`http://dv1.elizabid.com/<%=auction._id%>/packages/priority/${id}/${featured}/${priority}`,function(message){
                 alert(message);
               });
             });

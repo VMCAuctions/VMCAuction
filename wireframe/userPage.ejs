@@ -78,7 +78,7 @@
                   <% if(user._packages[i]) {%>
                   <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
                   <div>
-                    <a class="pkg-title" href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
+                    <a class="pkg-title" href="/<%=auction._id%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
                     <p class="category mt-1">Category: <%=user._packages[i]._category%></p>
                   </div>
               </div>
@@ -99,9 +99,9 @@
               <%}%>
               <div class="text-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <!-- <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a> -->
-                <a href="/<%=auction%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mr-2" name="uninterested">Remove from Watchlist</button></a>
-                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
+                <!-- <a href="/<%=auction._id%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a> -->
+                <a href="/<%=auction._id%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mr-2" name="uninterested">Remove from Watchlist</button></a>
+                <a href="/<%=auction._id%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
               </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
           var result = sortable.toArray()
           console.log(result)
           $.ajax({type: 'GET',
-            url:'/<%=auction%>/users/updateList/' + result + '/' + userId
+            url:'/<%=auction._id%>/users/updateList/' + result + '/' + userId
           })
         })
 
@@ -170,10 +170,10 @@
         if(isDone){
           $("#selections").append(`
             <tr data-id= data.packId class='selection' style='cursor: move'>
-            <td><a href="/<%=auction%>/packages/"` + data.packId + `">` + data.name + `</a></td>
+            <td><a href="/<%=auction._id%>/packages/"` + data.packId + `">` + data.name + `</a></td>
             <td id = "` + data.packId + `">You!!!</td>
 
-            <td><a href="/<%=auction%>/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
+            <td><a href="/<%=auction._id%>/users/uninterested/data.packId"><button type="button" name="uninterested">Remove from Watchlist</button></a></td>
             </tr>`
           )
           //Needs to add an entire new row to the table

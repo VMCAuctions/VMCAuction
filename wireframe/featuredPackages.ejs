@@ -59,7 +59,7 @@
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
 								<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
 								<div>  
-									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
+									<a class="pkg-title" href="/<%= auction._id %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
 									<p class="category mt-1">Category: <%=featured[f]._category %></p>
 								</div>	
 							</div>
@@ -84,8 +84,8 @@
 								<% for(var i = 0; i < user._packages.length; i++){ %>
 									<% if(featured[f]._id == user._packages[i]) {%>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button>
-										<!-- <a href="/<%=auction%>/users/uninterested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
+										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction._id%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button>
+										<!-- <a href="/<%=auction._id%>/users/uninterested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
 										<% flag = true %>
 											<% break %>
 										<% } %>
@@ -93,8 +93,8 @@
 
 									<% if(flag === false) {%>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button>
-									<!-- <a href="/<%=auction%>/users/interested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
+										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction._id%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button>
+									<!-- <a href="/<%=auction._id%>/users/interested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
 									<%}%>
 								<%}%>			
 							</div>

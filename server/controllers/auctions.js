@@ -227,7 +227,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			console.log(Date.now()," - 230 auctions.js this.event Package.find packages = ",packages);
+			console.log('230 auctions.js this.event Package.find packages = ',JSON.stringify(packages, null, 2));
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -247,7 +247,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+    console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};

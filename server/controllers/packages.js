@@ -54,6 +54,7 @@ function PackagesController() {
 									if (err) {
 										console.log(err)
 									} else {
+										var auction = auctionDetails;
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										//current is a flag showing which page is active
 										res.render('packages', {
@@ -66,7 +67,8 @@ function PackagesController() {
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction: auction,
 											auctionDetails: auctionDetails,
 										})
 									}
@@ -122,6 +124,7 @@ function PackagesController() {
 									if (err) {
 										console.log(err)
 									} else {
+										var auction = auctionDetails;
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										//current is a flag showing which page is active
 										res.render('featuredPackages', {
@@ -134,7 +137,8 @@ function PackagesController() {
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction: auction,
 											auctionDetails: auctionDetails,
 										})
 									}
@@ -263,6 +267,7 @@ function PackagesController() {
 									if (err) {
 										console.log(err)
 									} else {
+										var auction = auctionDetails;
 										res.render('packageRegister', {
 											current: 'package-register',
 											packages: sortedPackages,
@@ -271,7 +276,8 @@ function PackagesController() {
 											admin: req.session.admin,
 											userName: req.session.userName,
 											user: user,
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction: auction,
 											auctionDetails: auctionDetails,
 											categories: categories,
 										})

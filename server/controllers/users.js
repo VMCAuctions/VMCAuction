@@ -65,7 +65,8 @@ function UsersController(){
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
-									} else {	
+									} else {
+										var auction = auctionDetails;
 										//current is a flag showing which page is active
 										res.render('allUsers', {
 											current: 'supporters', 
@@ -74,7 +75,8 @@ function UsersController(){
 											packages: packages, 
 											userName: req.session.userName, 
 											admin: req.session.admin, 
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction: auction,
 											auctionDetails: auctionDetails
 										})		
 									}
@@ -345,6 +347,7 @@ function UsersController(){
 										categories.initialize()
 									}
 									else{
+										var auction = auctionDetails;
 										// console.log("req.session is", req.session)
 										res.render('userPage', {
 											current: 'watch-list',
@@ -354,7 +357,8 @@ function UsersController(){
 											categories: categories,
 											cartTotal: cartTotal,
 											cartArray: cartArray,
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction: auction,
 											auctionDetails: auctionDetails,
 										})
 										console.log("User info: ", user);
