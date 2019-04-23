@@ -480,7 +480,8 @@
 							img = canvas.toDataURL("image/png"),  
 							doc = new jsPDF({  
 								unit: 'in',  
-								format: [8.29, 10.79]
+								format: [12.44, 16.17]
+								// format: [8.5, 11]
 							});  
 						doc.addImage(img, 'JPEG', 0, 0);  
 						window.open(URL.createObjectURL(doc.output("blob")));
@@ -490,7 +491,7 @@
 			
 				// create canvas object  
 				function getCanvas() {  
-					var scaleBy = 2;
+					var scaleBy = 3;
 					var w = 398;
 					var h = 517;
 					var div = document.querySelector('#form');
@@ -506,7 +507,7 @@
 					div.style.top = '-24px';
 					div.style.left = '0px';
 
-					return html2canvas(document.querySelector("#form"), {
+					return html2canvas(div, {
 						canvas:canvas,
 						removeContainer: true
 					});
