@@ -268,6 +268,7 @@ function PackagesController() {
 										console.log(err)
 									} else {
 										var auction = auctionDetails;
+										console.log("110 packages.js this.list.  auction = ",auction);
 										res.render('packageRegister', {
 											current: 'package-register',
 											packages: sortedPackages,
