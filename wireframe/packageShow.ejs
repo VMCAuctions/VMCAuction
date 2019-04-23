@@ -73,7 +73,6 @@
 
 			if ( packId == packageId ) {
 				$('#currentBid').text("$" + currentBid);
-				// $('#topBidder').text("Top Bidder: " + topBidder);
 				$('#topBidder').replaceWith("<p id='topBidder' class='highest-bidder text-center'><i class='fas fa-trophy'></i> Top Bidder: " + topBidder);
 				$('#minBid').text("Bid $"+ newBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" or more");
 				$('#bidAmount').attr('min',newBid);
@@ -176,10 +175,10 @@
 			</div>
 
 			<hr>
-		
+
 			<!-- Buttons -->
 			<div class="text-center">
-				<% if (user._packages.length > 0) { %>
+				<% if (user._packages.includes(package._id)) { %>
 					<input class = "d-inline btn btn-remove-watchlist" onclick="change(<%= package._id %>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
 				<% } else { %>
 					<input class = "d-inline btn btn-add-watchlist" onclick="change(<%= package._id %>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
