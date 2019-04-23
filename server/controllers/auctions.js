@@ -247,7 +247,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log("230 auctions.js this.clerk  Clerk landing page start");
+	console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
@@ -289,12 +289,12 @@ function AuctionsController() {
                   };
                 }
                 //Current is a flag showing which page is active
-                Auction.findById({_id:req.params.auctions}, function(err, auction){
+                Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
                   if (err){
                     console.log(err);
 
                   } else{
-                    console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
+                    console.log('100 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
                     res.render("clerkDash", {
                       current: "Clerk Dashboard",
                       users: users,
@@ -303,7 +303,9 @@ function AuctionsController() {
                       items: items,
                       userName: req.session.userName,
                       admin: req.session.admin,
-                      auction: auction
+					  auctionDetails: auctionDetails,
+					  auction: req.params.auctions
+					  
                     });
                   }
                 });
@@ -386,12 +388,12 @@ function AuctionsController() {
 							};
 						}
 						//Current is a flag showing which page is active
-						Auction.findById({_id:req.params.auctions}, function(err, auction){
+						Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
 							if (err){
 								console.log(err);
 							} else{
-								console.log('236 auctions.js this.clerk auctionfindById. auction = ', auction);  
-								console.log('237 auctions.js this.clerk auctionfindById. cart = ', JSON.stringify(cart, null, 2));  
+								console.log('236 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
+								// console.log('237 auctions.js this.clerk auctionfindById. cart = ', JSON.stringify(cart, null, 2));  
 								res.render("clerkCheckOut-shell", {
 									current: "Clerk Dashboard",
 									users: users,
@@ -400,7 +402,8 @@ function AuctionsController() {
 									items: items,
 									userName: req.session.userName,
 									admin: req.session.admin,
-									auction: auction
+									auctionDetails: auctionDetails,
+									auction: req.params.auctions
 								});
 							}
 						});
