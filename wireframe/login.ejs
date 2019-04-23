@@ -72,9 +72,12 @@
 					success: function(data){
 						console.log('data = ',data)
 						if(data.match == false){
-							alert('username and password do not match')
+							alert('Username and password do not match')
 						} else {
-							if (data.admin == 2){
+							if (!$('#userName').val()) {
+								alert('Please enter a username');
+							}
+							else if (data.admin == 2){
 								window.location.replace('/auctions/main')
 							}
 							else{
