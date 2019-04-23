@@ -1,9 +1,3 @@
-
-body {
-    background-color: #f9f8fa; 
-    font-size: 0.9rem; 
-}
-
 /* Custom File Upload */
 .custom-file-uploader {
     position: relative;
@@ -26,6 +20,3 @@ body {
 .btn-upload {
     background-color: #bacc14;
 }
-
-
-

@@ -175,9 +175,9 @@
                 >
               </div>
               <div class="col-1 form-group">
-                <img class="thumbnail" src="/<%= package.photo%>" alt="" />
+                <img class="thumbnail" src="/<%= package.photo%>" alt="package-image" />
               </div>
-              <div class="col-11 form-group upload-btn-wrapper">
+              <!-- <div class="col-11 form-group upload-btn-wrapper">
                 <button class="btn btn-add">Choose File</button>
                 <input
                   type="file"
@@ -185,8 +185,24 @@
                   id="packageImage"
                   class="form-control"
                 />
-              </div>
+              </div> -->
             </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-7 col-md-6 col-lg-12">
+            <div class="form-group">
+              <label for="file" class="sr-only">File</label>
+              <div class="input-group">
+                <span class="input-group-prepend">
+                  <div class="btn btn-upload custom-file-uploader">
+                    <input type="file" name="packageImage" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                    Upload New Image
+                  </div>
+                </span>
+                <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+              </div>
+            </div>
           </div>
         </div>
 
