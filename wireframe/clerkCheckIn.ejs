@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Clerk Check In
+        </title>
+        <!-- pdfmake scripts -->
+        <script src='/pdfmake/pdfmake.js'></script>
+        <script src='/pdfmake/vfs_fonts.js'></script>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!-- sockets -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+            crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>  
+    </head>
+    <body>
+
+        <div class="container-fluid">
+            <div id="clerk_search">
+                    <%- include('clerkSearch') -%>
+            </div>       
+            <!-- Search for Supporters-->
+            <div id="supportertable">
+            <h3>Supporters</h3>
+            <table class="table table-striped table-bordered package-table">
+                <thead>
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Table #</th>
+                        
+                        <th scope="col">Total Spent</th>
+                        <th scope="col">Invoice</th>
+                    </tr>
+                </thead>
+                <tbody id="carts">
+                    <% for (var u in users) {%>
+                        <tr class="supporterRow">
+                            <td>
+                                <a href="/<%=auction._id%>/clerkDash"><%= users[u].firstName %></a>
+                            </td>
+                            <td id='supporterLast'>
+                                <a href="/<%=auction._id%>/clerkDash"> <%= users[u].lastName %> </a>
+                            </td>
+                            <!-- <td id="<%= users[u].userName + 'winning' %>">
+                                <ul>
+                                    <% for (var p in cart[users[u].userName].packages) { %>
+                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
+                                            $<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %></li>
+                                    <% } %>
+                                </ul>
+                            </td> -->
+                           
+                            <td id="<%= users[u].userName + 'total' %>">
+                                $<%= cart[users[u].userName].total %>
+                            </td>
+                            <td>
+                                <button type="button" class="pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">PDF</button>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            </div>
+            <!-- for Package name -->
+            <div id="packagetable">
+                <h3>Packages</h3>
+                <table class="table table-striped table-bordered package-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Package Id</th>
+                            <th scope="col">Package Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Category</th>
+                            <!-- <th scope="col">Packages Restrictions</th> -->
+                            <th scope="col">Items</th>
+                            <!-- <th scope="col">Fair Market value</th> -->
+                            <!-- <th scope="col">Invoice</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="carts">
+                        <% for (var i in packages) {%>
+                            <tr class="packageRow">
+                                    <td><%= packages[i]._id%></td>
+                                <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+
+                                <td> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                                
+                                <td><%= packages[i]._category%></td>
+                                <td><%= packages[i].description%></td>
+                                <td><%= packages[i].restrictions%></td>
+                            <td>
+                                
+                               
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+           
+            <!-- Form for the supporters Update information -->
+            <div class="card regist-card mb-4" id="user-info" data="Organizer">
+                <div class="card-body">
+                    <h5>Here is your information:</h5>
+                    <h6 class="pin mb-3">*Please fill in any missing fields.</h6>
+                    <form id="registrationForm" action="/5c880415198d960e25f613c9/users/account/Organizer" method="post" novalidate="novalidate" _lpchecked="1">
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name</label>
+                                <input type="text" name="firstName" class="form-control valid" value="Julie" aria-required="true" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" aria-invalid="false">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" name="lastName" class="form-control valid" value="Ott" aria-required="true" aria-invalid="false">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userName">Email/Username</label>
+                            <input type="email" name="userName" class="form-control" id="userNameTarget" readonly="" value="Organizer"><label id="userNameTarget-error" class="error" for="userNameTarget" style="display: none;"></label>
+                            <span id="hide1">Please note that this field cannot be edited.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phoneNumber">Cell Phone Number</label>
+                            <input type="number" name="phone" class="form-control" id="phoneTarget" readonly="" value="555-555-5555">
+                            <span id="hide2">Please note that this field cannot be edited.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="streetAddress">Address</label>
+                            <input type="text" name="address" class="form-control" value="123 Main Street">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="city">City</label>
+                                <input type="text" name="city" class="form-control" value="Sunnyvale">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="states">State</label>
+                                <input type="text" name="states" class="form-control" value="CA">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="zip">Zip</label>
+                                <input type="text" name="zip" class="form-control" value="55555">
+                            </div>
+                            
+                        </div>
+           
+                        <div class="form-group1">
+                        <input type="submit" name="submit" value="Update" class="btn btn-submit mt-1" id="submitButton">
+                        </div>
+                        <div class="demo-placeholder">
+                            <button type="button" id="sendLinkButton" onclick="loadSupportedSearch()" class="btn btn-add mt1 show-modal" data-toggle="modal" data-target="#itemsModal" >
+                                    Send Auction link
+                                    </button>
+                                
+                        </div>
+                    </form>
+                </div>
+            </div>
+        
+               
+            
+        </div>
+        <!-- json parse scripts -->
+        <script type="text/javascript">
+            var cart = <%-JSON.stringify(cart)%>;
+            var packages = <%-JSON.stringify(packages)%>;
+        </script>
+        <!-- search box scripts -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                console.log("100 clerkDash.js script document.ready start");
+                // $(".packageRow").show();
+            //    $("#packagetable").hide();
+            
+            
+            $("#supportertable").hide();
+               $("#lastname").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#supportertable").hide();
+                    } else {
+                        $("#supportertable").show();
+                        $(".supporterRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+                $(".packageRow").show();
+               $("#packagetable").hide();
+               $("#packagename").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#packagetable").hide();
+                       
+                    } else {
+                        $("#packagetable").show();
+                        $(".packageRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+           
+              
+            })
+        </script>
+        <!-- pdfmake scripts -->
+        <script type="text/javascript">
+            $(".pdfBut").click(function(){
+                var firstName = $(this).data('first')
+                var lastName = $(this).data('last')
+                var userName = $(this).data('user')
+                var newCart = cart
+
+                function buildTable(crt) {
+                    tableData = []
+                    columns = ['_id','name','description','bids']
+                    tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+                    crt.forEach(function(row) {
+                        var rowData = []
+                        for(var x = 0; x < columns.length; x++) {
+                            if(x == columns.length - 1) {
+                                tmpBids = row.bids
+                                winBid = tmpBids[tmpBids.length - 1]
+                                winAmt = winBid.bidAmount
+                                rowData.push(winAmt)
+                            } else {
+                            rowData.push(row[columns[x]])
+                            }
+                        }
+                        tableData.push(rowData)
+                    })
+                    return tableData
+                }
+
+                docDef = {
+                    content: [
+                        { text: firstName + ' ' + lastName, style: 'header'},
+                        {
+                            table: {
+                            headerRows: 1,
+                            body: buildTable(newCart[userName].packages)
+                            }
+                        }
+                    ],
+                    styles: {
+                        header: {
+                            fontSize: 22,
+                            bold: true
+                        }
+                    }
+                }
+                pdfMake.createPdf(docDef).open()
+            })
+
+
+        </script>
+        <!-- Supporter informatin retrieved -->
+        <script>
+            <div class="card regist-card" id="user-info" data="Organizer">
+							<div class="card-body">
+								<h5>Here is your personal information:</h5>
+								<h6 class="pin mb-3">*Please fill in any missing fields.</h6>
+								<form id="registrationForm" action="/5c880415198d960e25f613c9/users/account/Organizer" method="post" novalidate="novalidate" _lpchecked="1">
+
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="firstName">First Name</label>
+											<input type="text" name="firstName" class="form-control valid" value="Julie" aria-required="true" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" aria-invalid="false">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="lastName">Last Name</label>
+											<input type="text" name="lastName" class="form-control valid" value="Ott" aria-required="true" aria-invalid="false">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="userName">Email/Username</label>
+										<input type="email" name="userName" class="form-control" id="userNameTarget" readonly="" value="Organizer"><label id="userNameTarget-error" class="error" for="userNameTarget" style="display: none;"></label>
+										<span id="hide1">Please note that this field cannot be edited.</span>
+									</div>
+
+									<div class="form-group">
+										<label for="phoneNumber">Cell Phone Number</label>
+										<input type="number" name="phone" class="form-control" id="phoneTarget" readonly="" value="555-555-5555">
+										<span id="hide2">Please note that this field cannot be edited.</span>
+									</div>
+
+									<div class="form-group">
+										<label for="streetAddress">Address</label>
+										<input type="text" name="address" class="form-control" value="123 Main Street">
+									</div>
+
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="city">City</label>
+											<input type="text" name="city" class="form-control" value="Sunnyvale">
+										</div>
+										<div class="form-group col-md-3">
+											<label for="states">State</label>
+											<input type="text" name="states" class="form-control" value="CA">
+										</div>
+										<div class="form-group col-md-3">
+											<label for="zip">Zip</label>
+											<input type="text" name="zip" class="form-control" value="55555">
+                                        </div>
+                                        
+                                    </div>
+                                    <!-- these fields visible to admin only								 -->
+									
+                                    <!-- <form class="reg-form" id="passChangeForm" method="post" action="/5c880415198d960e25f613c9/users/account/Organizer"> -->
+                                        <h6>This can be done by Admin only!</h6>
+                                            <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <input type="password" name="newPass" class="form-control" placeholder="new password" required="" readonly="" aria-required="true"><label id="newPass-error" class="error" for="newPass" style="display: none;"></label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <input type="password" name="confirmPass" class="form-control" placeholder="confirm new password" required="" readonly="" aria-required="true"><label id="confirmPass-error" class="error" for="confirmPass" style="display: none;"></label>
+                                            </div>
+                                            <!-- <div class="form-group col-md-6">
+                                                <button type="submit" id="changePassBtn" class="btn btn-primary">Save</button>
+                                            </div> -->
+                                        </div>
+                                    <!-- </form> -->
+                                
+
+                                    <div class="form-group">
+                                    <input type="submit" name="submit" value="Update" class="btn btn-submit mt-1">
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+
+        </script>
+        
+    </body>
+</html>

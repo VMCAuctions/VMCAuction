@@ -388,5 +388,7 @@ function AuctionsController() {
   };
 
 }
-
+this.clerkcheckin = function(req, res) {
+  res.render("clerkCheckIn");
+};
 module.exports = new AuctionsController();
