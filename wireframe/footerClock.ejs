@@ -1,11 +1,27 @@
 <link rel="stylesheet" href="/css/footer.css"> 
 
 <div class="footer">
-	<span>Time left:</span>
 	<p class="timer" data-endClock="<%= auctionDetails.endClock %>"></p>
 </div>
 
 <script>
+
+	var socket = io.connect('http://localhost:8000/');
+	// Updates packageShow page with bid price
+
+	function hideFunction() {
+		var x = document.getElementById("notification");
+		x.style.display = "none";
+	}
+
+	$(document).ready(function () {
+		socket.on("outBidNotification-<%= user.firstName +' '+ user.lastName %>", function (data) {
+			// console.log("Package Bids Array Length",data.package.bids);
+				$("<p id='notification'>You've been outbid by "+ data.package.bids[data.package.bids.length-1].name+" for package "+data.package.name+".<button><a href='/"+data.package._auctions+"/packages/"+data.package._id+"'>Click Here to Respond</a></button><button onclick='hideFunction()'>Dismiss</button></p>").insertBefore(".timer");
+			});
+
+	});
+
 	const desktopClock = document.getElementsByClassName('timer')[0];
 	
 	function countdown(endDate) {
@@ -33,22 +49,22 @@
 			
 				if (days < 1) {
 					desktopClock.innerHTML = `
-						<span>${hours}</span> hours,
+						<span>Time Left: ${hours}</span> hours,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 						`
 					if (hours < 2) {
 						desktopClock.innerHTML = `
-						<span>${hours}</span> hour,
+						<span>Time Left: ${hours}</span> hour,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 						`
 						if (hours < 1) {
 							desktopClock.innerHTML = `
-							<span>${("" + minutes).slice(-2)}</span> minutes
+							<span>Time Left: ${("" + minutes).slice(-2)}</span> minutes
 							`
 						}
 						if (minutes < 3) {
 							desktopClock.innerHTML = `
-								<span>${("" + minutes).slice(-2)}</span> minutes,
+								<span>Time Left: ${("" + minutes).slice(-2)}</span> minutes,
 								<span>${("" + seconds).slice(-2)}</span> seconds
 								`
 						}
@@ -58,19 +74,19 @@
 
 							desktopClock.style.fontWeight = 'bold';
 							desktopClock.innerHTML = `
-								<span>${("" + seconds).slice(-2)}</span> seconds
+								<span>Time Left: ${("" + seconds).slice(-2)}</span> seconds
 								`
 						}
 					}
 				} else {
 					desktopClock.innerHTML = `
-						<span>${days}</span> days,
+						<span>Time Left: ${days}</span> days,
 						<span>${("" + hours).slice(-2)}</span> hours,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 					`
 					if (days < 2) {
 						desktopClock.innerHTML = `
-							<span>${days}</span> day,
+							<span>Time Left: ${days}</span> day,
 							<span>${("" + hours).slice(-2)}</span> hours,
 							<span>${("" + minutes).slice(-2)}</span> minutes
 						`

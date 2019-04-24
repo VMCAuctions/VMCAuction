@@ -19,11 +19,33 @@
 		var socket = io.connect('http://localhost:8000/');
 		// var socket = io.connect('http://dv1.elizabid.com/');
 
+		function change(packageId) {
+			var watchlistButton = document.getElementById("watchlistButton-"+packageId);
+
+			if ( watchlistButton.value == "Remove from Watch List" ) {
+				$.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+				$('#watchlistButton-'+packageId).attr("class","btn btn-add-watchlist mb-3");
+				watchlistButton.value = "Add to Watch List";
+			} else {
+				$.get("/<%= auction %>/users/interested-in-package/"+packageId);
+				watchlistButton.value = "Remove from Watch List";
+				$('#watchlistButton-'+packageId).attr("class","btn btn-remove-watchlist mb-3");
+			}
+		}
+
 			$(document).ready(function(){
         		socket.on("serverTalksBack", function(data){
           		$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
-          		console.log(data.bid);
-        	})
+				  console.log(data.bid);
+				// Update highest bidder and bid amount
+				let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let topBidder = data.userBidLast;
+				$('#highest-bid-'+data.packId).text("$"+ currentBid);
+				$('#highest-bidder-'+data.packId).text(data.userBidLast);
+          }
+		);
+		
+		})
 
 	</script>
 </head>
@@ -69,8 +91,9 @@
 									<li>Value: <span class="value"><%= "$" + featured[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
 									Opening Bid: <span class="opening-bid"> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(featured[f].bids[featured[f].bids.length-1]){%>
-										<li class="mt-1">Highest Bid: <span class="highest-bid"> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= featured[f].bids[featured[f].bids.length-1].name%>)</span></li>
-									<%}else{%>
+										<li class="mt-1">Highest Bid: <span id="highest-bid-<%= featured[f]._id%>" class="highest-bid"> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li>
+										<li class="mt-1">By: <span id="highest-bidder-<%= featured[f]._id%>" class="highest-bid"><%= featured[f].bids[featured[f].bids.length-1].name%></span></li>
+										<%}else{%>
 										<li class="mt-1 no-bid">No bids yet! </li>
 									<%}%>
 									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
@@ -84,7 +107,8 @@
 								<% for(var i = 0; i < user._packages.length; i++){ %>
 									<% if(featured[f]._id == user._packages[i]) {%>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button>
+										<!-- <button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button> -->
+										<input class = "btn btn-remove-watchlist mb-3" onClick="change(<%= featured[f]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%= featured[f]._id %>"></input>
 										<!-- <a href="/<%=auction%>/users/uninterested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
 										<% flag = true %>
 											<% break %>
@@ -92,8 +116,9 @@
 									<%}%>
 
 									<% if(flag === false) {%>
+										<input class = "btn btn-add-watchlist mb-3" onClick="change(<%= featured[f]._id %>)" type="button" value="Add to Watch List" id="watchlistButton-<%= featured[f]._id %>"></input>
 										<!--do this in ajax call instead-->
-										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button>
+										<!-- <button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button> -->
 									<!-- <a href="/<%=auction%>/users/interested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
 									<%}%>
 								<%}%>			

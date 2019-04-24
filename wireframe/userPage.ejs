@@ -57,9 +57,9 @@
       <%for(let i =0; i<user._packages.length; i++){%>
         
         <%if(user._packages[i].bids.length>0){%>
-          <div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+          <div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
         <%}else{%>
-          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
         <%}%>	
         
         <div id="<%=user._packages[i]._id %>" class="card pkg-card">	
@@ -89,8 +89,9 @@
                     Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
                     <li class="category">Minimum Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
                     <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
-                      <li>Highest Bid: <span class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= user._packages[i].bids[user._packages[i].bids.length-1].name%>)</span></li>
-                    <%}else{%>
+                      <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li>
+                      <li>By: <span id="highest-bidder-<%= user._packages[i]._id%>" class="highest-bid"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span></li>
+                      <%}else{%>
                       <li class="no-bid">No bids yet! </li>
                     <%}%>
                    </ul>
@@ -99,8 +100,7 @@
               <%}%>
               <div class="text-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <!-- <a href="/<%=auction%>/users/uninterested/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist" name="uninterested">Remove from Watchlist</button></a> -->
-                <a href="/<%=auction%>/users/uninterestedWatchList/<%=user._packages[i]._id%>"><button type="button" class="btn btn-remove-watchlist mr-2" name="uninterested">Remove from Watchlist</button></a>
+                <input class = "btn btn-remove-watchlist mb-3" onClick="change(<%= user._packages[i]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>"></input>
                 <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
               </div>
           </div>
@@ -110,7 +110,15 @@
     </div> <!-- End of container -->
 
     <script>
+
+      function change(packageId) {
+        var x = document.getElementById("removeWatchList-"+packageId);
+        x.style.display = "none";
+        $.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+          }
+
       $(document).ready(function(){
+
         $("select[name='category']").change( function() {
           var value = $(this).val().toLowerCase();
           $(".package").filter(function(){
@@ -137,10 +145,20 @@
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+         // Update highest bidder and bid amount
+        socket.on("serverTalksBack", function (data) {
+          let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          let topBidder = data.userBidLast;
+          $('#highest-bid-'+data.packId).text("$"+ currentBid);
+          $('#highest-bidder-'+data.packId).text(data.userBidLast);
+          }
+        );
+
       })
     </script>
     
-    <script>
+    <!-- <script>
     	var socket = io.connect('http://localhost:8000/');
       var cartTotal = <%=cartTotal%>
       var userId = '<%= user._id%>';
@@ -148,15 +166,17 @@
       var sortable = Sortable.create(el)
         
       socket.on("serverTalksBack", function(data){
+        let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         var isDone = false;
+
         <%for (var j = 0; j < user._packages.length; j++){%>
           if(<%=user._packages[j]._id%> == data.packId){
             // if(data.userName === "<%=userName%>"){
             if(data.userName === userName){
               console.log("data.userName = ", data.userName)
               console.log("userName = ", userName)
-              $("#<%=user._packages[j]._id%>").text("You!!!")
-              $("#user._packages[j]._id").text("You dude!!!")
+              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);
+              // $("highest-bid-#user._packages[j]._id").text("You dude!!!")
             }
             else{
               $("#<%=user._packages[j]._id%>").text(data.userName)
@@ -166,6 +186,7 @@
             isDone = true
           }
         <%}%>
+
         //This below code only runs if the user has bid on a package that they had not previously had on their watchlist
         if(isDone){
           $("#selections").append(`
@@ -187,6 +208,6 @@
           //If the newest bidder is you, then you will add the new amount to cartTotal
         <%}%>
       })
-    </script>
+    </script> -->
   </body>
 </html>
