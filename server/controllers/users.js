@@ -489,6 +489,29 @@ function UsersController(){
 		}).then(res.redirect('/' + req.params.auctions + '/users'));
 	}
 
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
+	this.sendSMS = function(req,res){
+		console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
+		console.log("401 users.js this.sendSMS start.  req.params = ", req.params)
+		let phone = req.body.phone;
+		let userId = req.body.userId;
+		let auctionId = req.params.auctionId;
+		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/supporter/' + userId;
+		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
+
+		client.messages
+		.create({
+			body: msgBody,
+			from: '+14084098185',
+			to: '+1'+phone
+		})
+		.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
+
+		console.log("410 users.js this.sendSMS.  End message send")
+		res.redirect('/' + req.body.auction + '/clerkDash')
+
+	}
+
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){
 			// console.log('UsersController admin change')

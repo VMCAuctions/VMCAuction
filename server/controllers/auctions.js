@@ -227,7 +227,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			console.log(Date.now()," - 230 auctions.js this.event Package.find packages = ",packages);
+			// console.log("230 auctions.js this.event Package.find packages = ",packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -247,7 +247,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
+    // console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
@@ -294,7 +294,7 @@ function AuctionsController() {
                     console.log(err);
 
                   } else{
-                    console.log('100 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
+                    // console.log('235 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
                     res.render("clerkDash", {
                       current: "Clerk Dashboard",
                       users: users,
@@ -425,6 +425,7 @@ function AuctionsController() {
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
         user.phone = req.body.phone;
+        user.userName = req.body.userName;
         user.streetAddress = req.body.address;
         user.city = req.body.city;
         user.states = req.body.states;
