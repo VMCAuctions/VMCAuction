@@ -33,6 +33,10 @@
 	}
 
 	$(document).ready(function () {
+
+		$("#hide").click(function(){
+    		$("#notification").hide();
+		  });
 		// no bids and no value entered in bid form field
 		$('#submitButton').submit(function (event) {
 			event.preventDefault();
@@ -64,6 +68,7 @@
 			}
 			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>'})
 		});
+
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
 			// console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
@@ -85,6 +90,7 @@
 				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
+
 		//Updates submit button only after bidding has been saved in database 
 		socket.on('buttonStateChannel', function (data) {
 			if ( data.packId == <%= package._id %> ) {
@@ -95,12 +101,13 @@
 				}
 			}
 		});
+
 	})
 	</script>
 </head>
 
 <body>
-
+	
 	<% if(admin == 2){ %>
 		<%- include('adminHeader') -%>
 	<% } else { %>

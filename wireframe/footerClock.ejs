@@ -2,7 +2,6 @@
 
 <div class="footer">
 	<p class="timer" data-endClock="<%= auctionDetails.endClock %>"></p>
-	<p id = "outBid"></p>
 </div>
 
 <script>
@@ -10,12 +9,16 @@
 	var socket = io.connect('http://localhost:8000/');
 	// Updates packageShow page with bid price
 
-	$(document).ready(function () {
-		socket.on("outBidNotice", function (data) {
-			console.log("Package Bids Array Length",data.package.bids);
-			$('#outBid').replaceWith("<p>You've been outbid by "+ data.package.bids[data.package.bids.length-1].name+" for package "+data.package.name+".</p> <p><a href='/"+data.package._auctions+"/packages/"+data.package._id+"'>Click Here to Respond</a></p>");
+	function hideFunction() {
+		var x = document.getElementById("notification");
+		x.style.display = "none";
+	}
 
-		});
+	$(document).ready(function () {
+		socket.on("outBidNotification-<%= user.firstName +' '+ user.lastName %>", function (data) {
+			// console.log("Package Bids Array Length",data.package.bids);
+				$("<p id='notification'>You've been outbid by "+ data.package.bids[data.package.bids.length-1].name+" for package "+data.package.name+".<button><a href='/"+data.package._auctions+"/packages/"+data.package._id+"'>Click Here to Respond</a></button><button onclick='hideFunction()'>Dismiss</button></p>").insertBefore(".timer");
+			});
 
 	});
 

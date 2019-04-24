@@ -205,15 +205,15 @@ io.sockets.on('connection', function (socket) {
 					}
 				})
 
+				let outBidUser = package.bids[package.bids.length-2].name;
+				console.log("outBidUser ###################", outBidUser);
+
 				//checks if the person connected to the socket is the top bidder and emits message to all users connected to the socket
-				if(data.userName == package.bids[package.bids.length-1].name){
-					// console.log("Packages",package);
-					setTimeout(function () {
-						socket.broadcast.emit('outBidNotice', {
+
+						socket.broadcast.emit('outBidNotification-'+outBidUser, {
 							package:package
 						});
-					}, 10000);
-				}
+				
 
 			})
 		}

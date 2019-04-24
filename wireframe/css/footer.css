@@ -5,13 +5,11 @@
     color: #f9f8fa;
     text-align: center;
 	font-family: 'Kameron', serif; 
-
 	position:fixed;
 	bottom:0;
 	z-index: 1;
 	width:100%;
 	font-size: 0.9rem;
-
 	padding: 10px;
 }
 
