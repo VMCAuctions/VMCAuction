@@ -923,12 +923,13 @@ function PackagesController() {
 					if(err){
 						console.log(err)
 					}else{
+						req.session.admin = 0;
 						req.session.userName = user.userName;
 						req.session.user = user;
-						req.session.auctions = user._auctions;
+						req.session.auctions = req.params.auctions;
 						console.log("004 packages.js this.liveAuction. req.session = ",req.session);
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: user._auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'descending'}).exec(function(err, packages) {
 							if(err) {
 								console.log('packages.js this.liveAuction Package.find Package Index Error');
 								res.status(500).send('packages.js this.liveAuction Package.find Failed to Load Packages');
@@ -947,7 +948,7 @@ function PackagesController() {
 									}
 								}
 								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
-								Auction.findById(user._auctions, function (err, auctionDetails) {
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
 									} else {
