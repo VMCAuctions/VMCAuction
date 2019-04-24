@@ -69,10 +69,6 @@
 		}
 	);
 
-
-
-
-
 	</script>
 </head>
 
@@ -89,7 +85,6 @@
 
 	<div class="container margin-tofooter">
 	<h2 class="supporter-view">Auction Catalog</h2>
-
 
 	<div class="d-flex flex-row flex-wrap justify-content-start mt-4">
 		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
@@ -138,11 +133,11 @@
 							<hr>
 							<div class="row ml-1">
 								<ul>
-								<!--<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></li> -->
-									<li>Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
+									<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp; 
+									Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(packages[n].bids[packages[n].bids.length-1]){%>
-										<li class="mt-1">Highest Bid: <span id="highest-bid-<%= packages[n]._id %>" class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li>
-										<li class="mt-1">By: <span id="highest-bidder-<%= packages[n]._id %>" class="highest-bid"><%= packages[n].bids[packages[n].bids.length-1].name%></span></li>
+										<li class="mt-1">Highest Bid: <span id="highest-bid-<%= packages[n]._id %>" class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
+										<span class="highest-bid">(by <span id="highest-bidder-<%= packages[n]._id %>"><%= packages[n].bids[packages[n].bids.length-1].name%></span>)</span></li>
 										<%}else{%>
 										<li class="mt-1 no-bid">No bids yet! </li>
 									<%}%>

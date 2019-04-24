@@ -1,7 +1,8 @@
 <link rel="stylesheet" href="/css/footer.css"> 
 
 <div class="footer">
-	<p class="timer" data-endClock="<%= auctionDetails.endClock %>"></p>
+	<p> Time Left: <br>
+	<span class="timer" data-endClock="<%= auctionDetails.endClock %>"></span></p>
 </div>
 
 <script>
@@ -49,17 +50,17 @@
 			
 				if (days < 1) {
 					desktopClock.innerHTML = `
-						<span>Time Left: ${hours}</span> hours,
+						<span>${hours}</span> hours,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 						`
 					if (hours < 2) {
 						desktopClock.innerHTML = `
-						<span>Time Left: ${hours}</span> hour,
+						<span>${hours}</span> hour,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 						`
 						if (hours < 1) {
 							desktopClock.innerHTML = `
-							<span>Time Left: ${("" + minutes).slice(-2)}</span> minutes
+							<span>${("" + minutes).slice(-2)}</span> minutes
 							`
 						}
 						if (minutes < 3) {
@@ -74,19 +75,19 @@
 
 							desktopClock.style.fontWeight = 'bold';
 							desktopClock.innerHTML = `
-								<span>Time Left: ${("" + seconds).slice(-2)}</span> seconds
+								<span>${("" + seconds).slice(-2)}</span> seconds
 								`
 						}
 					}
 				} else {
 					desktopClock.innerHTML = `
-						<span>Time Left: ${days}</span> days,
+						<span>${days}</span> days,
 						<span>${("" + hours).slice(-2)}</span> hours,
 						<span>${("" + minutes).slice(-2)}</span> minutes
 					`
 					if (days < 2) {
 						desktopClock.innerHTML = `
-							<span>Time Left: ${days}</span> day,
+							<span>${days}</span> day,
 							<span>${("" + hours).slice(-2)}</span> hours,
 							<span>${("" + minutes).slice(-2)}</span> minutes
 						`

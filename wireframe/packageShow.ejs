@@ -172,7 +172,7 @@
 							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value='<%= lastBid + package.bidIncrement %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
-							<input class="ml-2 btn-bid" type='submit' value='Place Bid' id='submitButton2'>
+							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2'>
 					</form>
 				<% } %>
 
@@ -186,13 +186,13 @@
 			<hr>
 
 			<!-- Buttons -->
-			<div class="text-center">
+			<div class="d-flex flex-row justify-content-center align-items-center">
 				<% if (user._packages.includes(package._id)) { %>
-					<input class = "d-inline btn btn-remove-watchlist mb-3" onclick="change(<%= package._id %>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
+					<input class="btn btn-remove-watchlist mr-1" onclick="change(<%= package._id %>)" type="button" value="Remove from Watch List" id="watchlistButton"></input>
 				<% } else { %>
-					<input class = "d-inline btn btn-add-watchlist mb-3" onclick="change(<%= package._id %>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
+					<input class="btn btn-add-watchlist mr-1" onclick="change(<%= package._id %>)" type="button" value="Add to Watch List" id="watchlistButton"></input>
 				<% } %>
-				<button type="button" class="d-inline ml-2 btn btn-history" data-toggle="modal" data-target="#exampleModalLong">Bid History</button>
+				<button type="button" class="btn btn-history ml-1" data-toggle="modal" data-target="#exampleModalLong">Bid History</button>
 			</div>
 
 			<hr>

@@ -88,8 +88,8 @@
                     Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
                     <li class="category">Minimum Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
                     <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
-                      <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li>
-                      <li>By: <span id="highest-bidder-<%= user._packages[i]._id%>" class="highest-bid"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span></li>
+                      <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
+                      <span class="highest-bid">(by: <span id="highest-bidder-<%= user._packages[i]._id%>"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span>)</span></li>
                       <%}else{%>
                       <li class="no-bid">No bids yet! </li>
                     <%}%>
@@ -97,10 +97,10 @@
               </div>
               <hr>
               <%}%>
-              <div class="text-center">
+              <div class="d-flex flex-row justify-content-center align-items-center">
                 <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <input class = "btn btn-remove-watchlist mb-3" onClick="change(<%= user._packages[i]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>"></input>
-                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid mr-1" name="uninterested">Bid</button></a>
+                <input class="btn btn-remove-watchlist mr-1" onClick="change(<%= user._packages[i]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>"></input>
+                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid ml-1" name="uninterested">Bid</button></a>
               </div>
           </div>
         </div>
