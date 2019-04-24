@@ -388,8 +388,53 @@ function AuctionsController() {
     })
   };
 
-}
-this.clerkcheckin = function(req, res) {
-  res.render("clerkCheckIn");
-};
+  this.clerkcheckin = function(req, res) {
+    Auction.findById(req.params.auctions, function(err, auction){
+      if(err){
+        console.log(err)
+      }else{
+        User.find({_auctions: req.params.auctions}, function(err, users){
+          if(err){
+            console.log(err)
+          }else{
+            res.render("clerkCheckinSearch", {
+              auction:auction,
+              users : users
+            });
+          }
+        })
+      }
+    })
+  };
+
+  this.clerkUserCheckIn = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        res.render('clerkCheckinUpdate', {user: user})
+      }
+    })
+  }
+
+  this.clerkUserUpdate = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.phone = req.body.phone;
+        user.streetAddress = req.body.address;
+        user.city = req.body.city;
+        user.states = req.body.states;
+        user.zip = req.body.zip;
+        user.save()
+        res.redirect('/')
+      }
+    })
+  }
+
+
+} //enclosing bracket
 module.exports = new AuctionsController();

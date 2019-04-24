@@ -461,9 +461,17 @@ module.exports = function(app) {
 	//End Clerk Supporter Registration
 	
 
-	app.get('/clerkCheckIn', function(req, res){
+	app.get('/:auctions/clerkCheckIn', function(req, res){
 		auctions.clerkcheckin(req,res)});
 
+	app.get('/:user/clerkUserUpdate', function(req, res){
+		auctions.clerkUserCheckIn(req,res)
+	})
+	app.post('/:user/clerkUserUpdate', function(req,res){
+		auctions.clerkUserUpdate(req,res)
+	})
+
+		
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});

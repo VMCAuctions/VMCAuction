@@ -26,37 +26,36 @@
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-        
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	    <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
     </head>
     <body>
         <%- include('clerkHeader') -%>
         <div id="buttons">
-            <div class="">
+            <div class="text-center mt-1">
                 <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
                         Check in
                         </button>
                 <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
                         Check out
                         </button>
-                <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
-                        Retrieve won packages
-                        </button>
             </div>    
         </div>
         <div id="resultCheckin">
-                <%- include('clerkCheckIn') -%>
+                
         </div>
         <script>
             $(document).ready(function(){
-                var $result = $('#result');
+                var $result = $('#resultCheckin');
+                var auction = '<%=auction%>'
                 $('#resultCheckin').hide();
 
                 $('#checkinButton').click(function(){
-                     $result.load('/clerkCheckIn');
-                   
-                    // $('#resultCheckin').show();
+                     $result.load('/'+auction+'/clerkCheckIn');
+                    $('#resultCheckin').show();
                 });
-            }
+            })
         </script>
     </body>
 </html>
