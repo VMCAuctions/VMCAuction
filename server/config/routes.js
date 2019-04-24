@@ -263,14 +263,13 @@ module.exports = function(app) {
 
 	// CATEGORIES //
 	// get all categories to populate the (updateable) category drop-down
-	app.get('/:auctions/categories', function(req,res){
+	app.get('/categories', function(req,res){
 		categories.index(req,res)});
 	// post a new category
-	app.post('/:auctions/categories', function(req,res){
+	app.post('/categories', function(req,res){
 		categories.create(req,res)});
-
 	// delete a category
-	app.get('/:auctions/categories/:_id/delete', function(req,res){
+	app.get('/categories/:_id/delete', function(req,res){
 		categories.delete(req,res)});
 
 
