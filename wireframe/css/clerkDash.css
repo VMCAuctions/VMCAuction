@@ -11,12 +11,12 @@ img{
   
 }
 .col-2 {
-  width 240px;
+  width: 240px;
   height: 42px;
   display: inline-block;
   }
 .form-group1 {
-  width 240px;
+  width: 240px;
   height: 42px;
   display: inline-block;
 }

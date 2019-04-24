@@ -91,14 +91,17 @@
     });
 
     validator.form();
-
+    
+    
     $('#submitButton').click(function(e){
-        // e.preventDefault();
+        e.preventDefault();
+        var userN = '<%=user.firstName%>'
         $.ajax({
             url:'/<%=user._id%>/clerkUserUpdate',
-            method:'post',
-            data:$('form.registrationForm').serialize(),
+            type:'post',
+            data:$('form#registrationForm').serialize(),
             success:function(){
+                // alert("You have successfully updated "+userN+"'s info.");
                 location.reload();
             }
         })
