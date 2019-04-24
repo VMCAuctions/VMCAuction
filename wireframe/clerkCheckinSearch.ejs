@@ -28,14 +28,15 @@
                         <td>
                             <%=users[u].userName%>
                         </td>
-                        <td>
+                        <td id="phone-<%=users[u]._id%>">
                             <%=users[u].phone%>
                         </td>
                         <td>
                             <%=users[u].table%>
                         </td>  
                         <td>
-                            <button type="button" id="sendLinkButton" class="btn btn-sm btn-add" data-toggle="modal" data-target="#itemsModal">Send Auction link</button>
+                            <!-- <button type="button" id="sendLinkButton" class="btn btn-sm btn-add" data-toggle="modal" data-target="#itemsModal">Send Auction link</button> -->
+                            <button type="button" class="sendLinkButton" id="<%=users[u]._id%>" class="btn btn-sm btn-add">Send Auction link</button>
                         </td>               
                     </tr>
                 <% } %>
@@ -47,25 +48,34 @@
     </div>
 </div>
 <script>
-    $("#supportertable").hide();
-    $("#lastname").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        if (value == '') {
-            // $(".packageRow").show();
-            $("#supportertable").hide();
-        } else {
-            $("#supportertable").show();
-            $(".supporterRow").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
-        });
-        };
-    });
-    $(document).ready(function(){
+	$(document).ready(function(){
+		$("#supportertable").hide();
+		$("#lastname").on("keyup", function () {
+			var value = $(this).val().toLowerCase();
+			if (value == '') {
+				$("#supportertable").hide();
+			} else {
+				$("#supportertable").show();
+				$(".supporterRow").filter(function () {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+			});
+			};
+		});
         $('#user-info').hide();
         $('.updateBtn').click(function(){
             var userID = (this.id)
             $('#user-info').load('/'+userID+'/clerkUserUpdate')
             $('#user-info').show();
-        })
+		});
+
+		$(".sendLinkButton").click(function(){
+			var userID = (this.id);
+
+		});
+
+		
+		
+
+
     })
 </script>

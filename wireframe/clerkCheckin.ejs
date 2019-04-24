@@ -68,14 +68,6 @@
                             <td id='supporterLast'>
                                 <a href="/<%=auction._id%>/clerkDash"> <%= users[u].lastName %> </a>
                             </td>
-                            <!-- <td id="<%= users[u].userName + 'winning' %>">
-                                <ul>
-                                    <% for (var p in cart[users[u].userName].packages) { %>
-                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
-                                            $<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %></li>
-                                    <% } %>
-                                </ul>
-                            </td> -->
                            
                             <td id="<%= users[u].userName + 'total' %>">
                                 $<%= cart[users[u].userName].total %>

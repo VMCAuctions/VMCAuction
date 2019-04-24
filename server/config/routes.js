@@ -214,7 +214,7 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/:auctions/packages/items/:id', function(req,res){
 
-		console.log(Date.now()," - 040 routes.js /:aucs/pkgs/items/:id.  req.body = ",req.body);
+		console.log('040 routes.js /:aucs/pkgs/items/:id.  req.body = ',req.body);
 		
 		packages.itemsUpdate(req, res)});
 	
@@ -275,6 +275,13 @@ module.exports = function(app) {
 
 
 	// USERS //
+	// route for supporter to access the live auction site on their phone.  this is the route from the SMS text message in clerk checkin
+	// app.get('/:auctions/supporter/:id', function(req,res){
+	app.get('/users/sendSMS', function(req,res){
+		console.log('050 routes.js /:auctions/supporter/:id. req.params = ',req.params);
+		console.log('050 routes.js /:auctions/supporter/:id. data = ',data);
+		packages.liveAuction(req,res)});
+
 	// get the index page of all users
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
