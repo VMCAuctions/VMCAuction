@@ -95,226 +95,7 @@
 		}
 	</style> 
 
-	<script>
-		// color picker
-		var myCP;
-		function doOnLoad() {
-			myCP = new dhtmlXColorPicker({
-				parent: "cpObj",
-				custom_colors: ["#206cc2"],
-				closeable: false
-			});
-			myCP.attachEvent("onChange", setColor);
-		};
-		
-		function doOnUnload() {
-			if (myCP != null) {
-				myCP.unload();
-				myCP = null;
-			}
-		};
-		
-		function setColor(color) {
-			var ct = document.getElementById("colorType");
-			var background = document.getElementById("bg");
-			var titleColor = document.getElementById("titleText");
-			var secondary = document.querySelectorAll(".secondaryColor");
-			var secondaryBorder = document.querySelector('#photoBorder');
-			var mainTextColors = document.querySelectorAll('.mainTextColor');
 
-			switch (ct.value) {
-				case "text":
-					mainTextColors.forEach(function(item) {
-						item.style.color = color;
-					});
-					break;
-				case "bg":
-					background.style.backgroundColor =  color;
-					break;
-				case "title":
-					titleColor.style.color = color;
-					break;
-				case "secondary":
-					secondary.forEach(function(item) {
-						item.style.backgroundColor =  color;
-					});
-					secondaryBorder.style.border = `5px solid ${color}`;
-					break;
-			}
-		};
-		// color picker END
-
-		function retrieveData(x) {
-			var upright = document.getElementsByClassName("form")[0];
-			upright.classList.remove("hidden");
-
-			// creates upright from getting data from the table
-			var index = x.rowIndex;
-			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
-			var packageId = document.getElementById("packageId");
-
-			var photo = document.getElementById("tableRow").rows[index].cells[4].innerHTML;
-			var photoBox = document.getElementById("photoBorder");
-
-			var title = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
-			var titleBox = document.getElementsByClassName("resized-text")[1];
-
-			var value = document.getElementById("tableRow").rows[index].cells[5].innerHTML;
-			var valueBox = document.getElementsByClassName("value")[0];
-
-			var desc = document.getElementById("tableRow").rows[index].cells[6].innerHTML;
-			var descBox = document.getElementsByClassName("resized-text")[2];
-
-			var donor = document.getElementById("tableRow").rows[index].cells[7].innerHTML;
-			var donorBox = document.getElementsByClassName("resized-text")[0];
-
-			packageId.textContent = "#" + id;
-			photoBox.src = `/${photo}`
-			titleBox.innerHTML = title;
-			valueBox.innerHTML = `Value: ${value}`;
-			descBox.innerHTML = desc;
-			donorBox.innerHTML = `Donors: ${donor}`;
-
-			// highlights selected table row
-			var rowsNotSelected = tableRow.getElementsByTagName('tr');
-			for (var row = 0; row < rowsNotSelected.length; row++) {
-				rowsNotSelected[row].style.backgroundColor = "";
-				rowsNotSelected[row].style.color = "#404040";
-				rowsNotSelected[row].classList.remove('selected');
-			}
-			var rowSelected = tableRow.getElementsByTagName('tr')[index];
-			rowSelected.style.backgroundColor = '#003d79';
-			rowSelected.style.color = "#FFFFFF";
-			rowSelected.className += 'selected';
-
-			// font resizing on uprights
-			$('#fitin div').css('font-size', '1em');
-			
-			while( $('#fitin div').height() > $('#fitin').height() ) {
-				$('#fitin div').css('font-size', (parseInt($('#fitin div').css('font-size')) - 1) + "px" );
-			}
-
-			$('.donor div').css('font-size', '1em');
-			
-			while( $('.donor div').height() > $('.donor').height() ) {
-				$('.donor div').css('font-size', (parseInt($('.donor div').css('font-size')) - 1) + "px" );
-			}
-
-			$('.title div').css('font-size', '1em');
-			
-			while( $('.title div').height() > $('.title').height() ) {
-				$('.title div').css('font-size', (parseInt($('.title div').css('font-size')) - 1) + "px" );
-			}
-
-			// display colors if they have been saved on a specific upright
-			var background = document.getElementById("bg");
-			var titleColor = document.getElementById("titleText");
-			var secondary = document.querySelectorAll(".secondaryColor");
-			var secondaryBorder = document.querySelector('#photoBorder');
-			var mainTextColors = document.querySelectorAll('.mainTextColor');
-
-			var savedColorInputs = document.getElementsByClassName("saved-colors")[0];
-
-			var jsonColors = JSON.parse(localStorage.getItem(id));
-
-			document.getElementById("inputBg").value = "";
-			document.getElementById("inputText").value = "";
-			document.getElementById("inputSecondBg").value = "";
-			document.getElementById("inputTitle").value = "";
-
-			if (jsonColors){
-				
-				savedColorInputs.classList.remove("hide");
-
-				background.style.backgroundColor = "rgb(32, 108, 194)";
-				mainTextColors.forEach(function(item) {
-					item.style.color = "#FFF";
-				});
-				secondary.forEach(function(item) {
-					item.style.backgroundColor = "#000";
-				});
-				secondaryBorder.style.border = `5px solid #000`;
-				titleColor.style.color = "#FFF";
-
-				if (jsonColors.bgColor !== ""){
-					background.style.backgroundColor = jsonColors.bgColor;
-					document.getElementById("inputBg").value = jsonColors.bgColor;
-					document.getElementById("circleBg").style.color = jsonColors.bgColor;
-				}
-				if (jsonColors.mainTextColor !== "") {
-					mainTextColors.forEach(function(item) {
-						item.style.color = jsonColors.mainTextColor;
-					});
-					document.getElementById("inputText").value = jsonColors.mainTextColor;
-					document.getElementById("circleText").style.color = jsonColors.mainTextColor;
-				}
-				if (jsonColors.secondary !== ""){
-					secondary.forEach(function(item) {
-						item.style.backgroundColor = jsonColors.secondary;
-					});
-					secondaryBorder.style.border = `5px solid ${jsonColors.secondary}`;
-					document.getElementById("inputSecondBg").value = jsonColors.secondary;
-					document.getElementById("circleSecond").style.color = jsonColors.secondary;
-				}
-				if (jsonColors.titleColor !== ""){
-					titleColor.style.color = jsonColors.titleColor;
-					document.getElementById("inputTitle").value = jsonColors.titleColor;
-					document.getElementById("circleTitle").style.color = jsonColors.titleColor;
-				}
-			} else {
-				savedColorInputs.classList.add("hide");
-			}
-		}
-
-		// store colors on save in local storage
-		function saveColors(x) {
-			var index = x.parentNode.parentNode.rowIndex;
-			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
-
-			var background = document.getElementById("bg");
-			var titleColor = document.getElementById("titleText");
-			var secondary = document.querySelectorAll(".secondaryColor")[0];
-			var secondaryBorder = document.querySelector('#photoBorder');
-			var mainTextColors = document.querySelectorAll('.mainTextColor')[0];
-
-			var bgColor = background.style.backgroundColor;
-			var title = titleColor.style.color;
-			var secondaryColor = secondary.style.backgroundColor;
-			var photoBorder = secondaryBorder.style.borderColor;
-			var mainText = mainTextColors.style.color;
-
-			localStorage.setItem(id, JSON.stringify({
-				bgColor: colorToHex(bgColor),
-				titleColor: colorToHex(title),
-				secondary: colorToHex(secondaryColor),
-				secondaryBorder: colorToHex(photoBorder),
-				mainTextColor: colorToHex(mainText)
-			}));
-		}
-
-		function deleteColors(x) {
-			var index = x.parentNode.parentNode.rowIndex;
-			var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
-			localStorage.removeItem(id);
-		}
-
-		function colorToHex(color) {
-			if (color) {
-				if (color.substr(0, 1) === '#') {
-					return color;
-				}
-				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-				
-				var red = parseInt(digits[2]);
-				var green = parseInt(digits[3]);
-				var blue = parseInt(digits[4]);
-				
-				var rgb = blue | (green << 8) | (red << 16);
-				return digits[1] + '#' + rgb.toString(16).padStart(6, '0');
-			}
-		};
-
-	</script>
 	
   </head>
 
@@ -342,7 +123,7 @@
 						* Please note an upright without any saved color changes will inherit the colors from the last upright you viewed.
 
 					</div>
-					<!-- <table class="table table-bordered table-sm summary-table mt-4" id="tableRow"> -->
+
 					<table class="table table-bordered" id="tableRow">
 						<thead>
 							<tr class="text-center">
@@ -422,8 +203,6 @@
 					</div>
 			
 					<div id="cpObj"></div>
-					<!-- <input type="button" id="saveColors" onclick="saveColors()" value="Save This Upright Color Scheme"> -->
-					<!-- <input type="button" id="create_pdf" value="Open PDF"> -->
 
 					<form class="saved-colors hide">
 						<h5>The saved colors for this upright: </h5>
@@ -439,8 +218,226 @@
 				</div>
 			</div>
 		</div>
-		
-		<script> 
+		<script>
+			// color picker
+			var myCP;
+			function doOnLoad() {
+				myCP = new dhtmlXColorPicker({
+					parent: "cpObj",
+					custom_colors: ["#206cc2"],
+					closeable: false
+				});
+				myCP.attachEvent("onChange", setColor);
+			};
+			
+			function doOnUnload() {
+				if (myCP != null) {
+					myCP.unload();
+					myCP = null;
+				}
+			};
+			
+			function setColor(color) {
+				var ct = document.getElementById("colorType");
+				var background = document.getElementById("bg");
+				var titleColor = document.getElementById("titleText");
+				var secondary = document.querySelectorAll(".secondaryColor");
+				var secondaryBorder = document.querySelector('#photoBorder');
+				var mainTextColors = document.querySelectorAll('.mainTextColor');
+	
+				switch (ct.value) {
+					case "text":
+						mainTextColors.forEach(function(item) {
+							item.style.color = color;
+						});
+						break;
+					case "bg":
+						background.style.backgroundColor =  color;
+						break;
+					case "title":
+						titleColor.style.color = color;
+						break;
+					case "secondary":
+						secondary.forEach(function(item) {
+							item.style.backgroundColor =  color;
+						});
+						secondaryBorder.style.border = `5px solid ${color}`;
+						break;
+				}
+			};
+			// color picker END
+	
+			// on row click
+			function retrieveData(x) {
+				var upright = document.getElementsByClassName("form")[0];
+				upright.classList.remove("hidden");
+	
+				// creates upright from getting data from the table
+				var index = x.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+				var packageId = document.getElementById("packageId");
+	
+				var photo = document.getElementById("tableRow").rows[index].cells[4].innerHTML;
+				var photoBox = document.getElementById("photoBorder");
+	
+				var title = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+				var titleBox = document.getElementsByClassName("resized-text")[1];
+	
+				var value = document.getElementById("tableRow").rows[index].cells[5].innerHTML;
+				var valueBox = document.getElementsByClassName("value")[0];
+	
+				var desc = document.getElementById("tableRow").rows[index].cells[6].innerHTML;
+				var descBox = document.getElementsByClassName("resized-text")[2];
+	
+				var donor = document.getElementById("tableRow").rows[index].cells[7].innerHTML;
+				var donorBox = document.getElementsByClassName("resized-text")[0];
+	
+				packageId.textContent = "#" + id;
+				photoBox.src = `/${photo}`
+				titleBox.innerHTML = title;
+				valueBox.innerHTML = `Value: ${value}`;
+				descBox.innerHTML = desc;
+				donorBox.innerHTML = `Donors: ${donor}`;
+	
+				// highlights selected table row
+				var rowsNotSelected = tableRow.getElementsByTagName('tr');
+				for (var row = 0; row < rowsNotSelected.length; row++) {
+					rowsNotSelected[row].style.backgroundColor = "";
+					rowsNotSelected[row].style.color = "#404040";
+					rowsNotSelected[row].classList.remove('selected');
+				}
+				var rowSelected = tableRow.getElementsByTagName('tr')[index];
+				rowSelected.style.backgroundColor = '#003d79';
+				rowSelected.style.color = "#FFFFFF";
+				rowSelected.className += 'selected';
+	
+				// font resizing on uprights
+				$('#fitin div').css('font-size', '1em');
+				
+				while( $('#fitin div').height() > $('#fitin').height() ) {
+					$('#fitin div').css('font-size', (parseInt($('#fitin div').css('font-size')) - 1) + "px" );
+				}
+	
+				$('.donor div').css('font-size', '1em');
+				
+				while( $('.donor div').height() > $('.donor').height() ) {
+					$('.donor div').css('font-size', (parseInt($('.donor div').css('font-size')) - 1) + "px" );
+				}
+	
+				$('.title div').css('font-size', '1em');
+				
+				while( $('.title div').height() > $('.title').height() ) {
+					$('.title div').css('font-size', (parseInt($('.title div').css('font-size')) - 1) + "px" );
+				}
+	
+				// display colors if they have been saved on a specific upright
+				var background = document.getElementById("bg");
+				var titleColor = document.getElementById("titleText");
+				var secondary = document.querySelectorAll(".secondaryColor");
+				var secondaryBorder = document.querySelector('#photoBorder');
+				var mainTextColors = document.querySelectorAll('.mainTextColor');
+	
+				var savedColorInputs = document.getElementsByClassName("saved-colors")[0];
+	
+				var jsonColors = JSON.parse(localStorage.getItem(id));
+	
+				document.getElementById("inputBg").value = "";
+				document.getElementById("inputText").value = "";
+				document.getElementById("inputSecondBg").value = "";
+				document.getElementById("inputTitle").value = "";
+	
+				if (jsonColors){
+					
+					savedColorInputs.classList.remove("hide");
+	
+					background.style.backgroundColor = "rgb(32, 108, 194)";
+					mainTextColors.forEach(function(item) {
+						item.style.color = "#FFF";
+					});
+					secondary.forEach(function(item) {
+						item.style.backgroundColor = "#000";
+					});
+					secondaryBorder.style.border = `5px solid #000`;
+					titleColor.style.color = "#FFF";
+	
+					if (jsonColors.bgColor !== ""){
+						background.style.backgroundColor = jsonColors.bgColor;
+						document.getElementById("inputBg").value = jsonColors.bgColor;
+						document.getElementById("circleBg").style.color = jsonColors.bgColor;
+					}
+					if (jsonColors.mainTextColor !== "") {
+						mainTextColors.forEach(function(item) {
+							item.style.color = jsonColors.mainTextColor;
+						});
+						document.getElementById("inputText").value = jsonColors.mainTextColor;
+						document.getElementById("circleText").style.color = jsonColors.mainTextColor;
+					}
+					if (jsonColors.secondary !== ""){
+						secondary.forEach(function(item) {
+							item.style.backgroundColor = jsonColors.secondary;
+						});
+						secondaryBorder.style.border = `5px solid ${jsonColors.secondary}`;
+						document.getElementById("inputSecondBg").value = jsonColors.secondary;
+						document.getElementById("circleSecond").style.color = jsonColors.secondary;
+					}
+					if (jsonColors.titleColor !== ""){
+						titleColor.style.color = jsonColors.titleColor;
+						document.getElementById("inputTitle").value = jsonColors.titleColor;
+						document.getElementById("circleTitle").style.color = jsonColors.titleColor;
+					}
+				} else {
+					savedColorInputs.classList.add("hide");
+				}
+			}
+	
+			// store colors on save in local storage
+			function saveColors(x) {
+				var index = x.parentNode.parentNode.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+	
+				var background = document.getElementById("bg");
+				var titleColor = document.getElementById("titleText");
+				var secondary = document.querySelectorAll(".secondaryColor")[0];
+				var secondaryBorder = document.querySelector('#photoBorder');
+				var mainTextColors = document.querySelectorAll('.mainTextColor')[0];
+	
+				var bgColor = background.style.backgroundColor;
+				var title = titleColor.style.color;
+				var secondaryColor = secondary.style.backgroundColor;
+				var photoBorder = secondaryBorder.style.borderColor;
+				var mainText = mainTextColors.style.color;
+	
+				localStorage.setItem(id, JSON.stringify({
+					bgColor: colorToHex(bgColor),
+					titleColor: colorToHex(title),
+					secondary: colorToHex(secondaryColor),
+					secondaryBorder: colorToHex(photoBorder),
+					mainTextColor: colorToHex(mainText)
+				}));
+			}
+	
+			function deleteColors(x) {
+				var index = x.parentNode.parentNode.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+				localStorage.removeItem(id);
+			}
+	
+			function colorToHex(color) {
+				if (color) {
+					if (color.substr(0, 1) === '#') {
+						return color;
+					}
+					var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+					
+					var red = parseInt(digits[2]);
+					var green = parseInt(digits[3]);
+					var blue = parseInt(digits[4]);
+					
+					var rgb = blue | (green << 8) | (red << 16);
+					return digits[1] + '#' + rgb.toString(16).padStart(6, '0');
+				}
+			};
+
 			$(document).ready(function() {
 				
 				// Initializes Data Tables plugin
@@ -454,7 +451,7 @@
 						"columnDefs": [
 							{ "orderable": false, "targets": 3 }
 						]
-				}
+					}
 				);
 			});  
 
@@ -466,7 +463,7 @@
 			
 				$('.create_pdf').on('click', function () {  
 					$('body').scrollTop(0);  
-					createPDF(); 
+					createPDF(this); 
 					var div = document.querySelector('#form');
 					div.style.position = 'relative';
 					div.style.top = '0px';
@@ -474,18 +471,28 @@
 				});  
 
 				//create pdf  
-				function createPDF() {  
-					getCanvas().then(function (canvas) {  
+				function createPDF(x) {  
+					getCanvas().then(function (canvas) {
+						var row = x.parentElement.parentElement;
+						var index = row.rowIndex;
+						var date = Date.now();
+						var packageId = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+						var packageName = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+						var lowerName = packageName.replace(/[\. !?+=,:-]+/g, "-").toLowerCase();
+						var fileName = `packageflyer-${packageId}-${lowerName}-${date}.pdf`;
 						var  
 							img = canvas.toDataURL("image/png"),  
 							doc = new jsPDF({  
 								unit: 'in',  
 								format: [12.44, 16.17]
-								// format: [8.5, 11]
 							});  
-						doc.addImage(img, 'JPEG', 0, 0);  
+						doc.addImage(img, 'JPEG', 0, 0); 
+						doc.setProperties({
+							title: fileName
+						}); 
 						window.open(URL.createObjectURL(doc.output("blob")));
-						form.width(cache_width);  
+						form.width(cache_width);
+						doc.save(fileName);  
 					});  
 				}  
 			
