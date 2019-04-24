@@ -237,6 +237,7 @@
 				}
 			};
 			
+			// color picker sets color on upright
 			function setColor(color) {
 				var ct = document.getElementById("colorType");
 				var background = document.getElementById("bg");
@@ -269,10 +270,12 @@
 	
 			// on row click
 			function retrieveData(x) {
+	
+				// show upright and plug in data from the table
+
 				var upright = document.getElementsByClassName("form")[0];
 				upright.classList.remove("hidden");
-	
-				// creates upright from getting data from the table
+
 				var index = x.rowIndex;
 				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
 				var packageId = document.getElementById("packageId");
