@@ -397,8 +397,9 @@ function AuctionsController() {
           if(err){
             console.log(err)
           }else{
+            req.session.auctionID = auction._id
             res.render("clerkCheckinSearch", {
-              auction:auction,
+              auction: auction,
               users : users
             });
           }
@@ -412,7 +413,8 @@ function AuctionsController() {
       if(err){
         console.log(err)
       }else{
-        res.render('clerkCheckinUpdate', {user: user})
+        auctionID = req.session.auctionID
+        res.render('clerkCheckinUpdate', {user: user, auctionID : auctionID})
       }
     })
   }

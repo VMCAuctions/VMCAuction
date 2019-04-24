@@ -8,6 +8,11 @@ var mongoose = require('mongoose'),
 	globals = require('../controllers/globals.js')
 const csv=require('csvtojson')
 
+// Twilio SMS text code:
+const accountSid = 'ACe934e476850c6aad07495e0458b5f3d8';
+const authToken = '64e154100649fcef2e61226d1464a252';
+const client = require('twilio')(accountSid, authToken);
+
 function UsersController(){
 
 	function registrationValidation(input) {
@@ -495,7 +500,7 @@ function UsersController(){
 		console.log("401 users.js this.sendSMS start.  req.params = ", req.params)
 		let phone = req.body.phone;
 		let userId = req.body.userId;
-		let auctionId = req.params.auctionId;
+		let auctionId = req.body.auction;
 		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/supporter/' + userId;
 		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
 

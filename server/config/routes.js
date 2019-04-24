@@ -314,7 +314,7 @@ module.exports = function(app) {
 
 	// actually adding supporters from csv - original
 	// app.post('/:auctions/users/usersImport', function(req, res){
-	// 	console.log("201 routes.js /:auc./users/supportersCsv route")
+	// 	console.log("201 routes.js /:auc./supportersCsv route")
 	// 	users.usersCsv(req, res)});
 
 	app.post('/:auctions/users/usersImport', function(req, res){
@@ -398,6 +398,16 @@ module.exports = function(app) {
 		//deletes a user (Note: no front-end link to this route yet)
 	app.get('/:auction/users/delete/:id', function(req, res){
 		users.delete(req,res)});
+
+	// Send SMS text link to supporter at auction checkin
+	app.post('/users/sendSMS', function(req,res) {
+	// console.log("351 routes.js /users/sendSMS  req.body = ",req.body)
+	users.sendSMS(req,res)});
+
+	// Handles SMS text link request for supporter to access the auction website on day of auction
+    app.get('/:auctions/supporter/:id', function(req,res){
+        console.log("351 routes.js supporter auction access link. req.body = ",req.body);
+        packages.index(req,res)});
 
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)	

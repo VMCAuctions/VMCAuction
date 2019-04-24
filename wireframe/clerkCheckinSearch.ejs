@@ -28,7 +28,7 @@
                         <td>
                             <%=users[u].userName%>
                         </td>
-                        <td id="phone-<%=users[u]._id%>">
+                        <td class="phone-<%=users[u]._id%>">
                             <%=users[u].phone%>
                         </td>
                         <td>
@@ -36,7 +36,7 @@
                         </td>  
                         <td>
                             <!-- <button type="button" id="sendLinkButton" class="btn btn-sm btn-add" data-toggle="modal" data-target="#itemsModal">Send Auction link</button> -->
-                            <button type="button" class="sendLinkButton" id="<%=users[u]._id%>" class="btn btn-sm btn-add">Send Auction link</button>
+                            <button type="button" class="sendLinkButton btn btn-sm btn-add" id="<%=users[u]._id%>" >Send Auction link</button>
                         </td>               
                     </tr>
                 <% } %>
@@ -68,9 +68,14 @@
             $('#user-info').show();
 		});
 
-		$(".sendLinkButton").click(function(){
+		$(".sendLinkButton").click(function(e){
+            e.preventDefault();
 			var userID = (this.id);
-
+            var auctionID = '<%=auction._id%>';
+            console.log("here")
+            var phone = this
+            console.log("PHONE?", phone)
+            
 		});
 
 		
