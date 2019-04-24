@@ -76,10 +76,11 @@ var packagesButtonStates = {};
 		if (err) {
 			console.log("init Server object error", err)
 		} else {
+			console.log("100 Server.js Package.find pkgs = ", pkgs)
 			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
-				packagesButtonStates[pkgs[i]._id].buttonstate = true;
+				packagesButtonStates[pkgs[i]._id].buttonstate = true;				console.log("125 Server.js Package find packagesButtonStates = ",packagesButtonStates)
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
 				if (pkgs[i].bids.length != 0) {
@@ -105,8 +106,8 @@ io.sockets.on('connection', function (socket) {
 	// THE CHANNEL "msgSent" TO LISTEN ALL BIDS FROM FRONTEND, AND RETURN THEM BACK
 	// USING UNIQUE CHANNELS WITH PACKAGE IDs
 	socket.on("msgSent", function (data) {
+
 		console.log("Message Received By Server the Bid",data);
-		// console.log("100 server.js io.sockets.  data = ",data);
 		// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 		var uniqChatUpdateId = 'updateChat' + data.packId;
 		// WE WANT TO DISABLE ALL BUTTONS UNTIL WE UPDATE THE DATABASE AND SERVER OBJECT
@@ -117,8 +118,19 @@ io.sockets.on('connection', function (socket) {
 			packId: data.packId
 		});
 
-		//creates dates
-		var date = new Date();
+		// let auctionPrimary;
+		// Auction.findById(data.auction, function(err, auction){
+		// 	if(err){
+		// 		console.log(err);
+		// 	} else {
+		// 		auctionPrimary = auction;
+		// 		console.log(auctionPrimary);
+		// 	}
+		// })
+
+		// //creates dates
+		// var date = new Date();
+		// console.log(date);
 
 		//function to calculate time ex: '7:30 PM'
 		function formatAMPM(date) {
@@ -144,6 +156,14 @@ io.sockets.on('connection', function (socket) {
 				return strTime;
 			}
 		let bidTime = formatAMPM(date);
+		
+		if (allBidsBigObj[data.packId] == undefined) {
+			allBidsBigObj[data.packId] = [];
+		}  
+		
+		if(packagesButtonStates[data.packId] == undefined){
+			packagesButtonStates[data.packId] = {buttonstate: "true"};
+		}
 
 		if (packagesButtonStates[data.packId].buttonstate) {
 			// NOW NOBODY WILL BE ALLOWED TO MAKE A BID IN THIS PACKAGE UNTILL
@@ -152,10 +172,6 @@ io.sockets.on('connection', function (socket) {
 			packagesButtonStates[data.packId].buttonstate = false;
 			let userBid = parseInt(data.bid);
 			let userName = data.userName;
-
-			if (allBidsBigObj[data.packId] == undefined) {
-				allBidsBigObj[data.packId] = [];
-			}
 
 			allBidsBigObj[data.packId].push({
 				bid: data.bid,
@@ -205,16 +221,14 @@ io.sockets.on('connection', function (socket) {
 					}
 				})
 
-				let outBidUser = package.bids[package.bids.length-2].name;
-				console.log("outBidUser ###################", outBidUser);
+				if( package.bids.length == 1 ){
 
-				//checks if the person connected to the socket is the top bidder and emits message to all users connected to the socket
-
-						socket.broadcast.emit('outBidNotification-'+outBidUser, {
-							package:package
-						});
-				
-
+				} else {
+					let outBidUser = package.bids[package.bids.length-2].name;
+					socket.broadcast.emit('outBidNotification-'+outBidUser, {
+						package:package
+					});
+				}
 			})
 		}
 
