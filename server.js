@@ -129,7 +129,7 @@ io.sockets.on('connection', function (socket) {
 		// })
 
 		// //creates dates
-		// var date = new Date();
+		var date = new Date();
 		// console.log(date);
 
 		//function to calculate time ex: '7:30 PM'
