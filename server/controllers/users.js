@@ -8,6 +8,11 @@ var mongoose = require('mongoose'),
 	globals = require('../controllers/globals.js')
 const csv=require('csvtojson')
 
+// Twilio SMS text code:
+const accountSid = 'ACe934e476850c6aad07495e0458b5f3d8';
+const authToken = '64e154100649fcef2e61226d1464a252';
+const client = require('twilio')(accountSid, authToken);
+
 function UsersController(){
 
 	function registrationValidation(input) {
@@ -487,6 +492,29 @@ function UsersController(){
 			}
 			
 		}).then(res.redirect('/' + req.params.auctions + '/users'));
+	}
+
+	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
+	this.sendSMS = function(req,res){
+		console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
+		console.log("401 users.js this.sendSMS start.  req.params = ", req.params)
+		let phone = req.body.phone;
+		let userId = req.body.userId;
+		let auctionId = req.body.auction;
+		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/supporter/' + userId;
+		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
+
+		client.messages
+		.create({
+			body: msgBody,
+			from: '+14084098185',
+			to: '+1'+phone
+		})
+		.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
+
+		console.log("410 users.js this.sendSMS.  End message send")
+		res.redirect('/' + req.body.auction + '/clerkDash')
+
 	}
 
 	this.adminChange = function(req,res){

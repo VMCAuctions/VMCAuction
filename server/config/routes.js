@@ -214,7 +214,7 @@ module.exports = function(app) {
 	// update a single package
 	app.post('/:auctions/packages/items/:id', function(req,res){
 
-		console.log(Date.now()," - 040 routes.js /:aucs/pkgs/items/:id.  req.body = ",req.body);
+		console.log('040 routes.js /:aucs/pkgs/items/:id.  req.body = ',req.body);
 		
 		packages.itemsUpdate(req, res)});
 	
@@ -274,6 +274,13 @@ module.exports = function(app) {
 
 
 	// USERS //
+	// route for supporter to access the live auction site on their phone.  this is the route from the SMS text message in clerk checkin
+	// app.get('/:auctions/supporter/:id', function(req,res){
+	app.get('/users/sendSMS', function(req,res){
+		console.log('050 routes.js /:auctions/supporter/:id. req.params = ',req.params);
+		console.log('050 routes.js /:auctions/supporter/:id. data = ',data);
+		packages.liveAuction(req,res)});
+
 	// get the index page of all users
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
@@ -306,7 +313,7 @@ module.exports = function(app) {
 
 	// actually adding supporters from csv - original
 	// app.post('/:auctions/users/usersImport', function(req, res){
-	// 	console.log("201 routes.js /:auc./users/supportersCsv route")
+	// 	console.log("201 routes.js /:auc./supportersCsv route")
 	// 	users.usersCsv(req, res)});
 
 	app.post('/:auctions/users/usersImport', function(req, res){
@@ -391,6 +398,16 @@ module.exports = function(app) {
 	app.get('/:auction/users/delete/:id', function(req, res){
 		users.delete(req,res)});
 
+	// Send SMS text link to supporter at auction checkin
+	app.post('/users/sendSMS', function(req,res) {
+	// console.log("351 routes.js /users/sendSMS  req.body = ",req.body)
+	users.sendSMS(req,res)});
+
+	// Handles SMS text link request for supporter to access the auction website on day of auction
+    app.get('/:auctions/supporter/:id', function(req,res){
+        console.log("351 routes.js supporter auction access link. req.body = ",req.body);
+        packages.liveAuction(req,res)});
+
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)	
 	app.get('^/auctions/main', function (req, res) {
@@ -449,6 +466,7 @@ module.exports = function(app) {
 	app.post('/clerk/pin', function(req, res){
 		auctions.pinCheck(req,res)});
 
+
 	//Start Clear Supporter Registration
 	app.get('/:auctions/clerk/register-supporter', function(req,res){
 		auctions.clerkRegSup(req,res)
@@ -458,6 +476,18 @@ module.exports = function(app) {
 	});
 	//End Clerk Supporter Registration
 	
+
+	app.get('/:auctions/clerkCheckIn', function(req, res){
+		auctions.clerkcheckin(req,res)});
+
+	app.get('/:user/clerkUserUpdate', function(req, res){
+		auctions.clerkUserCheckIn(req,res)
+	})
+	app.post('/:user/clerkUserUpdate', function(req,res){
+		auctions.clerkUserUpdate(req,res)
+	})
+
+		
 	//Landing Page (Packages page)
 	app.get('/:auctions/*', function (req,res) {
 		packages.index(req,res)});

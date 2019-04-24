@@ -227,7 +227,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			console.log(Date.now()," - 230 auctions.js this.event Package.find packages = ",packages);
+			// console.log("230 auctions.js this.event Package.find packages = ",packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -247,7 +247,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+    // console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
@@ -289,12 +289,12 @@ function AuctionsController() {
                   };
                 }
                 //Current is a flag showing which page is active
-                Auction.findById({_id:req.params.auctions}, function(err, auction){
+                Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
                   if (err){
                     console.log(err);
 
                   } else{
-                    console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
+                    // console.log('235 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
                     res.render("clerkDash", {
                       current: "Clerk Dashboard",
                       users: users,
@@ -303,7 +303,8 @@ function AuctionsController() {
                       items: items,
                       userName: req.session.userName,
                       admin: req.session.admin,
-                      auction: auction
+                      auctionDetails: auctionDetails,
+              		  auction: req.params.auctions,
                     });
                   }
                 });
@@ -346,7 +347,7 @@ function AuctionsController() {
         if(err){
           console.log(err);
         }else{
-          res.render('clerkRegSupp',{auction: auction,})
+          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction})
         }
       })
     }else{
@@ -361,7 +362,8 @@ function AuctionsController() {
       }else{
         User.findOne({userName: req.body.userName}, function (err, user){
           if(user){
-            res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+            // res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+            res.redirect('/'+req.params.auctions+'/clerkDash');
           }else{
             User.create({
               userName: req.body.userName,
@@ -386,6 +388,56 @@ function AuctionsController() {
     })
   };
 
-}
+  this.clerkcheckin = function(req, res) {
+    Auction.findById(req.params.auctions, function(err, auction){
+      if(err){
+        console.log(err)
+      }else{
+        User.find({_auctions: req.params.auctions}, function(err, users){
+          if(err){
+            console.log(err)
+          }else{
+            req.session.auctionID = auction._id
+            res.render("clerkCheckinSearch", {
+              auction: auction,
+              users : users
+            });
+          }
+        })
+      }
+    })
+  };
 
+  this.clerkUserCheckIn = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        auctionID = req.session.auctionID
+        res.render('clerkCheckinUpdate', {user: user, auctionID : auctionID})
+      }
+    })
+  }
+
+  this.clerkUserUpdate = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.phone = req.body.phone;
+        user.userName = req.body.userName;
+        user.streetAddress = req.body.address;
+        user.city = req.body.city;
+        user.states = req.body.states;
+        user.zip = req.body.zip;
+        user.save()
+        res.redirect('/')
+      }
+    })
+  }
+
+
+} //enclosing bracket
 module.exports = new AuctionsController();
