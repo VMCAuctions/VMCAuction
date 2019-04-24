@@ -41,6 +41,7 @@
 		$('#submitButton').submit(function (event) {
 			event.preventDefault();
 			let sendBid;
+			let auction = "<%= auctionDetails._id %>";
 			let bidAmt = parseInt($("#bidAmount").val());
 			let packageAmt = <%= package.amount %>;
 			let newBid = parseInt(<%= lastBid + package.bidIncrement %>);
@@ -66,7 +67,7 @@
 			} else if ( bidAmt >= newBid && hasBids === true ) {
 				sendBid = bidAmt;
 			}
-			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>'})
+			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>',auction:auction})
 		});
 
 		// Updates packageShow page with bid price
