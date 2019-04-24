@@ -5,30 +5,52 @@ var mongoose = require('mongoose'),
 
 function CategoriesController(){
 
+	// this.index = function(req,res){
+	// 	console.log('CategoriesController index');
+	// 	if (globals.adminValidation(req, res)){
+	// 		Category.find({}, function(err, categories) {
+	// 	    	if(err) {
+	// 	      	console.log(err);
+	// 	    	// }
+	// 	    	// else if(req.session.admin) {				
+	// 				// 		if (err) {
+	// 				// 			console.log(err)
+	// 				} else {
+	// 							//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+	// 							Auction.findById(req.params.auctions, function (err, auctionDetails) {
+	// 							console.log('categories.js render categories');
+	// 								res.render('categories', {
+	// 									admin: req.session.admin,
+	// 									categories: categories,
+	// 									userName: req.session.userName,
+	// 									auction: req.params.auctions,
+	// 									auctionDetails: auctionDetails,
+	// 								});	
+	// 							})	
+	// 						}
+	// 				// } else {
+	// 				// 		res.redirect('/' + req.params.auctions + '/packages');
+	// 				})			
+				
+	// 		}
+	// 	};		
+		
 	this.index = function(req,res){
 		console.log('CategoriesController index');
 		if (globals.adminValidation(req, res)){
 			Category.find({}, function(err, categories) {
-		    	if(err) {
-		      	console.log(err);
-		    	}
-		    	else if(req.session.admin) {
-						console.log('categories.js render categories');
-								res.render('categories', {
-									page: 'addCategory',
-									admin: req.session.admin,
-									categories: categories,
-									userName: req.session.userName,
-									auction: req.params.auctions,
-									auctionDetails: auctionDetails,
-								});		
-					}else{
-						res.redirect('/' + req.params.auctions + '/packages')
-					}
-				})		
-			}
-	};	
-
+				if(err) {
+					console.log(err);	
+				}else{
+					res.render('categories', {
+						categories: categories,
+						admin: req.session.admin,
+						userName: req.session.userName,
+					});	
+				}
+			})
+		}
+	};				
 
 	this.create = function(req,res){
 		console.log('CategoriesController create');
@@ -38,7 +60,8 @@ function CategoriesController(){
 		        console.log(err);
 		      }else{
 				  console.log('categories.js cat.create')
-		        	res.redirect('/' + req.params.auctions + '/categories?true');
+							// res.redirect('/' + req.params.auctions + '/categories?true');
+							res.redirect('/categories');
 		      }
 	    })
 		}
@@ -53,8 +76,8 @@ function CategoriesController(){
 		    }else{
 				console.log('categories.js cat.delete')
 		    }
-			res.redirect('/' + req.params.auctions + '/categories?true');
-
+				// res.redirect('/' + req.params.auctions + '/categories?true');
+				res.redirect('/categories');
 	    })
 		}
 	}
@@ -90,6 +113,6 @@ function CategoriesController(){
 		 }
 	 }
 
-}
+};
 
 module.exports = new CategoriesController();

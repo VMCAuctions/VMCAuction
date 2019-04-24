@@ -1,6 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500, 700,900');
-@import url('https://fonts.googleapis.com/css?family=Kameron:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Kameron:300,300i,400,400i,500,700');
 
 /* Border box fix
 -------------------------------------------------------------- */
@@ -89,6 +89,10 @@ a:hover {
 	display: block; 
 	position: absolute; 
 	top: 40%;  
+}
+
+h3.mini-header {
+	font-size: 1.5rem; 
 }
 
 /* Common Styles Forms
@@ -265,7 +269,7 @@ label.error {
 }
 
 th {
-  width: 10%;
+  width: 25%;
 }
 
 td {
@@ -284,13 +288,49 @@ th{
 	font-size: 0.9rem; 
 }
 
- /* Bob R. for List of Categories */
-.categories-table-row {
-	height: 40px !important;
-}
-
 /*td a{
   color:black;
   display:inline-block;
   width:100%;
 }*/
+
+/* Manage Categories
+-------------------------------------------------------------- */
+.note {
+	color: #ff6746;
+	font-size: 0.9rem; 
+	font-style: italic;
+	margin-top: 40px; 
+	margin-bottom: 10px; 
+
+}
+
+.new-cat {
+	color: #4567a8;
+	font-size: 1.2rem;
+	font-weight: 700; 
+	margin-top: 40px !important; 
+	margin-bottom: -10px; 
+}
+/* .categories-table-row {
+	height: 40px !important;!
+} */
+
+#cat-table  td {
+	height: 40px !important; 
+	padding-left: 15px; 
+}
+
+#cat-table th.cat-name {
+	width: 75%;
+	padding: 15px;
+}
+
+#cat-table th.cat-action {
+	width: 25%;
+	padding: 15px;
+}
+
+ 
+
+
