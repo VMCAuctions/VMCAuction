@@ -35,8 +35,8 @@
                             <%=users[u].table%>
                         </td>  
                         <td>
-                            <!-- <button type="button" id="sendLinkButton" class="btn btn-sm btn-add" data-toggle="modal" data-target="#itemsModal">Send Auction link</button> -->
-                            <button type="button" class="sendLinkButton btn btn-sm btn-add" id="<%=users[u]._id%>" >Send Auction link</button>
+                
+                            <button type="button" class="sendLinkButton btn btn-sm btn-add" id="<%=users[u]._id%>" alt="<%=users[u].phone%>" >Send Auction link</button>
                         </td>               
                     </tr>
                 <% } %>
@@ -71,12 +71,27 @@
 		$(".sendLinkButton").click(function(e){
             e.preventDefault();
 			var userID = (this.id);
-            var auctionID = '<%=auction._id%>';
-            console.log("here")
-            var phone = this
-            console.log("PHONE?", phone)
-            console.log("USER", userID)
-            console.log("AUCTION", auctionID)
+            var auctionID = '<%=auction._id%>';    
+            var phone = $(this).attr('alt')
+            var phoneStub=''
+            //to remove dashes if any
+            for(var i=0;i<phone.length; i++){
+                var code = phone.charCodeAt(i);
+                //48 is 0, to 57 which is 9
+                if(code>=48 &&code <=57){
+                    phoneStub+=String.fromCharCode(code);
+                }
+            }
+           
+           $.ajax({
+                type:"POST",
+                url:'http://localhost:8000/users/sendSMS',
+            // url: 'http://dv1.elizabid.com/users/sendSMS',
+                data:{'phone':phoneStub, 'auction':auctionID, 'userId':userID},
+                success:function(){
+                    alert("A message has been sent to "+phone+".")
+                }
+           })
             
 		});
 
