@@ -17,86 +17,6 @@
 	<!-- Data Tables  -->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-	<style>
-
-		.upright {
-			width: 400px;
-			height: 518px;
-			text-align: center;
-			background: rgb(32, 108, 194);
-			color: #fff;
-			padding: 15px 0px;
-		}
-
-		.donor, .packageId, .value, #fitin {
-			background: black;
-			position: relative;
-		}
-
-		.donor {
-			width: 100%;
-			height: 8%;
-			font-size: 12px;
-			padding: 1% 0px;
-		}
-
-		.resized-text {
-			width: 90%;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-		}
-
-		.title {
-			width: 100%;
-			height: 9%;
-			font-size: 60px;
-			position: relative;
-			margin: 2% 0px;
-			font-weight: bold;
-			letter-spacing: 0.5px;
-		}
-
-		.image {
-			width: 100%;
-			height: 40%;
-			margin-bottom: 5%;
-			font-size: 14px;
-		}
-
-		.flexible-photo {
-			max-width: 90%;
-			max-height: 100%;
-			border: 5px solid black;
-		}
-
-		.packageId {
-			bottom: 93%;
-			width: 30%;
-			text-align: right;
-			padding: 1% 4% 1% 0px;
-		}
-
-		.value {
-			bottom: 36.5%;
-			left: 70%;
-			width: 30%;
-			text-align: left;
-			padding-left: 5%;
-			padding: 1% 0px 1% 4%;
-		}
-
-		#fitin {
-			font-size: 20px;
-			width: 100%;
-			height: 35%;
-			padding: 3% 0px;
-		}
-	</style> 
-
-
-	
   </head>
 
 	<body onload="doOnLoad();" onunload="doOnUnload();">
@@ -118,7 +38,7 @@
 						<ol>
 							<li>Select a package to bring up its corresponding upright, to change its colors, and to perform an action.</li>
 							<li>Click on the third action "<i class="far fa-save"></i>" to save your color choices.</li>
-							<li>Once an upright is finalized, click on the last action "<i class="fas fa-external-link-alt"></i>" of the row to open and print the pdf.</li>
+							<li>Once an upright is finalized, click on the last action "<i class="fas fa-external-link-alt"></i>" of the row to save, open and print the pdf.</li>
 						</ol>
 						* Please note an upright without any saved color changes will inherit the colors from the last upright you viewed.
 
@@ -218,9 +138,19 @@
 				</div>
 			</div>
 		</div>
+
 		<script>
+			
+			// elements on the upright
+			var background = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor");
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor');
+
 			// color picker
 			var myCP;
+
 			function doOnLoad() {
 				myCP = new dhtmlXColorPicker({
 					parent: "cpObj",
@@ -240,11 +170,6 @@
 			// color picker sets color on upright
 			function setColor(color) {
 				var ct = document.getElementById("colorType");
-				var background = document.getElementById("bg");
-				var titleColor = document.getElementById("titleText");
-				var secondary = document.querySelectorAll(".secondaryColor");
-				var secondaryBorder = document.querySelector('#photoBorder');
-				var mainTextColors = document.querySelectorAll('.mainTextColor');
 	
 				switch (ct.value) {
 					case "text":
@@ -304,6 +229,7 @@
 	
 				// highlights selected table row
 				var rowsNotSelected = tableRow.getElementsByTagName('tr');
+
 				for (var row = 0; row < rowsNotSelected.length; row++) {
 					rowsNotSelected[row].style.backgroundColor = "";
 					rowsNotSelected[row].style.color = "#404040";
@@ -334,12 +260,6 @@
 				}
 	
 				// display colors if they have been saved on a specific upright
-				var background = document.getElementById("bg");
-				var titleColor = document.getElementById("titleText");
-				var secondary = document.querySelectorAll(".secondaryColor");
-				var secondaryBorder = document.querySelector('#photoBorder');
-				var mainTextColors = document.querySelectorAll('.mainTextColor');
-	
 				var savedColorInputs = document.getElementsByClassName("saved-colors")[0];
 	
 				var jsonColors = JSON.parse(localStorage.getItem(id));
@@ -397,11 +317,7 @@
 			function saveColors(x) {
 				var index = x.parentNode.parentNode.rowIndex;
 				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
-	
-				var background = document.getElementById("bg");
-				var titleColor = document.getElementById("titleText");
 				var secondary = document.querySelectorAll(".secondaryColor")[0];
-				var secondaryBorder = document.querySelector('#photoBorder');
 				var mainTextColors = document.querySelectorAll('.mainTextColor')[0];
 	
 				var bgColor = background.style.backgroundColor;
@@ -476,14 +392,14 @@
 				//create pdf  
 				function createPDF(x) {  
 					getCanvas().then(function (canvas) {
-						var row = x.parentElement.parentElement;
-						var index = row.rowIndex;
-						var date = Date.now();
-						var packageId = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
-						var packageName = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
-						var lowerName = packageName.replace(/[\. !?+=,:-]+/g, "-").toLowerCase();
-						var fileName = `packageflyer-${packageId}-${lowerName}-${date}.pdf`;
 						var  
+							row = x.parentElement.parentElement;
+							index = row.rowIndex;
+							date = Date.now();
+							packageId = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+							packageName = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+							lowerName = packageName.replace(/[\. !?+=,:-]+/g, "-").toLowerCase();
+							fileName = `packageflyer-${packageId}-${lowerName}-${date}.pdf`;
 							img = canvas.toDataURL("image/png"),  
 							doc = new jsPDF({  
 								unit: 'in',  
