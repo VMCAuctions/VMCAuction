@@ -80,7 +80,7 @@ var packagesButtonStates = {};
 			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
-				packagesButtonStates[pkgs[i]._id].buttonstate = true;				console.log("125 Server.js Package find packagesButtonStates = ",packagesButtonStates)
+				packagesButtonStates[pkgs[i]._id].buttonstate = true;		
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
 				if (pkgs[i].bids.length != 0) {
