@@ -6,11 +6,12 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
+	secret = require('../config/secret.json')
 const csv=require('csvtojson')
 
 // Twilio SMS text code:
-const accountSid = 'ACe934e476850c6aad07495e0458b5f3d8';
-const authToken = '64e154100649fcef2e61226d1464a252';
+const accountSid = secret.accountSid;
+const authToken = secret.authToken;
 const client = require('twilio')(accountSid, authToken);
 
 function UsersController(){
