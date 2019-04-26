@@ -531,6 +531,16 @@ function UsersController(){
 
 	}
 
+	this.error = function(req,res){
+		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
+		//Auction.find()
+		res.render('adminError', {
+			userName: req.session.userName,
+			admin: req.session.admin,
+			auction:req.session.auction
+		})
+	};
+
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){
 			// console.log('UsersController admin change')
