@@ -17,8 +17,7 @@
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
 	<script type='text/javascript'>
-	var socket = io.connect('http://localhost:8000/');
-	// var socket = io.connect('http://dv1.elizabid.com/');
+	var socket = io.connect();
 
 	function change(packageId) {
 		var watchlistButton = document.getElementById("watchlistButton-"+packageId);

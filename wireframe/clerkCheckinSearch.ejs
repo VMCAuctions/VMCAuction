@@ -85,8 +85,7 @@
            
            $.ajax({
                 type:"POST",
-                url:'http://localhost:8000/users/sendSMS',
-            // url: 'http://dv1.elizabid.com/users/sendSMS',
+                url:'/users/sendSMS',
                 data:{'phone':phoneStub, 'auction':auctionID, 'userId':userID},
                 success:function(){
                     alert("A message has been sent to "+phone+".")

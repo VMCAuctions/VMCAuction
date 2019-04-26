@@ -139,8 +139,7 @@
     	console.log('410 clerkDash.ejs send SMS.  userId = ',userId);
     	$.ajax({
     		type: "POST",
-    		url: 'http://localhost:8000/users/sendSMS',
-    		// url: 'http://dv1.elizabid.com/users/sendSMS',
+    		url: '/users/sendSMS',
     		data: {"phone": phoneStub, "auction": auction, "userId": userId },
     		success: function(data){
     			// console.log('410 clerkDash.ejs send SMS success.');
