@@ -34,7 +34,7 @@ function AuctionsController() {
             if (err) {
               console.log(err);
             } else {
-              console.log("user is", user);
+              console.log("000 auctions.js this.main.  user = ", user);
               res.render("main", {
                 user: user,
                 auctions: auctions,
