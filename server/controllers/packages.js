@@ -31,7 +31,7 @@ function PackagesController() {
 					} else {
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_id:'ascending'}).exec(function(err, packages) {
 							if(err) {
 								console.log('packages.js this.index Package Index Error');
 								res.status(500).send('packages.js this.index Failed to Load Packages');
@@ -97,7 +97,7 @@ function PackagesController() {
 					} else {
 						user = result
 						// This is the method that finds all of the packages from the database
-						Package.find({_auctions: req.params.auctions}).populate("_items").sort({_category: 'ascending'}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
+						Package.find({_auctions: req.params.auctions}).populate("_items").sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
 							if(err) {
 
 								console.log('packages.js this.index Package Index Error');

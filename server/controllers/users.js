@@ -334,7 +334,7 @@ function UsersController(){
 		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
-		Package.find({_auctions: req.params.auctions}, function(err, result){
+		Package.find({_auctions: req.params.auctions}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, result) {
 			if (err){
 				console.log(err)
 			}else{
