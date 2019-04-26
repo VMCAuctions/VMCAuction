@@ -76,7 +76,7 @@ var packagesButtonStates = {};
 		if (err) {
 			console.log("init Server object error", err)
 		} else {
-			console.log("100 Server.js Package.find pkgs = ", pkgs)
+			// console.log("100 Server.js Package.find pkgs = ", pkgs)
 			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
