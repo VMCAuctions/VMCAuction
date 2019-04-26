@@ -110,11 +110,14 @@
 
     <script>
 
+      var socket = io.connect();
+
       function change(packageId) {
         var x = document.getElementById("removeWatchList-"+packageId);
         x.style.display = "none";
         $.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
           }
+        
 
       $(document).ready(function(){
 
