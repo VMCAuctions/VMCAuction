@@ -145,8 +145,7 @@
     <script>
       var cart = <%-JSON.stringify(cart)%>;
       var packages = <%-JSON.stringify(packages)%>;
-
-    	var socket = io.connect('http://localhost:8000/');
+      var socket = io.connect();
       socket.on("serverTalksBack", function(data){
           for (var i = 0; i < packages.length; i++) {
             if (data.packId == packages[i]._id) {
