@@ -29,6 +29,7 @@
     "mongoose-auto-increment": "^5.0.1",
     "multer": "^1.4.1",
     "pdfmake": "^0.1.40",
+    "simple-node-logger": "^18.12.22",
     "socket.io": "^2.2.0",
     "twilio": "^3.30.2"
   },

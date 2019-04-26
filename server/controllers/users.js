@@ -9,6 +9,16 @@ var mongoose = require('mongoose'),
 	secret = require('../config/secret.json')
 const csv=require('csvtojson')
 
+
+const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+    opts = {
+        logFilePath:'C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/mylogfile.log',
+        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+    },
+fileLog = SimpleNodeLogger.createSimpleLogger( opts );
+
+
 // Twilio SMS text code:
 const accountSid = secret.accountSid;
 const authToken = secret.authToken;
@@ -304,7 +314,10 @@ function UsersController(){
 			}else if(user){
 
 				console.log("004 users.js checkLogin.  user = ",user)
+				log.info("log.info 004 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
+				fileLog.info("log.info 004 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
 				console.log("005 user._auctions = ", user._auctions)
+				log.info("log.info 005 user._auctions = ", user._auctions)
 				// req.session.auction = user._auctions
 				req.session.userName = user.userName
 				req.session.admin = user.admin
