@@ -22,11 +22,11 @@
 		var watchlistButton = document.getElementById("watchlistButton");
 		if ( watchlistButton.value == "Remove from Watch List" ) {
 			$.get("/<%= auction %>/users/uninterested-in-package/<%= package._id %>");
-			$('#watchlistButton').attr("class","btn btn-add-watchlist mb-3");
+			$('#watchlistButton').attr("class","btn btn-add-watchlist mr-1");
 			watchlistButton.value = "Add to Watch List";
 		} else {
 			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
-			$('#watchlistButton').attr("class","btn btn-remove-watchlist mb-3");
+			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
 			watchlistButton.value = "Remove from Watch List";
 		}
 	}

@@ -33,6 +33,10 @@ h2.supporter-view {
 	height: 6rem; 
 }
 
+.card-middle {
+	height: 5rem; 
+}
+
 .pkg-img {
 	width: 120px;
 	height: 90px; 
@@ -165,7 +169,7 @@ ul {
 	border: none;
 	height: 40px; 
 	width: 186px;
-	font-size: 0.75rem; 
+	font-size: 0.95rem; 
 } 
 
 .btn-remove-watchlist {
