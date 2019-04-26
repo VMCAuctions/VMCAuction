@@ -76,11 +76,12 @@ var packagesButtonStates = {};
 		if (err) {
 			console.log("init Server object error", err)
 		} else {
-			console.log("100 Server.js Package.find pkgs = ", pkgs)
+			// console.log("100 Server.js Package.find pkgs = ", pkgs)
 			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
-				packagesButtonStates[pkgs[i]._id].buttonstate = true;				console.log("125 Server.js Package find packagesButtonStates = ",packagesButtonStates)
+				packagesButtonStates[pkgs[i]._id].buttonstate = true;
+				// console.log("125 Server.js Package find packagesButtonStates = ",packagesButtonStates)
 				// all latest bid info will be in serverAllBidsObject now
 				allBidsBigObj[pkgs[i]._id] = [];
 				if (pkgs[i].bids.length != 0) {
