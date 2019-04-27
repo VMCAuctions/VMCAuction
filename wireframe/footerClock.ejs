@@ -1,7 +1,8 @@
 <link rel="stylesheet" href="/css/footer.css"> 
 
 <div class="footer">
-	<p> Time Left: <br>
+
+	<p id="timeLeft"> Time Left: <br>
 	<span class="timer" data-endClock="<%= auctionDetails.endClock %>"></span></p>
 </div>
 
@@ -10,15 +11,16 @@
 	// Updates packageShow page with bid price
 	var socket = io.connect()
 
-	function hideFunction() {
-		var x = document.getElementById("notification");
+	function hideFunction(packageId) {
+		console.log("Hide Function",packageId);
+		var x = document.getElementById("notification-"+packageId);
 		x.style.display = "none";
 	}
 
 	$(document).ready(function () {
 		socket.on("outBidNotification-<%= user.firstName +' '+ user.lastName %>", function (data) {
 			// console.log("Package Bids Array Length",data.package.bids);
-				$("<p id='notification'>You've been outbid by "+ data.package.bids[data.package.bids.length-1].name+" for package "+data.package.name+".<button><a href='/"+data.package._auctions+"/packages/"+data.package._id+"'>Click Here to Respond</a></button><button onclick='hideFunction()'>Dismiss</button></p>").insertBefore(".timer");
+				$("<p style= 'color:red' id='notification-"+data.package._id+"'>You've been outbid by "+ data.package.bids[data.package.bids.length-1].name+" for package "+data.package.name+".<button class='mr-1 ml-1'><a href='/"+data.package._auctions+"/packages/"+data.package._id+"'>Bid</a></button><button onclick='hideFunction("+data.package._id+")'>Dismiss</button></p>").insertBefore("#timeLeft");
 			});
 
 	});
