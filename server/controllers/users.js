@@ -13,7 +13,7 @@ const csv=require('csvtojson')
 const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
-        logFilePath:'C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/mylogfile.log',
+        logFilePath:'./public/mylogfile.log',
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
 fileLog = SimpleNodeLogger.createSimpleLogger( opts );
