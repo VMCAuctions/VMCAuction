@@ -478,15 +478,11 @@ function PackagesController() {
 
 	this.show = function (req, res) {
 		var resultPackages;
-		// This is the method that finds all of the packages from the database and stores them in
-		//resultPackages
+		// This is the method that finds all of the packages from the database and stores them in packages
 		Package.find({ _auctions: req.params.auctions }).populate("_items").exec(function (err, packages) {
 			if (err) {
-				console.log('packages.js this.index Package Index Error');
-				res.status(500).send('packages.js this.index Failed to Load Packages');
-				console.error();
+				console.log(err);
 			} else {
-				// console.log('this is user again', user)
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
@@ -506,13 +502,11 @@ function PackagesController() {
 			if (err) {
 				console.log(err)
 			} else {
-				// console.log("100 packages.js this.show User.findOne.  user = ",user)
 				Package.findById(req.params.id).populate("_items").exec(function (err, package) {
 					if (err) {
 						console.log(err);
 					}
 					else {
-						// console.log("100 packages.js this.show Package.findById.  package = ",package)
 						var ourBids = false
 						var lastBid = package.amount
 						if (package.bids.length > 0) {
@@ -526,7 +520,6 @@ function PackagesController() {
 								//Gets current position of the package in the resultPackages object
 								for( var i =0; i<resultPackages.length;i++){
 									if(resultPackages[i]._id == package._id){
-										// console.log(resultPackages[i]._id);
 										//return index of the found package on pos
 										var pos = resultPackages.map(function(e) { return e._id; }).indexOf(resultPackages[i]._id);
 									}

@@ -33,6 +33,13 @@
 
 	$(document).ready(function () {
 
+		let auctionEndTime = Date.parse("<%= auctionDetails.endClock %>");
+		var date = new Date();
+
+		if( date>auctionEndTime ){
+			document.getElementById('submitButton2').disabled = true;
+		}
+
 		$("#hide").click(function(){
     		$("#notification").hide();
 		  });
@@ -71,7 +78,6 @@
 
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
-			// console.log("200 packageShow.ejs socket.on serverTalksBack.  data = ",data);
 			let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			let topBidder = data.userBidLast;
 			let newBid = parseInt(data.lastBid) + <%= package.bidIncrement %>;
@@ -87,7 +93,6 @@
 				$('#hiddenBidAmt').val(newBid);
 				$('#afterBidMessage').text('');
 				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+"$"+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
-				// console.log("210 packageShow.ejs socket.on serverTalksBack.  $('#hiddenBidAmt').val() = ",$('#hiddenBidAmt').val());
 			}
 		});
 
@@ -107,12 +112,17 @@
 </head>
 
 <body>
-	
+
 	<% if(admin == 2){ %>
 		<%- include('adminHeader') -%>
 	<% } else { %>
 		<%- include('header') -%>
 	<% } %>
+
+	<% if(admin == 0){ %>
+		<%- include('footerNotifications') %>
+	<% } %>
+
 	<% if(admin == 0){ %>
 		<%- include('footerClock') -%>
 	<% } %>
