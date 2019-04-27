@@ -46,10 +46,8 @@
 							</form>
 							<div class="question">
 								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help logging in?</a><br>
-								<!--<a href="http://dv1.elizabid.com/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://dv1.elizabid.com/users/register">Don't have an account?</a> -->
-								<a href="http://localhost:8000/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://localhost:8000/users/register">Don't have an account?</a>
+								<a href="/clerk/login">Volunteering as an auction clerk?</a><br>
+								<a href="/users/register">Don't have an account?</a>
 							</div>
 						</div>
 					</div>
@@ -64,10 +62,7 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-
-					url: 'http://localhost:8000/users/checklogin',
-					// url: 'http://dv1.elizabid.com/users/checklogin',
-
+					url: '/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
 						console.log('data = ',data)

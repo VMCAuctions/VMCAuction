@@ -8,8 +8,8 @@
 
 <script>
 
-	var socket = io.connect('http://localhost:8000/');
 	// Updates packageShow page with bid price
+	var socket = io.connect()
 
 	function hideFunction(packageId) {
 		console.log("Hide Function",packageId);

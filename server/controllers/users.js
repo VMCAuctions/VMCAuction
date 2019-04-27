@@ -334,7 +334,7 @@ function UsersController(){
 		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
-		Package.find({_auctions: req.params.auctions}, function(err, result){
+		Package.find({_auctions: req.params.auctions}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, result) {
 			if (err){
 				console.log(err)
 			}else{
@@ -449,14 +449,14 @@ function UsersController(){
 	this.usersCsv = function(req, res){
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
-		console.log("400 users.js this.usersCsv.  req.body = ", req.body)
-		console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
-		console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
-		console.log("403 users.js this.usersCsv.  req.session = ", req.session)
-		console.log("404 users.js this.usersCsv.  req.params = ", req.params)
+		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
+		// console.log("401 users.js this.usersCsv.  req.body = ", req.body.csvFileName)
+		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
+		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
+		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
 		
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
-		const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
+		const path = "./public/";
 
 		const csvFilePath=(path + req.body.csvFileName);
 		

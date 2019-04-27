@@ -16,8 +16,7 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script   src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
 	<script type='text/javascript'>
-		var socket = io.connect('http://localhost:8000/');
-		// var socket = io.connect('http://dv1.elizabid.com/');
+		var socket = io.connect();
 
 		function change(packageId) {
 			var watchlistButton = document.getElementById("watchlistButton-"+packageId);
