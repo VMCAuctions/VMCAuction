@@ -55,6 +55,9 @@
 	<%}else{%>
 		<%- include('header') -%>
 	<%}%>
+	<% if(admin == 0){ %>
+		<%- include('footerNotifications') %>
+	<% } %>
 	<%if(admin == 0){%>
 		<%- include('footerClock') -%>
 	<%}%>
