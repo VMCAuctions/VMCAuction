@@ -47,9 +47,9 @@
 							<span>${("" + minutes).slice(-2)}</span> minutes
 							`
 						}
-						if (minutes < 3) {
+						if (minutes < 5) {
 							desktopClock.innerHTML = `
-								<span>Time Left: ${("" + minutes).slice(-2)}</span> minutes,
+								<span>${("" + minutes).slice(-2)}</span> minutes,
 								<span>${("" + seconds).slice(-2)}</span> seconds
 								`
 						}
@@ -81,8 +81,8 @@
 
 				desktopClock.style.color = '#c30000';
 				desktopClock.style.fontWeight = 'bold';
-				desktopClock.innerHTML = 'Auction has ended';
-				document.getElementsByTagName('span')[0].style.display = 'none';
+				desktopClock.innerHTML = 'AUCTION HAS ENDED!';
+				// document.getElementsByTagName('span')[0].style.display = 'none';
 			}
 		}
 	}

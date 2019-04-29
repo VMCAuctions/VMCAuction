@@ -52,6 +52,22 @@ function GlobalsController(){
 		return true
 	}	
 
+	// this.canBid = function(req, res) {
+	// 	var start, end, curTime, canBid;
+	// 	Auction.findById(req.params.auctions, function(err, auctionDetails) {
+	// 		if (err) {
+	// 		  console.log(err);
+	// 		} else {
+	// 			console.log("210 auctions.js this.menu.  req.session = ",req.session);
+	// 			start = auctionDetails.startClock;
+	// 			end = auctionDetails.endClock;
+	// 			curTime = dateNow();
+	// 			canBid = (curTime >= start && curTime <= end)
+	// 			console.log("100 globals.js this.canBid.  start, end, curTime, canBid = ", start, " | ", end, " | ", curTime, " | ", canBid);
+	// 		}
+	// 	});
+	// }
+
 }
 
 module.exports = new GlobalsController();
