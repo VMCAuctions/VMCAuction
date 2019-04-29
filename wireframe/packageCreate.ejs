@@ -15,7 +15,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
   </head>
   <body>
     <%if(admin){%>
@@ -160,7 +161,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <table class="table table-bordered">
+                      <table id="itemsTable" class="table table-bordered">
                         <thead>
                           <tr>
                             <th class="small-col">Number</th>
@@ -245,7 +246,23 @@
             backdrop: 'static',
             keyboard: false
           })
-        })
+		})
+		
+		 // Initializes Data Tables plugin
+		 $('#itemsTable').DataTable({
+			"dom": '<lip<t>ip>',
+			"searching": false,
+			"order": [[ 0, "asc" ]],
+			"pageLength": 25,
+			"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+			"pagingType": "full_numbers",
+			// "columnDefs": [
+			// 	{ "orderable": false, "targets": 5 },
+			// 	{ "orderable": false, "targets": 6 },
+			// 	{ "orderable": false, "targets": 10 },
+			// ]
+		
+	  });
 
         $("#keyword").on("keyup", function() {
           var value = $(this).val().toLowerCase();
