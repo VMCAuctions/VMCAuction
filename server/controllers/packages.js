@@ -489,17 +489,16 @@ function PackagesController() {
 	};
 
 	this.show = function (req, res) {
-		fileLog.info("104 packages.js this.show req.body = ", req.body);
-		fileLog.info("105 packages.js this.show req.params = ", req.params);
-		console.log(req.session.userName);
-
+		fileLog.info("104 packages.js this.show req.body = ", json.stringify(req.body,null,2));
+		fileLog.info("105 packages.js this.show req.params = ", json.stringify(req.params,null,2));
+		// console.log(req.session.userName);
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in packages
 		Package.find({ _auctions: req.params.auctions }).populate("_items").exec(function (err, packages) {
 			if (err) {
 				console.log(err);
 			} else {
-				fileLog.info("105 packages.js this.show package.find packages = ", packages);
+				fileLog.info("105 packages.js this.show package.find packages = ", json.stringify(packages,null,2));
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
@@ -519,13 +518,13 @@ function PackagesController() {
 			if (err) {
 				console.log(err)
 			} else {
-				fileLog.info("106 packages.js this.show package.find user = ", user);
+				fileLog.info("106 packages.js this.show package.find user = ", json.stringify(user,null,2));
 				Package.findById(req.params.id).populate("_items").exec(function (err, package) {
 					if (err) {
 						console.log(err);
 					}
 					else {
-						fileLog.info("107 packages.js this.show package.findById package = ", package);
+						fileLog.info("107 packages.js this.show package.findById package = ", json.stringify(package,null,2));
 						var ourBids = false
 						var lastBid = package.amount
 						if (package.bids.length > 0) {
@@ -536,7 +535,7 @@ function PackagesController() {
 							if (err) {
 								console.log(err)
 							} else {
-								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", auctionDetails);
+								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", json.stringify(auctionDetails,null,2));
 								//Gets current position of the package in the resultPackages object
 								for( var i =0; i<resultPackages.length;i++){
 									if(resultPackages[i]._id == package._id){
