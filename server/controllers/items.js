@@ -66,7 +66,7 @@ function ItemsController() {
 						}
 					})
 				} else {
-					res.redirect('/' + req.params.auctions + '/event')
+					res.redirect('/users/adminError');
 				}
 			}
 		})
@@ -137,7 +137,7 @@ function ItemsController() {
 							}
 						})
 					} else {
-						res.redirect('/' + req.params.auctions + '/event')
+						res.redirect('/users/adminError');
 					}
 				})
 			}

@@ -98,8 +98,9 @@ function UsersController(){
 							}	
 						})	
 				}else{
-					//If no known user, redirect to the event landing page 
-					res.redirect('/' + req.params.auctions  + '/event');
+					//If no admin ( or clerk), redirect to the Admin Error Page
+					// res.redirect('/' + req.params.auctions  + '/event');
+					res.redirect('/users/adminError')
 				}
 		  })
 		}
@@ -117,7 +118,7 @@ function UsersController(){
 					admin: req.session.admin
 				})
 			}else{
-				res.redirect('/' + req.params.auctions  + '/event')
+				res.redirect('/users/adminError')
 			}
 		})
 	};
@@ -183,7 +184,7 @@ function UsersController(){
 					}
 				})
 			}else{
-				res.redirect('/users/login')
+				res.redirect('/users/supporterError')
 			}
 		})
 	};
@@ -382,7 +383,7 @@ function UsersController(){
               }
             })
           }else{
-            res.redirect('/' + req.params.auctions  + '/event')
+            res.redirect('/users/supporterError')
           }
         })
 			}
@@ -545,7 +546,13 @@ function UsersController(){
 		res.render('adminError', {})
 	};
 
+	this.clerkNotFound = function(req,res){
+		res.render('clerkError', {})
+	};
 
+	this.supporterNotFound = function(req,res){
+		res.render('supporterError', {})
+	};
 
 	this.adminChange = function(req,res){
 		if (globals.adminValidation(req, res)){
@@ -782,11 +789,6 @@ function UsersController(){
 			}
 		})
 	};
-
-
-
-
-
 
 
 	this.updateList = function(req,res){

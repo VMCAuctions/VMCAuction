@@ -32,11 +32,14 @@ function GlobalsController(){
 
 			// //END
 
-			res.redirect('/' + req.session.auction + '/packages')
+			// res.redirect('/' + req.session.auction + '/packages')
+			res.redirect('/users/adminError')
 			return false
 		}
 		return true
 	}
+	
+	// ?????
 	this.clerkValidation = function(req, res) {
 		if (req.session.admin == 0){
 			res.redirect('/' + req.session.auction + '/packages')
