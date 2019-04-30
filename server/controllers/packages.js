@@ -10,6 +10,14 @@ var mongoose = require('mongoose'),
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
 
+
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+    opts = {
+        logFilePath:'./public/vmcLogFile.log',
+        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+    },
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
 function PackagesController() {
 
 	// from app.get('/:auctions/packages') - renders catalog page (packages.ejs)
@@ -172,11 +180,11 @@ function PackagesController() {
 
 						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _category: 'ascending' }).sort({_id:'ascending'}).exec(function (err, packages) {
 							if (err) {
-								console.log('packages.js this.list Package Register Error');
-								res.status(500).send('Failed to Load Packages');
+								console.log('packages.js this.uprights Package Register Error');
+								res.status(500).send('packages.js this.uprights Failed to Load Packages');
 								console.error();
 							} else {
-								console.log("packages.js this.list req.session is", req.session)
+								console.log("packages.js this.uprights req.session is", req.session)
 								let featured = [];
 								let nonFeatured = [];
 								for (let i=0; i < packages.length; i++) {
@@ -194,7 +202,7 @@ function PackagesController() {
 									}
 								}
 								sortedPackages = sortedPackages.concat(nonFeatured)
-									console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
+									console.log("100 packages.js this.uprights.  sortedPackages = ",sortedPackages);
 								
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
@@ -267,7 +275,7 @@ function PackagesController() {
 
 								// console.log("100 packages.js this.list.  sortedPackages = ",sortedPackages);
 
-                Auction.findById(req.params.auctions, function (err, auctionDetails) {
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
 									} else {

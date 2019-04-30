@@ -10,13 +10,13 @@ var mongoose = require('mongoose'),
 const csv=require('csvtojson')
 
 
-const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
+
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
-        logFilePath:'./public/mylogfile.log',
+        logFilePath:'./public/vmcLogFile.log',
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
-fileLog = SimpleNodeLogger.createSimpleLogger( opts );
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
 
 
 // Twilio SMS text code:

@@ -8,6 +8,14 @@ var mongoose = require("mongoose"),
   globals = require("../controllers/globals.js");
   var dateFormat = require('dateformat');
 
+
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+    opts = {
+        logFilePath:'./public/vmcLogFile.log',
+        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+    },
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
 function AuctionsController() {
   this.index = function(req, res) {
     //Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
