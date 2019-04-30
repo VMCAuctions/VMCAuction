@@ -9,14 +9,6 @@ var mongoose = require('mongoose'),
 	
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
-const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
-const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
-   opts = {
-       logFilePath:'./public/vmcLogFile.log',
-       timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
-   },
-fileLog = SimpleNodeLogger.createSimpleLogger( opts );
-
 
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
