@@ -8,13 +8,13 @@ var mongoose = require("mongoose"),
   globals = require("../controllers/globals.js");
   var dateFormat = require('dateformat');
 
-const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
-        logFilePath:'./public/mylogfile.log',
+        logFilePath:'./public/vmcLogFile.log',
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
-fileLog = SimpleNodeLogger.createSimpleLogger( opts );
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
 
 function AuctionsController() {
   this.index = function(req, res) {
