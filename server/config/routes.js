@@ -480,7 +480,7 @@ module.exports = function(app) {
 	});
 	//End Clerk Supporter Registration
 	
-
+	//Clerk Check-in
 	app.get('/:auctions/clerkCheckIn', function(req, res){
 		auctions.clerkcheckin(req,res)});
 
@@ -489,6 +489,10 @@ module.exports = function(app) {
 	})
 	app.post('/:user/clerkUserUpdate', function(req,res){
 		auctions.clerkUserUpdate(req,res)
+	})
+	//end clerk check-in
+	app.get('/:auctions/clerkCheckOut', function(req, res){
+		auctions.clerkcheckout(req,res);
 	})
 
 		

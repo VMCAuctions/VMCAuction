@@ -34,10 +34,10 @@
         <%- include('clerkHeader') -%>
         <div id="buttons">
             <div class="text-center mt-1">
-                <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" >
                         Check in
                         </button>
-                <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                <button type="button" id="checkoutButton" class="btn btn-add mb-4 show-modal">
                         Check out
                         </button>
             </div>    
@@ -47,14 +47,20 @@
         </div>
         <script>
             $(document).ready(function(){
-                var $result = $('#resultCheckin');
+                var result = $('#resultCheckin');
                 var auction = '<%=auction%>'
                 $('#resultCheckin').hide();
 
+                //to load and show check in page
                 $('#checkinButton').click(function(){
-                     $result.load('/'+auction+'/clerkCheckIn');
-                    $('#resultCheckin').show();
+                    result.load('/'+auction+'/clerkCheckIn');
+                    result.show();
                 });
+                //to load ands how checkout page
+                $('#checkoutButton').click(function(){
+                    result.load('/'+auction+'/clerkCheckOut')
+                    result.show();
+                })
             })
         </script>
     </body>

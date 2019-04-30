@@ -451,5 +451,75 @@ function AuctionsController() {
   }
 
 
+  this.clerkcheckout = function(req, res){
+    // console.log("230 auctions.js this.clerk start.  req.body = ",req.body);
+		// console.log("231 auctions.js this.clerk start.  req.params = ",req.params);
+		// console.log("232 auctions.js this.clerk start.  req.session = ",req.session);
+		var items = [];
+		if (globals.clerkValidation(req, res)) {
+		  var cart = {};
+		  User.find({ _auctions: req.params.auctions }, function(err, users) {
+			if (err) {
+			  console.log(err);
+			} else if (req.session.admin) {
+			  Package.find({ _auctions: req.params.auctions })
+				.populate("_items")
+				.sort({ _category: "ascending" })
+				.sort({ priority: "ascending" })
+				.sort({ _id: "descending" })
+				.exec(function(err, packages) {
+					if (err) {
+					console.log(err);
+					} else {
+						// console.log("234 auctions.js this.clerk Package.find.  packages = ",JSON.stringify(packages, null, 2));
+						for (var x = 0; x < users.length; x++) {
+							var packagesArr = [];
+							var total = 0;
+							for (var y = 0; y < packages.length; y++) {
+								//Not sure if we need this "if" statement for bids.length > 0; needs testing
+								if (packages[y].bids.length > 0){
+									if (packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName.charAt(0)+'. '+users[x].lastName || packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName+' '+users[x].lastName) {
+										packagesArr.push(packages[y]);
+										items.push.apply(items,packages[y]._items);
+										total += packages[y].bids[packages[y].bids.length - 1].bidAmount;
+									}
+								}
+							}
+							cart[users[x].userName] = {
+								packages: packagesArr,
+								items: items,
+								total: total
+							};
+						}
+						//Current is a flag showing which page is active
+						Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
+							if (err){
+								console.log(err);
+							} else{
+								console.log('236 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
+								// console.log('237 auctions.js this.clerk auctionfindById. cart = ', JSON.stringify(cart, null, 2));  
+								res.render("clerkCheckoutSearch", {
+									current: "Clerk Dashboard",
+									users: users,
+									cart: cart,
+									packages: packages,
+									items: items,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									auctionDetails: auctionDetails,
+									auction: req.params.auctions
+								});
+							}
+						});
+					}
+				});
+			} else {
+				res.redirect("/" + req.params.auctions + "/event");
+			}
+		});
+		}
+  }
+
+  
 } //enclosing bracket
 module.exports = new AuctionsController();
