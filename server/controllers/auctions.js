@@ -24,7 +24,9 @@ function AuctionsController() {
       Auction.find({}, function(err, auctions) {
         if (err) {
           console.log(err);
+          fileLog.info("000 auctions.js this.main Auction.find.  err = ", err);
         } else {
+          fileLog.info("000 auctions.js this.main Auction.find.  auctions = ", auctions);
           //for now the archivd auctions are hard code.
           //later make an if statemtn hat checks if auction is in past
           //based on clock and todays Date
@@ -33,8 +35,10 @@ function AuctionsController() {
           User.findOne({ userName: req.session.userName }, function(err, user) {
             if (err) {
               console.log(err);
+              fileLog.info(err);
             } else {
               console.log("000 auctions.js this.main.  user = ", user);
+              fileLog.info("000 auctions.js this.main.  user = ", user);
               res.render("main", {
                 user: user,
                 auctions: auctions,
