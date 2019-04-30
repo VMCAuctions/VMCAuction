@@ -500,7 +500,7 @@ function PackagesController() {
 
 	// from app.get('/:auctions/packages/:id' - renders Package Show page (packageShow.ejs)
 	this.show = function (req, res) {
-
+		console.log("GOt HERe")
 		fileLog.info("080 packages.js this.show start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("081 packages.js this.show start. req.params = ", JSON.stringify(req.params, null, 2));
 
@@ -510,7 +510,7 @@ function PackagesController() {
 			if (err) {
 				console.log(err);
 			} else {
-				fileLog.info("105 packages.js this.show package.find packages = ", json.stringify(packages,null,2));
+				fileLog.info("105 packages.js this.show package.find packages = ", JSON.stringify(packages,null,2));
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
@@ -537,7 +537,7 @@ function PackagesController() {
 						console.log(err);
 					}
 					else {
-						fileLog.info("107 packages.js this.show package.findById package = ", json.stringify(package,null,2));
+						fileLog.info("107 packages.js this.show package.findById package = ", JSON.stringify(package,null,2));
 						var ourBids = false
 						var lastBid = package.amount
 						if (package.bids.length > 0) {
@@ -548,7 +548,7 @@ function PackagesController() {
 							if (err) {
 								console.log(err)
 							} else {
-								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", json.stringify(auctionDetails,null,2));
+								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", JSON.stringify(auctionDetails,null,2));
 								//Gets current position of the package in the resultPackages object
 								for( var i =0; i<resultPackages.length;i++){
 									if(resultPackages[i]._id == package._id){

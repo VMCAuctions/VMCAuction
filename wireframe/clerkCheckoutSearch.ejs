@@ -1,0 +1,163 @@
+
+		<div class="container">
+			<div id="clerkSearch" class="row mb-3">
+				<!-- Find supporters by last name -->
+				<div id="search-lastName" class="col-4">
+					<label for "lastName" class="label-search">Search by Last Name</label>
+					<input class="form-control" type="search" id="lastName" placeholder="Last Name">
+				</div>
+				<!-- Find package by package name -->
+				<div id="search-packageName" class="col-4">
+					<label for "packageName" class="label-search">Search by Package Name</label>
+					<input class="form-control" type="search" id="packageName" placeholder="Package Name">
+				</div>
+			</div>
+				
+			<!-- Search for Supporters-->
+			<div id="supporterTable">
+				<h3>Supporters</h3>
+				<table class="table table-striped table-bordered package-table">
+					<thead>
+						<tr>
+							<th scope="col">Full Name</th>
+							<th scope="col">Packages Won</th>
+							<th scope="col">Total Bid</th>
+							<th scope="col">Invoice</th>
+						</tr>
+					</thead>
+					<tbody id="carts">
+						<% for (var u in users) {%>
+							<tr class="supporterRow">
+								<td><%= users[u].firstName %> <%=users[u].lastName%></td>
+								<td id="<%= users[u].userName + 'winning' %>">
+									<ul>
+										<% for (var p in cart[users[u].userName].packages) { %>
+											<li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
+												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %>)</li>
+										<% } %>
+									</ul>
+								</td>
+								<td id="<%= users[u].userName + 'total' %>">
+									$<%= cart[users[u].userName].total %>
+								</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">Invoice</button>
+								</td>
+							</tr>
+						<% } %>
+					</tbody>
+				</table>
+			</div>
+			<!-- for Package name -->
+			<div id="packageTable">
+                <h3>Packages</h3>
+                <table class="table table-striped table-bordered package-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Package Id</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Package Name</th>
+                            <th scope="col">Winning Bidder</th>
+                            <th scope="col">Winning Bid</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carts">
+                        <% for (var i in packages) {%>
+                            <tr class="packageRow">
+                                <td><%= packages[i]._id%></td>
+                                <td> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                                <td><%=packages[i].name%></td>
+                                <td><%= packages[i].highBidder%></td>
+                                <td>$<%= packages[i].highBid%></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+		</div>
+        <script type="text/javascript">
+			var cart = <%-JSON.stringify(cart)%>;
+			var packages = <%-JSON.stringify(packages)%>;
+		</script>
+		<!-- search box scripts -->
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$("#supporterTable").hide();
+				$("#packageTable").hide();
+				$("#lastName").on("keyup", function () {
+					var value = $(this).val().toLowerCase();
+					if (value == '') {
+						$("#supporterTable").hide();
+					} else {
+						$("#supporterTable").show();
+						$(".supporterRow").filter(function () {
+							$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+						});
+					};
+				});
+				
+				$("#packageName").on("keyup", function () {
+					var value = $(this).val().toLowerCase();
+					if (value == '') {
+						$("#packageTable").hide();
+					} else {
+						$("#packageTable").show();
+						$(".packageRow").filter(function () {
+							$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+						});
+					};
+				});
+            })
+            
+            
+		</script>
+		<script type="text/javascript">
+			$(".pdfBut").click(function(){
+				var firstName = $(this).data('first')
+				var lastName = $(this).data('last')
+				var userName = $(this).data('user')
+                var newCart = cart;
+                console.log(newCart)
+				function buildTable(crt) {
+					tableData = []
+					columns = ['_id','name','description','bids']
+					tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+					crt.forEach(function(row) {
+						var rowData = []
+						for(var x = 0; x < columns.length; x++) {
+							if(x == columns.length - 1) {
+								tmpBids = row.bids
+								winBid = tmpBids[tmpBids.length - 1]
+								winAmt = winBid.bidAmount
+								rowData.push(winAmt)
+							} else {
+								rowData.push(row[columns[x]])
+							}
+						}
+						tableData.push(rowData)
+					})
+					return tableData
+				}
+				docDef = {
+					content: [
+					{ text: firstName + ' ' + lastName, style: 'header'},
+					{
+						table: {
+							headerRows: 1,
+							body: buildTable(newCart[userName].packages)
+						}
+					}
+					],
+					styles: {
+						header: {
+							fontSize: 22,
+							bold: true
+						}
+					}
+				}
+				pdfMake.createPdf(docDef).open()
+			})
+		</script>
+        
+  

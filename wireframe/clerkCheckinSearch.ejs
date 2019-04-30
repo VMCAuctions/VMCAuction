@@ -60,7 +60,9 @@
 				$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
 			});
 			};
-		});
+        });
+        
+        //for clerk check-in function - allow clerks to update user's info
         $('#user-info').hide();
         $('.updateBtn').click(function(){
             var userID = (this.id)
@@ -68,10 +70,13 @@
             $('#user-info').show();
 		});
 
+        //this is the function to send link to supporter through text
+        //this button is in the table under action
 		$(".sendLinkButton").click(function(e){
             e.preventDefault();
 			var userID = (this.id);
-            var auctionID = '<%=auction._id%>';    
+            var auctionID = '<%=auction._id%>';   
+            //this is an alt attribute where the value is each supporter's phone number 
             var phone = $(this).attr('alt')
             var phoneStub=''
             //to remove dashes if any

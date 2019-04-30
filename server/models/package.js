@@ -20,7 +20,8 @@ var packageSchema = new Schema({
 	featured: {type: Boolean},
 	bidIncrement: {type: Number},
 	bids: {type: Array},
-
+	highBidder: {type: String},
+	highBid: {type: Number},
 	// {bidAmount: 50, name: yarik, date:"2019-04-11T01:41:26.488Z"}
 
 	photo: String,
