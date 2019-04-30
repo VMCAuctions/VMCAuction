@@ -8,13 +8,13 @@ var mongoose = require("mongoose"),
   globals = require("../controllers/globals.js");
   var dateFormat = require('dateformat');
 
-
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
         logFilePath:'./public/vmcLogFile.log',
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
 fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
 
 function AuctionsController() {
   this.index = function(req, res) {
@@ -32,7 +32,9 @@ function AuctionsController() {
       Auction.find({}, function(err, auctions) {
         if (err) {
           console.log(err);
+          fileLog.info("000 auctions.js this.main Auction.find.  err = ", err);
         } else {
+          fileLog.info("000 auctions.js this.main Auction.find.  auctions = ", auctions);
           //for now the archivd auctions are hard code.
           //later make an if statemtn hat checks if auction is in past
           //based on clock and todays Date
@@ -41,8 +43,10 @@ function AuctionsController() {
           User.findOne({ userName: req.session.userName }, function(err, user) {
             if (err) {
               console.log(err);
+              fileLog.info(err);
             } else {
               console.log("000 auctions.js this.main.  user = ", user);
+              fileLog.info("000 auctions.js this.main.  user = ", user);
               res.render("main", {
                 user: user,
                 auctions: auctions,

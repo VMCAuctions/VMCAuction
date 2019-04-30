@@ -9,6 +9,13 @@ var mongoose = require('mongoose'),
 	
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
+const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+   opts = {
+       logFilePath:'./public/vmcLogFile.log',
+       timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+   },
+fileLog = SimpleNodeLogger.createSimpleLogger( opts );
 
 
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
@@ -22,24 +29,31 @@ function PackagesController() {
 
 	// from app.get('/:auctions/packages') - renders catalog page (packages.ejs)
 	this.index = function (req, res) {
+
 		// console.log("000 packages.js this.index start. req.session = ", req.session);
 		fileLog.info("000 packages.js this.index start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("001 packages.js this.index start. req.params = ", JSON.stringify(req.params, null, 2));
+
 		if (!req.session.userName) {
 			// console.log('001 packages.js this.index in if !req.session.username');
+			fileLog.info('001 packages.js this.index in if !req.session.username');
 			req.session.auction = req.params.auctions
 		}
 		var user
 		Category.find({}, function (err, categories) {
 			if (err) {
 				console.log(err);
+				fileLog.info(err);
 			}
 			else {
+
 				User.findOne({ userName: req.session.userName }, function (err, user) {
 					// console.log("004 packages.js this.index user.findOne.  user = ", user)
 					fileLog.info("004 packages.js this.index user.findOne.  user = ", JSON.stringify(user, null, 2));
+
 					if (err) {
 						console.log(err)
+						file.log(err);
 					} else {
 						
 						// This is the method that finds all of the packages from the database
@@ -384,20 +398,20 @@ function PackagesController() {
 
 
 	this.new = function(req,res){
-		// console.log("000 packages.js this.new start.  req.body = ",req.body);
-		// console.log("001 packages.js this.new start.  req.params = ",req.params);
+		console.log(Date.now() + " - 000 packages.js this.new start.  req.body = ",req.body);
+		console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
 		if (globals.adminValidation(req, res)){
 			var total = 0;
 			var itemsArray = [];
 			Item.find({_auctions: req.params.auctions}, function(err, items) {
 
 					if(err) {
-						console.log("002 packages.js this.new Items.find error. err = ",err);
+						console.log(Date.now() + " - 001 packages.js this.new Items.find error. err = ",err);
 
 						res.status(500).send('Failed to Load Items');
 					}
 					else {
-						// console.log("003 packages.js this.new Items.find. items = ",items);
+						// console.log(Date.now() + " - 002 packages.js this.new Items.find. items = ",items);
 						Category.find({}, function (err, categories) {
 							if (err) {
 								console.log("006 packages.js this.new category.find error. err = ", err);
@@ -409,7 +423,7 @@ function PackagesController() {
 									if(!items[i].packaged || items[i]._package == req.params.id){
 										itemsArray.push(items[i]);
 									}
-								}
+							}
 
 								Auction.findById(req.params.auctions, function (err, auctionDetails){
 
@@ -440,13 +454,13 @@ function PackagesController() {
 	//post method that creates packages
 
 	this.create = function(req,res){
-		// console.log("101 packages.js this.create req.body.category = ",req.body.category);
-		// console.log("101 packages.js this.create start. req.file = ",req.file);
-		// console.log("100 packages.js this.create start. req.body = ",req.body);
-		// console.log("102 packages.js this.create start. req.params = ",req.params);
+		console.log("101 packages.js this.create req.body.category = ",req.body.category);
+		console.log("101 packages.js this.create start. req.file = ",req.file);
+		console.log("100 packages.js this.create start. req.body = ",req.body);
+		console.log("102 packages.js this.create start. req.params = ",req.params);
 
 		var cat = req.body.category[0];
-		// console.log("102 packages.js this.create start. cat=r.b.category[0]  cat = ",cat);
+		console.log("102 packages.js this.create start. cat=r.b.category[0]  cat = ",cat);
 		
 		Package.create({
 			// name: req.body.packageName,
@@ -473,9 +487,9 @@ function PackagesController() {
 				return;
 			}
 			else {
-				// console.log("105 packages.js this.create post create.  req.file = ", req.file);
-				// console.log("104 packages.js this.create post create.  req.body = ", req.body);
-				// console.log("106 packages.js this.create post create.  package = ", package);
+				console.log(Date.now() + " - 104 packages.js this.create post create.  req.body = ", req.body);
+				console.log(Date.now() + " - 105 packages.js this.create post create.  req.file = ", req.file);
+				console.log(Date.now() + " - 106 packages.js this.create post create.  package = ", package);
 				for (let i = 0; i < package._items.length; i++) {
 					Item.findOne({ _id: package._items[i] }, function (err, item) {
 						item.packaged = true;
@@ -494,14 +508,17 @@ function PackagesController() {
 
 	// from app.get('/:auctions/packages/:id' - renders Package Show page (packageShow.ejs)
 	this.show = function (req, res) {
+
 		fileLog.info("080 packages.js this.show start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("081 packages.js this.show start. req.params = ", JSON.stringify(req.params, null, 2));
+
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in packages
 		Package.find({ _auctions: req.params.auctions }).populate("_items").exec(function (err, packages) {
 			if (err) {
 				console.log(err);
 			} else {
+				fileLog.info("105 packages.js this.show package.find packages = ", json.stringify(packages,null,2));
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
@@ -520,12 +537,15 @@ function PackagesController() {
 			if (err) {
 				console.log(err)
 			} else {
+
 				fileLog.info("084 packages.js this.show user.findOne.  user = ", JSON.stringify(user, null, 2));
+
 				Package.findById(req.params.id).populate("_items").exec(function (err, package) {
 					if (err) {
 						console.log(err);
 					}
 					else {
+						fileLog.info("107 packages.js this.show package.findById package = ", json.stringify(package,null,2));
 						var ourBids = false
 						var lastBid = package.amount
 						if (package.bids.length > 0) {
@@ -536,6 +556,7 @@ function PackagesController() {
 							if (err) {
 								console.log(err)
 							} else {
+								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", json.stringify(auctionDetails,null,2));
 								//Gets current position of the package in the resultPackages object
 								for( var i =0; i<resultPackages.length;i++){
 									if(resultPackages[i]._id == package._id){
@@ -577,15 +598,15 @@ function PackagesController() {
 
 
 	this.update = function(req,res){
-		// console.log("220 packages.js this.update start.  req.body = ",req.body);
-		// console.log("220 packages.js this.update start.  req.body.category = ",req.body.category);
+		console.log("220 packages.js this.update start.  req.body = ",req.body);
+		console.log("220 packages.js this.update start.  req.body.category = ",req.body.category);
 		// console.log("221 packages.js this.update start.  req.file = ",req.file);
 		var cat = req.body.category[0];
-		// console.log("222 packages.js this.update start. cat=r.b.category[0]  cat = ",cat);
+		console.log("222 packages.js this.update start. cat=r.b.category[0]  cat = ",cat);
 		
 		if (globals.adminValidation(req, res)){
 			Package.findById(req.params.id, function (err, package) {
-				// console.log("224 packages.js this.update pkg.findById.  package = ",package);
+				console.log("224 packages.js this.update pkg.findById.  package = ",package);
 				if (err) {
 					res.status(500).send(err);
 				}else {
@@ -627,7 +648,7 @@ function PackagesController() {
 							res.status(500).send(err)
 
 						}else{
-							// console.log("226 packages.js this.update post pkg.save.  package = ",package);
+							console.log("226 packages.js this.update post pkg.save.  package = ",package);
 							for(let i = 0; i < package._items.length; i++ ){
 								Item.findOne({_id: package._items[i]} , function(err, item){
 
@@ -637,7 +658,7 @@ function PackagesController() {
 										if (err) {
 											console.log(err)
 										} else {
-											// console.log('packages.js this.update item should  be packaged', item.packaged);
+											console.log('packages.js this.update item should  be packaged', item.packaged);
 										}
 									})
 								})
@@ -654,7 +675,7 @@ function PackagesController() {
 
 
 	this.itemsUpdate = function (req, res) {
-		// console.log("220 packages.js this.itemsUpdate start.  req.body = ", req.body);
+		console.log(Date.now(), " - 220 packages.js this.itemsUpdate start.  req.body = ", req.body);
 
 		// if (globals.adminValidation(req, res)){
 		// 	Package.findById(req.params.id, function (err, package) {
