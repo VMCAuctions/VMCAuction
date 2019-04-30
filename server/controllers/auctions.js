@@ -18,6 +18,7 @@ function AuctionsController() {
       });
     }
   };
+  
   //organizer landing page
   this.main = function(req, res) {
     if (globals.adminValidation(req, res)) {

@@ -409,8 +409,13 @@ module.exports = function(app) {
 		packages.liveAuction(req,res)});
 		
 	// Renders error page
-	app.get('/users/error', function(req,res){
-		users.error(req,res)});
+	// app.get('/users/error', function(req,res){
+	// 	users.error(req,res)});
+
+	//Renders error page when admin is not found
+	app.get('/users/adminError', function(req,res) {
+		users.adminNotFound(req,res)});
+	
 
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)	

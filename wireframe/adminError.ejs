@@ -4,7 +4,7 @@
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Login | Elizabid Silent Auction by VMCF </title>
+		<title>Error</title>
 
 		<!-- Bootstrap -->
 
@@ -20,75 +20,18 @@
 
   </head>
 
-	<body class="login-body">
+	<body class="err-body">
+		<div class="container text-center mt-5">
 
-		<!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Sorry! Something went wrong. -->
+			<img class="err-img" src="/oops.png">
+			<p class="err-text text-center"> It looks like something has gone wrong.
+			<p class="err-text text-center"> Please login again.</p>
 
-		<div class="container login-container">
-			<div class="row">
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-sm-12 col-md-6">  <!-- the column where all our content will go; for medium and larger use size 6; for mobile (small), use the full screen (size 12); -->
-					<div class="card login-card">
-						<div class="card-body">
-							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid signin-img" alt="Responsive logo">
-							<form class="login-form">
-									<div class="form-group">
-										<label for="userName" class="label-name">User Name/Email</label>
-										<input class="form-control" type="text" name="userName" id="userName" value required>
-									</div>
-									<div class="form-group">
-										<label for="password" class="label-name">Password</label>
-										<input class="form-control" type="password" name="password" id="password"  >
-									</div>
+			<a class="btn btn-submit mt-2" href="/users/login">Login <a> 
+		</div>
+	</body>	
 
-									<button type="submit" id="submit" class="btn login-btn btn-lg">Log In</button>
-							</form>
-							<div class="question">
-								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help logging in?</a><br>
-								<!--<a href="http://dv1.elizabid.com/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://dv1.elizabid.com/users/register">Don't have an account?</a> -->
-								<a href="http://localhost:8000/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://localhost:8000/users/register">Don't have an account?</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col"></div> <!-- this column is for equal space on the margins -->
-			</div> <!-- end row -->
-		</div> <!-- end container -->
 
-		<script type="text/javascript">
-			$('#submit').click(function(event){
-				console.log('running login ajax script');
-				event.preventDefault();
-				$.ajax({
-					type: "POST",
 
-					url: 'http://localhost:8000/users/checklogin',
-					// url: 'http://dv1.elizabid.com/users/checklogin',
 
-					data: {"userName":$('#userName').val(), "password":$('#password').val()},
-					success: function(data){
-						console.log('data = ',data)
-						if(data.match == false){
-							alert('Username and password do not match')
-						} else {
-							if (!$('#userName').val()) {
-								alert('Please enter a username');
-							}
-							else if (data.admin == 2){
-								window.location.replace('/auctions/main')
-							}
-							else{
-								window.location.replace('/' + data.auction + '/packages')
-							}
-						}
-					console.log('inside last ajax line');
-					},
-					
-				})
-				console.log('post ajax');
-			});
-		</script>
-  	</body>
-</html>
+		

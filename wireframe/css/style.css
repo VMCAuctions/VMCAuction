@@ -328,6 +328,25 @@ th{
 	padding: 15px;
 }
 
- 
+/* Error Pages
+-------------------------------------------------------------- */ 
+.err-body {
+	background-color: #f8f9fa; 
+}
 
+.err-page {
+	display: block;
+	margin: 5rem auto 0rem auto; 
+}
+
+.err-img {
+	width: 300px; 
+	display: block;
+	margin: 0 auto; 
+}
+
+.err-text {
+	font-size: 1.5rem; 
+	font-weight: 300; 
+}
 
