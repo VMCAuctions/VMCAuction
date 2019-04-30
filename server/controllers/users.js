@@ -58,13 +58,13 @@ function UsersController(){
 			// User.find({}, function(err, users ){
 				if(err){
 					console.log(err)
-					fileLog.info("000 users.js this.index User.find.  err = ", err)
+					fileLog.info("000 users.js this.index User.find.  err = ", JSON.stringify(err, null, 2))
 				}else if(req.session.admin){
 						// console.log("012 users.js this.index User.find.  users = ",users);
 						Package.find({_auctions: req.params.auctions}, function(err, packages){
 							if (err){
 								console.log(err)
-								fileLog.info("001 users.js this.index Package.find.  err = ", err)
+								fileLog.info("001 users.js this.index Package.find.  err = ", JSON.stringify(err, null, 2))
 							}else{
 								for (var i = 0; i < users.length; i++) {
 									var packages = []
@@ -83,7 +83,7 @@ function UsersController(){
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
-										fileLog.info("002 users.js this.index Auction.findById.  err = ", err)
+										fileLog.info("002 users.js this.index Auction.findById.  err = ", JSON.stringify(err, null, 2))
 									} else {	
 										//current is a flag showing which page is active
 										res.render('allUsers', {
@@ -113,7 +113,7 @@ function UsersController(){
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
-				fileLog.info("003 users.js this.admin User.find.  err = ", err)
+				fileLog.info("003 users.js this.admin User.find.  err = ", JSON.stringify(err, null, 2))
 			}else if(req.session.admin){
 				res.render('admin', {
 					users :users,
@@ -154,13 +154,13 @@ function UsersController(){
 		User.findOne({userName: req.params.userName}).exec( function(err, user){
 			if(err){
 				console.log(err)
-				fileLog.info("004 users.js this.showAccount User.findOne.  err = ", err)
+				fileLog.info("004 users.js this.showAccount User.findOne.  err = ", JSON.stringify(err, null, 2))
 			}else if(user.userName === req.session.userName || req.session.admin >= 1){
 				// console.log("100 users.js this.showAccount User.findOne.  user = ",user)
 				Auction.findById(req.params.auctions, function (err, auctionDetails) {
 					if (err) {
 						console.log(err)
-						fileLog.info("005 users.js this.showAccount Auction.findById.  err = ", err)
+						fileLog.info("005 users.js this.showAccount Auction.findById.  err = ", JSON.stringify(err, null, 2))
 					} else {
 						if (user.userName != req.session.userName) {
 							res.render('userAccount', {
@@ -199,7 +199,7 @@ function UsersController(){
 		Auction.findById(req.params.auctions, function (err, auctionDetails) {
 			if (err) {
 				console.log(err)
-				fileLog.info("005 users.js this.new Auction.findById.  err = ", err)
+				fileLog.info("005 users.js this.new Auction.findById.  err = ", JSON.stringify(err, null, 2))
 			} else {
 				res.render('userCreate', {
 					admin: req.session.admin, 
@@ -218,7 +218,7 @@ function UsersController(){
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
-				fileLog.info("006 users.js this.duplicate User.findOne  err = ", err)
+				fileLog.info("006 users.js this.duplicate User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else if (duplicate) {
 				res.json('Username is taken')
 			}else {
@@ -240,7 +240,7 @@ function UsersController(){
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err)
-				fileLog.info("007 users.js this.create User.findOne  err = ", err)
+				fileLog.info("007 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
 			}
 			else if(duplicate){
 				// console.log(duplicate);
@@ -249,7 +249,7 @@ function UsersController(){
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
 							console.log(err)
-							fileLog.info("008 users.js this.create User.findOne  err = ", err)
+							fileLog.info("008 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
 						}else{
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
@@ -287,7 +287,7 @@ function UsersController(){
 							function(err, user){
 									if(err){
 										console.log(err)
-										fileLog.info("009 users.js this.create User.create  err = ", err)
+										fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
 									}else{
 										// console.log("linkedAuction is", linkedAuction)
 										// console.log("req.session is", req.session)
@@ -348,7 +348,7 @@ function UsersController(){
 		Package.find({_auctions: req.params.auctions}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, result) {
 			if (err){
 				console.log(err)
-				fileLog.info("011 users.js this.show Package.find  err = ", err)
+				fileLog.info("011 users.js this.show Package.find  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < result.length; i++){
 					if (result[i].bids.length > 0){
@@ -362,12 +362,12 @@ function UsersController(){
         User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
           if(err){
 						console.log(err)
-						fileLog.info("012 users.js this.show User.findOne  err = ", err)
+						fileLog.info("012 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
           }else if (user.userName === req.session.userName | req.session.admin === true){
             Auction.findById(req.params.auctions, function (err, auctionDetails) {
               if (err) {
 								console.log(err)
-								fileLog.info("013 users.js this.show Auction.findById  err = ", err)
+								fileLog.info("013 users.js this.show Auction.findById  err = ", JSON.stringify(err, null, 2))
               } else {
 								Category.find({}, function(err, categories){
 									if (err){
@@ -391,7 +391,7 @@ function UsersController(){
 											auctionDetails: auctionDetails,
 										})
 										console.log("User info: ", user);
-										fileLog.info("014 users.js this.show res.render  user = ", user)
+										fileLog.info("014 users.js this.show res.render  user = ", JSON.stringify(user, null, 2))
 									}
 								})
               }
@@ -601,7 +601,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
-					fileLog.info("015 users.js this.interested User.findOne  err = ", err)
+					fileLog.info("015 users.js this.interested User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -632,7 +632,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
-				fileLog.info("016 users.js this.uninterested User.findOne  err = ", err)
+				fileLog.info("016 users.js this.uninterested User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -660,7 +660,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
-					fileLog.info("017 users.js this.interestedInPackage User.findOne  err = ", err)
+					fileLog.info("017 users.js this.interestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -690,7 +690,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
-				fileLog.info("018 users.js this.uninterestedInPackage User.findOne  err = ", err)
+				fileLog.info("018 users.js this.uninterestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -714,7 +714,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
-					fileLog.info("019 users.js this.interestedInFeatured User.findOne  err = ", err)
+					fileLog.info("019 users.js this.interestedInFeatured User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -728,7 +728,7 @@ function UsersController(){
 						user.save(function(err, result) {
 							if (err) {
 								console.log(err);
-								fileLog.info("020 users.js this.uninterestedInFeatured user.save  err = ", err)
+								fileLog.info("020 users.js this.uninterestedInFeatured user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						});
 					}else{
@@ -754,7 +754,7 @@ function UsersController(){
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
-								fileLog.info("022 users.js this.uninterestedInFeatured user.save  err = ", err)
+								fileLog.info("022 users.js this.uninterestedInFeatured user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						})
 						break
@@ -775,7 +775,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
-				fileLog.info("023 users.js this.uninterestedInWatchList User.findOne  err = ", err)
+				fileLog.info("023 users.js this.uninterestedInWatchList User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -783,7 +783,7 @@ function UsersController(){
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
-								fileLog.info("024 users.js this.uninterestedInWatchList user.save  err = ", err)
+								fileLog.info("024 users.js this.uninterestedInWatchList user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						})
 						break
@@ -813,7 +813,7 @@ function UsersController(){
 			User.findById(req.params.userId,function(err,user){
 				if (err){
 					console.log(err)
-					fileLog.info("025 users.js this.updateList User.findById  err = ", err)
+					fileLog.info("025 users.js this.updateList User.findById  err = ", JSON.stringify(err, null, 2))
 				}else{
 					var updatedList = req.params.result.split(',')
 					for(let i = 0; i < updatedList.length; i++){
@@ -823,7 +823,7 @@ function UsersController(){
 					user.save(function(err,result){
 						if(err){
 							console.log(err)
-							fileLog.info("026 users.js this.updateLIst User.save  err = ", err)
+							fileLog.info("026 users.js this.updateLIst User.save  err = ", JSON.stringify(err, null, 2))
 						}else{
 							console.log(result)
 						}
