@@ -234,7 +234,7 @@ function UsersController(){
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
 		// console.log(Date.now()," - 030 users.js this.create start");
-		console.log(req.body)
+		console.log("010 users.js this.create start.  req.body = ", req.body)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
@@ -325,13 +325,13 @@ function UsersController(){
 			}else if(user){
 
 				console.log("004 users.js checkLogin.  user = ",user)
-				log.info("log.info 004 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
 				fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
-				console.log("005 user._auctions = ", user._auctions)
-				log.info("log.info 005 user._auctions = ", user._auctions)
-				// req.session.auction = user._auctions
+				console.log("005 users.js checkLogin user._auctions = ", user._auctions)
+				req.session.auction = user._auctions
 				req.session.userName = user.userName
 				req.session.admin = user.admin
+				req.session.user = user
+				fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
 				res.json({match: true, auction: user._auctions, admin:user.admin})
 
 			}
@@ -340,8 +340,11 @@ function UsersController(){
 
 	
 
-	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
+	// from app.get('/:auctions/users/account/:userName' - renders user watch list (userPage.ejs)
+	// user account information is handled by this.showAccount; 
 	this.show = function(req,res){
+		fileLog.info("100 users.js this.index start. req.session = ", JSON.stringify(req.session, null, 2));
+		fileLog.info("101 users.js this.index start. req.params = ", JSON.stringify(req.params, null, 2));
 		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
@@ -359,16 +362,17 @@ function UsersController(){
 						}
 					}
 				}
-        User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-          if(err){
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
 						console.log(err)
-						fileLog.info("012 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
-          }else if (user.userName === req.session.userName | req.session.admin === true){
-            Auction.findById(req.params.auctions, function (err, auctionDetails) {
-              if (err) {
+						fileLog.info("112 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
+					} else if (user.userName === req.session.userName | req.session.admin === true){
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
 								console.log(err)
-								fileLog.info("013 users.js this.show Auction.findById  err = ", JSON.stringify(err, null, 2))
-              } else {
+								fileLog.info("113 users.js this.show Auction.findById  err = ", JSON.stringify(err, null, 2))
+							} else {
+								fileLog.info("114 users.js this.show Auction.findById  auctionDetails = ", JSON.stringify(auctionDetails, null, 2))
 								Category.find({}, function(err, categories){
 									if (err){
 										console.log(err)
