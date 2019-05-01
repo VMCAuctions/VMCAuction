@@ -29,6 +29,18 @@ h2.supporter-view {
 	font-size: 0.8rem; 
 }
 
+.pkg-card-event {
+	height: 24rem;
+	background-color: #f8f9fa !important;
+	border:solid 1px #f0f2f4 !important;  
+	box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	position: relative;
+	text-overflow: hidden;  
+	font-size: 0.8rem; 
+}
+
 .card-top {
 	height: 6rem; 
 }
@@ -41,6 +53,7 @@ h2.supporter-view {
 	width: 120px;
 	height: 90px; 
 	display: block; 
+	margin: 0px; 
 }
 
 .pkg-num {
