@@ -195,6 +195,8 @@ io.sockets.on('connection', function (socket) {
 
 								//if there are no bids on the package, we check if the userBid is greater than package amount
 								if (package.bids.length == 0 && userBid >= packageAmt) {
+									package.highBid = data.bid;
+									package.highBidder = data.userName;
 									package.bids.push({
 										bidAmount: userBid,
 										name: userName,
@@ -205,6 +207,9 @@ io.sockets.on('connection', function (socket) {
 								//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
 								} else if (userBid >= lastBid + bidIncrement) {
 									// console.log("ELSE IF");
+									package.highBid = data.bid;
+									package.highBidder = data.userName;
+
 									package.bids.push({
 										bidAmount: userBid,
 										name: userName,

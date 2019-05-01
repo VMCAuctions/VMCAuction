@@ -10,13 +10,13 @@ var mongoose = require('mongoose'),
 const csv=require('csvtojson')
 
 
-const log = require('../../node_modules/simple-node-logger/lib/SimpleLogger').createSimpleLogger({level:'all'});
+
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
     opts = {
-        logFilePath:'./public/mylogfile.log',
+        logFilePath:'./public/vmcLogFile.log',
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
-fileLog = SimpleNodeLogger.createSimpleLogger( opts );
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
 
 
 // Twilio SMS text code:
@@ -58,11 +58,13 @@ function UsersController(){
 			// User.find({}, function(err, users ){
 				if(err){
 					console.log(err)
+					fileLog.info("000 users.js this.index User.find.  err = ", JSON.stringify(err, null, 2))
 				}else if(req.session.admin){
 						// console.log("012 users.js this.index User.find.  users = ",users);
 						Package.find({_auctions: req.params.auctions}, function(err, packages){
 							if (err){
 								console.log(err)
+								fileLog.info("001 users.js this.index Package.find.  err = ", JSON.stringify(err, null, 2))
 							}else{
 								for (var i = 0; i < users.length; i++) {
 									var packages = []
@@ -81,6 +83,7 @@ function UsersController(){
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
 										console.log(err)
+										fileLog.info("002 users.js this.index Auction.findById.  err = ", JSON.stringify(err, null, 2))
 									} else {	
 										//current is a flag showing which page is active
 										res.render('allUsers', {
@@ -98,8 +101,9 @@ function UsersController(){
 							}	
 						})	
 				}else{
-					//If no known user, redirect to the event landing page 
-					res.redirect('/' + req.params.auctions  + '/event');
+					//If no admin ( or clerk), redirect to the Admin Error Page
+					// res.redirect('/' + req.params.auctions  + '/event');
+					res.redirect('/users/adminError')
 				}
 		  })
 		}
@@ -110,6 +114,7 @@ function UsersController(){
 		User.find({}, function(err, users ){
 			if(err){
 				console.log(err)
+				fileLog.info("003 users.js this.admin User.find.  err = ", JSON.stringify(err, null, 2))
 			}else if(req.session.admin){
 				res.render('admin', {
 					users :users,
@@ -117,7 +122,7 @@ function UsersController(){
 					admin: req.session.admin
 				})
 			}else{
-				res.redirect('/' + req.params.auctions  + '/event')
+				res.redirect('/users/adminError')
 			}
 		})
 	};
@@ -150,11 +155,13 @@ function UsersController(){
 		User.findOne({userName: req.params.userName}).exec( function(err, user){
 			if(err){
 				console.log(err)
+				fileLog.info("004 users.js this.showAccount User.findOne.  err = ", JSON.stringify(err, null, 2))
 			}else if(user.userName === req.session.userName || req.session.admin >= 1){
 				// console.log("100 users.js this.showAccount User.findOne.  user = ",user)
 				Auction.findById(req.params.auctions, function (err, auctionDetails) {
 					if (err) {
 						console.log(err)
+						fileLog.info("005 users.js this.showAccount Auction.findById.  err = ", JSON.stringify(err, null, 2))
 					} else {
 						if (user.userName != req.session.userName) {
 							res.render('userAccount', {
@@ -183,7 +190,7 @@ function UsersController(){
 					}
 				})
 			}else{
-				res.redirect('/users/login')
+				res.redirect('/users/supporterError')
 			}
 		})
 	};
@@ -193,6 +200,7 @@ function UsersController(){
 		Auction.findById(req.params.auctions, function (err, auctionDetails) {
 			if (err) {
 				console.log(err)
+				fileLog.info("005 users.js this.new Auction.findById.  err = ", JSON.stringify(err, null, 2))
 			} else {
 				res.render('userCreate', {
 					admin: req.session.admin, 
@@ -211,6 +219,7 @@ function UsersController(){
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
+				fileLog.info("006 users.js this.duplicate User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else if (duplicate) {
 				res.json('Username is taken')
 			}else {
@@ -226,12 +235,13 @@ function UsersController(){
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
 		// console.log(Date.now()," - 030 users.js this.create start");
-		console.log(req.body)
+		console.log("010 users.js this.create start.  req.body = ", req.body)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
 		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err)
+				fileLog.info("007 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
 			}
 			else if(duplicate){
 				// console.log(duplicate);
@@ -240,6 +250,7 @@ function UsersController(){
 				bcrypt.hash(req.body.password, null, null, function(err, hash) {
 						if(err){
 							console.log(err)
+							fileLog.info("008 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
 						}else{
 							var lowerUser = req.body.userName.toLowerCase();
 							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
@@ -277,6 +288,7 @@ function UsersController(){
 							function(err, user){
 									if(err){
 										console.log(err)
+										fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
 									}else{
 										// console.log("linkedAuction is", linkedAuction)
 										// console.log("req.session is", req.session)
@@ -314,13 +326,13 @@ function UsersController(){
 			}else if(user){
 
 				console.log("004 users.js checkLogin.  user = ",user)
-				log.info("log.info 004 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
-				fileLog.info("log.info 004 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
-				console.log("005 user._auctions = ", user._auctions)
-				log.info("log.info 005 user._auctions = ", user._auctions)
-				// req.session.auction = user._auctions
+				fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
+				console.log("005 users.js checkLogin user._auctions = ", user._auctions)
+				req.session.auction = user._auctions
 				req.session.userName = user.userName
 				req.session.admin = user.admin
+				req.session.user = user
+				fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
 				res.json({match: true, auction: user._auctions, admin:user.admin})
 
 			}
@@ -329,14 +341,18 @@ function UsersController(){
 
 	
 
-	//This displays the user watchlist page, as opposed to their account information, which is handled by this.showAccount; note that admins can bid but this page doesn't currently have a button available to them, so either we should remove admin bidding functionality or include this somehow
+	// from app.get('/:auctions/users/account/:userName' - renders user watch list (userPage.ejs)
+	// user account information is handled by this.showAccount; 
 	this.show = function(req,res){
+		fileLog.info("100 users.js this.index start. req.session = ", JSON.stringify(req.session, null, 2));
+		fileLog.info("101 users.js this.index start. req.params = ", JSON.stringify(req.params, null, 2));
 		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
 		Package.find({_auctions: req.params.auctions}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, result) {
 			if (err){
 				console.log(err)
+				fileLog.info("011 users.js this.show Package.find  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < result.length; i++){
 					if (result[i].bids.length > 0){
@@ -347,14 +363,17 @@ function UsersController(){
 						}
 					}
 				}
-        User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-          if(err){
-            console.log(err)
-          }else if (user.userName === req.session.userName | req.session.admin === true){
-            Auction.findById(req.params.auctions, function (err, auctionDetails) {
-              if (err) {
-                console.log(err)
-              } else {
+				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+					if(err){
+						console.log(err)
+						fileLog.info("112 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
+					} else if (user.userName === req.session.userName | req.session.admin === true){
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+								fileLog.info("113 users.js this.show Auction.findById  err = ", JSON.stringify(err, null, 2))
+							} else {
+								fileLog.info("114 users.js this.show Auction.findById  auctionDetails = ", JSON.stringify(auctionDetails, null, 2))
 								Category.find({}, function(err, categories){
 									if (err){
 										console.log(err)
@@ -377,12 +396,13 @@ function UsersController(){
 											auctionDetails: auctionDetails,
 										})
 										console.log("User info: ", user);
+										fileLog.info("014 users.js this.show res.render  user = ", JSON.stringify(user, null, 2))
 									}
 								})
               }
             })
           }else{
-            res.redirect('/' + req.params.auctions  + '/event')
+            res.redirect('/users/supporterError')
           }
         })
 			}
@@ -531,14 +551,26 @@ function UsersController(){
 
 	}
 
-	this.error = function(req,res){
-		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
-		//Auction.find()
-		res.render('adminError', {
-			userName: req.session.userName,
-			admin: req.session.admin,
-			auction:req.session.auction
-		})
+	// this.error = function(req,res){
+	// 	//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
+	// 	//Auction.find()
+	// 	res.render('adminError', {
+	// 		userName: req.session.userName,
+	// 		admin: req.session.admin,
+	// 		auction:req.session.auction
+	// 	})
+	// };
+
+	this.adminNotFound = function(req,res){
+		res.render('adminError', {})
+	};
+
+	this.clerkNotFound = function(req,res){
+		res.render('clerkError', {})
+	};
+
+	this.supporterNotFound = function(req,res){
+		res.render('supporterError', {})
 	};
 
 	this.adminChange = function(req,res){
@@ -586,6 +618,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
+					fileLog.info("015 users.js this.interested User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -616,6 +649,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
+				fileLog.info("016 users.js this.uninterested User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -643,6 +677,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
+					fileLog.info("017 users.js this.interestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -672,6 +707,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
+				fileLog.info("018 users.js this.uninterestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -695,6 +731,7 @@ function UsersController(){
 			User.findOne({userName: req.session.userName}, function(err, user) {
 				if (err) {
 					console.log(err);
+					fileLog.info("019 users.js this.interestedInFeatured User.findOne  err = ", JSON.stringify(err, null, 2))
 				}else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
@@ -708,6 +745,7 @@ function UsersController(){
 						user.save(function(err, result) {
 							if (err) {
 								console.log(err);
+								fileLog.info("020 users.js this.uninterestedInFeatured user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						});
 					}else{
@@ -725,6 +763,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
+				fileLog.info("021 users.js this.uninterestedInFeatured User.findOne  err = ", err)
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -732,6 +771,7 @@ function UsersController(){
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
+								fileLog.info("022 users.js this.uninterestedInFeatured user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						})
 						break
@@ -752,6 +792,7 @@ function UsersController(){
 		User.findOne({userName: req.session.userName}, function(err, user) {
 			if (err) {
 				console.log(err);
+				fileLog.info("023 users.js this.uninterestedInWatchList User.findOne  err = ", JSON.stringify(err, null, 2))
 			}else{
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
@@ -759,6 +800,7 @@ function UsersController(){
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
+								fileLog.info("024 users.js this.uninterestedInWatchList user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						})
 						break
@@ -778,16 +820,12 @@ function UsersController(){
 	};
 
 
-
-
-
-
-
 	this.updateList = function(req,res){
 		if (globals.notClerkValidation(req, res)){
 			User.findById(req.params.userId,function(err,user){
 				if (err){
 					console.log(err)
+					fileLog.info("025 users.js this.updateList User.findById  err = ", JSON.stringify(err, null, 2))
 				}else{
 					var updatedList = req.params.result.split(',')
 					for(let i = 0; i < updatedList.length; i++){
@@ -797,6 +835,7 @@ function UsersController(){
 					user.save(function(err,result){
 						if(err){
 							console.log(err)
+							fileLog.info("026 users.js this.updateLIst User.save  err = ", JSON.stringify(err, null, 2))
 						}else{
 							console.log(result)
 						}

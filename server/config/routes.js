@@ -409,8 +409,21 @@ module.exports = function(app) {
 		packages.liveAuction(req,res)});
 		
 	// Renders error page
-	app.get('/users/error', function(req,res){
-		users.error(req,res)});
+	// app.get('/users/error', function(req,res){
+	// 	users.error(req,res)});
+
+	//Renders error page when admin is not found
+	app.get('/users/adminError', function(req,res) {
+		users.adminNotFound(req,res)});
+	
+	//Renders error page when clerk is not found
+	app.get('/users/adminError', function(req,res) {
+		users.clerkNotFound(req,res)});	
+
+	//Renders error page when a supporter gets kicked out
+	app.get('/users/supporterError', function(req,res) {
+			users.supporterNotFound(req,res)});	
+
 
 	// AUCTION //
 	//Organizer's landing page (where the organizer selects what she wants to do)	
@@ -480,7 +493,7 @@ module.exports = function(app) {
 	});
 	//End Clerk Supporter Registration
 	
-
+	//Clerk Check-in
 	app.get('/:auctions/clerkCheckIn', function(req, res){
 		auctions.clerkcheckin(req,res)});
 
@@ -489,6 +502,10 @@ module.exports = function(app) {
 	})
 	app.post('/:user/clerkUserUpdate', function(req,res){
 		auctions.clerkUserUpdate(req,res)
+	})
+	//end clerk check-in
+	app.get('/:auctions/clerkCheckOut', function(req, res){
+		auctions.clerkcheckout(req,res);
 	})
 
 		
