@@ -101,8 +101,9 @@ function UsersController(){
 							}	
 						})	
 				}else{
-					//If no known user, redirect to the event landing page 
-					res.redirect('/' + req.params.auctions  + '/event');
+					//If no admin ( or clerk), redirect to the Admin Error Page
+					// res.redirect('/' + req.params.auctions  + '/event');
+					res.redirect('/users/adminError')
 				}
 		  })
 		}
@@ -121,7 +122,7 @@ function UsersController(){
 					admin: req.session.admin
 				})
 			}else{
-				res.redirect('/' + req.params.auctions  + '/event')
+				res.redirect('/users/adminError')
 			}
 		})
 	};
@@ -189,7 +190,7 @@ function UsersController(){
 					}
 				})
 			}else{
-				res.redirect('/users/login')
+				res.redirect('/users/supporterError')
 			}
 		})
 	};
@@ -401,7 +402,7 @@ function UsersController(){
               }
             })
           }else{
-            res.redirect('/' + req.params.auctions  + '/event')
+            res.redirect('/users/supporterError')
           }
         })
 			}
@@ -550,14 +551,26 @@ function UsersController(){
 
 	}
 
-	this.error = function(req,res){
-		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
-		//Auction.find()
-		res.render('adminError', {
-			userName: req.session.userName,
-			admin: req.session.admin,
-			auction:req.session.auction
-		})
+	// this.error = function(req,res){
+	// 	//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
+	// 	//Auction.find()
+	// 	res.render('adminError', {
+	// 		userName: req.session.userName,
+	// 		admin: req.session.admin,
+	// 		auction:req.session.auction
+	// 	})
+	// };
+
+	this.adminNotFound = function(req,res){
+		res.render('adminError', {})
+	};
+
+	this.clerkNotFound = function(req,res){
+		res.render('clerkError', {})
+	};
+
+	this.supporterNotFound = function(req,res){
+		res.render('supporterError', {})
 	};
 
 	this.adminChange = function(req,res){
@@ -805,11 +818,6 @@ function UsersController(){
 			}
 		})
 	};
-
-
-
-
-
 
 
 	this.updateList = function(req,res){

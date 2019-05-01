@@ -33,6 +33,10 @@
     font-size: 0.8rem; 
 }
 
+.user-big {
+    font-size: 0.9rem; 
+} 
+
 a.log, a.user {
     color: #99ccff; 
 }

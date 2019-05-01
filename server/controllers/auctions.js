@@ -26,6 +26,7 @@ function AuctionsController() {
       });
     }
   };
+
   //organizer landing page
   this.main = function(req, res) {
     if (globals.adminValidation(req, res)) {
@@ -60,12 +61,8 @@ function AuctionsController() {
           });
         }
       });
-    } else {
-      res.redirect("/" + req.session.auction + "/event");
-    }
+    } 
   };
-
-
 
 	this.create = function(req, res) {
 		// console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
