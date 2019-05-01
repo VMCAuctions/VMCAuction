@@ -81,7 +81,9 @@
 								FEATURED
 							</div> 
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-								<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
+								<div>
+									<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
+								</div>	
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
 									<p class="category mt-1">Category: <%=featured[f]._category %></p>

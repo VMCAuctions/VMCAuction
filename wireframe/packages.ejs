@@ -128,7 +128,9 @@
 
 							<%}%>			
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-								<img class="pkg-img mr-3" src="/<%= packages[n].photo %>">
+								<div>
+									<img class="pkg-img mr-3" src="/<%= packages[n].photo %>">
+								</div>	
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[n]._id %>"><%= packages[n].name %></a>
 									<p class="category mt-1">Category: <%=packages[n]._category%></p>
