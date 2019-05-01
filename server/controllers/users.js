@@ -318,11 +318,16 @@ function UsersController(){
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 			if(err){
 				// console.log("001 users.js checkLogin.  err = ",err);
-
-			}else if(!user){
-				// console.log("002 users.js checkLogin.  !user block");
+				fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
 				res.json({match: false})
-			}else if(user){
+
+			 }
+			//  else if(!user){
+			// 	// console.log("002 users.js checkLogin.  !user block");
+			// 	res.json({match: false})
+			// }
+			// else if(user){
+			else {
 
 				console.log("004 users.js checkLogin.  user = ",user)
 				fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));

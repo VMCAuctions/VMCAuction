@@ -10,6 +10,14 @@ Auction = require("../models/auction.js");
 var widgets = require('../controllers/widgets.js');
 Widget = require("../models/widget.js");
 
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+    opts = {
+        logFilePath:'./public/vmcLogFile.log',
+        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+    },
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
+
 // for image upload
 var multer = require('multer')
 
@@ -206,6 +214,11 @@ module.exports = function(app) {
 
 	// get the page for a specific package
 	app.get('/:auctions/packages/:id', function(req,res){
+		// console.log('040 routes.js /:aucs/pkgs/pkg  req = ',req);
+		// console.log('040 routes.js /:aucs/pkgs/pkg  res = ',res);
+		console.log('040 routes.js /:aucs/pkgs/pkg  res.statusCode = ',res.statusCode);
+		// fileLog.info("000 routes.js /auc/pkgs/pkg. req  = ", JSON.stringify(req, null, 2));
+		// fileLog.info("001 routes.js /auc/pkgs/pkg. res = ", JSON.stringify(res, null, 2));
 		// console.log("ROUTE - GET PAGE FOR SPECIFIC PACKAGE");
 		// console.log(req.params.name);
 		// console.log(res);
