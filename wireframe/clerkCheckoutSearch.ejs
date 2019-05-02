@@ -33,15 +33,15 @@
 									<ul>
 										<% for (var p in cart[users[u].userName].packages) { %>
 											<li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
-												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %>)</li>
+												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)</li>
 										<% } %>
 									</ul>
 								</td>
 								<td id="<%= users[u].userName + 'total' %>">
-									$<%= cart[users[u].userName].total %>
+									$<%= cart[users[u].userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
 								</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">Invoice</button>
+									<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 								</td>
 							</tr>
 						<% } %>
@@ -79,6 +79,8 @@
         <script type="text/javascript">
 			var cart = <%-JSON.stringify(cart)%>;
 			var packages = <%-JSON.stringify(packages)%>;
+			var users = <%-JSON.stringify(users)%>;
+
 		</script>
 		<!-- search box scripts -->
 		<script type="text/javascript">
@@ -112,25 +114,48 @@
             
             
 		</script>
+
 		<script type="text/javascript">
 			$(".pdfBut").click(function(){
-				var firstName = $(this).data('first')
-				var lastName = $(this).data('last')
-				var userName = $(this).data('user')
-                var newCart = cart;
-                console.log(newCart)
+				let firstName = $(this).data('first')
+				let lastName = $(this).data('last')
+				let userName = $(this).data('user')
+				let totalBid = $(this).data('total').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let newCart = cart;
+				let allUsers = users;
+
+
+				function invoiceDate(){
+					let today = new Date();
+					let dd = String(today.getDate()).padStart(2, '0');
+					let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+					let yyyy = today.getFullYear();
+					today = mm + '/' + dd + '/' + yyyy;
+					return today;
+				}
+
+
+				function userInfo(allUsers){
+					for(var i = 0; i< allUsers.length; i++){
+						if(userName == allUsers[i].userName ){
+							return allUsers[i];
+						}
+					}
+				}
+
 				function buildTable(crt) {
 					tableData = []
 					columns = ['_id','name','description','bids']
-					tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+					tableData.push([{text: 'Package ID', style: 'tableHeader', alignment: 'center'}, {text: 'Package Name', style: 'tableHeader', alignment: 'center'}, {text: 'Description', style: 'tableHeader', alignment: 'center'}, {text: 'Amount', style: 'tableHeader', alignment: 'center'}])
 					crt.forEach(function(row) {
 						var rowData = []
+
 						for(var x = 0; x < columns.length; x++) {
 							if(x == columns.length - 1) {
 								tmpBids = row.bids
 								winBid = tmpBids[tmpBids.length - 1]
-								winAmt = winBid.bidAmount
-								rowData.push(winAmt)
+								winAmt = winBid.bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								rowData.push("$"+winAmt)
 							} else {
 								rowData.push(row[columns[x]])
 							}
@@ -139,20 +164,104 @@
 					})
 					return tableData
 				}
+
 				docDef = {
 					content: [
-					{ text: firstName + ' ' + lastName, style: 'header'},
+					{ text: firstName + ' ' + lastName, style: 'name'},
 					{
+						alignment: 'justify',
+						columns: [
+							{
+								text: 'Phone Number: '+ userInfo(allUsers).phone,
+							},
+							{
+								text: 'Table Number: '+ userInfo(allUsers).table,
+							}
+						]
+					},
+					'Email Address: ' + userInfo(allUsers).userName,
+
+					{
+						alignment: 'justify',
+						columns: [
+							{
+								text: "The VMC Foundation Puttin' on the Ritz 2019",
+								style: 'header'
+							},
+							{
+								text: invoiceDate(),
+								width: '65'
+							}
+						]
+					},
+
+					{
+						style:'tableExample2',
 						table: {
+							widths: [75, 100, 250, 50],
 							headerRows: 1,
 							body: buildTable(newCart[userName].packages)
 						}
+					},
+
+					{
+						style: 'tableExample3',
+						table: {
+							widths: [500],
+							body: [
+								[{text: 'Total Charges: $'+totalBid, style: 'header', alignment: 'right'}],
+								[{text: 'Total Payments: $'+ totalBid, style: 'header', alignment: 'right'}],
+								[{text: 'Balance Due: $0.00', style: 'header', alignment: 'right'}]
+					]
+						}
+					},
+					
+					{
+						text: 'Tax ID:77-01877890',
+						alignment: 'center',
+						bold: true,
+						margin: [0,50,0,0],
+						style: 'bottom'
+					},
+					
+					{
+						text: 'Please refrain this receipt for your records. The amount of your contributions that is deductible for federal income tax purposes is limited to the excess of money contributed over the fair market value of goods or services provided by the organization.',
+						alignment: 'center',
+						style: 'bottom'
+					},
+
+					{
+						text: 'Thank you for supporting VMC Foundation!',
+						alignment: 'center',
+						style: 'bottom'
 					}
+
 					],
 					styles: {
-						header: {
+
+						name: {
+							bold: true,
 							fontSize: 22,
-							bold: true
+							color: 'black'
+						},
+
+						header: {
+							bold: true,
+							fontSize: 13,
+							color: 'black'
+						},
+
+						tableHeader: {
+							bold: true,
+							fontSize: 13,
+							color: 'black'
+						},
+						
+						tableExample2: {
+							margin: [0,10,0,0]
+						},
+						tableExample3: {
+							margin: [0,50,0,0]
 						}
 					}
 				}
