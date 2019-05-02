@@ -15,63 +15,6 @@
 	<!-- Sockets and JavaScript -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script   src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
-
-
-	<script type='text/javascript'>
-	var socket = io.connect();
-
-	function change(packageId) {
-		var watchlistButton = document.getElementById("watchlistButton-"+packageId);
-
-		if ( watchlistButton.value == "Remove from Watch List" ) {
-			$.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
-			$('#watchlistButton-'+packageId).attr("class","btn btn-add-watchlist mb-3");
-			watchlistButton.value = "Add to Watch List";
-		} else {
-			$.get("/<%= auction %>/users/interested-in-package/"+packageId);
-			watchlistButton.value = "Remove from Watch List";
-			$('#watchlistButton-'+packageId).attr("class","btn btn-remove-watchlist mb-3");
-		}
-	}
-
-		$(document).ready(function(){
-			socket.on("serverTalksBack", function(data){
-			$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
-			console.log(data.bid);
-		})
-
-        $("#keyword").on("keyup", function() {
-          var value = $(this).val().toLowerCase();
-          $(".package").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-
-		$("select[name='category']").change( function() {
-			var value = $(this).val().toLowerCase();
-			$(".package").filter(function(){
-				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			})
-		});
-
-		$("#noBids").click(function() {
-			$(".bids").toggle();
-			$(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
-		});
-		})
-		
-		// Update highest bidder and bid amount
-		socket.on("serverTalksBack", function (data) {
-		let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		let topBidder = data.userBidLast;
-		$('#highest-bid-'+data.packId).text("$"+ currentBid);
-		$('#highest-bidder-'+data.packId).text(data.userBidLast);
-		}
-	);
-  </script>
-
-
-	
 </head>
 
 <body>
@@ -104,7 +47,7 @@
 			</select>
 		</div>
 		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
-			<button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
+			<button class="form-control btn-no-bids" id="noBids" name="button">Packages with No Bids</button>
 		</div>	
 	</div>	
 
@@ -192,18 +135,18 @@
 			}
 		}
 
-			$(document).ready(function(){
-				socket.on("serverTalksBack", function(data){
+		$(document).ready(function(){
+			socket.on("serverTalksBack", function(data){
 				$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
 				console.log(data.bid);
 			})
 
-					$("#keyword").on("keyup", function() {
-						var value = $(this).val().toLowerCase();
-						$(".package").filter(function() {
-							$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-							});
-					});
+			$("#keyword").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$(".package").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
 
 			$("select[name='category']").change( function() {
 				var value = $(this).val().toLowerCase();
@@ -214,21 +157,19 @@
 
 			$("#noBids").click(function() {
 				$(".bids").toggle();
-				$(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
-			});
-			})
+				$(this).text($(this).text() == 'Show All Packages' ? 'Packages with No Bids' : 'Show All Packages')
+      });
+		
 			
 			// Update highest bidder and bid amount
 			socket.on("serverTalksBack", function (data) {
-			let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			let topBidder = data.userBidLast;
-			$('#highest-bid-'+data.packId).text("$"+ currentBid);
-			$('#highest-bidder-'+data.packId).text(data.userBidLast);
-			}
-		);
+				let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let topBidder = data.userBidLast;
+				$('#highest-bid-'+data.packId).text("$"+ currentBid);
+				$('#highest-bidder-'+data.packId).text(data.userBidLast);
+			});
+		})
 	</script>
-
-
 
 </body>
 </html>

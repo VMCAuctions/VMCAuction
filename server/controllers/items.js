@@ -192,6 +192,8 @@ function ItemsController() {
 					});
 				}
 			});
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -252,6 +254,8 @@ function ItemsController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
