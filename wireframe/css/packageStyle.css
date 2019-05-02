@@ -186,7 +186,7 @@ ul {
 } 
 
 .btn-remove-watchlist {
-	background-color: #a6a6a6; 
+	background-color: #b3b3b3; 
 	color: #f8f9fa;
 	border: none;
 	height: 40px;
@@ -205,7 +205,7 @@ ul {
 .btn-bid {
 	color: #fff;
 	font-size: 0.95rem !important; 
-	background-color: #ff2719;
+	background-color: #bacc14;
 	height: 40px; 
 	width: 90px;
 	border-radius: 5px !important; 
@@ -216,7 +216,7 @@ ul {
 }
 
 .btn-remove-watchlist:hover {
-	background-color: #737373; 
+	background-color: #808080; 
 }
 
 .form-control.btn-no-bids:hover {
@@ -228,7 +228,7 @@ ul {
 }
 
 .btn-bid:hover {
-	background-color: #c30000;
+	background-color: #bacc14;
 }	
 
 /* .cardHover:hover{

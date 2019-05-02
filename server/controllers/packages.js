@@ -400,6 +400,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -455,6 +457,8 @@ function PackagesController() {
 					}
 
 				})
+			} else {
+				res.redirect('/users/adminError');
 			}
 		};
 
@@ -683,6 +687,8 @@ function PackagesController() {
 					});
 				}
 			});
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -813,6 +819,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -875,6 +883,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -892,6 +902,8 @@ function PackagesController() {
 				package.save()
 				res.redirect('/' + req.params.auctions + '/packages')
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 	

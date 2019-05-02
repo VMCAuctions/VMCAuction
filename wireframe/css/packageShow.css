@@ -95,12 +95,12 @@ input[type=number] {
 /* buttons
 -------------------------------------------------------------- */
 .btn-bid {
-  color: white;
+  color: #f8f9fa;
   font-size: 0.95rem !important; 
-  background-color: #ff2719;
+  background-color: #bacc14;
   height: 42px; 
   width: 94px;
-  border:  2px solid  #ff2719; 
+  border: 2px solid #bacc14; 
   border-radius: 30px !important; 
 }
 
@@ -114,8 +114,8 @@ input[type=number] {
 
 .btn-bid:hover {
   color: white;
-  background-color: #c30000;
-  border: 2px solid #c30000; 
+  background-color: #869b00;
+  border: 2px solid #869b00; 
   border-radius: 30px !important; 
 }
 
