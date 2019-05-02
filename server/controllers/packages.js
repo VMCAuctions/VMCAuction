@@ -578,7 +578,8 @@ function PackagesController() {
 									ourBids: ourBids,
 									lastBid: parseInt(lastBid),
 									auction: req.params.auctions,
-									auctionDetails: auctionDetails
+									auctionDetails: auctionDetails,
+									
 								})
 							}
 						})

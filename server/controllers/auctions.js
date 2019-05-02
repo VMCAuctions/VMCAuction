@@ -29,13 +29,15 @@ function AuctionsController() {
 
   //organizer landing page
   this.main = function(req, res) {
+	fileLog.info("000 auctions.js this.main start. req.session = ", JSON.stringify(req.session, null, 2));
+	fileLog.info("001 auctions.js this.main start. req.params = ", JSON.stringify(req.params, null, 2));
     if (globals.adminValidation(req, res)) {
       Auction.find({}, function(err, auctions) {
         if (err) {
           console.log(err);
-          fileLog.info("000 auctions.js this.main Auction.find.  err = ", err);
+          fileLog.info("002 auctions.js this.main Auction.find.  err = ", JSON.stringify(err, null, 2));
         } else {
-          fileLog.info("000 auctions.js this.main Auction.find.  auctions = ", auctions);
+          fileLog.info("002 auctions.js this.main Auction.find.  auctions = ", JSON.stringify(auctions, null, 2));
           //for now the archivd auctions are hard code.
           //later make an if statemtn hat checks if auction is in past
           //based on clock and todays Date
@@ -44,10 +46,10 @@ function AuctionsController() {
           User.findOne({ userName: req.session.userName }, function(err, user) {
             if (err) {
               console.log(err);
-              fileLog.info(err);
+              fileLog.info("003 auctions.js this.main User.findOne.  err = ", JSON.stringify(err, null, 2));
             } else {
               console.log("000 auctions.js this.main.  user = ", user);
-              fileLog.info("000 auctions.js this.main.  user = ", user);
+              fileLog.info("004 auctions.js this.main User.findOne.  user = ", JSON.stringify(user, null, 2));
               res.render("main", {
                 user: user,
                 auctions: auctions,
