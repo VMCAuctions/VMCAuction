@@ -412,6 +412,8 @@ module.exports = function(app) {
 	// app.get('/users/error', function(req,res){
 	// 	users.error(req,res)});
 
+
+	//USER ERROR PAGES//
 	//Renders error page when admin is not found
 	app.get('/users/adminError', function(req,res) {
 		users.adminNotFound(req,res)});

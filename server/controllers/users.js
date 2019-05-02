@@ -59,6 +59,12 @@ function UsersController(){
 				if(err){
 					console.log(err)
 					fileLog.info("000 users.js this.index User.find.  err = ", JSON.stringify(err, null, 2))
+					if (req.session.admin === 2) {
+						res.redirect('/users/adminError');
+					} 
+					if (req.session.admin === 1) {
+						res.redirect('/users/clerkError');
+					}
 				}else if(req.session.admin){
 						// console.log("012 users.js this.index User.find.  users = ",users);
 						Package.find({_auctions: req.params.auctions}, function(err, packages){
@@ -402,7 +408,7 @@ function UsersController(){
               }
             })
           }else{
-            res.redirect('/users/supporterError')
+            res.redirect('/users/supporterError');
           }
         })
 			}

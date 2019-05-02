@@ -24,6 +24,8 @@ function AuctionsController() {
         admin: req.session.admin,
         userName: req.session.userName
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
 
@@ -61,7 +63,9 @@ function AuctionsController() {
           });
         }
       });
-    } 
+    } else {
+      res.redirect('/users/adminError');
+    }
   };
 
 	this.create = function(req, res) {
@@ -114,7 +118,9 @@ function AuctionsController() {
 					});
 				}
 			});
-		}
+		} else {
+      res.redirect('/users/adminError');
+    }
 	};
 
 
@@ -138,6 +144,8 @@ function AuctionsController() {
           });
         }
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
 
@@ -321,7 +329,7 @@ function AuctionsController() {
               }
             });
         } else {
-          res.redirect("/" + req.params.auctions + "/event");
+          rres.redirect('/users/clerkError');
         }
       });
     }
@@ -351,7 +359,7 @@ function AuctionsController() {
   //Clerk registering new supporter
   this.clerkRegSup = function(req,res){
     //this page can only be accessed if clerk checked in as
-    if(req.session.admin && req.session.admin == 1){
+    if(req.session.admin === 1){
       Auction.findById(req.params.auctions, function(err, auction){
         if(err){
           console.log(err);
@@ -360,11 +368,11 @@ function AuctionsController() {
         }
       })
     }else{
-      res.redirect('/')
+      res.redirect('/users/clerkError');
     }
   };
+
   this.clerkRegSupCreate = function(req,res){
-    
     Auction.findById(req.params.auctions, function(err, auction){
       if(err){
         console.log(err)
