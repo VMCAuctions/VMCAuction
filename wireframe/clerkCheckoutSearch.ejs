@@ -123,6 +123,10 @@
 				let totalBid = $(this).data('total').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 				let newCart = cart;
 				let allUsers = users;
+				let auctionName = 'The VMC Foundation <%= auctionDetails.name %>';
+				let auctionImage = '<%= auctionDetails.headerImage %>';
+
+				console.log(auctionImage);
 
 				let today = new Date();
 				let dd = String(today.getDate()).padStart(2, '0');
@@ -140,8 +144,8 @@
 
 				function buildTable(crt) {
 					tableData = []
-					columns = ['_id','name','description','bids']
-					tableData.push([{text: 'Package ID', style: 'tableHeader', alignment: 'center'}, {text: 'Package Name', style: 'tableHeader', alignment: 'center'}, {text: 'Description', style: 'tableHeader', alignment: 'center'}, {text: 'Amount', style: 'tableHeader', alignment: 'center'}])
+					columns = ['_id','name','value','bids']
+					tableData.push([{text: 'Package ID', style: 'tableHeader', alignment: 'center'}, {text: 'Package Name', style: 'tableHeader', alignment: 'center'}, {text: 'Value', style: 'tableHeader', alignment: 'center'}, {text: 'Amount', style: 'tableHeader', alignment: 'center'}])
 					crt.forEach(function(row) {
 						var rowData = []
 
@@ -162,8 +166,26 @@
 
 				docDef = {
 					content: [
-					{ text: firstName + ' ' + lastName, style: 'name'},
+
 					{
+						style: 'contact',
+						alignment: 'justify',
+						columns: [
+							{ text: firstName + ' ' + lastName, style: 'name'}
+							// {
+							// 	image: auctionImage,
+							// 	width: 160,
+							// 	height: 90,
+							// },
+						],
+					},
+
+
+
+
+
+					{
+						style: 'contact',
 						alignment: 'justify',
 						columns: [
 							{
@@ -172,63 +194,72 @@
 							{
 								text: 'Table Number: '+ userInfo(allUsers).table,
 							}
-						]
+						],
 					},
-					'Email Address: ' + userInfo(allUsers).userName,
+
+
+
+					{
+						text: 'Email Address: ' + userInfo(allUsers).userName,
+						style: 'contact'
+					},
+
+	
 
 					{
 						alignment: 'justify',
 						columns: [
 							{
-								text: "The VMC Foundation Puttin' on the Ritz "+yyyy,
-								style: 'header'
+								text: auctionName,
+								style: 'header',
+								margin: [0,10,0,0]
 							},
 							{
 								text: today,
-								width: '65'
+								width: '65',
+								margin: [0,10,0,0],
+								fontSize: 10,
+								bold: true
 							}
 						]
 					},
 
 					{
-						style:'tableExample2',
+						style:'body',
 						table: {
-							widths: [75, 100, 250, 50],
+							widths: [60, 315, 50, 50],
 							headerRows: 1,
 							body: buildTable(newCart[userName].packages)
 						}
 					},
 
 					{
-						style: 'tableExample3',
+						style: 'summary',
 						table: {
 							widths: [500],
 							body: [
-								[{text: 'Total Charges: $'+totalBid, style: 'header', alignment: 'right'}],
-								[{text: 'Total Payments: $'+ totalBid, style: 'header', alignment: 'right'}],
-								[{text: 'Balance Due: $0.00', style: 'header', alignment: 'right'}]
+								[{text: 'Total Charges: $'+totalBid, alignment: 'right'}],
+								[{text: 'Total Payments: $'+ totalBid, alignment: 'right'}],
+								[{text: 'Balance Due: $0.00', alignment: 'right'}]
 					]
 						}
 					},
 					
 					{
 						text: 'Tax ID:77-01877890',
-						alignment: 'center',
-						bold: true,
-						margin: [0,50,0,0],
-						style: 'bottom'
+						style: 'taxId'
 					},
 					
 					{
 						text: 'Please refrain this receipt for your records. The amount of your contributions that is deductible for federal income tax purposes is limited to the excess of money contributed over the fair market value of goods or services provided by the organization.',
 						alignment: 'center',
-						style: 'bottom'
+						style: 'footer1'
 					},
 
 					{
 						text: 'Thank you for supporting VMC Foundation!',
 						alignment: 'center',
-						style: 'bottom'
+						style: 'footer2'
 					}
 
 					],
@@ -236,28 +267,64 @@
 
 						name: {
 							bold: true,
-							fontSize: 22,
-							color: 'black'
+							fontSize: 21,
+							color: 'black',
+							normal: 'Helvetica',
+							margin: [0,20,0,0]
+						},
+
+						contact: {
+							fontSize: 10
 						},
 
 						header: {
 							bold: true,
-							fontSize: 13,
-							color: 'black'
+							fontSize: 16,
+							color: 'black',
+							normal: 'Helvetica'
+
 						},
 
 						tableHeader: {
 							bold: true,
-							fontSize: 13,
-							color: 'black'
+							fontSize: 10,
+							color: '#FFF',
+							normal: 'Helvetica',
+							fillColor: '#003D79'
 						},
 						
-						tableExample2: {
-							margin: [0,10,0,0]
+						body: {
+							margin: [0,10,0,0],
+							normal: 'Helvetica',
+							fontSize: 10
 						},
-						tableExample3: {
-							margin: [0,50,0,0]
+						summary: {
+							margin: [0,50,0,0],
+							normal: 'Helvetica',
+							bold: true,
+							fontSize: 10
+						},
+
+						taxId: {
+							alignment: 'center',
+							bold: true,
+							fontSize: 11,
+							margin: [0,50,0,0],
+						},
+
+						footer1: {
+							normal: 'Helvetica',
+							fontSize: 9,
+							italic: true
+						},
+
+						footer2: {
+							normal: 'Helvetica',
+							fontSize: 11,
+							margin: [0,25,0,0],
 						}
+
+
 					}
 				}
 				pdfMake.createPdf(docDef).open()
