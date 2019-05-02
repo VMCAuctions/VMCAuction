@@ -217,6 +217,7 @@ module.exports = function(app) {
 		// console.log('040 routes.js /:aucs/pkgs/pkg  req = ',req);
 		// console.log('040 routes.js /:aucs/pkgs/pkg  res = ',res);
 		console.log('040 routes.js /:aucs/pkgs/pkg  res.statusCode = ',res.statusCode);
+		fileLog.info('040 routes.js /:aucs/pkgs/pkg  res.statusCode = ',res.statusCode);
 		// fileLog.info("000 routes.js /auc/pkgs/pkg. req  = ", JSON.stringify(req, null, 2));
 		// fileLog.info("001 routes.js /auc/pkgs/pkg. res = ", JSON.stringify(res, null, 2));
 		// console.log("ROUTE - GET PAGE FOR SPECIFIC PACKAGE");
