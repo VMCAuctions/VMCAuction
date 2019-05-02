@@ -124,16 +124,11 @@
 				let newCart = cart;
 				let allUsers = users;
 
-
-				function invoiceDate(){
-					let today = new Date();
-					let dd = String(today.getDate()).padStart(2, '0');
-					let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-					let yyyy = today.getFullYear();
-					today = mm + '/' + dd + '/' + yyyy;
-					return today;
-				}
-
+				let today = new Date();
+				let dd = String(today.getDate()).padStart(2, '0');
+				let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+				let yyyy = today.getFullYear();
+				today = mm + '/' + dd + '/' + yyyy;
 
 				function userInfo(allUsers){
 					for(var i = 0; i< allUsers.length; i++){
@@ -185,11 +180,11 @@
 						alignment: 'justify',
 						columns: [
 							{
-								text: "The VMC Foundation Puttin' on the Ritz 2019",
+								text: "The VMC Foundation Puttin' on the Ritz "+yyyy,
 								style: 'header'
 							},
 							{
-								text: invoiceDate(),
+								text: today,
 								width: '65'
 							}
 						]
