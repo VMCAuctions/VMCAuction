@@ -84,9 +84,11 @@ var packagesButtonStates = {};
 	
 	Package.find({}).exec(function (err, pkgs) {
 		if (err) {
-			console.log("init Server object error", err)
+			console.log("init Server object error", err);
+			fileLog.info("001 server.js start. session = ", JSON.stringify(session, null, 2));
 		} else {
 			// console.log("100 Server.js Package.find pkgs = ", pkgs)
+			fileLog.info("002 server.js Package.find packages.length = ", pkgs.length);
 			for (let i = 0; i < pkgs.length; i++) {
 				// all buttons are enabled
 				packagesButtonStates[pkgs[i]._id] = {};
@@ -122,7 +124,9 @@ io.sockets.on('connection', function (socket) {
 		Auction.findById(data.auction, function(err, auction){
 			if(err){
 				console.log(err);
+				fileLog.info("003 server.js Auction.findById. err = ", err);
 			} else {
+				fileLog.info("004 server.js Auction.findById.  auction = ", auction);
 				if(date > auction.endClock){
 					console.log("Bid Placed After Auction Ended");
 					return;
@@ -192,6 +196,7 @@ io.sockets.on('connection', function (socket) {
 						Package.findById(data.packId).exec(function (err, package) {
 							if (err) {
 								console.log("error occured " + err);
+								fileLog.info("005 server.js Package.findById.  error = ", err);
 							} else if (package != null) {
 								fileLog.info("056 server.js Package.findById.  package = ", JSON.stringify(package, null, 2));
 								let lastBid;
@@ -230,6 +235,7 @@ io.sockets.on('connection', function (socket) {
 							package.save(function (err, package) {
 								if (err) {
 									console.log("error when saving: " + err);
+									fileLog.info("006 server.js package.save.  err = ", err);
 								}
 								fileLog.info("056 server.js package.save.  package = ", JSON.stringify(package, null, 2));
 							})
@@ -248,8 +254,10 @@ io.sockets.on('connection', function (socket) {
 					User.findOne({ userName: data.userName }).exec(function (err, user) {
 						if (err) {
 							console.log("error occured " + err);
+							fileLog.info("007 server.js User.findOne. error = ", err);
 						} else if (user != null) {
 							// console.log("140 Sockets.  User.findbyId user = ",user)
+							fileLog.info("008 server.js User.findOne. user = ", user);
 							var duplicatePackage = false;
 							for (var i = 0; i < user._packages.length; i++) {
 								if (user._packages[i] == data.packId) {
