@@ -44,8 +44,15 @@ function PackagesController() {
 					fileLog.info("004 packages.js this.index user.findOne.  user = ", JSON.stringify(user, null, 2));
 
 					if (err) {
-						console.log(err)
+						console.log(err);
 						file.log(err);
+						if (req.session.admin === 2) {
+							res.redirect('/users/adminError');
+						} 
+						if (req.session.admin === 0) {
+							res.redirect('/users/supporterError');
+						}
+						
 					} else {
 						
 						// This is the method that finds all of the packages from the database
@@ -114,7 +121,13 @@ function PackagesController() {
 				User.findOne({ userName: req.session.userName }, function (err, result) {
 
 					if (err) {
-						console.log(err)
+						console.log(err);
+						if (req.session.admin === 2) {
+							res.redirect('/users/adminError');
+						} 
+						if (req.session.admin === 0) {
+							res.redirect('/users/supporterError');
+						}
 					} else {
 						user = result
 						// This is the method that finds all of the packages from the database
@@ -180,7 +193,8 @@ function PackagesController() {
 			else {
 				User.findOne({ userName: req.session.userName }, function (err, result) {
 					if (err) {
-						console.log(err)
+						console.log(err);
+						res.redirect('/users/adminError');
 					} else {
 						user = result
 
@@ -247,7 +261,8 @@ function PackagesController() {
 			else {
 				User.findOne({ userName: req.session.userName }, function (err, user) {
 					if (err) {
-						console.log(err)
+						console.log(err);
+						res.redirect('/users/adminError');
 					} else {
 						fileLog.info("054 packages.js this.list user.findOne.  user = ", JSON.stringify(user, null, 2));
 						Package.find({ _auctions: req.params.auctions }).populate("_items").sort({ _id: 'ascending' }).exec(function (err, packages) {
@@ -385,6 +400,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -440,6 +457,8 @@ function PackagesController() {
 					}
 
 				})
+			} else {
+				res.redirect('/users/adminError');
 			}
 		};
 
@@ -528,8 +547,14 @@ function PackagesController() {
 		User.findOne({ userName: req.session.userName }, function (err, user) {
 			if (err) {
 				console.log(err)
-			} else {
+				if (req.session.admin === 2) {
+					res.redirect('/users/adminError');
+				} 
+				if (req.session.admin === 0) {
+					res.redirect('/users/supporterError');
+				}
 
+			} else {
 				fileLog.info("084 packages.js this.show user.findOne.  user = ", JSON.stringify(user, null, 2));
 
 				Package.findById(req.params.id).populate("_items").exec(function (err, package) {
@@ -578,7 +603,8 @@ function PackagesController() {
 									ourBids: ourBids,
 									lastBid: parseInt(lastBid),
 									auction: req.params.auctions,
-									auctionDetails: auctionDetails
+									auctionDetails: auctionDetails,
+									
 								})
 							}
 						})
@@ -662,6 +688,8 @@ function PackagesController() {
 					});
 				}
 			});
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -792,6 +820,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -808,7 +838,8 @@ function PackagesController() {
 					//or provider of service suddenly goes out of buisness
 					User.find({ _auctions: req.params.auctions }, function (err, users) {
 						if (err) {
-							console.log(err)
+							console.log(err);
+							res.redirect('/users/adminError');
 						} else {
 							for (var k = 0; k < users; k++) {
 								for (var i = 0; i < users[k]._package.length; i++) {
@@ -853,6 +884,8 @@ function PackagesController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -870,6 +903,8 @@ function PackagesController() {
 				package.save()
 				res.redirect('/' + req.params.auctions + '/packages')
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 	

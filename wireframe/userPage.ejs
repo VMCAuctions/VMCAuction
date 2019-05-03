@@ -51,7 +51,7 @@
         </div>
 
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
-          <button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
+          <button class="form-control btn-no-bids" id="noBids" name="button">Packages with No Bids</button>
         </div>
       </div> 
 
@@ -141,7 +141,7 @@
 
         $("#noBids").click(function() {
           $(".bids").toggle();
-          $(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
+          $(this).text($(this).text() == 'Show All Packages' ? 'Packages with No Bids' : 'Show All Packages')
         });
 
         $("#keyword").on("keyup", function() {

@@ -24,18 +24,22 @@ function AuctionsController() {
         admin: req.session.admin,
         userName: req.session.userName
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
 
   //organizer landing page
   this.main = function(req, res) {
+	fileLog.info("000 auctions.js this.main start. req.session = ", JSON.stringify(req.session, null, 2));
+	fileLog.info("001 auctions.js this.main start. req.params = ", JSON.stringify(req.params, null, 2));
     if (globals.adminValidation(req, res)) {
       Auction.find({}, function(err, auctions) {
         if (err) {
           console.log(err);
-          fileLog.info("000 auctions.js this.main Auction.find.  err = ", err);
+          fileLog.info("002 auctions.js this.main Auction.find.  err = ", JSON.stringify(err, null, 2));
         } else {
-          fileLog.info("000 auctions.js this.main Auction.find.  auctions = ", auctions);
+          fileLog.info("002 auctions.js this.main Auction.find.  auctions = ", JSON.stringify(auctions, null, 2));
           //for now the archivd auctions are hard code.
           //later make an if statemtn hat checks if auction is in past
           //based on clock and todays Date
@@ -44,10 +48,10 @@ function AuctionsController() {
           User.findOne({ userName: req.session.userName }, function(err, user) {
             if (err) {
               console.log(err);
-              fileLog.info(err);
+              fileLog.info("003 auctions.js this.main User.findOne.  err = ", JSON.stringify(err, null, 2));
             } else {
               console.log("000 auctions.js this.main.  user = ", user);
-              fileLog.info("000 auctions.js this.main.  user = ", user);
+              fileLog.info("004 auctions.js this.main User.findOne.  user = ", JSON.stringify(user, null, 2));
               res.render("main", {
                 user: user,
                 auctions: auctions,
@@ -61,7 +65,9 @@ function AuctionsController() {
           });
         }
       });
-    } 
+    } else {
+      res.redirect('/users/adminError');
+    }
   };
 
 	this.create = function(req, res) {
@@ -114,7 +120,9 @@ function AuctionsController() {
 					});
 				}
 			});
-		}
+		} else {
+      res.redirect('/users/adminError');
+    }
 	};
 
 
@@ -138,6 +146,8 @@ function AuctionsController() {
           });
         }
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
 
@@ -321,7 +331,7 @@ function AuctionsController() {
               }
             });
         } else {
-          res.redirect("/" + req.params.auctions + "/event");
+          rres.redirect('/users/clerkError');
         }
       });
     }
@@ -351,7 +361,7 @@ function AuctionsController() {
   //Clerk registering new supporter
   this.clerkRegSup = function(req,res){
     //this page can only be accessed if clerk checked in as
-    if(req.session.admin && req.session.admin == 1){
+    if(req.session.admin === 1){
       Auction.findById(req.params.auctions, function(err, auction){
         if(err){
           console.log(err);
@@ -360,11 +370,11 @@ function AuctionsController() {
         }
       })
     }else{
-      res.redirect('/')
+      res.redirect('/users/clerkError');
     }
   };
+
   this.clerkRegSupCreate = function(req,res){
-    
     Auction.findById(req.params.auctions, function(err, auction){
       if(err){
         console.log(err)

@@ -334,6 +334,10 @@ th{
 	background-color: #f8f9fa; 
 }
 
+.container-err {
+	margin-top: 20vh; 
+}
+
 .err-page {
 	display: block;
 	margin: 5rem auto 0rem auto; 
@@ -346,12 +350,18 @@ th{
 }
 
 .err-text {
-	font-size: 1.5rem; 
+	font-size: 1.3rem; 
 	font-weight: 300; 
 }
 
-.err-text-sup {
-	font-size: 1.2rem; 
+.err-text-supp {
+	font-size: 1.1rem; 
 	font-weight: 300; 
+}
+
+.err-text-italic {
+	font-size: 1.1rem; 
+	font-weight: 300; 
+	font-style: italic;
 }
 
