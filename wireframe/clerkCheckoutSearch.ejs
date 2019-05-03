@@ -33,15 +33,15 @@
 									<ul>
 										<% for (var p in cart[users[u].userName].packages) { %>
 											<li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
-												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %>)</li>
+												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)</li>
 										<% } %>
 									</ul>
 								</td>
 								<td id="<%= users[u].userName + 'total' %>">
-									$<%= cart[users[u].userName].total %>
+									$<%= cart[users[u].userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
 								</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">Invoice</button>
+									<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 								</td>
 							</tr>
 						<% } %>
@@ -79,6 +79,8 @@
         <script type="text/javascript">
 			var cart = <%-JSON.stringify(cart)%>;
 			var packages = <%-JSON.stringify(packages)%>;
+			var users = <%-JSON.stringify(users)%>;
+
 		</script>
 		<!-- search box scripts -->
 		<script type="text/javascript">
@@ -112,25 +114,47 @@
             
             
 		</script>
+
 		<script type="text/javascript">
 			$(".pdfBut").click(function(){
-				var firstName = $(this).data('first')
-				var lastName = $(this).data('last')
-				var userName = $(this).data('user')
-                var newCart = cart;
-                console.log(newCart)
+				let firstName = $(this).data('first')
+				let lastName = $(this).data('last')
+				let userName = $(this).data('user')
+				let totalBid = $(this).data('total').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let newCart = cart;
+				let allUsers = users;
+				let auctionName = 'The VMC Foundation <%= auctionDetails.name %>';
+				let auctionImage = '<%= auctionDetails.headerImage %>';
+
+				console.log(auctionImage);
+
+				let today = new Date();
+				let dd = String(today.getDate()).padStart(2, '0');
+				let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+				let yyyy = today.getFullYear();
+				today = mm + '/' + dd + '/' + yyyy;
+
+				function userInfo(allUsers){
+					for(var i = 0; i< allUsers.length; i++){
+						if(userName == allUsers[i].userName ){
+							return allUsers[i];
+						}
+					}
+				}
+
 				function buildTable(crt) {
 					tableData = []
-					columns = ['_id','name','description','bids']
-					tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+					columns = ['_id','name','value','bids']
+					tableData.push([{text: 'Package ID', style: 'tableHeader', alignment: 'center'}, {text: 'Package Name', style: 'tableHeader', alignment: 'center'}, {text: 'Value', style: 'tableHeader', alignment: 'center'}, {text: 'Amount', style: 'tableHeader', alignment: 'center'}])
 					crt.forEach(function(row) {
 						var rowData = []
+
 						for(var x = 0; x < columns.length; x++) {
 							if(x == columns.length - 1) {
 								tmpBids = row.bids
 								winBid = tmpBids[tmpBids.length - 1]
-								winAmt = winBid.bidAmount
-								rowData.push(winAmt)
+								winAmt = winBid.bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								rowData.push("$"+winAmt)
 							} else {
 								rowData.push(row[columns[x]])
 							}
@@ -139,21 +163,168 @@
 					})
 					return tableData
 				}
+
 				docDef = {
 					content: [
-					{ text: firstName + ' ' + lastName, style: 'header'},
+
 					{
+						style: 'contact',
+						alignment: 'justify',
+						columns: [
+							{ text: firstName + ' ' + lastName, style: 'name'}
+							// {
+							// 	image: auctionImage,
+							// 	width: 160,
+							// 	height: 90,
+							// },
+						],
+					},
+
+
+
+
+
+					{
+						style: 'contact',
+						alignment: 'justify',
+						columns: [
+							{
+								text: 'Phone Number: '+ userInfo(allUsers).phone,
+							},
+							{
+								text: 'Table Number: '+ userInfo(allUsers).table,
+							}
+						],
+					},
+
+
+
+					{
+						text: 'Email Address: ' + userInfo(allUsers).userName,
+						style: 'contact'
+					},
+
+	
+
+					{
+						alignment: 'justify',
+						columns: [
+							{
+								text: auctionName,
+								style: 'header',
+								margin: [0,10,0,0]
+							},
+							{
+								text: today,
+								width: '65',
+								margin: [0,10,0,0],
+								fontSize: 10,
+								bold: true
+							}
+						]
+					},
+
+					{
+						style:'body',
 						table: {
+							widths: [60, 315, 50, 50],
 							headerRows: 1,
 							body: buildTable(newCart[userName].packages)
 						}
+					},
+
+					{
+						style: 'summary',
+						table: {
+							widths: [500],
+							body: [
+								[{text: 'Total Charges: $'+totalBid, alignment: 'right'}],
+								[{text: 'Total Payments: $'+ totalBid, alignment: 'right'}],
+								[{text: 'Balance Due: $0.00', alignment: 'right'}]
+					]
+						}
+					},
+					
+					{
+						text: 'Tax ID:77-01877890',
+						style: 'taxId'
+					},
+					
+					{
+						text: 'Please refrain this receipt for your records. The amount of your contributions that is deductible for federal income tax purposes is limited to the excess of money contributed over the fair market value of goods or services provided by the organization.',
+						alignment: 'center',
+						style: 'footer1'
+					},
+
+					{
+						text: 'Thank you for supporting VMC Foundation!',
+						alignment: 'center',
+						style: 'footer2'
 					}
+
 					],
 					styles: {
+
+						name: {
+							bold: true,
+							fontSize: 21,
+							color: 'black',
+							normal: 'Helvetica',
+							margin: [0,20,0,0]
+						},
+
+						contact: {
+							fontSize: 10
+						},
+
 						header: {
-							fontSize: 22,
-							bold: true
+							bold: true,
+							fontSize: 16,
+							color: 'black',
+							normal: 'Helvetica'
+
+						},
+
+						tableHeader: {
+							bold: true,
+							fontSize: 10,
+							color: '#FFF',
+							normal: 'Helvetica',
+							fillColor: '#003D79'
+						},
+						
+						body: {
+							margin: [0,10,0,0],
+							normal: 'Helvetica',
+							fontSize: 10
+						},
+						summary: {
+							margin: [0,50,0,0],
+							normal: 'Helvetica',
+							bold: true,
+							fontSize: 10
+						},
+
+						taxId: {
+							alignment: 'center',
+							bold: true,
+							fontSize: 11,
+							margin: [0,50,0,0],
+						},
+
+						footer1: {
+							normal: 'Helvetica',
+							fontSize: 9,
+							italic: true
+						},
+
+						footer2: {
+							normal: 'Helvetica',
+							fontSize: 11,
+							margin: [0,25,0,0],
 						}
+
+
 					}
 				}
 				pdfMake.createPdf(docDef).open()

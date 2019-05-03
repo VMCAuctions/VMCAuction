@@ -319,34 +319,29 @@ function UsersController(){
 
 
 	this.checkLogin = function(req, res){
-		// console.log("in check login");
+		console.log("in check login");
 		var name = req.body.userName;
-		// console.log(Date.now(),"000 users.js checkLogin.  r.b.userName = ",req.body.userName)
+		console.log(req.body.userName);
+		console.log(name);
+		console.log(Date.now(),"000 users.js checkLogin.  r.b.userName =");
+		
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
-			if(err){
-				// console.log("001 users.js checkLogin.  err = ",err);
-				fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
-				res.json({match: false})
+				if(err){
+          fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
+					console.log("001 users.js checkLogin.  err = ",err);
+					res.json({match: false})
+				} else {
+					console.log("004 users.js checkLogin.  user = ",user)
+					fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
+					console.log("005 users.js checkLogin user._auctions = ", user._auctions)
+					req.session.auction = user._auctions
+					req.session.userName = user.userName
+					req.session.admin = user.admin
+					req.session.user = user
+					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
+					res.json({match: true, auction: user._auctions, admin:user.admin})
 
-			 }
-			//  else if(!user){
-			// 	// console.log("002 users.js checkLogin.  !user block");
-			// 	res.json({match: false})
-			// }
-			// else if(user){
-			else {
-
-				console.log("004 users.js checkLogin.  user = ",user)
-				fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
-				console.log("005 users.js checkLogin user._auctions = ", user._auctions)
-				req.session.auction = user._auctions
-				req.session.userName = user.userName
-				req.session.admin = user.admin
-				req.session.user = user
-				fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
-				res.json({match: true, auction: user._auctions, admin:user.admin})
-
-			}
+				}
 		})
 	}
 
