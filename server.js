@@ -16,7 +16,6 @@ mongoose.Promise = global.Promise;
 
 // Test change for github branch serverjs
 app.use(session({
-
 	secret: secret.secret,
 	resave: false, //Resave the session to store if it's changed
 	saveUninitialized: true, //Creates session for anonymous users
