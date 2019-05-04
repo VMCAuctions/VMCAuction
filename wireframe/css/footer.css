@@ -14,7 +14,7 @@
 }
 
 .footerNotifications{
-	background-color: rgba(255, 88, 51, 0.90);  /* #ff5833 */
+	background-color: rgba(255, 103, 70, 0.9);  
     color: #f9f8fa;
     text-align: center;
 	position:fixed;
@@ -39,4 +39,5 @@ a.bid-notifications {
 	color: #f0f2f9;
 	font-weight:700;
 	font-size:0.9rem;
+	margin-top: 15px; 
 }

@@ -14,6 +14,13 @@ var mongoose = require('mongoose'),
 	autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
+const SimpleNodeLogger = require('./node_modules/simple-node-logger'),
+	opts = {
+		logFilePath:'./public/vmcLogFile.log',
+		timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+	},
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
 // Test change for github branch serverjs
 app.use(session({
 	secret: secret.secret,
@@ -72,6 +79,8 @@ var packagesButtonStates = {};
 // IT WILL FILL UP OUR SERVER OBJECTS "allBidsBigObj" and "packagesButtonStates" WITH
 // INFO AND ALL BUTTON ENABLED FLAGS
 (function () {
+	fileLog.info("000 server.js start. session = ", JSON.stringify(session, null, 2));
+	
 	Package.find({}).exec(function (err, pkgs) {
 		if (err) {
 			console.log("init Server object error", err)
@@ -117,7 +126,10 @@ io.sockets.on('connection', function (socket) {
 					console.log("Bid Placed After Auction Ended");
 					return;
 				} else {
-					console.log("Message Received By Server the Bid",data);
+					console.log("050 server.js Auction.findById.  auction = ",auction);
+					console.log("051 server.js Auction.findById.  socket.on data = ", data);
+					fileLog.info("050 server.js Auction.findById.  auction = ",JSON.stringify(auction, null, 2));
+					fileLog.info("051 server.js Auction.findById.  socket.on data = ", JSON.stringify(data, null, 2));
 
 					// THE UNIQUE CHANNEL FOR PARTICULAR PACKAGE WITH IT'S ID IN THE END
 					var uniqChatUpdateId = 'updateChat' + data.packId;
@@ -180,6 +192,7 @@ io.sockets.on('connection', function (socket) {
 							if (err) {
 								console.log("error occured " + err);
 							} else if (package != null) {
+								fileLog.info("056 server.js Package.findById.  package = ", JSON.stringify(package, null, 2));
 								let lastBid;
 								if (package.bids.length == 0){
 									lastBid = package.amount;
@@ -191,7 +204,7 @@ io.sockets.on('connection', function (socket) {
 								let packageAmt = package.amount;
 								let bidIncrement = package.bidIncrement;
 								let = package
-
+								
 								//if there are no bids on the package, we check if the userBid is greater than package amount
 								if (package.bids.length == 0 && userBid >= packageAmt) {
 									package.highBid = data.bid;
@@ -218,10 +231,11 @@ io.sockets.on('connection', function (socket) {
 								}
 							}
 							//save all stuff
-							package.save(function (err) {
+							package.save(function (err, package) {
 								if (err) {
 									console.log("error when saving: " + err);
 								}
+								fileLog.info("056 server.js package.save.  package = ", JSON.stringify(package, null, 2));
 							})
 
 							if( package.bids.length == 1 ){
