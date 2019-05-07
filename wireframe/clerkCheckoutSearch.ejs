@@ -126,8 +126,6 @@
 				let auctionName = 'The VMC Foundation <%= auctionDetails.name %>';
 				let auctionImage = '<%= auctionDetails.headerImage %>';
 
-				console.log(auctionImage);
-
 				let today = new Date();
 				let dd = String(today.getDate()).padStart(2, '0');
 				let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -145,6 +143,9 @@
 				function buildTable(crt) {
 					tableData = []
 					columns = ['_id','name','value','bids']
+					let sum  = 0;
+
+
 					tableData.push([{text: 'Package ID', style: 'tableHeader', alignment: 'center'}, {text: 'Package Name', style: 'tableHeader', alignment: 'center'}, {text: 'Value', style: 'tableHeader', alignment: 'center'}, {text: 'Amount', style: 'tableHeader', alignment: 'center'}])
 					crt.forEach(function(row) {
 						var rowData = []
@@ -153,15 +154,24 @@
 							if(x == columns.length - 1) {
 								tmpBids = row.bids
 								winBid = tmpBids[tmpBids.length - 1]
-								winAmt = winBid.bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								winAmt = winBid.bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 								rowData.push("$"+winAmt)
 							} else {
 								rowData.push(row[columns[x]])
 							}
 						}
-						tableData.push(rowData)
+						tableData.push(rowData);
 					})
-					return tableData
+
+					for( var i = 1; i< tableData.length; i++){
+						sum = sum + tableData[i][2];	
+					}
+
+					for(var i =1; i < tableData.length; i++){
+						tableData[i][2] = "$"+tableData[i][2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+					}
+
+					return [tableData,sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")]
 				}
 
 				docDef = {
@@ -229,9 +239,21 @@
 						table: {
 							widths: [60, 315, 50, 50],
 							headerRows: 1,
-							body: buildTable(newCart[userName].packages)
+							body: buildTable(newCart[userName].packages)[0]
 						}
 					},
+					
+					{
+						style: 'totals',
+						table: {
+							widths: [325,50,50,50],
+							body: [
+								[{text:""},{text: 'Total: ', style:'tableHeader'},{text: "$"+buildTable(newCart[userName].packages)[1]},{text: "$"+totalBid}]
+
+					]
+						}
+					},
+
 
 					{
 						style: 'summary',
@@ -248,6 +270,12 @@
 					{
 						text: 'Tax ID:77-01877890',
 						style: 'taxId'
+					},
+
+					{
+						text: '751 S Bascom Ave, San Jose, CA 95128',
+						alignment: 'center',
+						style: 'footer1'
 					},
 					
 					{
@@ -271,6 +299,12 @@
 							color: 'black',
 							normal: 'Helvetica',
 							margin: [0,20,0,0]
+						},
+
+						totals: {
+							bold: true,
+							normal: 'Helvetica',
+							fontSize: 10
 						},
 
 						contact: {
