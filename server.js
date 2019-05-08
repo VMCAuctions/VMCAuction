@@ -60,7 +60,7 @@ routesSetter(app);
 // 	console.log("listening on port " + port);
 // })
 
-var server = app.listen(8000, '192.168.1.208', function() {
+var server = app.listen(8000, '192.168.1.26', function() {
 	// console.log('190 server.js listening on 8000 192.168.1.208');
 })
 
