@@ -327,7 +327,7 @@ function UsersController(){
 		
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 				if(err){
-          fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
+					fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
 					console.log("001 users.js checkLogin.  err = ",err);
 					res.json({match: false})
 				} else {
@@ -362,18 +362,21 @@ function UsersController(){
 			}else{
 				for (var i = 0; i < result.length; i++){
 					if (result[i].bids.length > 0){
-						if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+						// if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userId){
 							cartArray.push(result[i])
 							console.log(cartArray);
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
 						}
 					}
 				}
-				User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+				// User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
+				User.findOne({_id: req.params.userId}).populate("_packages").exec( function(err, user){
 					if(err){
 						console.log(err)
 						fileLog.info("112 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
-					} else if (user.userName === req.session.userName | req.session.admin === true){
+					// } else if (user.userName === req.session.userName | req.session.admin === true){
+					} else if (user.userId === req.session.userId | req.session.admin === true){
 						Auction.findById(req.params.auctions, function (err, auctionDetails) {
 							if (err) {
 								console.log(err)
@@ -393,6 +396,7 @@ function UsersController(){
 										res.render('userPage', {
 											current: 'watch-list',
 											userName: req.session.userName,
+											userId: req.session.userId,
 											admin: req.session.admin,
 											user: user,
 											categories: categories,

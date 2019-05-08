@@ -362,7 +362,10 @@ module.exports = function(app) {
 		users.showAccount(req,res)});
 
 	// get the watchlist page of a specific user
-	app.get('/:auctions/users/:userName', function(req,res){
+	// app.get('/:auctions/users/:userName', function(req,res){
+	// 	users.show(req,res)});
+	
+		app.get('/:auctions/watchList/:userId', function(req,res){
 		users.show(req,res)});
 
 	//update organizer's data - TODO!

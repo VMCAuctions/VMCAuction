@@ -1000,7 +1000,7 @@ function PackagesController() {
 								res.status(500).send('packages.js this.liveAuction Package.find Failed to Load Packages');
 								console.error();
 							}else {
-								// console.log('this is user again', user)
+								console.log("226 packages.js this.liveAuction Package.find.  packages[0] = ",packages[0]);
 								var featured = [];
 								var nonfeatured = [];
 								for (var i = 0; i < packages.length; i++){
@@ -1013,10 +1013,12 @@ function PackagesController() {
 									}
 								}
 								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+								console.log("227 packages.js this.liveAuction pre Auction.findById. req.params = ",req.params);
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
-										console.log(err)
+										console.log('227.5 packages.js this.liveAuction Package.find.  Auction.findById.  err = ',  err)
 									} else {
+										console.log("228 packages.js this.liveAuction Package.find.  Auction.findById.  auctionDetails = ", auctionDetails);
 										fileLog.info("228 packages.js this.liveAuction Auction.findById.  auctionDetails = ", JSON.stringify(auctionDetails, null, 2));
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										//current is a flag showing which page is active
