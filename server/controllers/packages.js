@@ -519,7 +519,6 @@ function PackagesController() {
 
 	// from app.get('/:auctions/packages/:id' - renders Package Show page (packageShow.ejs)
 	this.show = function (req, res) {
-		console.log("GOt HERe")
 		fileLog.info("080 packages.js this.show start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("081 packages.js this.show start. req.params = ", JSON.stringify(req.params, null, 2));
 
@@ -991,7 +990,7 @@ function PackagesController() {
 						req.session.admin = 0;
 						req.session.userName = user.userName;
 						req.session.user = user;
-						req.session.auctions = req.params.auctions;
+						req.session.auction = req.params.auctions;
 						console.log("224 packages.js this.liveAuction User.findById.  post assign req.session = ",req.session);
 						fileLog.info("224 packages.js this.liveAuction User.findById.  post assign req.session = ", JSON.stringify(req.session, null, 2));
 						// This is the method that finds all of the packages from the database
@@ -1031,7 +1030,7 @@ function PackagesController() {
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
-											auction: req.session.auctions,
+											auction: req.session.auction,
 											auctionDetails: auctionDetails,
 										})
 									}

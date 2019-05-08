@@ -339,7 +339,7 @@ function UsersController(){
 					req.session.admin = user.admin
 					req.session.user = user
 					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
-					res.json({match: true, auction: user._auctions, admin:user.admin})
+					res.json({match: true, auction: user._auctions, admin:user.admin, userId: user._id})
 
 				}
 		})

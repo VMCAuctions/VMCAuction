@@ -55,9 +55,13 @@ routesSetter(app);
 
 //this port is pulled out of the secret.json file, which directs to port 8000 for localhost purposes -
 //the secret.json file on the deployed server will have an appropriate route that can be used there, allow for auto changes
-var port = process.env.PORT || 8000;
-var server = app.listen(port, function () {
-	console.log("listening on port " + port);
+// var port = process.env.PORT || 8000;
+// var server = app.listen(port, function () {
+// 	console.log("listening on port " + port);
+// })
+
+var server = app.listen(8000, '192.168.1.208', function() {
+	// console.log('190 server.js listening on 8000 192.168.1.208');
 })
 
 /////////////// SOCKETS /////////////////
