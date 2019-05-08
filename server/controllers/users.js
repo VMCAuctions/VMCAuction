@@ -331,6 +331,7 @@ function UsersController(){
 					console.log("001 users.js checkLogin.  err = ",err);
 					res.json({match: false})
 				} else {
+					if(user){
 					console.log("004 users.js checkLogin.  user = ",user)
 					fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
 					console.log("005 users.js checkLogin user._auctions = ", user._auctions)
@@ -340,7 +341,9 @@ function UsersController(){
 					req.session.user = user
 					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
 					res.json({match: true, auction: user._auctions, admin:user.admin, userId: user._id})
-
+					}else{
+						res.json({match: false})
+					}
 				}
 		})
 	}
