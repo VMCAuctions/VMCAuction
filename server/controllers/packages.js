@@ -528,10 +528,12 @@ function PackagesController() {
 			if (err) {
 				console.log(err);
 			} else {
-				fileLog.info("105 packages.js this.show package.find packages = ", JSON.stringify(packages,null,2));
+				fileLog.info("082 packages.js this.show package.find packages = ", JSON.stringify(packages,null,2));
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
+					console.log("082 packages.js this.show.  Package.find.  packages[i].featured = ",packages[i].featured)
+					fileLog.info("082 packages.js this.show.  Package.find.  packages[i].featured = ",packages[i].featured)
 					if (packages[i].featured === true) {
 						featured.push(packages[i]);
 					}
@@ -541,6 +543,12 @@ function PackagesController() {
 					}
 				}
 				resultPackages = packages;
+				if (resultPackages) {
+					fileLog.info("083 packages.js this.show.  Package.find.  resultPackages[0] = ",JSON.stringify(resultPackages[0], null, 2));
+				} else {
+					fileLog.info("083 packages.js this.show.  Package.find.  !resultPackages so can't print packages");
+				}
+				console.log("083 packages.js this.show.  Package.find.  resultPackages = ",resultPackages)
 			}
 		});
 		User.findOne({ userName: req.session.userName }, function (err, user) {
@@ -574,7 +582,9 @@ function PackagesController() {
 							} else {
 								fileLog.info("108 packages.js this.show auction.findById auctionDetails = ", JSON.stringify(auctionDetails,null,2));
 								//Gets current position of the package in the resultPackages object
-								for( var i =0; i<resultPackages.length;i++){
+								fileLog.info("108 packages.js this.show auction.findById resultPackages.length = ",resultPackages.length);
+								console.log("109 packages.js this.show.  Auction.findById.  resultPackages.length = ",resultPackages.length)
+								for( var i = 0; i < resultPackages.length; i++){
 									if(resultPackages[i]._id == package._id){
 										//return index of the found package on pos
 										var pos = resultPackages.map(function(e) { return e._id; }).indexOf(resultPackages[i]._id);
