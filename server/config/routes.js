@@ -423,6 +423,7 @@ module.exports = function(app) {
 	// Handles SMS text link request for supporter to access the auction website on day of auction
     app.get('/:auctions/supporter/:id', function(req,res){
         console.log("351 routes.js supporter auction access link. req.body = ",req.body);
+        console.log("352 routes.js supporter auction access link. req.params = ",req.params);
 		packages.liveAuction(req,res)});
 		
 	// Renders error page
