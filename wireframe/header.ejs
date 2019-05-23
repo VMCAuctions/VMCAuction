@@ -40,7 +40,8 @@
 						<a class="nav2-link <% if (typeof(current) != 'undefined' && current == 'featured-packages') { %> current <% } %>" href="/<%=auction%>/featured-packages">Featured</a>
 					</div>
 					<div class="col-4 nav-btn watch-list py-3">
-						<a class="nav2-link <% if  (typeof(current) != 'undefined' && current == 'watch-list') { %> current <% } %>" href="/<%=auction%>/users/<%=userName%>">Watch list</a>
+						<!-- <a class="nav2-link <% if  (typeof(current) != 'undefined' && current == 'watch-list') { %> current <% } %>" href="/<%=auction%>/users/<%=userName%>">Watch list</a> -->
+						<a class="nav2-link <% if  (typeof(current) != 'undefined' && current == 'watch-list') { %> current <% } %>" href="/<%=auction%>/watchList/<%=user._id%>">Watch list</a>
 					</div>		
 				</div>
 			</nav>
