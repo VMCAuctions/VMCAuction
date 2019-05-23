@@ -140,7 +140,8 @@ function AuctionsController() {
           res.render("organizerMenu", {
             current: "organizerMenu",
             admin: req.session.admin,
-            auction: req.params.auctions,
+            // auction: req.params.auctions,
+            auction_id: req.params.auctions,
             auctionDetails: auctionDetails, //might be use to display auction name 
             userName: req.session.userName
           });
@@ -172,7 +173,8 @@ function AuctionsController() {
         auctionDetails: auction,
         admin: req.session.admin,
         userName: req.session.userName,
-        auction: req.params.auctions,
+        // auction: req.params.auctions,
+        auction_id: req.params.auctions,
         startDate: startDate,
         startClock: startClock,
         endDate: endDate,
@@ -249,7 +251,8 @@ function AuctionsController() {
 			// console.log("230 auctions.js this.event Package.find packages = ",packages);
             res.render("event", {
               auctionDetails: auction,
-              auction: req.params.auctions,
+            //   auction: req.params.auctions,
+              auction_id: req.params.auctions,
               startDateToDisplay: startDateToDisplay,
               startDate: startDate,
               startClock: startClock,
@@ -323,7 +326,8 @@ function AuctionsController() {
                       userName: req.session.userName,
                       admin: req.session.admin,
                       auctionDetails: auctionDetails,
-              		  auction: req.params.auctions,
+              		//   auction: req.params.auctions,
+              		  auction_id: req.params.auctions,
                     });
                   }
                 });
@@ -353,7 +357,7 @@ function AuctionsController() {
         req.session.userName = "Clerk";
         //Will probably have to implement this such that admins have a req.session.admin of 2, clerks have an admin status of 1, and everyone else has 0. Not sure if we should make the pin be a clerk's username, or build some logic around such that clerks don't have bidding access but do have a pin in their session and something like a username of Clerk.
         req.session.admin = 1;
-        res.json({ match: true, auctions: auction._id });
+        res.json({ match: true, auction_id: auction._id });
       }
     });
   };
@@ -366,7 +370,7 @@ function AuctionsController() {
         if(err){
           console.log(err);
         }else{
-          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction})
+          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction, auction_id: auction._id})
         }
       })
     }else{
@@ -407,7 +411,7 @@ function AuctionsController() {
     })
   };
 
-  this.clerkcheckin = function(req, res) {
+  this.clerkCheckin = function(req, res) {
     Auction.findById(req.params.auctions, function(err, auction){
       if(err){
         console.log(err)
@@ -514,7 +518,8 @@ function AuctionsController() {
 									userName: req.session.userName,
 									admin: req.session.admin,
 									auctionDetails: auctionDetails,
-									auction: req.params.auctions
+									// auction: req.params.auctions
+									auction_id: req.params.auctions
 								});
 							}
 						});

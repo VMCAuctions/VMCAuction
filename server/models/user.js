@@ -10,10 +10,11 @@ var userSchema = new Schema(
 	firstName: { type: String, required: true },
 	lastName: { type: String, required: true },
 	phone: { type: String, required: true },
-	// email: {type: String, required: true},
+	email: {type: String},
 	streetAddress: { type: String },
 	city: { type: String },
-	states: { type: String },
+	// states: { type: String },
+	state: { type: String },
 	zip: { type: String },
 	password: { type: String },
 	_auctions: { type: Schema.Types.ObjectId, ref: "Auction" },
@@ -24,6 +25,7 @@ var userSchema = new Schema(
 	tableOwnerName: { type: String },
 	// seats: { type: Number },
 	userOrg: { type: String }
+
 	},
 	{ timestamps: true, usePushEach: true }
 

@@ -22,7 +22,7 @@
 
 			<!-- Displaying AUCTION NAME in the center of the top navigation bar-->	
 			<div class="col-2 text-center">
-			    <a href="/<%=auction%>/event" class="auction-nav"><%= auctionDetails.name %></a> 
+			    <a href="/<%=auction_id%>/event" class="auction-nav"><%= auctionDetails.name %></a> 
 			</div> 
 
 			<div class="col-5 navbar navbar-expand-sm flex-row justify-content-end align-items-center">
@@ -32,11 +32,11 @@
 						<a class="mr-4 top-link  <% if (typeof(current) != 'undefined' && current == 'dashboard') { %> active1 <% } %>" href="/auctions/main">My Dashboard</a>
 					</li>
 					<li>
-						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction%>/organizerMenu">Auction Menu</a>
+						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'organizerMenu') { %> active1 <% } %>" href="/<%=auction_id%>/organizerMenu">Auction Menu</a>
 					</li>
 		
 					<li>
-						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'myAccount') { %> active1 <% } %>" href="/<%=auction%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
+						<a class="mr-4 top-link <% if (typeof(current) != 'undefined' && current == 'myAccount') { %> active1 <% } %>" href="/<%=auction_id%>/users/account/<%=userName%>"> <i class="fas fa-user"></i> My Account</a>
 					</li>
 					<li>
 						<a class="mr-4" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -55,25 +55,25 @@
 			<!-- "current" is a flag sent from the server to indicate the active web page -->
           	<ul class="navbar-nav">
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'addItem') { %> active2 <% } %>" href="/<%=auction%>/items/new"> Add Item</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'addItem') { %> active2 <% } %>" href="/<%=auction_id%>/items/new"> Add Item</a>
 				</li>	
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'createPackage') { %> active2 <% } %>" href="/<%=auction%>/packages/new">Create Package</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'createPackage') { %> active2 <% } %>" href="/<%=auction_id%>/packages/new">Create Package</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'item-register') { %> active2 <% } %>" href="/<%=auction%>/items">Item Register</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'item-register') { %> active2 <% } %>" href="/<%=auction_id%>/items">Item Register</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register </a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction_id%>/packages/list">Package Register </a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> active2 <% } %>" href="/<%=auction%>/packages">Catalog</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> active2 <% } %>" href="/<%=auction_id%>/packages">Catalog</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'featured-packages') { %> active2 <% } %>" href="/<%=auction%>/featured-packages">Featured Packages</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'featured-packages') { %> active2 <% } %>" href="/<%=auction_id%>/featured-packages">Featured Packages</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href='/<%=auction%>/users'>Supporter Register</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href='/<%=auction_id%>/users'>Supporter Register</a>
 				</li>
           	</ul>
         </div>

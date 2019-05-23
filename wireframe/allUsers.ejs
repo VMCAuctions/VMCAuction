@@ -36,15 +36,6 @@
   <!-- check with client to verify all admin/clerk priveledges, regarding deleting and editing other non admin users -->
 	<div class="container-fluid">
     <h2 class="my-4">Supporters Register</h2>
-		<!-- <div class="d-flex justify-content-end mt-4">
-			<a href="/<%=auction%>/users/new">
-				<button class="btn btn-add">Add a Supporter</button>
-			</a>
-
-			<a href="/<%=auction%>/users/csv">
-				<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
-			</a>
-		</div> -->
       <div class="my-4" id="search-container">
 		<div class="row">
 			<div class="col">
@@ -55,11 +46,11 @@
 				</div>
 			</div>
 			<div class="col d-flex justify-content-end mt-4 pt-1">
-				<a href="/<%=auction%>/users/new">
+				<a href="/<%=auction_id%>/users/new">
 					<button class="btn btn-add">Add a Supporter</button>
 				</a>
 	
-				<a href="/<%=auction%>/users/csv">
+				<a href="/<%=auction_id%>/users/csv">
 					<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
 				</a>
 			</div>
@@ -88,7 +79,7 @@
 
       <% for (var u in users) {%>
         <tr class="supRow">
-          <td><a href="/<%=auction%>/users/account/<%= users[u].userName %>"><%= users[u].userName %></a></td>
+          <td><a href="/<%=auction_id%>/users/account/<%= users[u].userName %>"><%= users[u].userName %></a></td>
           <td><%= users[u].firstName %></td>
           <td><%= users[u].lastName %></td>
           <td><%= users[u].userOrg %></td>
@@ -102,8 +93,8 @@
           <td><%= users[u].tableOwnerName %></td>
            <% if(admin){ %>
 				<td>
-					<a class="mb-1 mr-1" href='/<%=auction%>/usersAccount/<%=users[u].userName%>'><i class="fas fa-edit to-edit"></i></a>
-					<a class="mb-1" href='/<%=auction%>/users/delete/<%=users[u]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
+					<a class="mb-1 mr-1" href='/<%=auction_id%>/usersAccount/<%=users[u].userName%>'><i class="fas fa-edit to-edit"></i></a>
+					<a class="mb-1" href='/<%=auction_id%>/users/delete/<%=users[u]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
 				</td>
 				<%}%>
 		</tr>

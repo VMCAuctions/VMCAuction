@@ -21,11 +21,11 @@
 				</div>	
 
 				<div class="col-2 text-center">
-					<a href="/<%=auction%>/event" class="auction-nav"><%= auctionDetails.name %> (<%= auctionDetails.pin %>)</a> 
+					<a href="/<%=auction_id%>/event" class="auction-nav"><%= auctionDetails.name %> (<%= auctionDetails.pin %>)</a> 
 				</div> 
 	
 						<div>
-							<a class="mr-2 top-link" href="/<%=auction%>/clerkDash">Clerk Dashboard</a>
+							<a class="mr-2 top-link" href="/<%=auction_id%>/clerkDash">Clerk Dashboard</a>
 						</div>
 						<div>
 							<a class="mr-2" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -44,14 +44,14 @@
           	<ul class="navbar-nav">
 				<li>
 
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href="/<%=auction%>/users"> Supporter Register</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href="/<%=auction_id%>/users"> Supporter Register</a>
 				</li>	
 				<li>
 
-					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register</a>
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction_id%>/packages/list">Package Register</a>
 				</li>
 				<li>
-					<a class="mr-4 nav-link second-link" href="/<%=auction%>/clerk/register-supporter">Add Supporter</a>
+					<a class="mr-4 nav-link second-link" href="/<%=auction_id%>/clerk/register-supporter">Add Supporter</a>
 
 				</li>
 				

@@ -50,7 +50,8 @@
 												<option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
 											<% } %>
 										</select> -->
-										<input type="hidden" name="auctionName" id="auctionName" class="form-control" value="<%=auctions[0]._id%>">
+										<!-- <input type="hidden" name="auctionName" id="auctionName" class="form-control" value="<%=auctions[0]._id%>"> -->
+										<input type="hidden" name="auction_id" id="auction_id" class="form-control" value="<%=auctions[0]._id%>">
               					</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
@@ -64,7 +65,8 @@
 								</div>
 								<div class="form-group">
 										<label for="userName">Email* (this will be your user name)</label>
-										<input type="email" name="userName" id="userName" class="form-control">
+										<!-- <input type="email" name="userName" id="userName" class="form-control"> -->
+										<input type="email" name="email" id="email" class="form-control">
 								</div>
 								<div class="form-group">
 										<label for="phoneNumber">Cell Phone Number*</label>
@@ -79,9 +81,13 @@
 										<label for="city">City</label>
 										<input type="text" name="city" id="city" class="form-control">
 									</div>
-									<div class="form-group col-md-3">
+									<!-- <div class="form-group col-md-3">
 										<label for="states">State</label>
 										<input type="text" name="states" id="states" class="form-control">
+									</div> -->
+									<div class="form-group col-md-3">
+										<label for="state">State</label>
+										<input type="text" name="state" id="state" class="form-control">
 									</div>
 									<div class="form-group col-md-3">
 										<label for="zip">Zip</label>
@@ -150,11 +156,12 @@
 					required: true,
 					phoneUS: true,
 				},
+				// email: {
+				// 	required: true,
+				// 	email: true
+				// },
+				// userName: {
 				email: {
-					required: true,
-					email: true
-				},
-				userName: {
 					required: true,
 					user: true,
 					nowhitespace: true,

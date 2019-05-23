@@ -48,17 +48,17 @@
         <script>
             $(document).ready(function(){
                 var result = $('#resultCheckin');
-                var auction = '<%=auction%>'
+                var auction_id = '<%=auction_id%>'
                 $('#resultCheckin').hide();
 
                 //to load and show check in page
                 $('#checkinButton').click(function(){
-                    result.load('/'+auction+'/clerkCheckIn');
+                    result.load('/'+ auction_id +'/clerkCheckIn');
                     result.show();
                 });
                 //to load ands how checkout page
                 $('#checkoutButton').click(function(){
-                    result.load('/'+auction+'/clerkCheckOut')
+                    result.load('/'+ auction_id +'/clerkCheckOut')
                     result.show();
                 })
             })

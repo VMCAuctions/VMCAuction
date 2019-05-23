@@ -515,7 +515,7 @@ module.exports = function(app) {
 	
 	//Clerk Check-in
 	app.get('/:auctions/clerkCheckIn', function(req, res){
-		auctions.clerkcheckin(req,res)});
+		auctions.clerkCheckin(req,res)});
 
 	app.get('/:user/clerkUserUpdate', function(req, res){
 		auctions.clerkUserCheckIn(req,res)

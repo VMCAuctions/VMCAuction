@@ -24,7 +24,7 @@
   </head>
 
   <body>
-	<%if(admin){%>
+	<%if(admin === 2){%>
 		<%- include('adminHeader') -%>
 	<%}else{%>
 		<%- include('header') -%>
@@ -38,7 +38,7 @@
 			<div class="form-row mt-3">
 				<div class="form-group col-md-6">
 					<input type="hidden" id="admin" name="admin" value="<%= admin %>">
-					<input type="hidden" id="auctionName" name="auctionName" value="<%= auction %>">
+					<input type="hidden" id="auctionName" name="auction_id" value="<%= auction_id %>">
 					<label for="firstName" class="label-name">First Name*</label>
 					<input id="firstName" type="text" name="firstName" class="form-control" onchange="firstNameAdd()">
 				</div>
@@ -71,7 +71,8 @@
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="userName" class="label-name">Email*</label>
-					<input id="email" type="email" name="userName" class="form-control" rows="4">
+					<!-- <input id="email" type="email" name="userName" class="form-control" rows="4"> -->
+					<input id="email" type="email" name="email" class="form-control" rows="4">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="userOrg" class="label-name">Organization</label>
@@ -95,9 +96,13 @@
 					<label for="city">City</label>
 					<input  id="city" type="text" name="city" class="form-control">
 				</div>
-				<div class="form-group col-md-3">
+				<!-- <div class="form-group col-md-3">
 					<label for="states">State</label>
 					<input id="states" type="text" name="states" class="form-control">
+				</div> -->
+				<div class="form-group col-md-3">
+					<label for="state">State</label>
+					<input id="state" type="text" name="state" class="form-control">
 				</div>
 				<div class="form-group col-md-3">
 					<label for="zip">Zip</label>
@@ -146,11 +151,12 @@
 					required: true,
 					phoneUS: true,
 				},
+				// email: {
+				// 	required: true,
+				// 	email: true
+				// },
+				// userName: {
 				email: {
-					required: true,
-					email: true
-				},
-				userName: {
 					required: true,
 					user: true,
 					nowhitespace: true,

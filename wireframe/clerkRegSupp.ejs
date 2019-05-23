@@ -64,7 +64,7 @@
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="userName" class="label-name">Email*</label>
-					<input id="email" type="email" name="userName" class="form-control" rows="4">
+					<input id="email" type="email" name="email" class="form-control" rows="4">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="userOrg" class="label-name">Organization</label>
@@ -139,11 +139,12 @@
 					required: true,
 					phoneUS: true,
 				},
+				// email: {
+				// 	required: true,
+				// 	email: true
+				// },
+				// userName: {
 				email: {
-					required: true,
-					email: true
-				},
-				userName: {
 					required: true,
 					user: true,
 					nowhitespace: true,

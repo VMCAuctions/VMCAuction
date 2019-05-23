@@ -32,7 +32,7 @@ function UsersController(){
 			["lastName", 2, "last name"],
 			// ["streetAddress", 2, "street address"],
 			// ["city", 2, "city"],
-			// ["states", 2, "state"],
+			// ["state", 2, "state"],
 			// ["zip", 5, "zip code"],
 			["phoneNumber", 10, "phone number"],
 			["password", 6, "password"]
@@ -47,10 +47,12 @@ function UsersController(){
 		return output
 	}
 
-
+	// displays supporter register
 	this.index = function(req,res){
 		// console.log(Date.now()," - 010 users.js this.index.  UsersController index");
-		// console.log("011 users.js this.index.  req.session = ", req.session)
+		console.log("011 users.js this.index.  req.params = ", req.params)
+		console.log("011 users.js this.index.  req.session = ", req.session)
+		console.log("011 users.js this.index.  req.body = ", req.body)
 		// console.log(globals.clerkValidation(req, res));
 		if (globals.clerkValidation(req, res)){
 			var cart = {}
@@ -99,7 +101,8 @@ function UsersController(){
 											packages: packages, 
 											userName: req.session.userName, 
 											admin: req.session.admin, 
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction_id: req.params.auctions,
 											auctionDetails: auctionDetails
 										})		
 									}
@@ -140,7 +143,8 @@ function UsersController(){
 		res.render('login', {
 			userName: req.session.userName,
 			admin: req.session.admin,
-			auction:req.session.auction
+			// auction:req.session.auction
+			auction_id:req.session.auction
 		})
 	};
 
@@ -151,7 +155,8 @@ function UsersController(){
 				userName: req.session.userName,
 				admin: req.session.admin,
 				auctions: auctions,
-				auction:req.session.auction
+				// auction:req.session.auction
+				auction_id:req.session.auction
 			})
 		})
 	};
@@ -174,7 +179,8 @@ function UsersController(){
 								user: user,
 								phone: user.phone,
 								admin: req.session.admin,
-								auction: req.params.auctions,
+								// auction: req.params.auctions,
+								auction_id: req.params.auctions,
 								userName: req.session.userName,
 								auctionDetails: auctionDetails,
 								table: user.table,
@@ -186,7 +192,8 @@ function UsersController(){
 								current: 'myAccount',
 								user: user,
 								admin: req.session.admin,
-								auction: req.params.auctions,
+								// auction: req.params.auctions,
+								auction_id: req.params.auctions,
 								userName: req.session.userName,
 								auctionDetails: auctionDetails,
 								table: user.table,
@@ -211,7 +218,8 @@ function UsersController(){
 				res.render('userCreate', {
 					admin: req.session.admin, 
 					userName: req.session.userName, 
-					auction: req.params.auctions, 
+					// auction: req.params.auctions, 
+					auction_id: req.params.auctions, 
 					auctionDetails: auctionDetails
 				})
 			}
@@ -220,9 +228,11 @@ function UsersController(){
 
 
 	this.duplicate = function (req, res) {
-		let user = req.query.userName;
+		// let user = req.query.userName;
+		let user = req.query.email;
 		// console.log(req.query)
-		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
+		// User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
+		User.findOne({email: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err);
 				fileLog.info("006 users.js this.duplicate User.findOne  err = ", JSON.stringify(err, null, 2))
@@ -242,9 +252,12 @@ function UsersController(){
 
 		// console.log(Date.now()," - 030 users.js this.create start");
 		console.log("010 users.js this.create start.  req.body = ", req.body)
+		console.log("010 users.js this.create start.  req.params = ", req.params)
+		console.log("010 users.js this.create start.  req.session = ", req.session)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
-		let user = req.body.userName;
-		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
+		// let user = req.body.userName;
+		let user = req.body.email;
+		User.findOne({email: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
 			if(err){
 				console.log(err)
 				fileLog.info("007 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
@@ -258,33 +271,38 @@ function UsersController(){
 							console.log(err)
 							fileLog.info("008 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
 						}else{
-							var lowerUser = req.body.userName.toLowerCase();
-							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
-							if (lowerUser === "organizer" || lowerUser === "admin"){
-								adminStatus = 2
-							}else{
-								adminStatus = 0
-							}
-							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
-							var linkedAuction = req.body.auctionName
-							if (adminStatus){
+							// var lowerUser = req.body.userName.toLowerCase();
+
+							// //In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
+							// if (lowerUser === "organizer" || lowerUser === "admin"){
+							// 	adminStatus = 2
+							// }else{
+							// 	adminStatus = 0
+							// }
+							var linkedAuction = req.body.auction_id
+							// if (adminStatus){
+							// if (adminStatus === 2){
+							if (req.body.admin === 2){
 								// console.log("got in adminStatus")
 								linkedAuction = null
 							}
 
 							User.create({
-								userName: req.body.userName,
+								// userName: req.body.userName,
+								userName: req.body.email,
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
 								phone: req.body.phoneNumber,
-								// email: req.body.email,
+								email: req.body.email,
 								streetAddress: req.body.streetAddress,
 								city: req.body.city,
-								states: req.body.states,
+								// states: req.body.states,
+								state: req.body.state,
 								zip: req.body.zip,
 								_auctions: linkedAuction,
 								password: hash,
-								admin: adminStatus,
+								// admin: adminStatus,
+								admin: req.body.admin,
 								table: req.body.table,
 								tableOwner: req.body.tableOwner,
 								tableOwnerName: req.body.tableOwnerName,
@@ -300,13 +318,16 @@ function UsersController(){
 										// console.log("req.session is", req.session)
 										// console.log("afterwards, req.session is", req.session)
 										
-										if (req.body.admin) {
-											res.redirect('/' + linkedAuction + '/users');
+										// if (req.body.admin) {
+										if (req.body.admin === 2) {
+											// res.redirect('/' + linkedAuction + '/users');
+											res.redirect('/' + req.body.auction_id + '/users');
 										} else {
 											req.session.auction = linkedAuction
 											req.session.userName = user.userName
 											req.session.admin = user.admin
-											res.redirect('/' + linkedAuction + '/packages')
+											// res.redirect('/' + linkedAuction + '/packages')
+											res.redirect('/' + req.body.auction_id + '/packages')
 										}
 										return;
 									}
@@ -332,6 +353,14 @@ function UsersController(){
 					res.json({match: false})
 				} else {
 					if(user){
+					let s_user = {
+						admin : user.admin,
+						user_id : user._id,
+						firstName : user.firstName,
+						lastName : user.lastName,
+						auction_id : user._auctions,
+
+					}
 					console.log("004 users.js checkLogin.  user = ",user)
 					fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
 					console.log("005 users.js checkLogin user._auctions = ", user._auctions)
@@ -340,7 +369,8 @@ function UsersController(){
 					req.session.admin = user.admin
 					req.session.user = user
 					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
-					res.json({match: true, auction: user._auctions, admin:user.admin, userId: user._id})
+					// res.json({match: true, auction: user._auctions, admin:user.admin, userId: user._id})
+					res.json({match: true, auction_id: user._auctions, admin:user.admin, userId: user._id})
 					}else{
 						res.json({match: false})
 					}
@@ -405,7 +435,8 @@ function UsersController(){
 											categories: categories,
 											cartTotal: cartTotal,
 											cartArray: cartArray,
-											auction: req.params.auctions,
+											// auction: req.params.auctions,
+											auction_id: req.params.auctions,
 											auctionDetails: auctionDetails,
 										})
 										console.log("User info: ", user);
@@ -439,7 +470,8 @@ function UsersController(){
 				user.streetAddress = req.body.address;
 				user.userOrg = req.body.userOrg;
 				user.city = req.body.city;
-				user.states = req.body.states;
+				// user.states = req.body.states;
+				user.state = req.body.state;
 				user.zip = req.body.zip;
 				user.table = req.body.table;
 
@@ -473,7 +505,8 @@ function UsersController(){
 				console.log(err)
 			} else {
 				// console.log("311 items.js this.populateCsv.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
-				res.render('csvUpload-supporters', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.supporterCsvUpload})
+				// res.render('csvUpload-supporters', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.supporterCsvUpload})
+				res.render('csvUpload-supporters', {admin: req.session.admin, userName: req.session.userName, auction_id: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.supporterCsvUpload})
 			}
 		})
 	};
@@ -518,7 +551,8 @@ function UsersController(){
 						userOrg: jsonObj[i]["Organization"],
 						streetAddress: jsonObj[i]["Street"],
 						city: jsonObj[i]["City"],
-						states: jsonObj[i]["State"],
+						// states: jsonObj[i]["State"],
+						state: jsonObj[i]["State"],
 						zip: jsonObj[i]["Zip"],
 						admin: jsonObj[i]["Admin"],
 						table: jsonObj[i]["Table"],
@@ -546,9 +580,10 @@ function UsersController(){
 		console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
 		console.log("401 users.js this.sendSMS start.  req.params = ", req.params)
 		let phone = req.body.phone;
-		let userId = req.body.userId;
-		let auctionId = req.body.auction;
-		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/supporter/' + userId;
+		// let userId = req.body.userId;
+		let user_id = req.body.user_id;
+		let auction_id = req.body.auction_id;
+		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auction_id + '/supporter/' + user_id;
 		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
 
 		client.messages
@@ -885,7 +920,8 @@ function UsersController(){
 				email: "organizer@gmail.com",
 				streetAddress: "123 Main Street",
 				city: "Sunnyvale",
-				states: "CA",
+				// states: "CA",
+				state: "CA",
 				zip: "55555",
 				_auctions: null,
 				password: hash,

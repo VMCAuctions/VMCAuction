@@ -74,8 +74,8 @@
         //this button is in the table under action
 		$(".sendLinkButton").click(function(e){
             e.preventDefault();
-			var userID = (this.id);
-            var auctionID = '<%=auction._id%>';   
+			var user_id = (this.id);
+            var auction_id = '<%=auction._id%>';   
             //this is an alt attribute where the value is each supporter's phone number 
             var phone = $(this).attr('alt')
             var phoneStub=''
@@ -91,7 +91,7 @@
            $.ajax({
                 type:"POST",
                 url:'/users/sendSMS',
-                data:{'phone':phoneStub, 'auction':auctionID, 'userId':userID},
+                data:{'phone':phoneStub, 'auction_id':auction_id, 'user_id':user_id},
                 success:function(){
                     alert("A message has been sent to "+phone+".")
                 }
