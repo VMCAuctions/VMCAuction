@@ -10,6 +10,14 @@ h3 {
 	padding-top: 0.25rem;
 }
 
+#winning-info {
+	display: none;
+}
+
 .user-account th {
 	background-color: #003d79;
+}
+
+.narrow {
+	width: 15%;
 }
