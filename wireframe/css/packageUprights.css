@@ -104,3 +104,79 @@ td {
 	position: relative;
 	top: 350px;
 }
+
+/* Styling for upright */
+.upright {
+	width: 400px;
+	height: 518px;
+	text-align: center;
+	background: rgb(32, 108, 194);
+	color: #fff;
+	padding: 15px 0px;
+}
+
+.donor, .packageId, .value, #fitin {
+	background: black;
+	position: relative;
+}
+
+.donor, .title, .image, #fitin {
+	width: 100%;
+}
+
+.donor {
+	height: 8%;
+	font-size: 12px;
+	padding: 1% 0px;
+}
+
+.resized-text {
+	width: 90%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.title {
+	height: 9%;
+	font-size: 60px;
+	position: relative;
+	margin: 2% 0px;
+	font-weight: bold;
+	letter-spacing: 0.5px;
+}
+
+.image {
+	height: 40%;
+	margin-bottom: 5%;
+	font-size: 14px;
+}
+
+.flexible-photo {
+	max-width: 90%;
+	max-height: 100%;
+	border: 5px solid black;
+}
+
+.packageId {
+	bottom: 93%;
+	width: 30%;
+	text-align: right;
+	padding: 1% 4% 1% 0px;
+}
+
+.value {
+	bottom: 36.5%;
+	left: 70%;
+	width: 30%;
+	text-align: left;
+	padding-left: 5%;
+	padding: 1% 0px 1% 4%;
+}
+
+#fitin {
+	font-size: 20px;
+	height: 35%;
+	padding: 3% 0px;
+}
