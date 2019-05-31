@@ -53,7 +53,7 @@
 												<tr>
 													<th class="narrow">Package #</th>
 													<th>Name</th>
-													<th class="narrow">Your bid</th>
+													<th class="narrow text-right">Your bid</th>
 												</tr>
 												<% for (var p in cart[user.userName].packages) { %>
 													<tr>
@@ -63,7 +63,7 @@
 																<%= cart[user.userName].packages[p].name %>
 															</a>
 														</td>
-														<td>$<%= cart[user.userName].packages[p].highBid %></td>
+														<td class="text-right"><%="$" + cart[user.userName].packages[p].highBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> %></td>
 													</tr>
 												<% } %>
 											</table>
@@ -86,11 +86,13 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="firstName" class="label-name">First Name</label>
-											<input type="text" name="firstName" class="form-control" value="<%= user.firstName %>">
+											<input type="text" name="firstName" id="firstNameTarget" class="form-control" readonly value="<%= user.firstName %>">
+											<span id="hide1">Please note that this field cannot be edited.</span>
 										</div>
 										<div class="form-group col-md-6">
 											<label for="lastName" class="label-name">Last Name</label>
-											<input type="text" name="lastName" class="form-control" value="<%= user.lastName %>">
+											<input type="text" name="lastName" id="lastNameTarget" class="form-control" readonly value="<%= user.lastName %>">
+											<span id="hide2">Please note that this field cannot be edited</span>
 										</div>
 									</div>
 
@@ -156,13 +158,13 @@
 									<div class="form-group">
 										<label for="userName" class="label-name">Email/Username</label>
 										<input type="text" name="userName" class="form-control" id="userNameTarget" readonly value="<%= user.userName %>">
-										<span id="hide1">Please see a clerk to edit this information.</span>
+										<span id="hide3">Please see a clerk to edit this information.</span>
 									</div>
 
 									<div class="form-group">
 										<label for="phoneNumber" class="label-name">Cell Phone Number</label>
 										<input type="tel" name="phone" class="form-control" id="phoneTarget" readonly value="<%= user.phone %>">
-										<span id="hide2">Please see a clerk to edit this information.</span>
+										<span id="hide4">Please see a clerk to edit this information.</span>
 									</div>
 
 									<div class="form-group">
@@ -235,7 +237,6 @@
 				if (timeRemaining <= 0 && wonBidsRow > 1) {
 					winningTable.style.display = "block";
 				}
-				console.log("Winning table:", wonBidsRow);
 			}
 
 			function tableOwnerChange() {
@@ -276,14 +277,22 @@
 			// 	}
 			// });
 
+			$('#firstNameTarget').click(function() {
+				$('#hide1').css('display', 'block');
+			});
+
+			$('#lastNameTarget').click(function() {
+				$('#hide2').css('display', 'block');
+			});
+
 			// this shows a message when the phone number input field has been clicked
 			$('#userNameTarget').click(function() {
-				$('#hide1').css('display', 'block');
+				$('#hide3').css('display', 'block');
 			});
 
 			// this shows a message when the phone number input field has been clicked
 			$('#phoneTarget').click(function() {
-				$('#hide2').css('display', 'block');
+				$('#hide4').css('display', 'block');
 			});
 
 			// input mask for phone number format

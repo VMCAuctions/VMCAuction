@@ -192,8 +192,6 @@ function UsersController(){
 								items: items,
 								total: total
 							};
-							// packages[0].bids[packages[0].bids.length - 1].name
-							console.log("YOOO", packages[0].highBidder);
 						}
 
 						Auction.findById(req.params.auctions, function (err, auctionDetails) {
