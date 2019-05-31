@@ -158,43 +158,75 @@ function UsersController(){
 
 	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
 	this.showAccount = function(req,res){
+		var items = [];
+		var cart = {};
 		User.findOne({userName: req.params.userName}).exec( function(err, user){
 			if(err){
 				console.log(err)
 				fileLog.info("004 users.js this.showAccount User.findOne.  err = ", JSON.stringify(err, null, 2))
 			}else if(user.userName === req.session.userName || req.session.admin >= 1){
 				// console.log("100 users.js this.showAccount User.findOne.  user = ",user)
-				Auction.findById(req.params.auctions, function (err, auctionDetails) {
-					if (err) {
-						console.log(err)
-						fileLog.info("005 users.js this.showAccount Auction.findById.  err = ", JSON.stringify(err, null, 2))
-					} else {
-						if (user.userName != req.session.userName) {
-							res.render('userAccount', {
-								user: user,
-								phone: user.phone,
-								admin: req.session.admin,
-								auction: req.params.auctions,
-								userName: req.session.userName,
-								auctionDetails: auctionDetails,
-								table: user.table,
-								tableOwner: user.tableOwner
-							})
+
+				Package.find({ _auctions: req.params.auctions })
+					.populate("_items")
+					.sort({ _category: "ascending" })
+					.sort({ priority: "ascending" })
+					.sort({ _id: "descending" })
+					.exec(function(err, packages) {
+						if (err) {
+							console.log(err);
 						} else {
-							res.render('userAccount', {
-								//current is a flag showing which page is active
-								current: 'myAccount',
-								user: user,
-								admin: req.session.admin,
-								auction: req.params.auctions,
-								userName: req.session.userName,
-								auctionDetails: auctionDetails,
-								table: user.table,
-								tableOwner: user.tableOwner
-							})
+							var packagesArr = [];
+							var total = 0;
+							for (var y = 0; y < packages.length; y++) {
+								if (packages[y].bids.length > 0){
+									if (packages[y].highBidder === user.firstName.charAt(0)+'. '+user.lastName || packages[y].highBidder === user.firstName+' '+user.lastName) {
+										packagesArr.push(packages[y]);
+										items.push.apply(items,packages[y]._items);
+										total += packages[y].bids[packages[y].bids.length - 1].bidAmount;
+									}
+								}
+							}
+							cart[user.userName] = {
+								packages: packagesArr,
+								items: items,
+								total: total
+							};
 						}
-					}
-				})
+
+						Auction.findById(req.params.auctions, function (err, auctionDetails) {
+							if (err) {
+								console.log(err)
+								fileLog.info("005 users.js this.showAccount Auction.findById.  err = ", JSON.stringify(err, null, 2))
+							} else {
+								if (user.userName != req.session.userName) {
+									res.render('userAccount', {
+										user: user,
+										phone: user.phone,
+										admin: req.session.admin,
+										auction: req.params.auctions,
+										userName: req.session.userName,
+										auctionDetails: auctionDetails,
+										table: user.table,
+										tableOwner: user.tableOwner
+									})
+								} else {
+									res.render('userAccount', {
+										//current is a flag showing which page is active
+										current: 'myAccount',
+										user: user,
+										cart: cart,
+										admin: req.session.admin,
+										auction: req.params.auctions,
+										userName: req.session.userName,
+										auctionDetails: auctionDetails,
+										table: user.table,
+										tableOwner: user.tableOwner
+									})
+								}
+							}
+						})
+					});
 			}else{
 				res.redirect('/users/supporterError')
 			}
