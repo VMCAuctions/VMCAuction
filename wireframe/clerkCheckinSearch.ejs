@@ -16,7 +16,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Phone Number</th>
                     <th scope="col">Table #</th>
-                    <th scope="col">Action</th>
+					<th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody id="carts">
@@ -35,9 +35,8 @@
                             <%=users[u].table%>
                         </td>  
                         <td>
-                
                             <button type="button" class="sendLinkButton btn btn-sm btn-add" id="<%=users[u]._id%>" alt="<%=users[u].phone%>" >Send Auction link</button>
-                        </td>               
+						</td>
                     </tr>
                 <% } %>
             </tbody>
@@ -75,7 +74,8 @@
 		$(".sendLinkButton").click(function(e){
             e.preventDefault();
 			var userID = (this.id);
-            var auctionID = '<%=auction._id%>';   
+			var auctionID = '<%=auction._id%>';
+			var name = '<%= auction.name %>';
             //this is an alt attribute where the value is each supporter's phone number 
             var phone = $(this).attr('alt')
             var phoneStub=''
@@ -86,12 +86,14 @@
                 if(code>=48 &&code <=57){
                     phoneStub+=String.fromCharCode(code);
                 }
-            }
+			}
+			
+			var auctionName = name.replace(/[\&#34;\&#39;/\~`!@#$%^&*(){}\[\];:"'<,. >?\/\\|_+=-]/g, '');
            
            $.ajax({
                 type:"POST",
                 url:'/users/sendSMS',
-                data:{'phone':phoneStub, 'auction':auctionID, 'userId':userID},
+                data:{'phone':phoneStub, 'auction':auctionID, 'auctionName': auctionName, 'userId':userID},
                 success:function(){
                     alert("A message has been sent to "+phone+".")
                 }

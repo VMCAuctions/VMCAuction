@@ -580,7 +580,8 @@ function UsersController(){
 		let phone = req.body.phone;
 		let userId = req.body.userId;
 		let auctionId = req.body.auction;
-		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/supporter/' + userId;
+		let auctionName = req.body.auctionName;
+		let msgBody = 'Here\'s the link to the auction!.  Note: This is your personal unique link.  Do not share with anyone!\n https://dv1.elizabid.com/' + auctionId + '/' + auctionName + '/' + userId;
 		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
 
 		client.messages
