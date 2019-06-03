@@ -182,24 +182,24 @@
         $(document).ready(function () {
 
             	  // Initializes Data Tables plugin
-			$('#package-table').DataTable({
-				"dom": '<lip<t>ip>',
-				"searching": false,
-				"order": [[ 0, "asc" ]],
-				"pageLength": 25,
-				"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
-				"pagingType": "full_numbers",
-				"columnDefs": [
-					{ "orderable": false, "targets": 2 },
-					{ "orderable": false, "targets": 4 },
-					{ "orderable": false, "targets": 5 },
-					{ "orderable": false, "targets": 6 },
-					{ "orderable": false, "targets": 11 },
-					{ "orderable": false, "targets": 12 },
-					{ "orderable": false, "targets": 13 },
-				]
+			// $('#package-table').DataTable({
+			// 	"dom": '<lip<t>ip>',
+			// 	"searching": false,
+			// 	"order": [[ 0, "asc" ]],
+			// 	"pageLength": 25,
+			// 	"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+			// 	"pagingType": "full_numbers",
+			// 	"columnDefs": [
+			// 		{ "orderable": false, "targets": 2 },
+			// 		{ "orderable": false, "targets": 4 },
+			// 		{ "orderable": false, "targets": 5 },
+			// 		{ "orderable": false, "targets": 6 },
+			// 		{ "orderable": false, "targets": 11 },
+			// 		{ "orderable": false, "targets": 12 },
+			// 		{ "orderable": false, "targets": 13 },
+			// 	]
 				
-			});
+			// });
 
             $("#keyword").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
