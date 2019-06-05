@@ -108,15 +108,15 @@
 														<div class="form-group col-md-4">
 															<label for="tableOwner" class="label-name">Is <%= user.firstName %> a Table Owner?</label>
 															<select name="tableOwner" id="tableOwner" class="form-control" onchange="tableOwnerChange()">
-																<%if( user.tableOwner === false){%>
-																	<option value="false">No</option>
-																	<option value="true">Yes</option>
+																<%if( user.tableOwner === 'No' || user.tableOwner === 'false'){%>
+																	<option value="No">No</option>
+																	<option value="Yes">Yes</option>
 																<%} else if (!user.tableOwner) { %>
-																	<option value="false">No</option>
-																	<option value="true">Yes</option>
+																	<option value="No">No</option>
+																	<option value="Yes">Yes</option>
 																<%} else { %>
-																	<option value="true">Yes</option>
-																	<option value="false">No</option>
+																	<option value="Yes">Yes</option>
+																	<option value="No">No</option>
 																<%}%>
 															</select>
 														</div>
@@ -225,15 +225,11 @@
 
 			function showWonBids(endDate) {
 				endDate = new Date(endDate).getTime();
-			
 				if (isNaN(endDate)) {
 					return;
 				}
-
 				let startDate = new Date().getTime();
-		
 				let timeRemaining = endDate - startDate;
-			
 				if (timeRemaining <= 0 && wonBidsRow > 1) {
 					winningTable.style.display = "block";
 				}
@@ -241,8 +237,7 @@
 
 			function tableOwnerChange() {
 				var value = document.getElementById("tableOwner").value;
-				
-				if (value === "true") {
+				if (value === "Yes" || value === "true") {
 					document.getElementById("tableOwnerName").value = "<%= user.firstName %> <%= user.lastName %>";
 				} else {
 					document.getElementById("tableOwnerName").value = "";
@@ -252,30 +247,6 @@
 			$(document).ready(function() {
 				validator.resetForm();
 			});
-
-			// $('#changePassBtn').click(function(event){
-			// 	event.preventDefault();
-
-			// 	let userName = $('#user-info').attr("data");
-			// 	let newPass = $('#newPass').val();
-			// 	let confirmPass = $('#confirmPass').val();
-
-			// 	if(newPass === confirmPass){
-			// 		console.log('matched')
-			// 		$.ajax({
-			// 			type: "POST",
-			// 			contentType: "application/json",
-			// 			headers: {"X-HTTP-Method-Override": "PUT"},
- 			// 			url: "/<%=auction%>/users/account/<%=userName%>",
-			// 			data: JSON.stringify({password: newPass}),
-			// 			success: function(data){
-			// 				console.log('changed');
-			// 			}
-			// 		})
-			// 	} else {
-			// 		alert('values for password and confirmation should match!')
-			// 	}
-			// });
 
 			$('#firstNameTarget').click(function() {
 				$('#hide1').css('display', 'block');

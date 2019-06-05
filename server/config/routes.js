@@ -4,6 +4,7 @@ var users = require('../controllers/users.js');
 var categories = require('../controllers/categories.js');
 var auctions = require('../controllers/auctions.js');
 
+
 var path = require('path')
 Auction = require("../models/auction.js");
 
@@ -143,7 +144,15 @@ module.exports = function(app) {
 			items.itemsCsv(req, res)});
 
 	})
-		// items.itemsCsv(req, res)});
+	
+	app.get('/:auctions/items/template', function(req, res){
+		console.log("201 routes.js /:auc./items/template route")
+		res.download('./public/item-upload-template.csv', function (err) {
+			if (err) {
+				console.log("202 routes.js item csv template download error: ",err); 
+			}
+		})
+	})
 
 
 
@@ -324,6 +333,17 @@ module.exports = function(app) {
 	app.get('/:auctions/users/csv', function(req, res){
 		console.log("200 routes.js /:auc./users/csv route")
 		users.supporterCsv(req, res)});
+	
+	// Supporters .csv spreadsheet template download
+	app.get('/:auctions/users/template', function(req, res){
+		// console.log("201 routes.js /:auc./users/template route")
+		res.download('./public/supporter-upload-template.csv', function (err) {
+			if (err) {
+				console.log("202 routes.js supporter csv template download error: ",err); 
+			}
+		})
+	})
+		
 
 	// actually adding supporters from csv - original
 	// app.post('/:auctions/users/usersImport', function(req, res){

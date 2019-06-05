@@ -552,7 +552,7 @@ function UsersController(){
 						city: jsonObj[i]["City"],
 						states: jsonObj[i]["State"],
 						zip: jsonObj[i]["Zip"],
-						admin: jsonObj[i]["Admin"],
+						admin: 0,
 						table: jsonObj[i]["Table"],
 						tableOwner: jsonObj[i]["Table Owner"],
 						tableOwnerName: jsonObj[i]["Table Owner Name"],

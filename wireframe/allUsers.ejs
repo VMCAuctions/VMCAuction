@@ -36,16 +36,8 @@
   <!-- check with client to verify all admin/clerk priveledges, regarding deleting and editing other non admin users -->
 	<div class="container-fluid">
     <h2 class="my-4">Supporters Register</h2>
-		<!-- <div class="d-flex justify-content-end mt-4">
-			<a href="/<%=auction%>/users/new">
-				<button class="btn btn-add">Add a Supporter</button>
-			</a>
-
-			<a href="/<%=auction%>/users/csv">
-				<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
-			</a>
-		</div> -->
-      <div class="my-4" id="search-container">
+		
+    <div class="my-4" id="search-container">
 		<div class="row">
 			<div class="col">
 				<!-- Find supporters by keyword -->
@@ -61,6 +53,9 @@
 	
 				<a href="/<%=auction%>/users/csv">
 					<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
+				</a>
+				<a href="/<%=auction%>/users/template">
+					<button type="button" class="btn btn-add ml-2">Download Import Template</button>
 				</a>
 			</div>
 		</div>
