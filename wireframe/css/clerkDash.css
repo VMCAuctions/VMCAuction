@@ -107,3 +107,11 @@ a:hover,
 /* .packageRow {
   display: none;
 } */
+
+#hide1, #hide2 {
+	display: none;
+	font-size: 0.8rem;
+	color: #ff2719;
+	line-height: 1.5;
+	padding-top: 0.25rem;
+}

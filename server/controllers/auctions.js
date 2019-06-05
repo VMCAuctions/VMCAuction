@@ -331,7 +331,7 @@ function AuctionsController() {
               }
             });
         } else {
-          rres.redirect('/users/clerkError');
+          res.redirect('/users/clerkError');
         }
       });
     }
@@ -408,23 +408,44 @@ function AuctionsController() {
   };
 
   this.clerkcheckin = function(req, res) {
-    Auction.findById(req.params.auctions, function(err, auction){
-      if(err){
-        console.log(err)
-      }else{
-        User.find({_auctions: req.params.auctions}, function(err, users){
-          if(err){
-            console.log(err)
-          }else{
-            req.session.auctionID = auction._id
-            res.render("clerkCheckinSearch", {
-              auction: auction,
-              users : users
-            });
-          }
-        })
-      }
-    })
+	Auction.findById(req.params.auctions, function(err, auction){
+		var bidders = [];
+		if(err){
+			console.log(err)
+		}else{
+			User.find({_auctions: req.params.auctions}, function(err, users){
+				if(err){
+					console.log(err)
+				}else{
+					Package.find({ _auctions: req.params.auctions })
+						.exec(function(err, packages) {
+							if (err) {
+								console.log(err);
+							} else {
+
+								var packageBids = packages.map(function(wholePkg) {
+									return wholePkg.bids;
+								});
+								
+								for (var i = 0; i < packageBids.length; i++) {
+									for (var j = 0; j < packageBids[i].length; j++) {
+										if (!bidders.includes(packageBids[i][j].name)) {
+											bidders.push(packageBids[i][j].name);
+										}
+									}
+								}
+								req.session.auctionID = auction._id;
+								res.render("clerkCheckinSearch", {
+									auction: auction,
+									users: users,
+									bidders: bidders
+								});
+							}
+						});
+				}
+			});
+		}
+	});
   };
 
   this.clerkUserCheckIn = function(req, res){
