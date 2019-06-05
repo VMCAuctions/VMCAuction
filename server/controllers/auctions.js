@@ -246,7 +246,6 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			// console.log('230 auctions.js this.event Package.find packages = ',packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -385,8 +384,8 @@ function AuctionsController() {
 			}
 		});
 		
-	}
 
+	}
 
 
   //Clerk registering new supporter

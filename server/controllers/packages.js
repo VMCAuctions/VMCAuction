@@ -991,6 +991,87 @@ function PackagesController() {
 	}
 
 
+	// Launches a supporter session without having to log in.  Used by team for including VMC project in resumes
+	// NOT part of delivered app!
+	this.guest = function (req, res) {
+
+		// hard code auction - Getting the Shiny Gold
+		req.session.auctions = "5c59f82b181b703674c1eca5"; // localhost Getting the Shiny Gold auction
+		// hard code admin = 0
+		req.session.admin = "0";
+		// hard code userName = Annabel Andreesen (in Bob's database, not yours!)
+		req.session.userName = "aaa@a.com";
+		console.log("601 packages.js this.guest .  req.session = ",req.session);
+		
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, user) {
+					// console.log("004 packages.js this.index user.findOne.  result = ", result)
+					if (err) {
+						console.log(err)
+					} else {
+						console.log("602 packages.js this.guest User.findOne.  user = ",user);
+						// This is the method that finds all of the packages from the database
+						Package.find({_auctions: req.session.auctions}).populate("_items").sort({_category: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
+							if(err) {
+								console.log('packages.js this.index Package Index Error');
+								res.status(500).send('packages.js this.guest Failed to Load Packages');
+								console.error();
+							} else {
+								// console.log('this is user again', user)
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++) {
+									if (packages[i].featured === true) {
+								-		featured.push(packages[i]);
+									}
+									//Not actually using nonfeatured packages right now
+									else {
+                    
+										nonfeatured.push(packages[i]);
+									}
+								}
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+
+								console.log("227 packages.js this.guest pre Auction.findById. req.params = ",req.params);
+								Auction.findById(req.params.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log('227.5 packages.js this.guest Package.find.  Auction.findById.  err = ',  err)
+									} else {
+										console.log("228 packages.js this.guest Package.find.  Auction.findById.  auctionDetails = ", auctionDetails);
+										fileLog.info("228 packages.js this.guest Auction.findById.  auctionDetails = ", JSON.stringify(auctionDetails, null, 2));
+
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
+										res.render('packages', {
+											current: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+
+											userDisplay: userDisplay, 
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.session.auction,
+
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+
+	}
+
 	// supporter text message auction link route day of auction to access app on phone
 	// from app.get('/users/sendSMS' - renders catalog page for supporters (catalog.ejs)
 	this.liveAuction = function(req,res){
@@ -1031,10 +1112,12 @@ function PackagesController() {
 									}
 									//Not actually using nonfeatured packages right now
 									else{
+
 										nonfeatured.push(packages[i]);
 									}
 								}
 								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+
 								console.log("227 packages.js this.liveAuction pre Auction.findById. req.params = ",req.params);
 								Auction.findById(req.params.auctions, function (err, auctionDetails) {
 									if (err) {
@@ -1042,6 +1125,7 @@ function PackagesController() {
 									} else {
 										console.log("228 packages.js this.liveAuction Package.find.  Auction.findById.  auctionDetails = ", auctionDetails);
 										fileLog.info("228 packages.js this.liveAuction Auction.findById.  auctionDetails = ", JSON.stringify(auctionDetails, null, 2));
+
 										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
 										//current is a flag showing which page is active
 										res.render('packages', {
@@ -1050,11 +1134,13 @@ function PackagesController() {
 											admin: req.session.admin,
 											userName: req.session.userName,
 											user: user,
-											userDisplay: userDisplay,
+
+											userDisplay: userDisplay, 
 											categories: categories,
 											featured: featured,
 											nonfeatured: nonfeatured,
-											auction: req.session.auctions,
+											auction: req.session.auction,
+
 											auctionDetails: auctionDetails,
 										})
 									}
@@ -1065,6 +1151,7 @@ function PackagesController() {
 				})
 			}
 		})
+
 	}
 
 	
