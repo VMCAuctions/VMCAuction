@@ -92,7 +92,7 @@
 										<div class="form-group col-md-6">
 											<label for="lastName" class="label-name">Last Name</label>
 											<input type="text" name="lastName" id="lastNameTarget" class="form-control" readonly value="<%= user.lastName %>">
-											<span id="hide2">Please note that this field cannot be edited</span>
+											<span id="hide2">Please note that this field cannot be edited.</span>
 										</div>
 									</div>
 
@@ -219,8 +219,8 @@
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">
 
-			const wonBidsRow = document.getElementsByClassName("user-account")[0].rows.length;
-			const winningTable = document.getElementById("winning-info");
+			let wonBidsRow = document.getElementsByClassName("user-account")[0].rows.length;
+			let winningTable = document.getElementById("winning-info");
 			let endtime = winningTable.dataset.endclock;
 
 			function showWonBids(endDate) {

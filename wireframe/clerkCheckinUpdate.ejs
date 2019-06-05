@@ -1,17 +1,19 @@
 <div class="card-body">
-    <h5>Here is your information:</h5> 
-    <h6 class="pin mb-3">*Please fill in any missing fields.</h6>
+    <h5>Here is their information:</h5> 
+	<h6 class="pin mb-3">*Please fill in any missing fields.</h6>
     <form id="registrationForm" action="/<%=user._id%>/clerkUserUpdate" method="post">
-        
+        <input type="hidden" id="firstLast" value="<%=user.firstName%> <%=user.lastName%>">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="firstName">First Name</label>
-                <input type="text" name="firstName" class="form-control" value="<%=user.firstName%>">
+				<input type="text" name="firstName" class="form-control" id="firstName" value="<%=user.firstName%>">
+				<span id="hide1">Please note that this field cannot be edited after the user has made a bid.</span>
             </div>
             <div class="form-group col-md-6">
                 <label for="lastName">Last Name</label>
-                <input type="text" name="lastName" class="form-control" value="<%=user.lastName%>">
-            </div>
+				<input type="text" name="lastName" class="form-control" id="lastName" value="<%=user.lastName%>">
+				<span id="hide2">Please note that this field cannot be edited after the user has made a bid.</span>
+			</div>
         </div>
 
         <div class="form-group">
@@ -59,6 +61,31 @@
 </div>
 
 <script>
+	let bidders = document.getElementById("supporter-search").dataset.bidders;
+	bidders = bidders.split(",");
+	
+	function disableNames(names) {
+		let userName = document.getElementById("firstLast").value;
+		let first = document.getElementById("firstName");
+		let last = document.getElementById("lastName");
+
+		for (var i = 0; i < names.length; i++) {
+			if (userName === names[i]) {
+				first.readOnly = true;
+				last.readOnly = true;
+
+				$('#firstName').click(function() {
+					$('#hide1').css('display', 'block');
+				});
+
+				$('#lastName').click(function() {
+					$('#hide2').css('display', 'block');
+				});
+			}
+		}
+	}
+
+	disableNames(bidders);
 	
     $("#phoneNumber").inputmask("999-999-9999");
     var validator = $("#registrationForm").validate({
@@ -70,14 +97,31 @@
             lastName: {
                 required: true,
                 rangelength: [2, 50]
-            },
+			},
             phoneNumber: {
                 required: true,
                 phoneUS: true,
             },
             userName: {
                 required: true,
-            },
+			},
+			address: {
+				required: true,
+				street: true,
+				rangelength: [2, 50]
+			},
+			city: {
+				required: true,
+				rangelength: [2, 50]
+			},
+			states: {
+				required: true,
+				state: true
+			},
+			zip: {
+				required: true,
+				zipcodeUS: true
+			}
         }
     });
 
@@ -147,7 +191,5 @@
     		}
     	})
     });
-
-	
 
 </script>
