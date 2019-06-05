@@ -14,37 +14,7 @@
 
 	<!-- Sockets and JavaScript -->
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://code.jquery.com/jquery-3.4.0.js"   integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="   crossorigin="anonymous"></script>
-	<script type='text/javascript'>
-	var socket = io.connect('http://localhost:8000/');
-	// var socket = io.connect('http://dv1.elizabid.com/');
-
-		$(document).ready(function(){
-			socket.on("serverTalksBack", function(data){
-			$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
-			console.log(data.bid);
-		})
-
-        $("#keyword").on("keyup", function() {
-          var value = $(this).val().toLowerCase();
-          $(".package").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-
-		$("select[name='category']").change( function() {
-			var value = $(this).val().toLowerCase();
-			$(".package").filter(function(){
-				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-			})
-		});
-
-		$("#noBids").click(function() {
-			$(".bids").toggle();
-			$(this).text($(this).text() == 'Show All' ? 'No Bids Yet' : 'Show All')
-		});
-    })
-	</script>
+	<script   src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -54,6 +24,9 @@
 	<%}else{%>
 		<%- include('header') -%>
 	<%}%>
+	<% if(admin == 0){ %>
+		<%- include('footerNotifications') %>
+	<% } %>
 	<%if(admin == 0){%>
 		<%- include('footerClock') -%>
 	<%}%>
@@ -61,10 +34,8 @@
 	<div class="container margin-tofooter">
 	<h2 class="supporter-view">Auction Catalog</h2>
 
-
 	<div class="d-flex flex-row flex-wrap justify-content-start mt-4">
 		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
-
 			<input type="search" id="keyword" class="form-control search-pkg" placeholder="Keyword Search">
 		</div>
 		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">
@@ -76,7 +47,7 @@
 			</select>
 		</div>
 		<div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
-			<button class="form-control btn-no-bids" id="noBids" name="button">Packages with no bids</button>
+			<button class="form-control btn-no-bids" id="noBids" name="button">Packages with No Bids</button>
 		</div>	
 	</div>	
 
@@ -100,20 +71,23 @@
 
 							<%}%>			
 							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-								<img class="pkg-img mr-3" src="/<%= packages[n].photo %>">
+								<div>
+									<img class="pkg-img mr-3" src="/<%= packages[n].photo %>">
+								</div>	
 								<div>  
 									<a class="pkg-title" href="/<%= auction %>/packages/<%= packages[n]._id %>"><%= packages[n].name %></a>
 									<p class="category mt-1">Category: <%=packages[n]._category%></p>
 								</div>	
 							</div>
 							<hr>
-							<div class="row ml-1">
-								<ul class="mt-1">
-									<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
-									Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>	
+							<div class="row card-middle ml-1">
+								<ul>
+									<li>Value: <span class="value"><%= "$" + packages[n].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp; 
+									Opening Bid: <span class="opening-bid"> <%="$" + packages[n].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
 									<%if(packages[n].bids[packages[n].bids.length-1]){%>
-										<li class="mt-1">Highest Bid: <span class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> (by: <%= packages[n].bids[packages[n].bids.length-1].name%>)</span></li>
-									<%}else{%>
+										<li class="mt-1">Highest Bid: <span id="highest-bid-<%= packages[n]._id %>" class="highest-bid"><%="$" + packages[n].bids[packages[n].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
+										<span class="highest-bid">(by <span id="highest-bidder-<%= packages[n]._id %>"><%= packages[n].bids[packages[n].bids.length-1].name%></span>)</span></li>
+										<%}else{%>
 										<li class="mt-1 no-bid">No bids yet! </li>
 									<%}%>
 									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
@@ -125,27 +99,77 @@
 								<!-- <%if(userName && userName !== "Clerk"){%> -->
 								<% var flag = false %>
 								<% for(var i = 0; i < user._packages.length; i++){ %>
+
 									<% if(packages[n]._id == user._packages[i]) {%>
-										<!--do this in ajax call instead-->
-										<button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested/<%=packages[n]._id%>'">Remove from Watchlist</button>
-										<!-- <a href="/<%=auction%>/users/uninterested/<%= packages[n]._id %>'"><button type="button" name="interested">Remove from Watchlist</button></a> -->
+										<input class = "btn btn-remove-watchlist mb-3" onClick="change(<%=packages[n]._id%>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=packages[n]._id%>"></input>
 										<% flag = true %>
 											<% break %>
 										<% } %>
 									<%}%>
 
 									<% if(flag === false) {%>
-										<!--do this in ajax call instead-->
-										<button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested/<%=packages[n]._id%>'">Add to Watchlist</button>
-										<!-- <a href="/<%=auction%>/users/interested/<%= packages[n]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
+										<input class = "btn btn-add-watchlist mb-3" onClick="change(<%=packages[n]._id%>)" type="button" value="Add to Watch List" id="watchlistButton-<%=packages[n]._id%>"></input>
 									<%}%>
-								<%}%>			
+
+								<%}%>
+
 							</div>
 						</div>
 					</div>
 				</div>	
 		<%}%>
 	</div>
+
+	<script>
+		function change(packageId) {
+			var watchlistButton = document.getElementById("watchlistButton-"+packageId);
+
+			if ( watchlistButton.value == "Remove from Watch List" ) {
+				$.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+				$('#watchlistButton-'+packageId).attr("class","btn btn-add-watchlist mb-3");
+				watchlistButton.value = "Add to Watch List";
+			} else {
+				$.get("/<%= auction %>/users/interested-in-package/"+packageId);
+				watchlistButton.value = "Remove from Watch List";
+				$('#watchlistButton-'+packageId).attr("class","btn btn-remove-watchlist mb-3");
+			}
+		}
+
+		$(document).ready(function(){
+			socket.on("serverTalksBack", function(data){
+				$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
+				console.log(data.bid);
+			})
+
+			$("#keyword").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$(".package").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+
+			$("select[name='category']").change( function() {
+				var value = $(this).val().toLowerCase();
+				$(".package").filter(function(){
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				})
+			});
+
+			$("#noBids").click(function() {
+				$(".bids").toggle();
+				$(this).text($(this).text() == 'Show All Packages' ? 'Packages with No Bids' : 'Show All Packages')
+      });
+		
+			
+			// Update highest bidder and bid amount
+			socket.on("serverTalksBack", function (data) {
+				let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let topBidder = data.userBidLast;
+				$('#highest-bid-'+data.packId).text("$"+ currentBid);
+				$('#highest-bidder-'+data.packId).text(data.userBidLast);
+			});
+		})
+	</script>
 
 </body>
 </html>

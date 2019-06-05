@@ -12,9 +12,7 @@ var packageSchema = new Schema({
 	_items: [{type: Number, ref: 'Item'}],
 	description: {type: String},
 	_category: {type: String},
-
-	//for testing package create/edit category comma snafu
-	cat: {type: String},
+	donors: {type: String},
 	_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'},
 	value: {type: Number},  //prepopulated field with for item in package._items { value += item.value }
 	amount: {type: Number}, //starting bid
@@ -22,7 +20,8 @@ var packageSchema = new Schema({
 	featured: {type: Boolean},
 	bidIncrement: {type: Number},
 	bids: {type: Array},
-
+	highBidder: {type: String},
+	highBid: {type: Number},
 	// {bidAmount: 50, name: yarik, date:"2019-04-11T01:41:26.488Z"}
 
 	photo: String,

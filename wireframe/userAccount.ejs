@@ -3,16 +3,24 @@
   	<head>
 		<meta charset="utf-8">
 		<title><%=user.firstName%>'s Account Page</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/style.css">  
 		<link rel="stylesheet" href="/css/userAccount.css">
-  	</head>
-	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
-	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-	<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
-	  
+  	
+		<!-- Sockets and JavaScript -->
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+		<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+		
+	</head>
+
 	<body>
 		<%if(admin){%>
 		<%- include('adminHeader') -%>
@@ -36,22 +44,28 @@
 				<div class="col">  <!-- this column is for equal space on the margins -->
 					<div class="col-sm-12 col-md-8">  <!-- the column where all our content will go; for medium and larger use size 8; for mobile (small), use the full screen (size 12); -->
 						<%if(admin == 0){%>
-							<div class="card regist-card mb-4" id="user-info" data=<%= user.userName%>>
+							<div class="card regist-card mb-4" id="winning-info" data-endClock="<%= auctionDetails.endClock %>">
 								<div class="card-body">
 									<div>
 										<h5 class="mb-3">Here is what you've won:</h5>
 										<div class="table-responsive">
-											<table class="table">
+											<table class="table user-account">
 												<tr>
-													<th>Package #</th>
-													<th>Description</th>
-													<th>Your bid</th>
+													<th class="narrow">Package #</th>
+													<th>Name</th>
+													<th class="narrow text-right">Your bid</th>
 												</tr>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
+												<% for (var p in cart[user.userName].packages) { %>
+													<tr>
+														<td><%= cart[user.userName].packages[p]._id %></td>
+														<td>
+															<a href="/<%= auction %>/packages/<%= cart[user.userName].packages[p]._id %>">
+																<%= cart[user.userName].packages[p].name %>
+															</a>
+														</td>
+														<td class="text-right"><%="$" + cart[user.userName].packages[p].highBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%> %></td>
+													</tr>
+												<% } %>
 											</table>
 										</div>
 									</div>
@@ -71,12 +85,14 @@
 
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label for="firstName">First Name</label>
-											<input type="text" name="firstName" class="form-control" value="<%= user.firstName %>">
+											<label for="firstName" class="label-name">First Name</label>
+											<input type="text" name="firstName" id="firstNameTarget" class="form-control" readonly value="<%= user.firstName %>">
+											<span id="hide1">Please note that this field cannot be edited.</span>
 										</div>
 										<div class="form-group col-md-6">
-											<label for="lastName">Last Name</label>
-											<input type="text" name="lastName" class="form-control" value="<%= user.lastName %>">
+											<label for="lastName" class="label-name">Last Name</label>
+											<input type="text" name="lastName" id="lastNameTarget" class="form-control" readonly value="<%= user.lastName %>">
+											<span id="hide2">Please note that this field cannot be edited</span>
 										</div>
 									</div>
 
@@ -126,43 +142,47 @@
 												</div>
 											</div> -->
 										<!-- </form> -->
+									<%} else {%>
+										<input id="table" type="hidden" name="table" class="form-control" value="<%= table %>">
+										<input id="tableOwner" type="hidden" name="tableOwner" class="form-control" value="<%= user.tableOwner %>">
+										<input id="tableOwnerName" type="hidden" name="tableOwnerName" class="form-control" value="<%= user.tableOwnerName %>">
 									<%}%>
 
 									<%if(admin == 0 || user.userName != userName){%>
 										<div class="form-group">
-											<label for="userOrg">Organization</label>
+											<label for="userOrg" class="label-name">Organization</label>
 											<input type="text" name="userOrg" class="form-control" value="<%= user.userOrg %>">
 										</div>
 									<%}%>
 
 									<div class="form-group">
-										<label for="userName">Email/Username</label>
+										<label for="userName" class="label-name">Email/Username</label>
 										<input type="text" name="userName" class="form-control" id="userNameTarget" readonly value="<%= user.userName %>">
-										<span id="hide1">Please note that this field cannot be edited.</span>
+										<span id="hide3">Please see a clerk to edit this information.</span>
 									</div>
 
 									<div class="form-group">
-										<label for="phoneNumber">Cell Phone Number</label>
+										<label for="phoneNumber" class="label-name">Cell Phone Number</label>
 										<input type="tel" name="phone" class="form-control" id="phoneTarget" readonly value="<%= user.phone %>">
-										<span id="hide2">Please note that this field cannot be edited.</span>
+										<span id="hide4">Please see a clerk to edit this information.</span>
 									</div>
 
 									<div class="form-group">
-										<label for="streetAddress">Address</label>
+										<label for="streetAddress" class="label-name">Address</label>
 										<input type="text" name="address" class="form-control" value="<%= user.streetAddress %>">
 									</div>
 
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label for="city">City</label>
+											<label for="city" class="label-name">City</label>
 											<input type="text" name="city" class="form-control" value="<%= user.city %>">
 										</div>
 										<div class="form-group col-md-3">
-											<label for="states">State</label>
+											<label for="states" class="label-name">State</label>
 											<input type="text" name="states" class="form-control" value="<%= user.states %>">
 										</div>
 										<div class="form-group col-md-3">
-											<label for="zip">Zip</label>
+											<label for="zip" class="label-name">Zip</label>
 											<input type="text" name="zip" class="form-control" value="<%= user.zip %>">
 										</div>
 									</div>
@@ -198,6 +218,26 @@
 
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">
+
+			const wonBidsRow = document.getElementsByClassName("user-account")[0].rows.length;
+			const winningTable = document.getElementById("winning-info");
+			let endtime = winningTable.dataset.endclock;
+
+			function showWonBids(endDate) {
+				endDate = new Date(endDate).getTime();
+			
+				if (isNaN(endDate)) {
+					return;
+				}
+
+				let startDate = new Date().getTime();
+		
+				let timeRemaining = endDate - startDate;
+			
+				if (timeRemaining <= 0 && wonBidsRow > 1) {
+					winningTable.style.display = "block";
+				}
+			}
 
 			function tableOwnerChange() {
 				var value = document.getElementById("tableOwner").value;
@@ -237,14 +277,22 @@
 			// 	}
 			// });
 
+			$('#firstNameTarget').click(function() {
+				$('#hide1').css('display', 'block');
+			});
+
+			$('#lastNameTarget').click(function() {
+				$('#hide2').css('display', 'block');
+			});
+
 			// this shows a message when the phone number input field has been clicked
 			$('#userNameTarget').click(function() {
-				$('#hide1').css('display', 'block');
+				$('#hide3').css('display', 'block');
 			});
 
 			// this shows a message when the phone number input field has been clicked
 			$('#phoneTarget').click(function() {
-				$('#hide2').css('display', 'block');
+				$('#hide4').css('display', 'block');
 			});
 
 			// input mask for phone number format
@@ -295,6 +343,8 @@
 			}, "Please specify the two-digit code for a US state");
 
 			validator.form();
+
+			showWonBids(endtime);
 
 		</script>
 	</body>

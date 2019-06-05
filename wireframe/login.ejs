@@ -21,7 +21,7 @@
   </head>
 
 	<div class="container-fluid mini-nav">
-		  <h3 class="mini-header brand-login text-center">Welcome to elizabid - Valley Medical Center Foundation's Silent Auction Application!</h3>
+		  <h3 class="mini-header brand-login text-center">Welcome to elizabid</h3>
 	</div>  
 
 	<body class="login-body">
@@ -46,10 +46,8 @@
 							</form>
 							<div class="question">
 								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help logging in?</a><br>
-								<!--<a href="http://dv1.elizabid.com/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://dv1.elizabid.com/users/register">Don't have an account?</a> -->
-								<a href="http://localhost:8000/clerk/login">Volunteering as an auction clerk?</a><br>
-								<a href="http://localhost:8000/users/register">Don't have an account?</a>
+								<a href="/clerk/login">Volunteering as an auction clerk?</a><br>
+								<a href="/users/register">Don't have an account?</a>
 							</div>
 						</div>
 					</div>
@@ -64,21 +62,22 @@
 				event.preventDefault();
 				$.ajax({
 					type: "POST",
-
-					url: 'http://localhost:8000/users/checklogin',
-					// url: 'http://dv1.elizabid.com/users/checklogin',
-
+					url: '/users/checklogin',
 					data: {"userName":$('#userName').val(), "password":$('#password').val()},
 					success: function(data){
 						console.log('data = ',data)
 						if(data.match == false){
-							alert('username and password do not match')
+							alert('Username and password do not match')
 						} else {
-							if (data.admin == 2){
+							if (!$('#userName').val()) {
+								alert('Please enter a username');
+							}
+							else if (data.admin == 2){
 								window.location.replace('/auctions/main')
 							}
 							else{
-								window.location.replace('/' + data.auction + '/packages')
+								// window.location.replace('/' + data.auction + '/packages')
+								window.location.replace('/' + data.auction + '/supporter/' + data.userId)
 							}
 						}
 					console.log('inside last ajax line');

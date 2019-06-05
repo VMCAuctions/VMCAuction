@@ -44,12 +44,13 @@
 							<p class="star">The fields marked with (*) are mandatory.</p>
 							<form class="reg-form" id="registrationForm" method = "POST" action="/users/create">
 								<div class="form-group">
-										<label for="auctionName">Select Auction</label>
+										<!-- <label for="auctionName">Select Auction</label>
 										<select class="form-control" name="auctionName" id="auctionName">
 											<% for (a in auctions) {%>
 												<option value="<%=auctions[a]._id%>"><%=auctions[a].name%></option>
 											<% } %>
-										</select>
+										</select> -->
+										<input type="hidden" name="auctionName" id="auctionName" class="form-control" value="<%=auctions[0]._id%>">
               					</div>
 								<div class="form-row">
 									<div class="form-group col-md-6">
@@ -93,7 +94,7 @@
 								    <input type="email" name="email" id="email" class="form-control">
 								</div> -->
 								
-								<div class="form-row">	
+								<!-- <div class="form-row">	
 									<div class="form-group col-md-6">
 										<label for="password">Password*</label>
 										<input type="password" name="password" id="password" class="form-control">
@@ -103,7 +104,7 @@
 										<input type="password" name="confirm" id="confirm" class="form-control" >
 									</div>
 									
-								</div>
+								</div> -->
 								<button type="submit" class="btn regist-btn btn-lg">Submit</button>
 							</form>
 							<div class="question">

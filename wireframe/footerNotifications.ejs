@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/css/footer.css" />
+
+<div class="footerNotifications">
+  <p id="notificationStack"  class="text-truncate mt-1"></p>
+</div>
+
+<script>
+  // Updates packageShow page with bid price
+  var socket = io.connect();
+
+  function hideFunction(packageId) {
+    console.log("Hide Function", packageId);
+    var x = document.getElementById("notification-" + packageId);
+    x.style.display = "none";
+  }
+	
+  $(document).ready(function() {
+
+    socket.on(
+      "outBidNotification-<%= user.firstName +' '+ user.lastName %>",
+      function(data) {
+		    $(".footerNotifications").css("visibility","visible");
+        // console.log("Package Bids Array Length", data.package.bids);
+        $(
+          "<p class='text-truncate' id='notification-" +
+          data.package._id +
+          "'>You've been outbid by <strong>" +
+          data.package.bids[data.package.bids.length - 1].name +
+          "</strong> for <strong> " +
+          data.package.name +
+          "</strong><br><a class='bid-notifications' href='/" +
+          data.package._auctions +
+          "/packages/" +
+          data.package._id +
+          "'>Bid Now</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class='bid-notifications' href onclick='hideFunction(" +
+          data.package._id +
+          ")'>Dismiss</a></p>"
+        ).insertAfter("#notificationStack").fadeIn().delay(10000).fadeOut();
+      }
+
+
+
+    );
+  });
+</script>

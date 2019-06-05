@@ -18,7 +18,19 @@ h2.supporter-view {
 }
 
 .pkg-card {
-	height: 21rem;
+	height: 20rem;
+	background-color: #f8f9fa !important;
+	border:solid 1px #f0f2f4 !important;  
+	box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
+	position: relative;
+	text-overflow: hidden;  
+	font-size: 0.8rem; 
+}
+
+.pkg-card-event {
+	height: 24rem;
 	background-color: #f8f9fa !important;
 	border:solid 1px #f0f2f4 !important;  
 	box-shadow: 2px 2px 5px rgba(0,0, 0, .4);
@@ -33,10 +45,15 @@ h2.supporter-view {
 	height: 6rem; 
 }
 
+.card-middle {
+	height: 5rem; 
+}
+
 .pkg-img {
 	width: 120px;
 	height: 90px; 
 	display: block; 
+	margin: 0px; 
 }
 
 .pkg-num {
@@ -114,6 +131,10 @@ h2.supporter-view {
 	 font-weight: 300; 
 }
 
+ul {
+	margin-bottom: 0px !important;
+}
+
 .value {
 	font-weight: 700; 
 	/* color: #00184c;  */
@@ -160,21 +181,17 @@ ul {
 	color: #f8f9fa;
 	border: none;
 	height: 40px; 
-	width: 200px;
-	font-size: 0.75rem; 
-	display: block;
-	margin: 0 auto; 
+	width: 186px;
+	font-size: 0.95rem; 
 } 
 
 .btn-remove-watchlist {
-	background-color: #a6a6a6; 
+	background-color: #b3b3b3; 
 	color: #f8f9fa;
 	border: none;
 	height: 40px;
-	width: 200px;
+	width: 186px;
 	font-size: 0.95rem !important; 
-	display: block;
-	margin: 0 auto; 
 } 
 
 .form-control.btn-no-bids {
@@ -188,9 +205,9 @@ ul {
 .btn-bid {
 	color: #fff;
 	font-size: 0.95rem !important; 
-	background-color: #ff2719;
+	background-color: #bacc14;
 	height: 40px; 
-	width: 100px;
+	width: 90px;
 	border-radius: 5px !important; 
 }
 
@@ -199,7 +216,7 @@ ul {
 }
 
 .btn-remove-watchlist:hover {
-	background-color: #737373; 
+	background-color: #808080; 
 }
 
 .form-control.btn-no-bids:hover {
@@ -211,7 +228,7 @@ ul {
 }
 
 .btn-bid:hover {
-	background-color: #c30000;
+	background-color: #bacc14;
 }	
 
 /* .cardHover:hover{

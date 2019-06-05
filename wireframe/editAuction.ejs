@@ -73,10 +73,42 @@
 				<div class="form-group">
 					<label for="description" class="label-name">Description</label>
 					<textarea name="description" id="description" value="<%= auctionDetails.headerImage %>" class="form-control" rows="5"><%= auctionDetails.description %></textarea>
-				</div>
+        </div>
+        
+        <!-- Picture Upload -->
+        <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="label-name">Event Page Image (recommended size: 2000 x 1200 pixels)</label>
+              <fieldset class="item-list">
+                <div class="form-group ml-3">
+                  <label class="label-name">
+                    Current Image:  <%= auctionDetails.headerImage%>
+                  </label>
+                </div>
+                <div class="col-1 form-group">
+                  <img class="thumbnail" src="/<%= auctionDetails.headerImage%>" />
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-7 col-md-6 col-lg-12">
+              <div class="form-group">
+                <label for="file" class="sr-only">File</label>
+                <div class="input-group">
+                  <span class="input-group-prepend">
+                    <div class="btn btn-upload custom-file-uploader">
+                      <input type="file" name="auctionImage" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                      Upload New Image
+                    </div>
+                  </span>
+                  <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
 
-				<!-- <div class="form-row"> -->
-					<div class="form-group col-md-12">
+				<!-- <div class="form-group col-md-12">
 
 					<label class="label-name">Event Page Image</label>
 					<fieldset class="item-list">
@@ -90,8 +122,8 @@
 							<input type="file" name="auctionImage" id="auctionImage" class="form-control">
 						</div>
 					</fieldset>
-				</div>
-				<!-- </div> -->
+				</div> -->
+
 
 				<!-- <div class="form-group">
 					<label for="auctionImage" class="label-name text-black-50">Event Page Image</label>

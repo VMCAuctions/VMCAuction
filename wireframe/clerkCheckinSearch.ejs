@@ -1,0 +1,107 @@
+<div class="text-center" id="supporter-search">
+        <!-- Find supporters by last name -->
+        <div id="search-lastname">
+            <label for "lastname" class="label-search">Search by Name or Email</label>
+            <input class="form-control" type="search" id="lastname" placeholder="Name or Email">      
+        </div>        
+</div>
+<div class="container">
+    <div id="supportertable">
+        <h3>Supporters</h3>
+        <table class="table table-striped table-bordered package-table">
+            <thead>
+                <tr>
+                    <th scope="col">Full Name</th>
+                    <!-- <th scope="col">Last Name</th> -->
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Table #</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="carts">
+                <% for (var u in users) {%>
+                    <tr class="supporterRow">
+                        <td>
+                            <button id="<%=users[u]._id%>" class="btn btn-link updateBtn"><%=users[u].firstName%> <%=users[u].lastName%></button>
+                        </td>
+                        <td>
+                            <%=users[u].userName%>
+                        </td>
+                        <td class="phone-<%=users[u]._id%>">
+                            <%=users[u].phone%>
+                        </td>
+                        <td>
+                            <%=users[u].table%>
+                        </td>  
+                        <td>
+                
+                            <button type="button" class="sendLinkButton btn btn-sm btn-add" id="<%=users[u]._id%>" alt="<%=users[u].phone%>" >Send Auction link</button>
+                        </td>               
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    <div class="card regist-card mb-4" id="user-info">
+
+    </div>
+</div>
+<script>
+	$(document).ready(function(){
+		$("#supportertable").hide();
+		$("#lastname").on("keyup", function () {
+			var value = $(this).val().toLowerCase();
+			if (value == '') {
+				$("#supportertable").hide();
+			} else {
+				$("#supportertable").show();
+				$(".supporterRow").filter(function () {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+			});
+			};
+        });
+        
+        //for clerk check-in function - allow clerks to update user's info
+        $('#user-info').hide();
+        $('.updateBtn').click(function(){
+            var userID = (this.id)
+            $('#user-info').load('/'+userID+'/clerkUserUpdate')
+            $('#user-info').show();
+		});
+
+        //this is the function to send link to supporter through text
+        //this button is in the table under action
+		$(".sendLinkButton").click(function(e){
+            e.preventDefault();
+			var userID = (this.id);
+            var auctionID = '<%=auction._id%>';   
+            //this is an alt attribute where the value is each supporter's phone number 
+            var phone = $(this).attr('alt')
+            var phoneStub=''
+            //to remove dashes if any
+            for(var i=0;i<phone.length; i++){
+                var code = phone.charCodeAt(i);
+                //48 is 0, to 57 which is 9
+                if(code>=48 &&code <=57){
+                    phoneStub+=String.fromCharCode(code);
+                }
+            }
+           
+           $.ajax({
+                type:"POST",
+                url:'/users/sendSMS',
+                data:{'phone':phoneStub, 'auction':auctionID, 'userId':userID},
+                success:function(){
+                    alert("A message has been sent to "+phone+".")
+                }
+           })
+            
+		});
+
+		
+		
+
+
+    })
+</script>

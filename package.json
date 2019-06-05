@@ -19,6 +19,7 @@
     "ejs": "^2.5.6",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
+    "html2canvas": "^1.0.0-rc.1",
     "http": "0.0.0",
     "jquery-validation": "^1.19.0",
     "jsdom-global": "^3.0.2",
@@ -28,7 +29,9 @@
     "mongoose-auto-increment": "^5.0.1",
     "multer": "^1.4.1",
     "pdfmake": "^0.1.40",
-    "socket.io": "^2.2.0"
+    "simple-node-logger": "^18.12.22",
+    "socket.io": "^2.2.0",
+    "twilio": "^3.30.2"
   },
   "devDependencies": {
     "jsdom": "11.7.0",

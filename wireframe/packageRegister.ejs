@@ -38,10 +38,12 @@
 </head>
 
 <body>
-    <%if(admin){%>
+	<%if(admin == 2){%>
         <%- include('adminHeader') -%>
-    <%}else{%>
-        <%- include('header') -%>
+    <%}else if (admin == 1) {%>
+		<%- include('clerkHeader') -%>
+	<%}else  {%>
+		<%- include('header') -%>
     <%}%>
 
     <div class="container-fluid">
@@ -97,7 +99,7 @@
                     <tr class="text-center">
                         <th scope="col" class="narrow-col">Package Number</th>
                         <th scope="col" class="medium-col">Package Name</th>
-						<th scope="col" class="narrow-col">Image</th>
+                        <th scope="col" class="narrow-col">Image</th>
                         <th scope="col" class="med-to-narrow-col">Category</th>
                         <th scope="col" class="large-col">Package Description</th>
                         <th scope="col" class="medium-col">Package Restrictions</th>
@@ -109,9 +111,9 @@
                         <th scope="col" class="narrow-col">Featured</th>
                         <th scope="col" class="narrow-col">Priority</th>
                         <% if (admin == 2) { %>
-                            <!-- <th class="actions" scope="col" class="large-col" >Actions</th> -->
-                            <th class="actions narrow-col" scope="col">Actions</th>
+                            <th scope="col" class="actions medium-col" >Actions</th>
                         <% } %>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -184,7 +186,7 @@
 			// 	"dom": '<lip<t>ip>',
 			// 	"searching": false,
 			// 	"order": [[ 0, "asc" ]],
-			// 	"pageLength": 5,
+			// 	"pageLength": 25,
 			// 	"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
 			// 	"pagingType": "full_numbers",
 			// 	"columnDefs": [
@@ -192,7 +194,9 @@
 			// 		{ "orderable": false, "targets": 4 },
 			// 		{ "orderable": false, "targets": 5 },
 			// 		{ "orderable": false, "targets": 6 },
+			// 		{ "orderable": false, "targets": 11 },
 			// 		{ "orderable": false, "targets": 12 },
+			// 		{ "orderable": false, "targets": 13 },
 			// 	]
 				
 			// });
@@ -224,8 +228,7 @@
               priority = $('#' + id + "Priority").val()
               console.log("enteredConfirmChanges ajax call");
 			  // 1-17 Bug Fix List Item 6 Insert deployed URL so 'Save Changes' button works on deployed version
-              $.get(`http://localhost:8000/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
-            //   $.get(`http://dv1.elizabid.com/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+              $.get(`/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
                 alert(message);
               });
             });

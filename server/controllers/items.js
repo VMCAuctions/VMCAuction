@@ -66,7 +66,7 @@ function ItemsController() {
 						}
 					})
 				} else {
-					res.redirect('/' + req.params.auctions + '/event')
+					res.redirect('/users/adminError');
 				}
 			}
 		})
@@ -137,7 +137,7 @@ function ItemsController() {
 							}
 						})
 					} else {
-						res.redirect('/' + req.params.auctions + '/event')
+						res.redirect('/users/adminError');
 					}
 				})
 			}
@@ -192,11 +192,14 @@ function ItemsController() {
 					});
 				}
 			});
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
 
 	this.removeItem = function (req, res) {
+		console.log("600 items.js this.removeItem.  req.params = ",req.params)
 		if (globals.adminValidation(req, res)) {
 			var val
 			var pack
@@ -204,14 +207,16 @@ function ItemsController() {
 				if (err) {
 					console.error();
 				} else {
+					console.log("602 items.js this.removeItem.  item = ",item)
 					val = item.value;
 					pack = item._package;
 					Item.remove({ _id: req.params.id }, function (err, result) {
 						if (err) {
 							console.log(err)
 						} else {
-							console.log(pack);
-							console.log(val);
+							console.log("604 items.js this.removeItem.  result = ",result)
+							// console.log(pack);
+							// console.log(val);
 							Package.findById(pack, function (err, package) {
 								if (err) {
 									console.error();
@@ -223,20 +228,25 @@ function ItemsController() {
 											console.error();
 										}
 									})
-									if (package.value === 0) {
-										package.remove(package, function (err, result) {
-											if (err) {
-												console.error();
-											}
-											else {
-												Auction.removeById(item._auctions, function (err, auction) {
-													if (err) {
-														console.log(err)
-													}
-												})
-											}
-										})
-									}
+									Auction.removeById(item._auctions, function (err, auction) {
+										if (err) {
+											console.log(err)
+										}
+									})
+									// if (package.value === 0) {
+									// 	package.remove(package, function (err, result) {
+									// 		if (err) {
+									// 			console.error();
+									// 		}
+									// 		else {
+									// 			Auction.removeById(item._auctions, function (err, auction) {
+									// 				if (err) {
+									// 					console.log(err)
+									// 				}
+									// 			})
+									// 		}
+									// 	})
+									// }
 								}
 							})
 							res.redirect('/' + req.params.auctions + '/items')
@@ -244,6 +254,8 @@ function ItemsController() {
 					})
 				}
 			})
+		} else {
+			res.redirect('/users/adminError');
 		}
 	}
 
@@ -281,8 +293,10 @@ function ItemsController() {
 
 		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
 		// const csvFilePath="2019 Gala Auction Item Tracker.csv"
-		// const csvFilePath=("C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/" + req.body.csvUpload);
-		const csvFilePath = ("C:/Users/Daniel Lam/Desktop/VMC/VMCAuction/public/");
+
+		const csvFilePath=("C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/" + req.body.csvUpload);
+		// const csvFilePath = ("C:/Users/Daniel Lam/Desktop/VMC/VMCAuction/public/");
+
 
 		// console.log("402 items.js this.populate.  csvFilePath = ",csvFilePath)
 
@@ -440,23 +454,20 @@ function ItemsController() {
 
 	this.itemsCsv = function (req, res) {
 		//May need to add validation checks so that only admins can see
-		console.log("400 items.js this.itemsCsv start")
-		console.log("401 items.js this.itemsCsv.  req.body = ", req.body)
-		console.log("401 items.js this.itemsCsv.  req.body.csvFileName = ", req.body.csvFileName)
-		console.log("401 items.js this.itemsCsv.  req.session = ", req.session)
-		console.log("401 items.js this.itemsCsv.  req.params = ", req.params)
+		// console.log("400 items.js this.itemsCsv start")
+		// console.log("401 items.js this.itemsCsv.  req.body = ", req.body)
+		// console.log("401 items.js this.itemsCsv.  req.body.csvFileName = ", req.body.csvFileName)
+		// console.log("401 items.js this.itemsCsv.  req.session = ", req.session)
+		// console.log("401 items.js this.itemsCsv.  req.params = ", req.params)
 
 
 		//NOTE: The below should probably be changed to use any file the organizer specifies in the system, probably by using a file upload module, and then ask for that specification on the populate page
 		// const csvFilePath="2019 Gala Auction Item Tracker.csv"
 
-		// NOTE: MUST CHANGE path VARIABLE TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
-		// const path = "C:/AA_local_Code/MEAN/aa_vmc/VMCAuction/public/";
-		const path = "C:/Users/Daniel Lam/Desktop/VMC/VMCAuction/public/";
-
+		const path = "./public/";
 		const csvFilePath = (path + req.body.csvFileName);
 
-		console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
+		// console.log("402 items.js this.itemsCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
 			.fromFile(csvFilePath)
@@ -499,10 +510,10 @@ function ItemsController() {
 
 						}, function (err, item) {
 							if (err) {
-								console.log("406 items.js this.itemsCsv Item.create fail.  err = ", err)
+								// console.log("406 items.js this.itemsCsv Item.create fail.  err = ", err)
 
 							} else {
-								console.log("407 items.js this.itemsCsv Item.create success.  item = ", item)
+								// console.log("407 items.js this.itemsCsv Item.create success.  item = ", item)
 							}
 						});
 					}

@@ -8,6 +8,14 @@ var mongoose = require("mongoose"),
   globals = require("../controllers/globals.js");
   var dateFormat = require('dateformat');
 
+const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
+    opts = {
+        logFilePath:'./public/vmcLogFile.log',
+        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
+    },
+fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+
+
 function AuctionsController() {
   this.index = function(req, res) {
     //Runs user.adminValidation function, which returns false and redirects to the package page if the user does not have organizer status; otherwise, they are an organizer, so they should use the code below to reach the auction create page
@@ -16,15 +24,22 @@ function AuctionsController() {
         admin: req.session.admin,
         userName: req.session.userName
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
+
   //organizer landing page
   this.main = function(req, res) {
+	fileLog.info("000 auctions.js this.main start. req.session = ", JSON.stringify(req.session, null, 2));
+	fileLog.info("001 auctions.js this.main start. req.params = ", JSON.stringify(req.params, null, 2));
     if (globals.adminValidation(req, res)) {
       Auction.find({}, function(err, auctions) {
         if (err) {
           console.log(err);
+          fileLog.info("002 auctions.js this.main Auction.find.  err = ", JSON.stringify(err, null, 2));
         } else {
+          fileLog.info("002 auctions.js this.main Auction.find.  auctions = ", JSON.stringify(auctions, null, 2));
           //for now the archivd auctions are hard code.
           //later make an if statemtn hat checks if auction is in past
           //based on clock and todays Date
@@ -33,8 +48,10 @@ function AuctionsController() {
           User.findOne({ userName: req.session.userName }, function(err, user) {
             if (err) {
               console.log(err);
+              fileLog.info("003 auctions.js this.main User.findOne.  err = ", JSON.stringify(err, null, 2));
             } else {
-              console.log("user is", user);
+              console.log("000 auctions.js this.main.  user = ", user);
+              fileLog.info("004 auctions.js this.main User.findOne.  user = ", JSON.stringify(user, null, 2));
               res.render("main", {
                 user: user,
                 auctions: auctions,
@@ -49,11 +66,9 @@ function AuctionsController() {
         }
       });
     } else {
-      res.redirect("/" + req.session.auction + "/event");
+      res.redirect('/users/adminError');
     }
   };
-
-
 
 	this.create = function(req, res) {
 		// console.log(Date.now()," - 200 auctions.js this.create.  req.body = ",req.body);
@@ -105,7 +120,9 @@ function AuctionsController() {
 					});
 				}
 			});
-		}
+		} else {
+      res.redirect('/users/adminError');
+    }
 	};
 
 
@@ -129,6 +146,8 @@ function AuctionsController() {
           });
         }
       });
+    } else {
+      res.redirect('/users/adminError');
     }
   };
 
@@ -227,7 +246,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			// console.log('230 auctions.js this.event Package.find packages = ',packages);
+
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
@@ -247,7 +266,7 @@ function AuctionsController() {
 
 
   this.clerk = function(req, res) {
-    console.log(Date.now()," - 230 auctions.js this.clerk  Clerk landing page start");
+    // console.log('230 auctions.js this.clerk start.  req.params = ',req.params);
     var items = [];
     if (globals.clerkValidation(req, res)) {
       var cart = {};
@@ -289,12 +308,12 @@ function AuctionsController() {
                   };
                 }
                 //Current is a flag showing which page is active
-                Auction.findById({_id:req.params.auctions}, function(err, auction){
+                Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
                   if (err){
                     console.log(err);
 
                   } else{
-                    console.log('100 auctions.js this.clerk auctionfindById. auction = ', auction);  
+                    // console.log('235 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
                     res.render("clerkDash", {
                       current: "Clerk Dashboard",
                       users: users,
@@ -303,7 +322,8 @@ function AuctionsController() {
                       items: items,
                       userName: req.session.userName,
                       admin: req.session.admin,
-                      auction: auction
+                      auctionDetails: auctionDetails,
+              		  auction: req.params.auctions,
                     });
                   }
                 });
@@ -311,7 +331,7 @@ function AuctionsController() {
               }
             });
         } else {
-          res.redirect("/" + req.params.auctions + "/event");
+          rres.redirect('/users/clerkError');
         }
       });
     }
@@ -337,6 +357,7 @@ function AuctionsController() {
       }
     });
   };
+
 
 	this.admin = function(req, res) {
 		console.log('500 auctions.js this.admin start.  set req.session auction and admin = 2');
@@ -368,5 +389,177 @@ function AuctionsController() {
 	};
 
 }
+=
 
+  //Clerk registering new supporter
+  this.clerkRegSup = function(req,res){
+    //this page can only be accessed if clerk checked in as
+    if(req.session.admin === 1){
+      Auction.findById(req.params.auctions, function(err, auction){
+        if(err){
+          console.log(err);
+        }else{
+          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction})
+        }
+      })
+    }else{
+      res.redirect('/users/clerkError');
+    }
+  };
+
+  this.clerkRegSupCreate = function(req,res){
+    Auction.findById(req.params.auctions, function(err, auction){
+      if(err){
+        console.log(err)
+      }else{
+        User.findOne({userName: req.body.userName}, function (err, user){
+          if(user){
+            // res.redirect('/'+req.params.auctions+'/clerk/register-supporter');
+            res.redirect('/'+req.params.auctions+'/clerkDash');
+          }else{
+            User.create({
+              userName: req.body.userName,
+              firstName: req.body.firstName,
+              lastName: req.body.lastName,
+              phone: req.body.phoneNumber,
+              streetAddress: req.body.streetAddress,
+              city: req.body.city,
+              states: req.body.states,
+              zip: req.body.zip,
+              _auctions: auction,
+              admin: 0,
+              table: req.body.table,
+              tableOwner: req.body.tableOwner,
+              tableOwnerName: req.body.tableOwnerName,
+              userOrg: req.body.userOrg
+            })
+            res.redirect("/"+req.params.auctions+"/clerkDash")
+          }
+        })
+      }
+    })
+  };
+
+  this.clerkcheckin = function(req, res) {
+    Auction.findById(req.params.auctions, function(err, auction){
+      if(err){
+        console.log(err)
+      }else{
+        User.find({_auctions: req.params.auctions}, function(err, users){
+          if(err){
+            console.log(err)
+          }else{
+            req.session.auctionID = auction._id
+            res.render("clerkCheckinSearch", {
+              auction: auction,
+              users : users
+            });
+          }
+        })
+      }
+    })
+  };
+
+  this.clerkUserCheckIn = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        auctionID = req.session.auctionID
+        res.render('clerkCheckinUpdate', {user: user, auctionID : auctionID})
+      }
+    })
+  }
+
+  this.clerkUserUpdate = function(req, res){
+    User.findById(req.params.user, function(err, user){
+      if(err){
+        console.log(err)
+      }else{
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.phone = req.body.phone;
+        user.userName = req.body.userName;
+        user.streetAddress = req.body.address;
+        user.city = req.body.city;
+        user.states = req.body.states;
+        user.zip = req.body.zip;
+        user.save()
+        res.redirect('/')
+      }
+    })
+  }
+
+
+  this.clerkcheckout = function(req, res){
+    // console.log("230 auctions.js this.clerk start.  req.body = ",req.body);
+		// console.log("231 auctions.js this.clerk start.  req.params = ",req.params);
+		// console.log("232 auctions.js this.clerk start.  req.session = ",req.session);
+		var items = [];
+		if (globals.clerkValidation(req, res)) {
+		  var cart = {};
+		  User.find({ _auctions: req.params.auctions }, function(err, users) {
+			if (err) {
+			  console.log(err);
+			} else if (req.session.admin) {
+			  Package.find({ _auctions: req.params.auctions })
+				.populate("_items")
+				.sort({ _category: "ascending" })
+				.sort({ priority: "ascending" })
+				.sort({ _id: "descending" })
+				.exec(function(err, packages) {
+					if (err) {
+					console.log(err);
+					} else {
+						// console.log("234 auctions.js this.clerk Package.find.  packages = ",JSON.stringify(packages, null, 2));
+						for (var x = 0; x < users.length; x++) {
+							var packagesArr = [];
+							var total = 0;
+							for (var y = 0; y < packages.length; y++) {
+								//Not sure if we need this "if" statement for bids.length > 0; needs testing
+								if (packages[y].bids.length > 0){
+									if (packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName.charAt(0)+'. '+users[x].lastName || packages[y].bids[packages[y].bids.length - 1].name === users[x].firstName+' '+users[x].lastName) {
+										packagesArr.push(packages[y]);
+										items.push.apply(items,packages[y]._items);
+										total += packages[y].bids[packages[y].bids.length - 1].bidAmount;
+									}
+								}
+							}
+							cart[users[x].userName] = {
+								packages: packagesArr,
+								items: items,
+								total: total
+							};
+						}
+						//Current is a flag showing which page is active
+						Auction.findById({_id:req.params.auctions}, function(err, auctionDetails){
+							if (err){
+								console.log(err);
+							} else{
+								console.log('236 auctions.js this.clerk auctionfindById. auctionDetails = ', auctionDetails);  
+								// console.log('237 auctions.js this.clerk auctionfindById. cart = ', JSON.stringify(cart, null, 2));  
+								res.render("clerkCheckoutSearch", {
+									current: "Clerk Dashboard",
+									users: users,
+									cart: cart,
+									packages: packages,
+									items: items,
+									userName: req.session.userName,
+									admin: req.session.admin,
+									auctionDetails: auctionDetails,
+									auction: req.params.auctions
+								});
+							}
+						});
+					}
+				});
+			} else {
+				res.redirect("/" + req.params.auctions + "/event");
+			}
+		});
+		}
+  }
+
+  
+} //enclosing bracket
 module.exports = new AuctionsController();

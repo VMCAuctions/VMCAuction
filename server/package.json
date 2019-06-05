@@ -27,7 +27,8 @@
     "mongoose": "^4.10.8",
     "mongoose-auto-increment": "^5.0.1",
     "pdfmake": "^0.1.38",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4", 
+    "twilio": "^3.30.2"
   },
   "devDependencies": {
     "jsdom": "11.7.0",

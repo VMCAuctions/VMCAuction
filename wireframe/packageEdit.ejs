@@ -167,25 +167,42 @@
         <!-- Picture Upload -->
         <div class="form-row">
           <div class="form-group col-md-12">
-            <label class="label-name">Package Image</label>
+            <label class="label-name">Package Image (best to use images with the 4:3 ratio, as the displayed image will be 120 x 90 pixels)</label>
             <fieldset class="item-list">
-              <div class="form-group">
+              <div class="form-group ml-3">
                 <label class="label-name">
-                  Current Photo: <%= package.photo%></label
+                  Current Image: <%= package.photo%></label
                 >
               </div>
               <div class="col-1 form-group">
-                <img class="thumbnail ml-3" src="/<%= package.photo%>" alt="" />
+                <img class="thumbnail" src="/<%= package.photo%>" alt="package-image" />
               </div>
-              <div class="col-11 form-group">
+              <!-- <div class="col-11 form-group upload-btn-wrapper">
+                <button class="btn btn-add">Choose File</button>
                 <input
                   type="file"
                   name="packageImage"
                   id="packageImage"
                   class="form-control"
                 />
-              </div>
+              </div> -->
             </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-7 col-md-6 col-lg-12">
+            <div class="form-group">
+              <label for="file" class="sr-only">File</label>
+              <div class="input-group">
+                <span class="input-group-prepend">
+                  <div class="btn btn-upload custom-file-uploader">
+                    <input type="file" name="packageImage" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                    Upload New Image
+                  </div>
+                </span>
+                <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -366,8 +383,9 @@
          
                 pkgDesc = pkgDesc + (items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n");
                 pkgRest = pkgRest + (items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n");
+
                 donorList = donorList + (items[i].donorDisplay + ", ");
-  
+
                 checkedItems[items[i]._id]= 1;
               }
               else if((checkbox.checked === false) && (checkedItems.hasOwnProperty(items[i]._id) === true)){
@@ -375,6 +393,7 @@
 
               }
             }
+            donorList = donorList.replace(/,\s*$/, "");
             $('#packageDescription').val(pkgDesc);
             $('#packageRestrictions').val(pkgRest);
             $('#donors').val(donorList);

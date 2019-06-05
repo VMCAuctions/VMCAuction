@@ -92,7 +92,7 @@
         event.preventDefault();
         $.ajax({
           type: "POST",
-          url: 'http://localhost:8000/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
+          url: '/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
           "itemDonorFirstColumn":$('#donorFirst').val(),
           "itemDonorLastColumn":$('#donorLast').val(),
           "itemDonorOrgColumn":$('#donorOrg').val(),

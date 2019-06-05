@@ -1,6 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500, 700,900');
-@import url('https://fonts.googleapis.com/css?family=Kameron:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Kameron:300,300i,400,400i,500,700');
 
 /* Border box fix
 -------------------------------------------------------------- */
@@ -91,6 +91,10 @@ a:hover {
 	top: 40%;  
 }
 
+h3.mini-header {
+	font-size: 1.5rem; 
+}
+
 /* Common Styles Forms
 -------------------------------------------------------------- */
 .label-name {
@@ -105,7 +109,7 @@ a:hover {
 }
 
 input[type=text], input[type=email], input[type=date], input[type=time], 
-input[type=number], input[type=search], input[type=password], 
+input[type=number], input[type=search], input[type=password], input[type=tel], 
 select[name="category"], select[name="donorPrefix"] {
 	font-size: 0.9rem; 
 	color: #808080; 
@@ -265,7 +269,7 @@ label.error {
 }
 
 th {
-  width: 10%;
+  width: 25%;
 }
 
 td {
@@ -284,13 +288,80 @@ th{
 	font-size: 0.9rem; 
 }
 
- /* Bob R. for List of Categories */
-.categories-table-row {
-	height: 40px !important;
-}
-
 /*td a{
   color:black;
   display:inline-block;
   width:100%;
 }*/
+
+/* Manage Categories
+-------------------------------------------------------------- */
+.note {
+	color: #ff6746;
+	font-size: 0.9rem; 
+	font-style: italic;
+	margin-top: 40px; 
+	margin-bottom: 10px; 
+
+}
+
+.new-cat {
+	color: #4567a8;
+	font-size: 1.2rem;
+	font-weight: 700; 
+	margin-top: 40px !important; 
+	margin-bottom: -10px; 
+}
+
+#cat-table  td {
+	height: 40px !important; 
+	padding-left: 15px; 
+}
+
+#cat-table th.cat-name {
+	width: 75%;
+	padding: 15px;
+}
+
+#cat-table th.cat-action {
+	width: 25%;
+	padding: 15px;
+}
+
+/* Error Pages
+-------------------------------------------------------------- */ 
+.err-body {
+	background-color: #f8f9fa; 
+}
+
+.container-err {
+	margin-top: 20vh; 
+}
+
+.err-page {
+	display: block;
+	margin: 5rem auto 0rem auto; 
+}
+
+.err-img {
+	width: 300px; 
+	display: block;
+	margin: 0 auto; 
+}
+
+.err-text {
+	font-size: 1.3rem; 
+	font-weight: 300; 
+}
+
+.err-text-supp {
+	font-size: 1.1rem; 
+	font-weight: 300; 
+}
+
+.err-text-italic {
+	font-size: 1.1rem; 
+	font-weight: 300; 
+	font-style: italic;
+}
+

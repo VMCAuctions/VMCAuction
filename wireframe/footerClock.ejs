@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/css/footer.css"> 
 
 <div class="footer">
-	<span>Time left:</span>
-	<p class="timer" data-endClock="<%= auctionDetails.endClock %>"></p>
+
+	<p> Time Left: <br>
+	<span class="timer" data-endClock="<%= auctionDetails.endClock %>"></span></p>
 </div>
 
 <script>
@@ -46,7 +47,7 @@
 							<span>${("" + minutes).slice(-2)}</span> minutes
 							`
 						}
-						if (minutes < 3) {
+						if (minutes < 5) {
 							desktopClock.innerHTML = `
 								<span>${("" + minutes).slice(-2)}</span> minutes,
 								<span>${("" + seconds).slice(-2)}</span> seconds
@@ -80,8 +81,8 @@
 
 				desktopClock.style.color = '#c30000';
 				desktopClock.style.fontWeight = 'bold';
-				desktopClock.innerHTML = 'Auction has ended';
-				document.getElementsByTagName('span')[0].style.display = 'none';
+				desktopClock.innerHTML = 'AUCTION HAS ENDED!';
+				// document.getElementsByTagName('span')[0].style.display = 'none';
 			}
 		}
 	}

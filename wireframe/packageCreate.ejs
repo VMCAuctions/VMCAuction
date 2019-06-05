@@ -15,7 +15,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
   </head>
   <body>
     <%if(admin){%>
@@ -65,8 +66,27 @@
               </select>
             </div>
           </div>
-        <!-- Row 2 -->
+          <!-- Row 3 -->
+          <div class="row">
+            <div class="col-sm-7 col-md-6 col-lg-12">
+              <label for="packageImage" class="label-name">Package Image (best to use images with the 4:3 ratio, as the displayed image will be 120 x 90 pixels)  </label>
+              <div class="form-group">
+                <label for="file" class="sr-only">File</label>
+                <div class="input-group">
+                  <span class="input-group-prepend">
+                    <div class="btn btn-upload custom-file-uploader">
+                      <input type="file" name="packageImage" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                      Choose File
+                    </div>
+                  </span>
+                  <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- Row 4 -->
         <div class="form-group row">
+
           <div class="col-4">
             <label for="totalValue" class="label-name">Total Value</label>
             <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
@@ -82,27 +102,26 @@
             <input type="number" name="increments" id="increments" class="form-control">
           </div>
       </div>
-      <!-- Row 3 -->
+      <!-- Row 5 -->
       <div class="form-row">
         <div class="form-group col-12">
           <label for="name" class="label-name">Donors</label>
           <input type="text" name="donors" id="donors" class="form-control" value="">
         </div>
       </div>
-      <!-- Row 4 -->
-      <div class="form-group">
+      <!-- Row 6 -->
+      <div class="form-row">
+        <div class="form-group col-12">
           <label for="packageDescription" class="label-name">Package Description*</label>
           <textarea class="form-control" name="packageDescription" id="packageDescription" rows="5" cols="40"></textarea>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="packageRestrictions" class="label-name">Package Restrictions</label>
-        <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="packageImage" class="label-name text-black-50">Package Image</label>
-        <input type="file" name="packageImage" id="packageImage" class="form-control">
+      <!-- Row 7 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="packageRestrictions" class="label-name">Package Restrictions</label>
+          <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
+        </div>
       </div>
 
       <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
@@ -142,7 +161,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <table class="table table-bordered">
+                      <table id="itemsTable" class="table table-bordered">
                         <thead>
                           <tr>
                             <th class="small-col">Number</th>
@@ -219,7 +238,7 @@
           <!-- End Modal -->
           </form>
       </div><!-- End of page's main container -->
-
+    
     <script>
       $(document).ready(function(){
         $('.show-modal').click(function(){
@@ -227,7 +246,23 @@
             backdrop: 'static',
             keyboard: false
           })
-        })
+		})
+		
+		 // Initializes Data Tables plugin
+	// 	 $('#itemsTable').DataTable({
+	// 		"dom": '<lip<t>ip>',
+	// 		"searching": false,
+	// 		"order": [[ 0, "asc" ]],
+	// 		"pageLength": 25,
+	// 		"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+	// 		"pagingType": "full_numbers",
+	// 		// "columnDefs": [
+	// 		// 	{ "orderable": false, "targets": 5 },
+	// 		// 	{ "orderable": false, "targets": 6 },
+	// 		// 	{ "orderable": false, "targets": 10 },
+	// 		// ]
+		
+	//   });
 
         $("#keyword").on("keyup", function() {
           var value = $(this).val().toLowerCase();
@@ -289,6 +324,7 @@
 
               }
           }
+          donorList = donorList.replace(/,\s*$/, "");
           $('#packageDescription').val(pkgDesc);
           $('#packageRestrictions').val(pkgRest);
           $('#donors').val(donorList);
