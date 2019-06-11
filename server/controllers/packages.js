@@ -520,6 +520,7 @@ function PackagesController() {
 	this.show = function (req, res) {
 		fileLog.info("080 packages.js this.show start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("081 packages.js this.show start. req.params = ", JSON.stringify(req.params, null, 2));
+		console.log("082 packages.js this.show start. req.session = ", req.session);
 		var resultPackages;
 		// This is the method that finds all of the packages from the database and stores them in packages
 		Package.find({ _auctions: req.params.auctions }).populate("_items").exec(function (err, packages) {
@@ -530,7 +531,7 @@ function PackagesController() {
 				var featured = [];
 				var nonfeatured = [];
 				for (var i = 0; i < packages.length; i++) {
-					console.log("082 packages.js this.show.  Package.find.  packages[i].featured = ",packages[i].featured)
+					// console.log("082 packages.js this.show.  Package.find.  packages[i].featured = ",packages[i].featured)
 					fileLog.info("082 packages.js this.show.  Package.find.  packages[i].featured = ",packages[i].featured)
 					if (packages[i].featured === true) {
 						featured.push(packages[i]);
@@ -546,7 +547,7 @@ function PackagesController() {
 				} else {
 					fileLog.info("083 packages.js this.show.  Package.find.  !resultPackages so can't print packages");
 				}
-				console.log("083 packages.js this.show.  Package.find.  resultPackages[0] = ",JSON.stringify(resultPackages[0], null, 2))
+				// console.log("083 packages.js this.show.  Package.find.  resultPackages[0] = ",JSON.stringify(resultPackages[0], null, 2))
 				User.findOne({ userName: req.session.userName }, function (err, user) {
 					if (err) {
 						console.log(err)
@@ -565,7 +566,7 @@ function PackagesController() {
 							}
 							else {
 								fileLog.info("085 packages.js this.show package.findById package = ", JSON.stringify(package,null,2));
-								console.log("085 packages.js this.show package.findById package = ", JSON.stringify(package,null,2));
+								// console.log("085 packages.js this.show package.findById package = ", JSON.stringify(package,null,2));
 								var ourBids = false
 								var lastBid = package.amount
 								if (package.bids.length > 0) {
@@ -573,12 +574,12 @@ function PackagesController() {
 									// lastBid = package.bids[package.bids.length - 1].bidAmount
 									if (package.bids){
 										lastBid = package.bids[package.bids.length - 1].bidAmount
-										console.log("086 packages.js this.show package.findById inside package.bids.  lastBid = ",lastBid);
+										// console.log("086 packages.js this.show package.findById inside package.bids.  lastBid = ",lastBid);
 										fileLog.info("086 packages.js this.show package.findById inside package.bids");
 										fileLog.info("087 lastBid = package.bids[package.bids.length - 1].bidAmount = ",lastBid);
 									} else {
 										lastBid = package.amount;
-										console.log("086 packages.js this.show package.findById inside !package.bids");
+										// console.log("086 packages.js this.show package.findById inside !package.bids");
 										fileLog.info("086 packages.js this.show package.findById inside !package.bids");
 										fileLog.info("087 lastBid = package.amount = ",lastBid);
 									}
@@ -590,7 +591,7 @@ function PackagesController() {
 										fileLog.info("088 packages.js this.show auction.findById auctionDetails = ", JSON.stringify(auctionDetails,null,2));
 										//Gets current position of the package in the resultPackages object
 										fileLog.info("089 packages.js this.show auction.findById resultPackages.length = ",resultPackages.length);
-										console.log("089 packages.js this.show.  Auction.findById.  resultPackages.length = ",resultPackages.length)
+										// console.log("089 packages.js this.show.  Auction.findById.  resultPackages.length = ",resultPackages.length)
 										for( var i = 0; i < resultPackages.length; i++){
 											if(resultPackages[i]._id == package._id){
 												//return index of the found package on pos
@@ -986,6 +987,91 @@ function PackagesController() {
 				}
 			})
 		}
+	}
+
+	// Launches a supporter session without having to log in.  Used by team for including VMC project in resumes
+	// NOT part of delivered app!
+	this.guest = function (req, res) {
+
+		// hard code auction
+		req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
+		// hard code auction - Getting the Shiny Gold
+		// req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
+		// hard code admin = 0
+		req.session.admin = 0;
+		// hard code userName = Guest Guest (fn ln) (in dv1 Fly High Fly Far auction)
+		req.session.userName = "guest@guest.com";
+		// hard code userName = Annabel Andreesen (in Bob's database, not yours!)
+		// req.session.userName = "aaaa@a.com";
+		console.log("601 packages.js this.guest .  req.session = ",req.session);
+
+		Category.find({}, function (err, categories) {
+			if (err) {
+				console.log(err);
+			}
+			else {
+				User.findOne({ userName: req.session.userName }, function (err, user) {
+					console.log("602 packages.js this.index user.findOne.  result = ", user)
+					if (err) {
+						console.log(err)
+					} else {
+						console.log("602 packages.js this.guest User.findOne.  user = ",user);
+						// This is the method that finds all of the packages from the database
+						Package.find({_auctions: req.session.auctions}).populate("_items").sort({_category: 'ascending'}).sort({_id:'ascending'}).exec(function(err, packages) {
+							if(err) {
+								console.log('603 packages.js this.index Package Index Error');
+								res.status(500).send('603 packages.js this.guest Failed to Load Packages');
+								console.error();
+							} else {
+								// console.log('this is user again', user)
+								var featured = [];
+								var nonfeatured = [];
+								for (var i = 0; i < packages.length; i++) {
+									if (packages[i].featured === true) {
+								-		featured.push(packages[i]);
+									}
+									//Not actually using nonfeatured packages right now
+									else {
+
+										nonfeatured.push(packages[i]);
+									}
+								}
+								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page	
+
+								console.log("606 packages.js this.guest pre Auction.findById. req.params = ",req.params);
+								Auction.findById(req.session.auctions, function (err, auctionDetails) {
+									if (err) {
+										console.log('607 packages.js this.guest Package.find.  Auction.findById.  err = ',  err)
+									} else {
+										console.log("607 packages.js this.guest Package.find.  Auction.findById.  auctionDetails = ", auctionDetails);
+										fileLog.info("607 packages.js this.guest Auction.findById.  auctionDetails = ", JSON.stringify(auctionDetails, null, 2));
+
+										var userDisplay = user.firstName.charAt(0).toUpperCase() + "." + " " + user.lastName;
+										//current is a flag showing which page is active
+										res.render('packages', {
+											current: 'catalog',
+											packages: packages,
+											admin: req.session.admin,
+											userName: req.session.userName,
+											user: user,
+
+											userDisplay: userDisplay, 
+											categories: categories,
+											featured: featured,
+											nonfeatured: nonfeatured,
+											auction: req.session.auctions,
+
+											auctionDetails: auctionDetails,
+										})
+									}
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+
 	}
 
 	// supporter text message auction link route day of auction to access app on phone

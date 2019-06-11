@@ -353,9 +353,7 @@ function UsersController(){
 	this.checkLogin = function(req, res){
 		console.log("in check login");
 		var name = req.body.userName;
-		console.log(req.body.userName);
-		console.log(name);
-		console.log(Date.now(),"000 users.js checkLogin.  r.b.userName =");
+		console.log("000 users.js checkLogin.  r.b.userName =",req.body.userName);
 		
 		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
 				if(err){

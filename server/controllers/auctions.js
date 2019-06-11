@@ -358,6 +358,39 @@ function AuctionsController() {
     });
   };
 
+	// hard coded route for project team member resumes - logs in visitor as organizer
+	// this is for dv1.elizabid.com/admin route
+ 	this.admin = function(req, res) {
+		console.log('500 auctions.js this.admin start.  set req.session auction and admin = 2');
+
+		// hard code auction
+		// req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
+		req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
+		// hard code admin = 2
+		req.session.admin = 2;
+		// hard code userName = Organizer
+		req.session.userName = "Organizer";
+		console.log("501 auctions.js this.admin .  req.session = ",req.session);
+
+
+		Auction.findById(req.session.auctions, function(err, auctionDetails) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log("504 auctions.js this.admin Auction.findById.  auctionDetails = ",auctionDetails);
+				res.render("organizerMenu", {
+					current: "organizerMenu",
+					admin: req.session.admin,
+					auction: req.session.auctions,
+					auctionDetails: auctionDetails, //might be use to display auction name 
+					userName: req.session.userName
+				});
+			}
+		});
+
+
+	}
+
   //Clerk registering new supporter
   this.clerkRegSup = function(req,res){
     //this page can only be accessed if clerk checked in as
