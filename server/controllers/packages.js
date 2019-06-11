@@ -994,15 +994,15 @@ function PackagesController() {
 	this.guest = function (req, res) {
 
 		// hard code auction
-		// req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
+		req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
 		// hard code auction - Getting the Shiny Gold
-		req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
+		// req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
 		// hard code admin = 0
 		req.session.admin = 0;
 		// hard code userName = Guest Guest (fn ln) (in dv1 Fly High Fly Far auction)
-		// req.session.userName = "guest@guest.com";
+		req.session.userName = "guest@guest.com";
 		// hard code userName = Annabel Andreesen (in Bob's database, not yours!)
-		req.session.userName = "aaaa@a.com";
+		// req.session.userName = "aaaa@a.com";
 		console.log("601 packages.js this.guest .  req.session = ",req.session);
 
 		Category.find({}, function (err, categories) {

@@ -364,8 +364,8 @@ function AuctionsController() {
 		console.log('500 auctions.js this.admin start.  set req.session auction and admin = 2');
 
 		// hard code auction
-		req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
-		// req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
+		// req.session.auctions = "5c59f82b181b703674c1eca5"; // Bob's localhost Getting the Shiny Gold auction
+		req.session.auctions = "5c8c111dcc231c37a5ebc440"; // dv1.elizabid.com Fly High Fly Far auction
 		// hard code admin = 2
 		req.session.admin = 2;
 		// hard code userName = Organizer
