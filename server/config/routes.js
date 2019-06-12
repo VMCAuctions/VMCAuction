@@ -415,16 +415,7 @@ module.exports = function(app) {
 	app.get('/:auction/users/delete/:id', function(req, res){
 		users.delete(req,res)});
 
-	// Send SMS text link to supporter at auction checkin
-	app.post('/users/sendSMS', function(req,res) {
-	// console.log("351 routes.js /users/sendSMS  req.body = ",req.body)
-	users.sendSMS(req,res)});
 
-	// Handles SMS text link request for supporter to access the auction website on day of auction
-    app.get('/:auctions/:auctionName/:id', function(req,res){
-        console.log("351 routes.js supporter auction access link. req.body = ",req.body);
-        console.log("352 routes.js supporter auction access link. req.params = ",req.params);
-		packages.liveAuction(req,res)});
 		
 	// Renders error page
 	// app.get('/users/error', function(req,res){
@@ -527,6 +518,17 @@ module.exports = function(app) {
 	app.get('/:auctions/clerkCheckOut', function(req, res){
 		auctions.clerkcheckout(req,res);
 	})
+
+	// Send SMS text link to supporter at auction checkin
+	app.post('/users/sendSMS', function(req,res) {
+		// console.log("351 routes.js /users/sendSMS  req.body = ",req.body)
+		users.sendSMS(req,res)});
+	
+	// Handles SMS text link request for supporter to access the auction website on day of auction
+	app.get('/:auctions/:auctionName/:id', function(req,res){
+		console.log("351 routes.js supporter auction access link. req.body = ",req.body);
+		console.log("352 routes.js supporter auction access link. req.params = ",req.params);
+		packages.liveAuction(req,res)});
 
 		
 	//Landing Page (Packages page)

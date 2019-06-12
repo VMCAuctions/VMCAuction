@@ -399,7 +399,7 @@ function AuctionsController() {
         if(err){
           console.log(err);
         }else{
-          res.render('clerkRegSupp',{auction: auction, auctionDetails: auction})
+          res.render('clerkRegSupp',{auction: auction.id, auctionDetails: auction})
         }
       })
     }else{
