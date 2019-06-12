@@ -38,6 +38,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var path = require("path");
 app.use(express.static("./public"));
 
+var publicFolder = __dirname + '/public/';
+app.use(express.static(publicFolder))
+
 if (process.env.NODE_ENV === "production") {
 	app.use(express.static(path.join(__dirname, "/wireframe")));
 } else {

@@ -23,32 +23,56 @@
 </head>
 
 <body>
-  <%if(admin){%>
+  <%if(admin === 2){%>
     <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
       <%}%>
 
-  <div class="container-fluid item-container">
-    <h2 class="my-4">Donated Items</h2>
-      <div class="my-4" id="search-container">
+  	<div class="container-fluid item-container">
+		<h2 class="my-4">Donated Items</h2>
+	
+
+    	<div class="my-4" id="search-container">
+			<div class="row">
+				<div class="col">
+
+					<div id="search-keyword">
+					  <label for "keyword" class="label-search">Search by keyword:</label>
+					  <input class="form-control" type="search" id="keyword" placeholder="Keyword">
+					</div>
+					<div id="search-category">
+						<label for "category" class="label-search">Search by category:</label>
+						<select class="form-control" name="category" id="category">
+						  <option value="">All Categories</option>
+						  <% for(var c in categories) {%>
+							<option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+						  <%}%>
+						</select>
+					</div>
+				</div>
+					
+					<!-- Find all items in a category-->
+					<div class="col d-flex justify-content-end mt-4 pt-1">
+						<a href="/<%=auction%>/items/new">
+							<button class="btn btn-add">Add an Item</button>
+						</a>
+			
+						<a href="/<%=auction%>/items/csv">
+							<button type="button" class="btn btn-add ml-2">Import Items from CSV</button>
+						</a>
+						<a href="/<%=auction%>/items/template">
+							<button type="button" class="btn btn-add ml-2">Download Import Template</button>
+						</a>
+					</div>
+			</div>
+
         <!-- Find items by keyword -->
-        <div id="search-keyword">
-          <label for "keyword" class="label-search">Search by keyword:</label>
-          <input class="form-control" type="search" id="keyword" placeholder="Keyword">
-        </div>
-        
-        <!-- Find all items in a category-->
-        <div id="search-category">
-            <label for "category" class="label-search">Search by category:</label>
-            <select class="form-control" name="category" id="category">
-              <option value="">All Categories</option>
-              <% for(var c in categories) {%>
-                <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-              <%}%>
-            </select>
-        </div>
-      </div>
+	  </div>
+
+
+	
+
       
       <!-- Item Table -->
         <div class="table-responsive-md ">

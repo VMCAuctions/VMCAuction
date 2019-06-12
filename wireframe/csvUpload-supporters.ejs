@@ -17,13 +17,20 @@
     <link rel="stylesheet" type="text/css" href="/css/csvUpload-supporters.css" />
   </head>
   <body>
-	<%if(admin){%>
+	<%if(admin === 2){%>
 		<%- include('adminHeader') -%>
 	<%}else{%>
 		<%- include('header') -%>
 	<%}%>
 	<div class="container mt-4">
-		<h3>Import Supporters from .csv File</h3>
+		<div class="row">
+			<h3>Import Supporters from .csv File</h3>
+			<div class="col justify-content-end">
+				<a href="/<%=auction%>/users/template">
+					<button type="button" class="btn btn-add ml-2">Download Import Template</button>
+				</a>
+			</div>
+		</div>
     <form action="/<%=auction%>/users/usersImport" method="POST" enctype="multipart/form-data">
       
       <div class="row">
