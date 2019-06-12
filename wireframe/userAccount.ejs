@@ -219,24 +219,30 @@
 	<!-- code for changing organizer's password. Need to be enhanced: when both new password and confirm password fields are filled - button should become clickable. Right now fields are readonly, that property should be removed later -->
 		<script type="text/javascript">
 
-			let wonBidsRow = document.getElementsByClassName("user-account")[0].rows.length;
-			let winningTable = document.getElementById("winning-info");
-			let endtime = winningTable.dataset.endclock;
+			let admin = "<%= admin %>";
 
-			function showWonBids(endDate) {
-				endDate = new Date(endDate).getTime();
+			if (admin === "0") {
+				let wonBidsRow = document.getElementsByClassName("user-account")[0].rows.length;
+				let winningTable = document.getElementById("winning-info");
+				let endtime = winningTable.dataset.endclock;
+
+				function showWonBids(endDate) {
+					endDate = new Date(endDate).getTime();
+				
+					if (isNaN(endDate)) {
+						return;
+					}
+
+					let startDate = new Date().getTime();
 			
-				if (isNaN(endDate)) {
-					return;
+					let timeRemaining = endDate - startDate;
+				
+					if (timeRemaining <= 0 && wonBidsRow > 1) {
+						winningTable.style.display = "block";
+					}
 				}
 
-				let startDate = new Date().getTime();
-		
-				let timeRemaining = endDate - startDate;
-			
-				if (timeRemaining <= 0 && wonBidsRow > 1) {
-					winningTable.style.display = "block";
-				}
+				showWonBids(endtime);
 			}
 
 			function tableOwnerChange() {
@@ -343,8 +349,6 @@
 			}, "Please specify the two-digit code for a US state");
 
 			validator.form();
-
-			showWonBids(endtime);
 
 		</script>
 	</body>
