@@ -35,7 +35,6 @@ cd VMC
 git clone https://github.com/VMCAuctions/VMCAuction.git
 cd VMCAuctions
 git checkout -b develop origin/develop
-cd server
 npm install
 ```
 
@@ -55,13 +54,15 @@ You're all set now and you can run `mongod` to start the Mongo server.
 
 
 On PC:
-`net start MongoDB`
+
+```shell
+mongod
+```
 
 Navigate to where you cloned the git repository and run the following:
 
-```
-cd server
-npm run dev
+```shell
+nodemon server.js
 ```
 
 This command will open up new tab in your browser for: `https://localhost:8000/users/login`
