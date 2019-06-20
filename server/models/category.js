@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 
 var categorySchema = new Schema({
 
-	name: {type: String, required: true, minlength: 4},
+	name: {type: String, required: true, minlength: 3},
 	//_auctions: {type: Schema.Types.ObjectId, ref: 'Auction'}
 })
 

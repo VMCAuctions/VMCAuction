@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <title>Populate from CSV</title>
+  </head>
+  <body>
+    <%if(admin){%>
+    <%- include('adminHeader') -%>
+    <%}else{%>
+      <%- include('header') -%>
+    <%}%>
+    <div class="container mt-4">
+      <h3>Populate from CSV</h3>
+      <form>
+        <!-- Item input group -->
+        <div class="form-group">
+          <label for="itemName" class="label-name space">Item Name*</label>
+          <input id="itemName" type="text" name="itemName" class="form-control">
+        </div>
+        <!-- End Item Input -->
+
+        <!-- Donor Input Row -->
+        <div id="donor" class="container">
+            <h5>Donor Information</h5>
+            <p class="err-info"> Either donor's Last Name or Organization is required.</p>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="donorFirst" class="label-name">First Name</label>
+                <input type="text" name="donorFirst" class="form-control" id="donorFirst">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="donorLast" class="label-name">Last Name</label>
+                <input type="text" name="donorLast" class="form-control" id="donorLast">
+              </div>
+            </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="donorOrg" class="label-name">Organization</label>
+                <input type="text" name="donorOrg" class="form-control" id="donorOrg">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="donorDisplay" class="label-name">Display Donor (Defaults to Anonymous)</label>
+                <input placeholder="Anonymous" type="text" name="donorDisplay" class="form-control" id="donorDisplay">
+            </div>
+          </div>
+
+        </div>
+        <!-- End Donor Input -->
+
+        <!-- Categories and Fair Market Value Fields -->
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="category" class="label-name">Category</label>
+            <input type="text" name="category" class="form-control" id="category">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fairMarketValue" class="label-name">Fair Market Value*</label>
+            <input id="fairMarketValue" type="text" name="fairMarketValue" class="form-control">
+          </div>
+        </div>
+        <!-- End Categories and Fair Market Value Fields -->
+
+        <div class="form-group">
+          <label for="itemDescription" class="label-name">Item Description*</label>
+          <textarea id="itemDescription" name="itemDescription" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="itemRestriction" class="label-name">Item Restriction</label>
+          <textarea id="itemRestriction" name="itemRestriction" class="form-control" rows="3"></textarea>
+        </div>
+
+        <input id="submit" type="submit" name="" value="Submit" class="btn btn-primary btn-submit">
+
+      </form>
+    </div>
+    <script type="text/javascript">
+      $('#submit').click(function(event){
+        console.log('running item population ajax script');
+        event.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: '/' + '<%=auction%>' + '/items/populate', data: {"itemNameColumn":$('#itemName').val(),
+          "itemDonorFirstColumn":$('#donorFirst').val(),
+          "itemDonorLastColumn":$('#donorLast').val(),
+          "itemDonorOrgColumn":$('#donorOrg').val(),
+          "itemDonorDisplayColumn":$('#donorDisplay').val(),
+          "itemCategoryColumn":$('#category').val(),
+          "itemValueColumn":$('#fairMarketValue').val(),
+          "itemDescriptionColumn":$('#itemDescription').val(),
+          "itemRestrictionsColumn":$('#itemRestriction').val()},
+
+          success: function(data){
+            if(data.status == false){
+              alert(data.message)
+            } else {
+              if (data.admin == 2){
+                alert(data.message)
+              }
+              else{
+                window.location.replace('/' + data.auction + '/packages')
+              }
+            }
+          }
+        })
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <title>.CSV Upload</title>
+    <link rel="stylesheet" type="text/css" href="/css/csvUpload.css" />
+  </head>
+  <body>
+	<%if(admin === 2){%>
+		<%- include('adminHeader') -%>
+	<%}else{%>
+		<%- include('header') -%>
+	<%}%>
+	<div class="container mt-4">
+		<div class="row">
+			<h3>Import Items from .csv File</h3>
+			<div class="col justify-content-end">
+				<a href="/<%=auction%>/items/template">
+					<button type="button" class="btn btn-add ml-2">Download Import Template</button>
+				</a>
+			</div>
+		</div>
+		<form action="/<%=auction%>/items/itemsCsv" method="POST" enctype="multipart/form-data">
+      
+      <div class="row">
+        <div class="col-sm-7 col-md-6 col-lg-12">
+          <label for="packageImage" class="label-name">File Name</label>
+          <div class="form-group">
+            <label for="file" class="sr-only">File</label>
+            <div class="input-group">
+              <span class="input-group-prepend">
+                <div class="btn btn-upload custom-file-uploader">
+                  <input type="file" name="csvUpload" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                  Choose File
+                </div>
+              </span>
+              <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+
+			<input id="submit" type="submit" name="submit" value="Submit" class="btn btn-primary btn-submit">
+
+		</form>
+	</div>
+  </body>
+</html>

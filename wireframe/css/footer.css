@@ -1,0 +1,43 @@
+.footer {
+	background-color: rgba(105, 175, 255, 0.890);   
+	/* background-image: linear-gradient(to bottom right, #69afff,  #a2b209);  */
+    color: #f9f8fa;
+    text-align: center;
+	font-family: 'Kameron', serif; 
+	position:fixed;
+	bottom:0;
+	z-index: 1;
+	width:100%;
+	font-size: 0.9rem;
+	padding: 10px 10px 0 10px; 
+	height:70px;
+}
+
+.footerNotifications{
+	background-color: rgba(255, 103, 70, 0.9);  
+    color: #f9f8fa;
+    text-align: center;
+	position:fixed;
+	bottom:70px;;
+	z-index: 2;
+	width:100%;
+	font-size: 0.85rem;
+	padding: 5px 5px 0px 5px; 
+	font-style: italic;
+	line-height: 1.5em;
+	visibility: hidden;
+}
+
+.timer {
+	font-size: 1rem;
+	margin: 0px;
+}
+
+a.bid-notifications {
+	font-style:normal;
+	text-decoration: underline;
+	color: #f0f2f9;
+	font-weight:700;
+	font-size:0.9rem;
+	margin-top: 15px; 
+}

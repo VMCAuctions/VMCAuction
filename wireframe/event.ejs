@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+    <head>
+			<meta charset="utf-8">
+			<title>elizabid by VMFC | Welcome to the Auction Event</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" type="text/css" href="/css/style.css" >
+			<link rel="stylesheet" type="text/css" href="/css/event.css" >
+			<link rel="stylesheet" type="text/css" href="/css/packageStyle.css" >
+		
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+
+  	<body>
+
+			<!-- EVENT LANDING PAGE NAV BAR / The page is accesible by everyone, prior to login or registration -->
+			<nav class="navbar navbar-expand-lg navbar-light bg-light flex-column flex-md-row ">
+				<div class="brand py-1">elizabid |
+						<a href="https://vmcfoundation.org/"><img class="vmcf-brand" src="/VMCF_Logo_Blue_rgb.png"></a> 
+				</div>
+				<!-- Right Top Navbar -->
+				<ul class="nav navbar-nav flex-row ml-md-auto d-md-flex ">	
+					<li class="contact mr-3">
+						Contact: Julie Ott  | <i class="fas fa-phone"></i> 408-282-2687 | <a href="mailto: Julie.Ott@hhs.sccgov.org"><i class="fas fa-envelope"></i>&nbsp;email</a>
+					</li>	
+				</ul>
+			</nav>
+
+			<!-- EVENT LANDING PAGE HEADER -->
+			<div style="background-image: linear-gradient(to right, rgba(0, 61, 121, 0.9), rgba(69, 103, 168, 0.5)), url('/<%= auctionDetails.headerImage %>')" class="jumbotron jumbotron-fluid header-img" >
+			
+
+			<!-- COUNTDOWN CLOCK -->
+			<div class="d-flex flex-row justify-content-center">
+				<div id="item1" class="text-center clock-num mr-2">item1</div>
+				<div id="item2" class="text-center clock-num mr-2">item2</div>
+				<div id="item3" class="text-center clock-num">item3</div>	
+			</div>
+			<div class="d-flex flex-row align-items-start justify-content-center">
+				<div id="item4" class="text-center clock-letters mr-2">item4</div>
+				<div id="item5" class="text-center clock-letters mr-2">item5</div>
+				<div id="item6" class="text-center clock-letters">item6</div>	
+			</div>		
+
+			<div id="event-status"></div>
+
+			<!-- AUCTION TITLE AND HEADER INFO -->
+			<div class="container mt-4">
+				<h1 class="mt-5"><%= auctionDetails.name %></h1>
+				<p class="header-info"><%= startDateToDisplay %></p>
+				<p class="header-info"><%= auctionDetails.venue %></p>	
+
+				<!-- invisible paragraph - just using the id and data for the countdown clock -->
+				<p id="event-start"> <%= auctionDetails.startClock %></p>
+				<p id="event-end"> <%= auctionDetails.endClock %></p>
+
+				<div class="btn-div my-3">
+					<a class="btn btn-reg my-5" href="/users/register">REGISTER NOW</a>
+				</div>
+
+			</div>
+		</div> <!-- End Header -->
+
+		<!-- AUCTION SUBTITLE, WELCOME MESSAGE, AND DESCRIPTION  -->
+		<div class="container">
+			<div class="row">		
+				<div class="col-md-12 col-lg-12">
+					<div class="card-body">
+						<h2><%= auctionDetails.subtitle %></h2>						
+						<p class="welcome-message mt-4"><%= auctionDetails.welcomeMessage %></p>
+						<p class="auction-description"><%= auctionDetails.description %></p>
+					</div>	
+				</div>	
+			</div>
+		</div>	
+
+		<!-- FEATURED PACKAGES SECTION-->
+		<div class="container">
+
+			<h2 class="mt-2">Featured Packages</h2>		
+
+			<div class="d-flex flex-row flex-wrap justify-content-start mt-3">
+				<% for (var f in packages) {%>
+					<div class="col-lg-6 col-md-12 col-sm-12 mt-3 mb-3">
+						<div class="card pkg-card-event">	
+							<div class="card-body">
+								<div class="featured-num">
+									#<%= packages[f]._id %>
+								</div> 
+								<div class="featured-priority">
+									<%= packages[f].priority %>
+								</div>
+								<div class="featured-box">
+									FEATURED
+								</div> 
+								<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
+									<div>
+										<img class="pkg-img mr-3" src="/<%= packages[f].photo %>">
+									</div>	
+									<div>  
+										<p class="pkg-title"> <%= packages[f].name %></p>
+										<p class="category">Category: <%=packages[f]._category%></p>
+									</div>	
+								</div>
+								<hr>
+								<div class="row ml-1 card-middle">
+									<ul class="mt-4">
+										<li>Value: <span class="value-display"><%= "$" + packages[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
+										    Opening Bid: <span class="value-display"> <%="$" + packages[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
+										<li class="donated mt-1">Donated by: <%=packages[f].donors%> </li>
+									</ul>
+								</div>
+								<hr>
+								<p class="description text-wrap" style="max-height: 5.8rem;"><%= packages[f].description %></p>
+							</div>
+						</div>
+					</div>
+				<%}%>	
+			</div>	
+		</div>
+
+		
+		<div class="btn-div my-3">
+					<a class="btn btn-reg my-4" href="/users/register">REGISTER NOW</a>
+		</div>					
+
+		<!-- FOOTER -->
+		<footer class="container-fluid event-footer">
+			
+				<a href="#"><i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i></a><br>
+				<a href="#">Back to top</a>
+				
+		</footer>
+
+		<script>
+			function Calculate() {
+				let now = new Date().getTime();
+
+				let timeRemaining = countDownDate - now; 
+				let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+				let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+				let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+				let timeToEnd = endDate - now; 
+			
+				if (days >= 1) {
+					document.getElementById("item1").innerText = `${days}`;
+					document.getElementById("item2").innerText = `${hours}`;
+					document.getElementById("item3").innerText =`${minutes}`;
+					document.getElementById("item4").innerText = "days";
+					document.getElementById("item5").innerText = "hours";
+					document.getElementById("item6").innerText = "minutes";	
+
+				} else if (timeRemaining >=0 && days < 1) {
+					document.getElementById("item1").innerText = `${hours}`;
+					document.getElementById("item2").innerText = `${minutes}`;
+					document.getElementById("item3").innerText =`${seconds}`;
+					document.getElementById("item4").innerText = "hours";
+					document.getElementById("item5").innerText = "minutes";
+					document.getElementById("item6").innerText = "seconds";
+				
+				} else if (timeRemaining <0 && timeToEnd > Math.abs(timeRemaining)) {
+					document.getElementById("item1").innerText = "";
+					document.getElementById("item2").innerText = "";
+					document.getElementById("item3").innerText = "";
+					document.getElementById("item4").innerText = "";
+					document.getElementById("item5").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("event-status").innerText = "This event is in progress";
+
+				} else {
+					document.getElementById("item1").innerText = "";
+					document.getElementById("item2").innerText = "";
+					document.getElementById("item3").innerText = "";
+					document.getElementById("item4").innerText = "";
+					document.getElementById("item5").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("item6").innerText = "";
+					document.getElementById("event-status").innerText = "This event has ended";
+				}
+			}
+
+			let eventStart = document.getElementById("event-start");
+			// console.log("100 event.ejs eventStart = ",eventStart); 
+			let countDownDate = new Date(eventStart.innerText).getTime();
+
+			let eventEnd = document.getElementById("event-end");
+			let endDate = new Date(eventEnd.innerText).getTime();
+			
+			// Use the folowing format to test for less than one day to the event
+			// let countDownToStartDate = new Date("October 25, 2018 22:13:00").getTime(); 
+			
+			// Call function Calculate to display immediately the time info, otherwise if 
+			// only setInterval is used, it will take a few seconds to for the countdown clock to appear
+			Calculate(); 
+			
+			//setInterval will show the minutes/seconds changing
+			let timer = setInterval(Calculate, 1000);	
+		</script>
+
+  	</body>
+</html>

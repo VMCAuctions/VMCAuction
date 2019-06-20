@@ -1,18 +1,242 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url('https://fonts.googleapis.com/css?family=Lato');
 
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Kameron:300,300i,400,400i,500,700');
+
+/* Border box fix
+-------------------------------------------------------------- */
+html {
+  	box-sizing: border-box; 
+}
+
+*, *::before, *::after {
+  	box-sizing: inherit; 
+}
+
+/* Footer Fix?
+-------------------------------------------------------------- */
+/* 
+html {
+	position: relative;
+	min-height: 100%;
+	max-width: 100%; 
+	
+} */
+
+
+/* Common styles 
+-------------------------------------------------------------- */
 body {
-  font-family: 'Roboto', sans-serif !important;
-  color: #ffffff;
+	font-family: Lato, sans-serif;  
+	color: #404040;
+	font-size: 0.9rem;
 }
 
-td:hover {
-  background-color: #ffffff;
+h1 {
+	font-family: Kameron, serif; 
+	color: #003d79;
+} 
+
+h2 {
+	font-family: Lato, sans-serif; 
+	color: #4567a8;
+	font-size: 1.7rem; 
+	font-weight: 700;  
 }
+
+h3, h4, h5 {
+	font-family: Lato, sans-serif; 
+	color: #003d79;
+}
+
+a:link { 
+  	color: #0080ff; 
+	text-decoration: none; 
+}
+a:hover {
+	color: #0055cb;
+	text-decoration: none;
+}
+
+.phone {
+	color: #ff2719;
+
+}
+.pin {
+	color: #00184c;
+}
+
+/* Common Styling Headers
+-------------------------------------------------------------- */ 
+
+
+
+/* Common Page Styling (Create Auction, Edit Auction)
+-------------------------------------------------------------- */
+.mini-nav {
+	background-color: #00184c;
+	height: 7vh; 
+	position: relative;
+	padding: 0px; 
+	margin-bottom: 4rem; 
+}
+
+.mini-header {
+	background-color: #003d79;
+	color: #fff; 
+	height: rem; 
+	width: 100% ; 
+	padding: 1rem 3rem; 
+	display: block; 
+	position: absolute; 
+	top: 40%;  
+}
+
+h3.mini-header {
+	font-size: 1.5rem; 
+}
+
+/* Common Styles Forms
+-------------------------------------------------------------- */
+.label-name {
+	font-size: 0.9rem;
+	line-height: 0.7rem; 
+}
+
+.label-search-pkg {
+	font-size: 0.9rem; 
+	color: #003d79; 
+	line-height: 0.7rem;   
+}
+
+input[type=text], input[type=email], input[type=date], input[type=time], 
+input[type=number], input[type=search], input[type=password], input[type=tel], 
+select[name="category"], select[name="donorPrefix"] {
+	font-size: 0.9rem; 
+	color: #808080; 
+}
+
+input[type="text"].input-priority {
+	font-size: 0.7rem !important; 
+	color: #808080; 
+}
+
+input[type="text"]::placeholder {
+	font-size: 0.9rem !important; 
+	color: #808080; 
+}
+
+input[type="search"]::placeholder {
+	font-size: 0.9rem !important; 
+	color: #808080; 
+}
+
+textarea {
+	font-size: 0.9rem !important;
+	color: #808080 !important; 
+}
+
+/* Common Styles Validations and Error Messages
+-------------------------------------------------------------- */
+.err-info {
+	color: #4567a8; 
+	font-size: 0.8rem; 
+	margin-top: -0.3rem;
+}
+label.error {
+	color: #ff2719;
+	font-size: 0.8rem; 
+}
+ 
+/* Common Styles Buttons
+-------------------------------------------------------------- */
+.btn-submit {
+	background-color: #0080ff; 
+	color: #fff;
+	border: none;  
+	padding: 9px 15px; 
+	min-width: 155px;  
+}
+
+.btn-add {
+	background-color: #bacc14; 
+	color:#262626;
+	border: none;
+	padding: 9px 15px; 
+	min-width: 155px;  
+} 
+
+.btn-delete {
+	background-color: #ff2719; 
+	color:#fff;
+	border: none; 
+	padding: 9px 15px; 
+	min-width: 155px;   
+} 
+
+.btn-submit:hover{
+	background-color: #0055cb;
+	color: #fff; 
+}
+
+.btn-delete:hover{
+	background-color: #c30000;
+	color: #fff; 
+}
+
+.btn-add:hover{
+	background-color: #869b00;
+	color: #262626; 
+}
+
+.btn-back {
+	background-color: #a2b209; 
+	color: #000;
+	border: none;  
+	padding: 9px 15px; 
+	min-width: 155px; 
+}
+
+.btn-back:hover{
+	background-color: #6f8300;
+	color: #000; 
+}
+
+/* Specific to Add/Edit Item
+-------------------------------------------------------------- */
+
+#donor {
+	background-color: #f2f2f2;
+	padding: 15px; 
+	border-radius: 5px; 
+	margin: 5px 0px 15px 0px;  
+}
+
+.anonymous {
+	font-size: 0.9rem !important; 
+}
+
+.to-edit {
+	color: #a2b209;
+	font-size: 1.1rem; 
+	margin-right: 0.5rem; 
+}
+
+.to-delete {
+	color: #ff2719;
+	font-size: 1.1rem;
+}
+
+
+/* Organizer's Menu table style
+-------------------------------------------------------------- */
+/* td:hover {
+  background-color: #ffffff;
+} */
 
 .table-hover>tbody>tr>.highlight:hover{
-  background-color: #f5f5f5!important; // Or any colour you
-  cursor: pointer;
+	background-color: #f5f5f5; 
+	color:#0080ff;
+   cursor: pointer;
 }
 
 .highlight {
@@ -29,13 +253,13 @@ td:hover {
 
 .table-bordered>tbody>tr>.borderRight{
   border: 0px!important;
-  border-right: 1px solid #dee2e6!important;
+  border-right: 1px solid #dee2e6;
 }
 
 .table-bordered>tbody>tr>.borderSide{
   /*border: 0px 1px 0px 1px solid !important;*/
-  border-top: 0px !important;
-  border-bottom: 0px !important;
+  border-top: 0px;
+  border-bottom: 0px;
 }
 
 
@@ -45,18 +269,23 @@ td:hover {
 }
 
 th {
-  width: 15%;
+  width: 25%;
 }
 
 td {
-  height: 75px;
+  height: 65px;
 }
 
 th{
-  background-color: #EAEAEA;
+	/* background-color: #EAEAEA; */
+	background-color: #4567a8;
+	color: #fff;
+	font-size: 0.9rem; 
 }
+
 .table > tbody > tr > td {
-  vertical-align: middle;
+	vertical-align: middle;
+	font-size: 0.9rem; 
 }
 
 /*td a{
@@ -64,3 +293,75 @@ th{
   display:inline-block;
   width:100%;
 }*/
+
+/* Manage Categories
+-------------------------------------------------------------- */
+.note {
+	color: #ff6746;
+	font-size: 0.9rem; 
+	font-style: italic;
+	margin-top: 40px; 
+	margin-bottom: 10px; 
+
+}
+
+.new-cat {
+	color: #4567a8;
+	font-size: 1.2rem;
+	font-weight: 700; 
+	margin-top: 40px !important; 
+	margin-bottom: -10px; 
+}
+
+#cat-table  td {
+	height: 40px !important; 
+	padding-left: 15px; 
+}
+
+#cat-table th.cat-name {
+	width: 75%;
+	padding: 15px;
+}
+
+#cat-table th.cat-action {
+	width: 25%;
+	padding: 15px;
+}
+
+/* Error Pages
+-------------------------------------------------------------- */ 
+.err-body {
+	background-color: #f8f9fa; 
+}
+
+.container-err {
+	margin-top: 20vh; 
+}
+
+.err-page {
+	display: block;
+	margin: 5rem auto 0rem auto; 
+}
+
+.err-img {
+	width: 300px; 
+	display: block;
+	margin: 0 auto; 
+}
+
+.err-text {
+	font-size: 1.3rem; 
+	font-weight: 300; 
+}
+
+.err-text-supp {
+	font-size: 1.1rem; 
+	font-weight: 300; 
+}
+
+.err-text-italic {
+	font-size: 1.1rem; 
+	font-weight: 300; 
+	font-style: italic;
+}
+

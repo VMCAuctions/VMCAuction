@@ -26,7 +26,7 @@
     <form class="" action="/users/admin" id="ourForm" method="post">
       <% var superAdmin = false%>
 
-      <% if (userName == "organizer"){%>
+      <% if (userName == "Organizer"){%>
         <%superAdmin = true%>
       <%}%>
 
@@ -35,21 +35,32 @@
           <td><a href="/<%= users[u]._auctions %>/users/<%= users[u].userName %>"><%= users[u].userName %></a></td>
           <td>
             <%if (superAdmin){%>
-              <%if (users[u].userName == "admin"){%>
-                <p><%=users[u].admin%></p>
+              <%if (users[u].userName == "Organizer"){%>
+                <p>True</p>
 
               <%}else{%>
                 <select name = "<%=users[u]._id%>">
-                    <option value = "<%=users[u].admin%>">
-                      <%=users[u].admin%>
+                  <% if (users[u].admin == 2) { %>
+                    <option value = 2>
+                      True
                     </option>
-                    <option value = "<%=!users[u].admin%>">
-                      <%=!users[u].admin%>
+                    <option value = 0>
+                      False
                     </option>
+                  <% }else{ %>
+                    <option value = 0>
+                      False
+                    </option>
+                    <option value = 2>
+                      True
+                    </option>
+                  <% } %>
+
                 </select>
               <%}%>
 
             <%}else{%>
+              <p>Hit else statement</p>
               <p><%=users[u].admin%></p>
             <%}%>
 

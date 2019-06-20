@@ -1,0 +1,49 @@
+
+#search-keyword {
+    width: 280px; 
+    margin: 0 0.5rem 0 0 ;
+    display:inline-block;
+}
+#search-category {
+    width: 280px; 
+    display:inline-block;
+}
+
+#item-table {
+    margin-top: 1.3rem;    
+}
+
+th{
+    background-color: #4567a8 !important; 
+    color: #fff;
+}
+
+th, td{
+    vertical-align: top !important; 
+    padding: 0.4rem !important;
+    font-size: 0.8rem !important; 
+} 
+
+th.large-col{
+    width: 20%;
+}  
+
+th.medium-col {
+    width: 10%;
+}
+
+th.med-to-narrow-col {
+    width: 8%;
+}
+
+th.narrow-col {
+    width: 5%;
+}
+
+#item-table td{
+    height: 60px; 
+}
+
+.item-val {
+    text-align: center;
+}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<title>Package Uprights</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
+	<link rel="stylesheet" type="text/css" href="/css/packageUprights.css">
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script> 
+	
+	<!-- PDF -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+	
+	<!-- Color Picker -->
+	<script src="http://cdn.dhtmlx.com/edge/dhtmlx.js" type="text/javascript"></script>
+
+	<!-- Data Tables  -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+  </head>
+
+	<body onload="doOnLoad();" onunload="doOnUnload();">
+		<%if(admin){%>
+			<%- include('adminHeader') -%>
+			<%}else{%>
+				<%- include('header') -%>
+		<%}%>
+		<%if(admin == 0){%>
+			<%- include('footerClock') -%>
+		<%}%>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col">
+					<h2 class="my-4 ml-1">Package Upright</h2>
+					<div class="info">
+						<span class="borderTitle">Instructions:</span>
+						<ol>
+							<li>Select a package to bring up its corresponding upright, to change its colors, and to perform an action.</li>
+							<li>Click on the third action "<i class="far fa-save"></i>" to save your color choices.</li>
+							<li>Once an upright is finalized, click on the last action "<i class="fas fa-external-link-alt"></i>" of the row to save, open and print the pdf.</li>
+						</ol>
+						* Please note an upright without any saved color changes will inherit the colors from the last upright you viewed.
+
+					</div>
+
+					<table class="table table-bordered" id="tableRow">
+						<thead>
+							<tr class="text-center">
+								<th scope="col" class="narrow">#</th>
+								<th scope="col" class="large">Name</th>
+								<th scope="col" class="medium">Category</th>
+								<th scope="col" class="large">Actions</th>
+								<th scope="col" class="hide">Image</th>
+								<th scope="col" class="hide">Value</th>
+								<th scope="col" class="hide">Description</th>
+								<th scope="col" class="hide">Donors</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% for (var i in packages){%>
+		
+								<tr class="packageRow" onclick="retrieveData(this)">
+									<td><%= packages[i]._id%></td>
+									<td><%=packages[i].name%></td>
+									
+									<td><%= packages[i]._category%></td>   
+									
+									<td class="text-center">
+										<a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit" title="Edit Package"></i></a>
+										<a href='/<%=auction%>/packages/uprights/remove/<%=packages[i]._id%>' onclick="deleteColors(this)"><i class="far fa-trash-alt to-delete" title="Delete Package"></i></a>
+										<i class="far fa-save to-save" title="Save Colors" onclick="saveColors(this)"></i>
+										<i class="fas fa-external-link-alt to-pdf create_pdf" title="Open PDF"></i>
+									</td>
+									<td class="hide"><%= packages[i].photo%></td>
+									<td class="hide">$<%=packages[i].value%></td>
+									<td class="hide"><%= packages[i].description%></td>
+									<td class="hide"><%=packages[i].donors%></td>
+
+								</tr>
+								<%}%>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="col mt-2 d-flex justify-content-center">
+
+					<form class="form mt-4 hidden" id="form">
+						<div class="upright bg" id="bg">
+		
+							<div class="donor secondaryColor mainTextColor">
+								<div class="resized-text"></div>
+							</div>
+		
+							<div class="title" id="titleText">
+								<div class="resized-text"></div>
+							</div>
+		
+							<div class="image">
+								<img class="flexible-photo" id="photoBorder" src="">
+								
+								<div class="packageId secondaryColor mainTextColor" id="packageId"></div>
+		
+								<div class="value secondaryColor mainTextColor"></div>
+							</div>
+		
+							<div id="fitin" class="secondaryColor mainTextColor">
+								<div class="resized-text"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+			
+				<div class="col">
+					<div class="mt-4">
+						<h5>Edit Colors: </h5>
+						<select id="colorType">
+							<option value="bg">Background color</option>
+							<option value="secondary">Secondary color</option>
+							<option value="text">Text color</option>
+							<option value="title">Title color</option>
+						</select>
+					</div>
+			
+					<div id="cpObj"></div>
+
+					<form class="saved-colors hide">
+						<h5>The saved colors for this upright: </h5>
+						
+						<input type="text" id="inputBg" name="background" readonly value=""> <i class="fa fa-circle" id="circleBg"></i> Background color<br>
+						
+						<input type="text" id="inputSecondBg" name="secondary" readonly value=""> <i class="fa fa-circle" id="circleSecond"></i> Secondary color<br>
+						
+						<input type="text" id="inputTitle" name="title" readonly value=""> <i class="fa fa-circle" id="circleTitle"></i> Title color<br>
+						
+						<input type="text" id="inputText" name="text" readonly value=""> <i class="fa fa-circle" id="circleText"></i> Main text color<br>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			
+			// elements on the upright
+			var background = document.getElementById("bg");
+			var titleColor = document.getElementById("titleText");
+			var secondary = document.querySelectorAll(".secondaryColor");
+			var secondaryBorder = document.querySelector('#photoBorder');
+			var mainTextColors = document.querySelectorAll('.mainTextColor');
+
+			// color picker
+			var myCP;
+
+			function doOnLoad() {
+				myCP = new dhtmlXColorPicker({
+					parent: "cpObj",
+					custom_colors: ["#206cc2"],
+					closeable: false
+				});
+				myCP.attachEvent("onChange", setColor);
+			};
+			
+			function doOnUnload() {
+				if (myCP != null) {
+					myCP.unload();
+					myCP = null;
+				}
+			};
+			
+			// color picker sets color on upright
+			function setColor(color) {
+				var ct = document.getElementById("colorType");
+	
+				switch (ct.value) {
+					case "text":
+						mainTextColors.forEach(function(item) {
+							item.style.color = color;
+						});
+						break;
+					case "bg":
+						background.style.backgroundColor =  color;
+						break;
+					case "title":
+						titleColor.style.color = color;
+						break;
+					case "secondary":
+						secondary.forEach(function(item) {
+							item.style.backgroundColor =  color;
+						});
+						secondaryBorder.style.border = `5px solid ${color}`;
+						break;
+				}
+			};
+			// color picker END
+	
+			// on row click
+			function retrieveData(x) {
+	
+				// show upright and plug in data from the table
+
+				var upright = document.getElementsByClassName("form")[0];
+				upright.classList.remove("hidden");
+
+				var index = x.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+				var packageId = document.getElementById("packageId");
+	
+				var photo = document.getElementById("tableRow").rows[index].cells[4].innerHTML;
+				var photoBox = document.getElementById("photoBorder");
+	
+				var title = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+				var titleBox = document.getElementsByClassName("resized-text")[1];
+	
+				var value = document.getElementById("tableRow").rows[index].cells[5].innerHTML;
+				var valueBox = document.getElementsByClassName("value")[0];
+	
+				var desc = document.getElementById("tableRow").rows[index].cells[6].innerHTML;
+				var descBox = document.getElementsByClassName("resized-text")[2];
+	
+				var donor = document.getElementById("tableRow").rows[index].cells[7].innerHTML;
+				var donorBox = document.getElementsByClassName("resized-text")[0];
+	
+				packageId.textContent = "#" + id;
+				photoBox.src = `/${photo}`
+				titleBox.innerHTML = title;
+				valueBox.innerHTML = `Value: ${value}`;
+				descBox.innerHTML = desc;
+				donorBox.innerHTML = `Donors: ${donor}`;
+	
+				// highlights selected table row
+				var rowsNotSelected = tableRow.getElementsByTagName('tr');
+
+				for (var row = 0; row < rowsNotSelected.length; row++) {
+					rowsNotSelected[row].style.backgroundColor = "";
+					rowsNotSelected[row].style.color = "#404040";
+					rowsNotSelected[row].classList.remove('selected');
+				}
+				var rowSelected = tableRow.getElementsByTagName('tr')[index];
+				rowSelected.style.backgroundColor = '#003d79';
+				rowSelected.style.color = "#FFFFFF";
+				rowSelected.className += 'selected';
+	
+				// font resizing on uprights
+				$('#fitin div').css('font-size', '1em');
+				
+				while( $('#fitin div').height() > $('#fitin').height() ) {
+					$('#fitin div').css('font-size', (parseInt($('#fitin div').css('font-size')) - 1) + "px" );
+				}
+	
+				$('.donor div').css('font-size', '1em');
+				
+				while( $('.donor div').height() > $('.donor').height() ) {
+					$('.donor div').css('font-size', (parseInt($('.donor div').css('font-size')) - 1) + "px" );
+				}
+	
+				$('.title div').css('font-size', '1em');
+				
+				while( $('.title div').height() > $('.title').height() ) {
+					$('.title div').css('font-size', (parseInt($('.title div').css('font-size')) - 1) + "px" );
+				}
+	
+				// display colors if they have been saved on a specific upright
+				var savedColorInputs = document.getElementsByClassName("saved-colors")[0];
+	
+				var jsonColors = JSON.parse(localStorage.getItem(id));
+	
+				document.getElementById("inputBg").value = "";
+				document.getElementById("inputText").value = "";
+				document.getElementById("inputSecondBg").value = "";
+				document.getElementById("inputTitle").value = "";
+	
+				if (jsonColors){
+					
+					savedColorInputs.classList.remove("hide");
+	
+					background.style.backgroundColor = "rgb(32, 108, 194)";
+					mainTextColors.forEach(function(item) {
+						item.style.color = "#FFF";
+					});
+					secondary.forEach(function(item) {
+						item.style.backgroundColor = "#000";
+					});
+					secondaryBorder.style.border = `5px solid #000`;
+					titleColor.style.color = "#FFF";
+	
+					if (jsonColors.bgColor !== ""){
+						background.style.backgroundColor = jsonColors.bgColor;
+						document.getElementById("inputBg").value = jsonColors.bgColor;
+						document.getElementById("circleBg").style.color = jsonColors.bgColor;
+					}
+					if (jsonColors.mainTextColor !== "") {
+						mainTextColors.forEach(function(item) {
+							item.style.color = jsonColors.mainTextColor;
+						});
+						document.getElementById("inputText").value = jsonColors.mainTextColor;
+						document.getElementById("circleText").style.color = jsonColors.mainTextColor;
+					}
+					if (jsonColors.secondary !== ""){
+						secondary.forEach(function(item) {
+							item.style.backgroundColor = jsonColors.secondary;
+						});
+						secondaryBorder.style.border = `5px solid ${jsonColors.secondary}`;
+						document.getElementById("inputSecondBg").value = jsonColors.secondary;
+						document.getElementById("circleSecond").style.color = jsonColors.secondary;
+					}
+					if (jsonColors.titleColor !== ""){
+						titleColor.style.color = jsonColors.titleColor;
+						document.getElementById("inputTitle").value = jsonColors.titleColor;
+						document.getElementById("circleTitle").style.color = jsonColors.titleColor;
+					}
+				} else {
+					savedColorInputs.classList.add("hide");
+				}
+			}
+	
+			// store colors on save in local storage
+			function saveColors(x) {
+				var index = x.parentNode.parentNode.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+				var secondary = document.querySelectorAll(".secondaryColor")[0];
+				var mainTextColors = document.querySelectorAll('.mainTextColor')[0];
+	
+				var bgColor = background.style.backgroundColor;
+				var title = titleColor.style.color;
+				var secondaryColor = secondary.style.backgroundColor;
+				var photoBorder = secondaryBorder.style.borderColor;
+				var mainText = mainTextColors.style.color;
+	
+				localStorage.setItem(id, JSON.stringify({
+					bgColor: colorToHex(bgColor),
+					titleColor: colorToHex(title),
+					secondary: colorToHex(secondaryColor),
+					secondaryBorder: colorToHex(photoBorder),
+					mainTextColor: colorToHex(mainText)
+				}));
+			}
+	
+			function deleteColors(x) {
+				var index = x.parentNode.parentNode.rowIndex;
+				var id = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+				localStorage.removeItem(id);
+			}
+	
+			function colorToHex(color) {
+				if (color) {
+					if (color.substr(0, 1) === '#') {
+						return color;
+					}
+					var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+					
+					var red = parseInt(digits[2]);
+					var green = parseInt(digits[3]);
+					var blue = parseInt(digits[4]);
+					
+					var rgb = blue | (green << 8) | (red << 16);
+					return digits[1] + '#' + rgb.toString(16).padStart(6, '0');
+				}
+			};
+
+			$(document).ready(function() {
+				
+				// Initializes Data Tables plugin
+				$('#tableRow').DataTable(
+					{
+						"searching": false,
+						"order": [[ 0, "asc" ]],
+						"pageLength": 5,
+						"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+						"pagingType": "full_numbers",
+						"columnDefs": [
+							{ "orderable": false, "targets": 3 }
+						]
+					}
+				);
+			});  
+
+			// PDF
+			(function () {  
+				var  
+					form = $('.form'),  
+					cache_width = form.width()
+			
+				$('.create_pdf').on('click', function () {  
+					$('body').scrollTop(0);  
+					createPDF(this); 
+					var div = document.querySelector('#form');
+					div.style.position = 'relative';
+					div.style.top = '0px';
+					div.style.left = '0px'; 
+				});  
+
+				//create pdf  
+				function createPDF(x) {  
+					getCanvas().then(function (canvas) {
+						var  
+							row = x.parentElement.parentElement;
+							index = row.rowIndex;
+							date = Date.now();
+							packageId = document.getElementById("tableRow").rows[index].cells[0].innerHTML;
+							packageName = document.getElementById("tableRow").rows[index].cells[1].innerHTML;
+							lowerName = packageName.replace(/[\. !?+=,:-]+/g, "-").toLowerCase();
+							fileName = `packageflyer-${packageId}-${lowerName}-${date}.pdf`;
+							img = canvas.toDataURL("image/png"),  
+							doc = new jsPDF({  
+								unit: 'in',  
+								format: [12.44, 16.17]
+							});  
+						doc.addImage(img, 'JPEG', 0, 0); 
+						doc.setProperties({
+							title: fileName
+						}); 
+						window.open(URL.createObjectURL(doc.output("blob")));
+						form.width(cache_width);
+						doc.save(fileName);  
+					});  
+				}  
+			
+				// create canvas object  
+				function getCanvas() {  
+					var scaleBy = 3;
+					var w = 398;
+					var h = 517;
+					var div = document.querySelector('#form');
+					var canvas = document.createElement('canvas');
+					canvas.width = w * scaleBy;
+					canvas.height = h * scaleBy;
+					canvas.style.width = w + 'px';
+					canvas.style.height = h + 'px';
+					var context = canvas.getContext('2d');
+					context.scale(scaleBy, scaleBy);
+
+					div.style.position = 'fixed';
+					div.style.top = '-24px';
+					div.style.left = '0px';
+
+					return html2canvas(div, {
+						canvas:canvas,
+						removeContainer: true
+					});
+				}  
+			
+			}());  
+		</script>
+	</body>
+</html>

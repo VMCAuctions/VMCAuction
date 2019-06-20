@@ -1,0 +1,61 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/adminHeader.css">
+
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<header>
+	<!-- Clerk's Top Navbar -->
+  	 <nav>
+        <!-- Branding-->
+		<div id="top-nav" class="d-flex flex-row bg-light justify-content-between align-items-center py-3">
+				<div class="col-2">
+					<div class="brand">elizabid</div>
+				</div>	
+
+				<div class="col-2 text-center">
+					<a href="/<%=auction%>/event" class="auction-nav"><%= auctionDetails.name %> (<%= auctionDetails.pin %>)</a> 
+				</div> 
+	
+						<div>
+							<a class="mr-2 top-link" href="/<%=auction%>/clerkDash">Clerk Dashboard</a>
+						</div>
+						<div>
+							<a class="mr-2" href="/users/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+						</div>
+					
+
+		</div>
+    </nav>
+  	<!-- Clerk Secondary Navbar-->
+  	<nav id="second-nav" class="navbar navbar-expand-md navbar-dark pl-4">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          	<span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+			<!-- "current" is a flag sent from the server to indicate the active web page -->
+          	<ul class="navbar-nav">
+				<li>
+
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'supporters') { %> active2 <% } %>" href="/<%=auction%>/users"> Supporter Register</a>
+				</li>	
+				<li>
+
+					<a class="mr-4 nav-link second-link <% if (typeof(current) != 'undefined' && current == 'package-register') { %> active2 <% } %>" href="/<%=auction%>/packages/list">Package Register</a>
+				</li>
+				<li>
+					<a class="mr-4 nav-link second-link" href="/<%=auction%>/clerk/register-supporter">Add Supporter</a>
+
+				</li>
+				
+          	</ul>
+        </div>
+    </nav>
+</header>

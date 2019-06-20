@@ -1,0 +1,40 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/adminHeader.css">
+
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+</script>
+<header>
+    <div id="buttons">
+        <div class="">
+            <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Check in
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Check out
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Retrieve won packages
+                    </button>
+        </div>    
+    </div>
+    <div id="resultCheckin">
+
+    </div>
+    <script>
+        var $result = $('#result');
+        $('#resultCheckin').hide();
+
+        $('#checkinButton').click(function(){
+            // $result.load('/clerkCheckIn');
+            document.getElementById('resultCheckin').innerHTML = <%- include('clerkCheckIn') -%>
+            $('#resultCheckin').show();
+        });
+    </script>
+</header>

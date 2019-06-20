@@ -29,24 +29,32 @@ This is a silent bidding site for Valley Medical Center Foundation's fundraising
 
 Create a directory titled VMC, clone the git repository into that folder, switch to the develop branch, and then install all dependencies.
 
-```shell
+```
 mkdir VMC
 cd VMC
 git clone https://github.com/VMCAuctions/VMCAuction.git
+cd VMCAuctions
 git checkout -b develop origin/develop
 npm install
 ```
 
-Navigate to the secret-example.json file and follow the directions.
+<!-- Navigate to the secret-example.json file and follow the directions. -->
+Navigate to `server/config` directory and create a `secret.json` file, in it - create an object with key "secret" and random string as a value.
 
-To run the project, open a new terminal window, navigate to the folder where you installed mongoDB, and run the following:
+To run the project, open a new terminal window, and from your home directory run:
 
 On Mac:
-```shell
-sudo mongod
-```
+`mongod`
+
+If `mongod` is giving an error, do the following:
+`mkdir -p /data/db`
+`sudo chown -R `id -un` /data/db`
+
+You're all set now and you can run `mongod` to start the Mongo server.
+
 
 On PC:
+
 ```shell
 mongod
 ```
@@ -57,7 +65,9 @@ Navigate to where you cloned the git repository and run the following:
 nodemon server.js
 ```
 
-Then, navigate to localhost:8000 on Google Chrome.
+This command will open up new tab in your browser for: `https://localhost:8000/users/login`
+
+You may need to refresh the page if it didn't render immediately.
 
 ## Developing
 
@@ -70,7 +80,7 @@ MongoDB
 
 Installation instructions for mongoDB on Mac are included below.  (To download mongoDB on PC, follow the instructions on MongoDB's website: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
-```shell
+```
 brew update
 brew install mongodb
 ```
@@ -85,9 +95,7 @@ For demonstration and socket-testing purposes, you can download ngrok here: http
 
 Then, open a new terminal window and run the following:
 
-```shell
-ngrok http 8000
-```
+`ngrok http 8000`
 
 Navigate to the https url in your terminal, and then change "http://localhost:8000/" to that url in the following files (located in the wireframe directory):
 
@@ -115,7 +123,7 @@ These branches should be created off of develop or another feature branch, NOT t
 
 Use the following code to push your feature branch up to GitHub.
 
-```shell
+```
 git add .
 git commit -m "<Detailed message explaining your feature and the changes you implemented to create it>"
 git push origin <featureBranchName>

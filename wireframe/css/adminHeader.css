@@ -1,0 +1,63 @@
+/* top nav bar 
+---------------------------------------------------------------*/
+#top-nav {
+    background-color: #f8f9fa; 
+}
+.brand{
+    font-family: "Kameron", Georgia, "Times New Roman", serif;
+    font-size: 1.6rem !important;
+    color: #003d79 !important;
+    padding-left: 10px; 
+}
+
+.auction-nav {
+    font-family: Lato, sans-serif; 
+    font-size: 1rem; 
+    font-weight: 400; 
+    text-transform: uppercase; 
+    letter-spacing: 0.1rem
+}
+    
+a.top-link {
+    color: #0080ff !important;
+    font-weight: 400;
+    font-size: 0.9rem; 
+}
+a.top-link:hover {
+    color: #0055cb !important; 
+}
+.top-link.active1 {
+    color: #0055cb !important;
+    font-weight: 700 !important; 
+    padding: 0 0 6px 0; 
+    border-bottom: 3px solid #ff2719; 
+}
+
+
+/* lower nav bar  
+---------------------------------------------------------------*/
+#second-nav {
+    background-color: #003d79;
+    padding-top: 0px !important; 
+    padding-bottom: 0px !important;
+}  
+
+.second-link {
+    color: #fff !important;
+    font-size: 0.9rem; 
+    padding-left: 0px !important; 
+    padding-right: 0px !important;
+   
+} 
+
+a.second-link:hover {
+    color: #99ccff!important;
+}
+
+.active2 {
+    color: #99ccff !important;
+    border-bottom: 3px solid #99ccff;
+    
+}
+
+ 

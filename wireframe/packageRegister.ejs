@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Package Register</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    <link rel="stylesheet" type="text/css" href="/css/packageRegister.css">
+  
+    <!-- Java Script -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    
+
+	<!-- Data Tables -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+	<script type="text/javascript">
+
+        // If priority fields are meant to be unique, then can prepopulate something like a set with all priority values, and prevent users from switching to any preselected values; if they haven't been selected yet, update and add to the set
+
+          $(document).ready(function(){
+            <% for (i in packages){ %>
+              $("#<%= packages[i].id%>Featured").change(function(){
+                $("#<%= packages[i].id%>Priority").val("10")
+                $("#<%= packages[i].id%>Priority").toggle()
+              })
+            <%}%>
+          })
+
+        </script>
+</head>
+
+<body>
+	<%if(admin == 2){%>
+        <%- include('adminHeader') -%>
+    <%}else if (admin == 1) {%>
+		<%- include('clerkHeader') -%>
+	<%}else  {%>
+		<%- include('header') -%>
+    <%}%>
+
+    <div class="container-fluid">
+        <h2 class="my-4 ml-1">Package Register</h2>
+
+        <!-- Top Search and Display Totals section -->
+        <div class="container-fluid search-block">
+            <div class="row align-items-start">
+                <!-- Search section/column -->
+                <div class="col-md-6">
+
+                    <!-- Find packages by keyword -->
+                    <div id="search-keyword">
+                        <label for "keyword" class="label-search">Search by keyword:</label>
+                        <input class="form-control" type="search" id="keyword" placeholder="Keyword">
+                    </div>
+
+                    <!-- Find all packages in a category-->
+                    <div id="search-category">
+                        <label for "category" class="label-search">Search by category:</label>
+                        <select class="form-control search-inner" name="category" id="category">
+                            <option value="">All Categories</option>
+                            <% for(var c in categories) {%>
+                                <option value="<%=categories[c].name%>">
+                                    <%=categories[c].name%>
+                                </option>
+                                <%}%>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Display Totals section/column -->
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm summary-table mt-4">
+                            <tbody>
+                                <tr>
+                                    <td class="summary-table">Total Packages: &nbsp; <span class="summary-num"><%= packages.length %> </span></td>
+                                    <td class="summary-table">Total Estimated Market Value: &nbsp; <span class="summary-num"><%= "$" + sumMarketVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></td>
+                                    <td class="summary-table">Total Starting Bids: &nbsp; <span class="summary-num"><%="$" + sumStartingBid.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span></td>
+                                <tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+             </div>
+         </div>   <!-- End of Search and Display Totals top section -->
+
+        <!-- Package Table -->
+        <div >
+            <table id="package-table" class="table table-striped table-bordered table-responsive-md">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" class="narrow-col">Package Number</th>
+                        <th scope="col" class="medium-col">Package Name</th>
+                        <th scope="col" class="narrow-col">Image</th>
+                        <th scope="col" class="med-to-narrow-col">Category</th>
+                        <th scope="col" class="large-col">Package Description</th>
+                        <th scope="col" class="medium-col">Package Restrictions</th>
+                        <th scope="col" class="medium-col">Items</th>
+                        <th scope="col" class="medium-col">Donors</th>
+                        <th scope="col" class="narrow-col">Fair Market Value</th>
+                        <th scope="col" class="narrow-col">Starting Bid</th>
+                        <th scope="col" class="narrow-col">Bid Increment</th>
+                        <th scope="col" class="narrow-col">Featured</th>
+                        <th scope="col" class="narrow-col">Priority</th>
+                        <% if (admin == 2) { %>
+                            <th scope="col" class="actions medium-col" >Actions</th>
+                        <% } %>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i in packages){%>
+
+                        <tr class="packageRow">
+                            <td><%= packages[i]._id%></td>
+                            <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+
+							<td> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                            
+                            <td><%= packages[i]._category%></td>   
+                            <td><%= packages[i].description%></td>
+                            <td><%= packages[i].restrictions%></td>
+                            <td>
+                                <ul>
+                                <% for (let item = 0; item < packages[i]._items.length; item++) { %>
+                                    <li><%= packages[i]._items[item].name %></li>
+                                <% } %>
+                                </ul>
+                            </td>
+                            <td><%= packages[i].donors%></td>
+							<td class="text-center"><%= "$" + packages[i].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            <td class="text-center"><%= "$" + packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            <td class="text-center"><%= "$" + packages[i].bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></td>
+                            
+                            <% if(admin == 2){ %>
+                               <form>
+                                    <td class="text-center">
+										<select class="input-featured" id="<%= packages[i].id %>Featured">
+											<% if (packages[i].featured == true){ %>
+												<option  value = "<%= packages[i].featured %>">Yes</option>
+												<option  value = "<%= !packages[i].featured %>">No</option>
+											</select></td>
+											<td class="text-center" id="priority">
+												<input id="<%= packages[i].id %>Priority" class="input-featured" type="text" value="<%= packages[i].priority %>"></input>
+											<% }else{ %>
+												<option value = "<%= packages[i].featured %>">No</option>
+												<option value = "<%= !packages[i].featured %>">Yes</option>
+											</select></td>
+                                    <td class="text-center" id="priority">
+                                        <input id="<%= packages[i].id%>Priority" class="input-featured" type="text" value="<%= packages[i].priority %>" style="display:none;"></input>
+										
+                                    <% } %>
+                                    
+                                    </td>
+                                    <hidden id="packageID" value="<%= packages[i]._id%>"></hidden>
+                                </form>
+                                <td class="text-center">
+                                   <button id="<%= packages[i].id%>" class="confirmChanges mr-2 mb-3">Save Priority</button>
+                                    <a href='/<%=auction%>/packages/edit/<%=packages[i]._id%>'><i class="fas fa-edit to-edit"></i></a>
+                                    <a href='/<%=auction%>/packages/remove/<%=packages[i]._id%>'><i class="far fa-trash-alt to-delete"></i></a>
+                                </td>
+                            <%}else{%>
+                                <td><%= packages[i].featured%></td>
+                                <td class="package-val"><%= packages[i].priority%></td>
+                            <%}%>
+                        </tr>
+                        <%}%>
+                </tbody>
+            </table>
+        </div>
+        <!-- End main page container-->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            	  // Initializes Data Tables plugin
+			// $('#package-table').DataTable({
+			// 	"dom": '<lip<t>ip>',
+			// 	"searching": false,
+			// 	"order": [[ 0, "asc" ]],
+			// 	"pageLength": 25,
+			// 	"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+			// 	"pagingType": "full_numbers",
+			// 	"columnDefs": [
+			// 		{ "orderable": false, "targets": 2 },
+			// 		{ "orderable": false, "targets": 4 },
+			// 		{ "orderable": false, "targets": 5 },
+			// 		{ "orderable": false, "targets": 6 },
+			// 		{ "orderable": false, "targets": 11 },
+			// 		{ "orderable": false, "targets": 12 },
+			// 		{ "orderable": false, "targets": 13 },
+			// 	]
+				
+			// });
+
+            $("#keyword").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                if (value == '') {
+                    $(".packageRow").show();
+                } else {
+                    $(".packageRow").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                    });
+                }
+            });
+
+            $("select[name='category']").change(function () {
+                var value = $(this).val().toLowerCase();
+                $(".packageRow").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                })
+            })
+            //Need to think about how to keep priority numbers unique; may have to check on the backend, as frontend won't necessarily reflect the database due to changes via user input
+            //Perhaps add a warning on the frontend when id has been used or if the priority number exceeds 10
+            //Perhaps hide priority field if featured is false, then make sure to set priority field to None on the backend if featured is false
+            $('.confirmChanges').click(function(event){
+              event.preventDefault();
+              id = event.target.id
+              featured = $('#' + id + "Featured").val()
+              priority = $('#' + id + "Priority").val()
+              console.log("enteredConfirmChanges ajax call");
+			  // 1-17 Bug Fix List Item 6 Insert deployed URL so 'Save Changes' button works on deployed version
+              $.get(`/<%=auction%>/packages/priority/${id}/${featured}/${priority}`,function(message){
+                alert(message);
+              });
+            });
+
+        });
+    </script>
+</body>
+
+</html>

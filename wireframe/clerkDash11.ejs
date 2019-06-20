@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Clerk's Dashboard
+        </title>
+        <!-- pdfmake scripts -->
+        <script src='/pdfmake/pdfmake.js'></script>
+        <script src='/pdfmake/vfs_fonts.js'></script>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!-- sockets -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+            crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+       
+           
+        </head>
+    <body>
+        <%- include('clerkHeader') -%>
+     
+        
+        <div class="demo-placeholder">
+            <button type="button" id="checkinButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
+                    Check in
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Check out
+                    </button>
+            <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+                    Retrieve won packages
+                    </button>
+            
+        </div>
+        <script>
+                function loadSupportedSearch(){
+                    
+                <div id="search-lastname">
+                    <label for "lastname" class="label-search">Search by Last Name</label>
+                    <input class="form-control" type="search" id="lastname" placeholder="Last Name"> </input>
+                    
+                </div>
+                    
+                }
+        </script>
+        <div class="container-fluid">
+            <!-- <h2>Supporters</h2> -->
+            <!-- <form action="/clerkDash" id="itemsSearch" method="post"> -->
+               
+                
+            <!-- </form> for Supporters-->
+            <div id="supportertable">
+            <h3>Supporters</h3>
+            <table class="table table-striped table-bordered package-table">
+                <thead>
+                    <tr>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Packages Won</th>
+                        
+                        <th scope="col">Total Spent</th>
+                        <th scope="col">Invoice</th>
+                    </tr>
+                </thead>
+                <tbody id="carts">
+                    <% for (var u in users) {%>
+                        <tr class="supporterRow">
+                            <td>
+                                <a href="/<%=auction._id%>/users/account/<%=users[u].userName %>"><%= users[u].firstName %></a>
+                            </td>
+                            <td id='supporterLast'>
+                                <a href="/<%=auction._id%>/users/account/<%=users[u].userName %>"> <%= users[u].lastName %> </a>
+                            </td>
+                            <td id="<%= users[u].userName + 'winning' %>">
+                                <ul>
+                                    <% for (var p in cart[users[u].userName].packages) { %>
+                                        <li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
+                                            $<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount %></li>
+                                    <% } %>
+                                </ul>
+                            </td>
+                           
+                            <td id="<%= users[u].userName + 'total' %>">
+                                $<%= cart[users[u].userName].total %>
+                            </td>
+                            <td>
+                                <button type="button" class="pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>">PDF</button>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            </div>
+            <!-- for Package name -->
+            <div id="packagetable">
+                <h3>Packages</h3>
+                <table class="table table-striped table-bordered package-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Package Id</th>
+                            <th scope="col">Package Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Packages Restrictions</th>
+                            <th scope="col">Items</th>
+                            <th scope="col">Fair Market value</th>
+                            <!-- <th scope="col">Invoice</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="carts">
+                        <% for (var i in packages) {%>
+                            <tr class="packageRow">
+                                    <td><%= packages[i]._id%></td>
+                                <td><a href="/<%=auction%>/packages/<%=packages[i]._id%>"><%=packages[i].name%></a></td>
+
+                                <td> <img src="/<%= packages[i].photo%>" alt=""> </td>
+                                
+                                <td><%= packages[i]._category%></td>
+                                <td><%= packages[i].description%></td>
+                                <td><%= packages[i].restrictions%></td>
+                            <td>
+                                
+                               
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="demo-placeholder">
+                <button type="button" id="sendLinkButton" onclick="loadSupportedSearch()" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal" >
+                        Send link
+                        </button>
+                    
+            </div>
+        </div>
+        <!-- json parse scripts -->
+        <script type="text/javascript">
+            var cart = <%-JSON.stringify(cart)%>;
+            var packages = <%-JSON.stringify(packages)%>;
+        </script>
+        <!-- search box scripts -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                console.log("100 clerkDash.js script document.ready start");
+                // $(".packageRow").show();
+            //    $("#packagetable").hide();
+            
+            
+            $("#supportertable").hide();
+               $("#lastname").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#supportertable").hide();
+                    } else {
+                        $("#supportertable").show();
+                        $(".supporterRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+                $(".packageRow").show();
+               $("#packagetable").hide();
+               $("#packagename").on("keyup", function () {
+                   var value = $(this).val().toLowerCase();
+                   if (value == '') {
+                       // $(".packageRow").show();
+                       $("#packagetable").hide();
+                       
+                    } else {
+                        $("#packagetable").show();
+                        $(".packageRow").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+                        });
+                    };
+                });
+           
+              
+            })
+        </script>
+        <!-- pdfmake scripts -->
+        <script type="text/javascript">
+            $(".pdfBut").click(function(){
+                var firstName = $(this).data('first')
+                var lastName = $(this).data('last')
+                var userName = $(this).data('user')
+                var newCart = cart
+
+                function buildTable(crt) {
+                    tableData = []
+                    columns = ['_id','name','description','bids']
+                    tableData.push(['Package ID','Package Name','Package Description','Winning Bid Amount'])
+                    crt.forEach(function(row) {
+                        var rowData = []
+                        for(var x = 0; x < columns.length; x++) {
+                            if(x == columns.length - 1) {
+                                tmpBids = row.bids
+                                winBid = tmpBids[tmpBids.length - 1]
+                                winAmt = winBid.bidAmount
+                                rowData.push(winAmt)
+                            } else {
+                            rowData.push(row[columns[x]])
+                            }
+                        }
+                        tableData.push(rowData)
+                    })
+                    return tableData
+                }
+
+                docDef = {
+                    content: [
+                        { text: firstName + ' ' + lastName, style: 'header'},
+                        {
+                            table: {
+                            headerRows: 1,
+                            body: buildTable(newCart[userName].packages)
+                            }
+                        }
+                    ],
+                    styles: {
+                        header: {
+                            fontSize: 22,
+                            bold: true
+                        }
+                    }
+                }
+                pdfMake.createPdf(docDef).open()
+            })
+
+
+        </script>
+        
+    </body>
+</html>

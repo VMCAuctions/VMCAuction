@@ -24,7 +24,21 @@ var mongoose      = require('mongoose'),
 /*
 *  database information
 */
-    dbURI         = 'mongodb://localhost/POTR_DEV2' || '127.0.0.1:27017',
+    //this will allow access to the secret file for the dbURI below
+    secret = require('../config/secret.json')
+    // dbURI         = 'mongodb://localhost/POTR_DEV2' || '127.0.0.1:27017',
+
+    //Note to Self: Switching to Dev3 for temporary testing purposes
+
+	// from mLab MongoDB account - 3rd party mongodb hosting.  mlab.com/databases/elizabid
+	// account info:  user: rinebob  pw: 1Mlabpw
+	// db user login info:  user: organizer  pw:  1Elizabidpw
+       
+  // dbURI         = 'mongodb://organizer:1Elizabidpw@ds131814.mlab.com:31814/elizabid',
+  
+  //the string is stored in the secret files, and there is one on deployed server, so there's no need to change everytime
+	dbURI         = secret.dbURI,
+
 
     // require auto-increment for simple, readable ID's
     autoIncrement = require('mongoose-auto-increment');

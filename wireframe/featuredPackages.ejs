@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+	<title>Featured Packages</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">  
+	<link rel="stylesheet" type="text/css" href="/css/packageStyle.css">
+
+	<!-- Sockets and JavaScript -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script   src="https://code.jquery.com/jquery-3.4.0.min.js"  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="   crossorigin="anonymous"></script>
+	<script type='text/javascript'>
+		var socket = io.connect();
+
+		function change(packageId) {
+			var watchlistButton = document.getElementById("watchlistButton-"+packageId);
+
+			if ( watchlistButton.value == "Remove from Watch List" ) {
+				$.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
+				$('#watchlistButton-'+packageId).attr("class","btn btn-add-watchlist mb-3");
+				watchlistButton.value = "Add to Watch List";
+			} else {
+				$.get("/<%= auction %>/users/interested-in-package/"+packageId);
+				watchlistButton.value = "Remove from Watch List";
+				$('#watchlistButton-'+packageId).attr("class","btn btn-remove-watchlist mb-3");
+			}
+		}
+
+			$(document).ready(function(){
+        		socket.on("serverTalksBack", function(data){
+          		$('.currentBid'+data.packId).text(data.bid + " (by: " + data.userName + ")")
+				  console.log(data.bid);
+				// Update highest bidder and bid amount
+				let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				let topBidder = data.userBidLast;
+				$('#highest-bid-'+data.packId).text("$"+ currentBid);
+				$('#highest-bidder-'+data.packId).text(data.userBidLast);
+          }
+		);
+		
+		})
+
+	</script>
+</head>
+
+<body>
+	<%if(admin === 2){%>
+	<%- include('adminHeader') -%>
+	<%}else{%>
+		<%- include('header') -%>
+	<%}%>
+	<% if(admin == 0){ %>
+		<%- include('footerNotifications') %>
+	<% } %>
+	<%if(admin == 0){%>
+		<%- include('footerClock') -%>
+	<%}%>
+
+	<div class="container margin-tofooter">
+
+		<h2 class="supporter-view">Featured Packages</h2>
+
+		<div class="d-flex flex-row flex-wrap justify-content-start">
+			<% for (var f in featured) {%>
+				<div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3">
+					<div id ="<%= featured[f]._id %>" class="card pkg-card">	
+						<div class="card-body">
+							<div class="featured-num">
+								#<%= featured[f]._id %>
+							</div> 
+							<div class="featured-priority">
+								<%= featured[f].priority %>
+							</div>
+							<div class="featured-box">
+								FEATURED
+							</div> 
+							<div class="d-flex flex-row justify-content-start align-items-start card-top"> 
+								<div>
+									<img class="pkg-img mr-3" src="/<%= featured[f].photo %>">
+								</div>	
+								<div>  
+									<a class="pkg-title" href="/<%= auction %>/packages/<%= featured[f]._id %>"><%= featured[f].name %></a>
+									<p class="category mt-1">Category: <%=featured[f]._category %></p>
+								</div>	
+							</div>
+							<hr>
+							<div class="row card-middle ml-1">
+								<ul class="mt-2">
+									<li>Value: <span class="value"><%= "$" + featured[f].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %></span> &nbsp;|&nbsp;
+									Opening Bid: <span class="opening-bid"> <%="$" + featured[f].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 	
+									<%if(featured[f].bids[featured[f].bids.length-1]){%>
+										<li class="mt-1">Highest Bid: <span id="highest-bid-<%= featured[f]._id%>" class="highest-bid"> <%="$" + featured[f].bids[featured[f].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
+										<span class="highest-bid">(by: <span id="highest-bidder-<%= featured[f]._id%>"><%= featured[f].bids[featured[f].bids.length-1].name%></span>)</span></li>
+										<%}else{%>
+										<li class="mt-1 no-bid">No bids yet! </li>
+									<%}%>
+									<!-- TO ADD THE CORRECT INFO FROM DATABASE -->
+									<li class="donated mt-1">Donors: <%=featured[f].donors %></li>
+								</ul>
+							</div>
+							<hr>
+							<div class="text-center">
+								<!-- <%if(userName && userName !== "Clerk"){%> -->
+								<% var flag = false %>
+								<% for(var i = 0; i < user._packages.length; i++){ %>
+									<% if(featured[f]._id == user._packages[i]) {%>
+										<!--do this in ajax call instead-->
+										<!-- <button class="btn btn-remove-watchlist mb-3" onClick="document.location='/<%=auction%>/users/uninterested-in-featured/<%=featured[f]._id%>'">Remove from Watchlist</button> -->
+										<input class = "btn btn-remove-watchlist mb-3" onClick="change(<%= featured[f]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%= featured[f]._id %>"></input>
+										<!-- <a href="/<%=auction%>/users/uninterested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Remove from Watchlist</button></a> -->
+										<% flag = true %>
+											<% break %>
+										<% } %>
+									<%}%>
+
+									<% if(flag === false) {%>
+										<input class = "btn btn-add-watchlist mb-3" onClick="change(<%= featured[f]._id %>)" type="button" value="Add to Watch List" id="watchlistButton-<%= featured[f]._id %>"></input>
+										<!--do this in ajax call instead-->
+										<!-- <button class="btn btn-add-watchlist mb-3" onClick="document.location='/<%=auction%>/users/interested-in-featured/<%=featured[f]._id%>'">Add to Watchlist</button> -->
+									<!-- <a href="/<%=auction%>/users/interested-in-featured/<%= featured[f]._id %>"><button type="button" name="interested">Add to Watchlist</button></a> -->
+									<%}%>
+								<%}%>			
+							</div>
+						</div>	
+					</div>
+				</div>	
+			<%}%>
+		</div>
+		<div>
+	</body>
+</html>

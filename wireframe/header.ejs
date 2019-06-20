@@ -1,62 +1,58 @@
 
-<!-- Bootstrap -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/css/style.css" >
+<link rel="stylesheet" type="text/css" href="/css/header.css">
 
-  <style>
-    .navbar-custom{
-      background-color: #222;
-    }
-    .h3{
-      font-size: 1.7rem;
-      color: #fff;
-    }
 
-  </style>
+<!-- JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <header>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <% if (auction){ %>
-      <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <h3> <a class="nav-link" href="/<%=auction%>/packages">Catalog</a> </h3>
-          </li>
-      </ul>
-    <%}%>
-  <!-- fix the route that takes it to the '#' and it actually should not be there in full size screens but only mobile displays -->
-      <ul class="nav navbar-nav navbar-right">
-        <%if(userName){%>
-          <h3>
-            <a class="nav-link" href="/<%=auction%>/users/<%=userName%>">Hello, <%=userName%></a>
-          </h3>
-          <h3>
-            <a class="nav-link" href='/users/logout'>Logout</a>
-          </h3>
-        <%}else{%>
-          <h3>
-            <a class="nav-link" href='/users/login'>Login</a>
-          </h3>
-          <h3>
-            <a class="nav-link" href="/users/register">Register </a>
-          </h3>
-        <%}%>
-      </ul>
-      <!-- colapse div ends -->
-    </div>
-<!-- container ends -->
-    </div>
-  </nav>
+	<% if (auction){ %>
+		<% if(userName) {%>
+			<nav class="mb-3">
+				<!-- top nav bar -->
+				<!-- "current" is a flag sent from the server to indicate the active web page -->
+				<div id="top-nav-supporter" class="d-flex flex-row justify-content-between align-items-center text-white py-2">
+					<div class="col-3 pl-4">
+						<a class="user <% if (typeof(current) != 'undefined' && current == 'myAccount') { %> current <% } %>" href="/<%=auction%>/users/account/<%=userName%>"><i class="fas fa-user"></i>&nbsp;<%= user.lastName %></a>
+					</div>		
+					<div class="col-6">
+						<div class="row brand-nav text-center mb-1">elizabid by VMCF </div>
+						<div class="row auction-nav text-center"><%= auctionDetails.name %></div>		
+					</div> 
+					<div class="col-3 text-right">
+						<a class="pr-3 log" href="/users/logout"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+					</div>
+				</div>
+				<!-- second nav bar with buttons -->
+				<div class="d-flex flex-row justify-content-center align-items-center">
+					<div class="col-4 nav-btn catalog py-3">
+							<a class="nav2-link <% if (typeof(current) != 'undefined' && current == 'catalog') { %> current <% } %>" href="/<%=auction%>/packages">Full Catalog</a>		
+					</div>
+					<div class="col-4 nav-btn featured py-3">
+						<a class="nav2-link <% if (typeof(current) != 'undefined' && current == 'featured-packages') { %> current <% } %>" href="/<%=auction%>/featured-packages">Featured</a>
+					</div>
+					<div class="col-4 nav-btn watch-list py-3">
+						<!-- <a class="nav2-link <% if  (typeof(current) != 'undefined' && current == 'watch-list') { %> current <% } %>" href="/<%=auction%>/users/<%=userName%>">Watch list</a> -->
+						<a class="nav2-link <% if  (typeof(current) != 'undefined' && current == 'watch-list') { %> current <% } %>" href="/<%=auction%>/watchList/<%=user._id%>">Watch list</a>
+					</div>		
+				</div>
+			</nav>
+		<%}%>
+	<%}%> 
 </header>
 
-<!-- Nav-bar -->
+
+
+
+
+
+
+

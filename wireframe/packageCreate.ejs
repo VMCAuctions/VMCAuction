@@ -2,109 +2,337 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>package creation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Create Package</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    <link rel="stylesheet" type="text/css" href="/css/packageCreate.css">
+  
+    <!-- Java Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
   </head>
   <body>
-    <!-- <script>
-      function test(){
-        alert('hello')
-      }
-    </script> -->
     <%if(admin){%>
     <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
-    <div class="container mt-4">
-      <h3>Create Package</h3>
-      <form id="packageForm" action="/<%=auction%>/packages" method="post">
-        <div class="form-group">
-          <label for="packageName">Package Name</label>
-          <input type="text" name="packageName" id="packageName" class="form-control">
-        </div>
+      <div class="container mt-4">
+        <h2>Create Package</h2>
+           <p class="err-info">The fields marked with (*) are required.</p>
 
-        <div class="form-group">
-          <label for="packageDescription">Package Description</label>
-          <textarea class="form-control" name="packageDescription" id="packageDescription" rows="8" cols="40"></textarea>
-        </div>
-        <!-- priority is asscending currently 0 would be at the top of the page -->
-        <div class="form-group">
-          <label for="priority">Feature Level</label>
-          <input id="priority" type='number' name='priority' placeholder='Priority' class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label for="">Category</label>
-          <select name="category" id="category" class="form-control">
-
-            <% for (var c in categories){%>
-              <!-- add radio and jquery to make only one catagory option apear
-              or Make a seperate page to creat catagories -->
-              <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
-              <%}%>
-            </select>
-        </div>
-          <div class="form-group row">
-            <div class="col-6">
-              <input type="number" name="openingBid" id="openingBid" placeholder="Opening Bid" class="form-control">
-            </div>
-            <div class="col-6">
-              <input type="number" name="increments" id="increments" placeholder="increment" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-          </div>
-
-          <!-- need a read only feild with the current number selected -->
+        <form id="packageForm" class="mt-3" action="/<%=auction%>/packages" enctype="multipart/form-data" method="POST">
+          <!-- Row 1 -->
+         <button type="button" class="btn btn-add mb-4 show-modal" data-toggle="modal" data-target="#itemsModal">
+          Manage Items
+         </button>
           <div class="alert alert-secondary">
-          <div class="form-check">
-            <div class="row">
-              <label for="">Items</label>
+            <div class="form-check">
+              <div>
+                <p>Items</p>
+                <ol id="itemList">
+                </ol>
+              </div>
             </div>
-            <%for (var i in items){%>
-              <%if(!items[i].packaged){%>
-                <br>
-                <input class="form-check-input" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
-                <label for="<%=items[i]._id%>"><%=items[i].name%></label>
-                <%}%>
-                <%}%>
           </div>
+          <!-- Row 2 -->
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label for="name" class="label-name">Package Name*</label>
+              <input type="text" name="name" id="name" class="form-control">
+            </div>
+            <div class="form-group col-4">
+              <label for="category" class="label-name">Category</label>
+              <select name="category" id="category" class="form-control">
+                <% for (var c in categories){%>
+                <!-- add radio and jquery to make only one catagory option apear
+                or Make a seperate page to creat catagories -->
+                  <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+                <%}%>
+              </select>
+            </div>
+            <div class="form-group col-4">
+              <label for="featured" class="label-name">Featured?</label>
+              <select name='featured' id="featured" class="form-control">
+                <option value='false'>No</option>
+                <option value='true'>Yes</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="totalValue">Total Value</label>
+          <!-- Row 3 -->
+          <div class="row">
+            <div class="col-sm-7 col-md-6 col-lg-12">
+              <label for="packageImage" class="label-name">Package Image (best to use images with the 4:3 ratio, as the displayed image will be 120 x 90 pixels)  </label>
+              <div class="form-group">
+                <label for="file" class="sr-only">File</label>
+                <div class="input-group">
+                  <span class="input-group-prepend">
+                    <div class="btn btn-upload custom-file-uploader">
+                      <input type="file" name="packageImage" onchange="this.form.filename.value = this.files.length ? this.files[0].name : ''" />
+                      Choose File
+                    </div>
+                  </span>
+                  <input type="text" name="filename" class="form-control" placeholder="No file selected" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- Row 4 -->
+        <div class="form-group row">
+
+          <div class="col-4">
+            <label for="totalValue" class="label-name">Total Value</label>
             <input readonly id="totalValue" type="number" name="totalValue" value="0" class="form-control">
           </div>
-          <a href="/<%=auction%>/organizer-menu" class="btn btn-secondary">Back</a>
-          <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+
+          <div class="col-4">
+            <label for="openingBid" class="label-name">Opening Bid*</label>
+            <input type="number" name="openingBid" id="openingBid" class="form-control">
+          </div>
+          
+          <div class="col-4">
+            <label for="increments" class="label-name">Increment Amount*</label>
+            <input type="number" name="increments" id="increments" class="form-control">
+          </div>
+      </div>
+      <!-- Row 5 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="name" class="label-name">Donors</label>
+          <input type="text" name="donors" id="donors" class="form-control" value="">
+        </div>
+      </div>
+      <!-- Row 6 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="packageDescription" class="label-name">Package Description*</label>
+          <textarea class="form-control" name="packageDescription" id="packageDescription" rows="5" cols="40"></textarea>
+        </div>
+      </div>
+      <!-- Row 7 -->
+      <div class="form-row">
+        <div class="form-group col-12">
+          <label for="packageRestrictions" class="label-name">Package Restrictions</label>
+          <textarea class="form-control" name="packageRestrictions" id="packageRestrictions" rows="5" cols="40"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-submit create-package mt-1 mb-5">Submit</button>
+
+          <!-- Modal -->
+          <div class="modal fade bd-example-modal-lg" id="itemsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                      <i class="fas fa-pencil-alt"></i> Add / Remove Items
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-header">
+                    <div id="search-container">
+                      <!-- Find items by keyword -->
+                      <div id="search-keyword">
+                        <label for "keyword">Search by keyword:</label>
+                        <input class="form-control search-input" type="search" id="keyword" placeholder="Keyword">
+                      </div>
+                    </div>
+                    <div id="search-category">
+                        <label for "category" >Search by category:</label>
+                        <select select class="form-control" name="category" id="category">
+                          <option value="">All Categories</option>
+                          <% for(var c in categories) {%>
+                            <option value="<%=categories[c].name%>"><%=categories[c].name%></option>
+                          <%}%>
+                        </select>
+                      </div>
+                </div>
+                <div class="modal-body">
+                  <div class="col-lg-6">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <table id="itemsTable" class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th class="small-col">Number</th>
+                            <th>Name</th>
+                            <th class="large-col">Value ($)</th>
+                            <th>Category</th>
+                            <th>Restrictions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Packaged Items -->
+                            <%for (var i in items){%>
+                              <%if(items[i].packaged){%>
+                              <tr class="itemRow">
+                                <td>
+                                  <%=items[i]._id%>
+                                </td>
+                                <td>
+                                  <input class="styled-checkbox" checked="true" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                                  <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                                </td>
+
+                                <td>
+                                  <%=items[i].value %>
+                                </td>
+                                <td>
+                                  <%=items[i]._category%>
+                                </td>
+                                <td>
+                                  <%=items[i].restrictions %>
+                                </td>
+                              </tr>  
+                            <%}%>
+                          <%}%>                 
+                            
+                            <!-- Unpackaged Items -->
+                          <%for (var i in items){%>
+                            <%if(!items[i].packaged){%>
+                              <tr class="itemRow">
+                                <td>
+                                  <%=items[i]._id%>
+                                </td>
+                                <td>
+                                  <input class="styled-checkbox" required value="<%=items[i]._id%>" type="checkbox" name="selectedItems" id="<%=items[i]._id%>" onChange='totalAdd(<%=items[i].value%>, <%=items[i]._id%>)'>
+                                  <label for="<%=items[i]._id%>"><%=items[i].name%></label>
+                                </td>
+                                <td>
+                                  <%= items[i].value %>
+                                </td>
+                                <td>
+                                  <%=items[i]._category%>
+                                </td>
+                                <td>
+                                  <%= items[i].restrictions %>
+                                </td>
+                              </tr>
+                              <%}%>
+                            <%}%>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                 
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+                 
+                  <button id="saveChecked" type="button" class="btn btn-primary" data-dismiss="modal" onClick="updateList(<%=JSON.stringify(items)%>);" >Save Changes</button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Modal -->
           </form>
-    </div>
+      </div><!-- End of page's main container -->
+    
     <script>
       $(document).ready(function(){
+        $('.show-modal').click(function(){
+          $('#itemsModal').modal({
+            backdrop: 'static',
+            keyboard: false
+          })
+		})
+		
+		 // Initializes Data Tables plugin
+	// 	 $('#itemsTable').DataTable({
+	// 		"dom": '<lip<t>ip>',
+	// 		"searching": false,
+	// 		"order": [[ 0, "asc" ]],
+	// 		"pageLength": 25,
+	// 		"lengthMenu": [ [2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"] ],
+	// 		"pagingType": "full_numbers",
+	// 		// "columnDefs": [
+	// 		// 	{ "orderable": false, "targets": 5 },
+	// 		// 	{ "orderable": false, "targets": 6 },
+	// 		// 	{ "orderable": false, "targets": 10 },
+	// 		// ]
+		
+	//   });
 
-        var total = 0;
+        $("#keyword").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          if (value == '') {
+            $(".itemRow").show();
+          } else {
+            $(".itemRow").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
+            });
+          }
+        });
+
+        // Add Total Value
+        var total = <%= total%>;
         var checkedItems = {};
         totalAdd = function(value, id){
-          var checkbox = document.getElementById(id);
-          if (checkbox.checked === true){
-            total += value
-            console.log("total is", total);
-            checkedItems[id]= id;
-            console.log(checkedItems);
-          }
-          else if (checkbox.checked === false) {
-            total -= value
-            delete checkedItems[id]
-            console.log(checkedItems)
-          }
-          document.getElementById('totalValue').value = total
+        var checkbox = document.getElementById(id);
+        if (checkbox.checked === true){
+          total += value
+          console.log("total is", total);
+          checkedItems[id]= id;
+          console.log(checkedItems);
         }
+        else if (checkbox.checked === false) {
+          total -= value
+          delete checkedItems[id]
+          console.log(checkedItems)
+        }
+        document.getElementById('totalValue').value = total
+        }
+
+        updateList = function(items){
+          var counter = 0;
+          var pkgDesc = "";
+          var pkgRest = "";
+          var donorList = "";
+
+          $('#itemList').html("")
+          $('#packageDescription').val(pkgDesc);
+          $('#packageRestrictions').val(pkgRest);
+          $('#donors').val(donorList);
+
+          
+          for (var i = 0; i < items.length; i++) {
+            var checkbox = document.getElementById(items[i]._id);
+
+            if ((checkbox.checked === true)){
+              $('#itemList').append(`<li id='itemID${counter}'>` + items[i].name + "</li>")
+                counter++;
+        
+                pkgDesc = pkgDesc + (items[i].name + ":" + "\n" + "\t"  + items[i].description + "\n");
+                pkgRest = pkgRest + (items[i].name + ":" + "\n" + "\t" + items[i].restrictions + "\n");
+                donorList = donorList + (items[i].donorDisplay + ", ");
+
+                checkedItems[items[i]._id]= 1;
+              }
+              else if((checkbox.checked === false) && (checkedItems.hasOwnProperty(items[i]._id) === true)){
+                $(`#itemID${counter}`).remove()
+
+              }
+          }
+          donorList = donorList.replace(/,\s*$/, "");
+          $('#packageDescription').val(pkgDesc);
+          $('#packageRestrictions').val(pkgRest);
+          $('#donors').val(donorList);
+        }
+
         var validator = $("#packageForm").validate({
           rules: {
-            packageName: {
+            name: {
               required: true,
               minlength: 4
             },
@@ -126,18 +354,25 @@
               min: 5,
               step: 5
             },
-            priority: {
-              required: true,
-              number: true,
-              min: 0
-            }
           }
         });
-        validator.form();
+
+        // validator.form();
+
         if (window.location.search.substring(1) == 'true') {
           alert('that was a success')
         }
       })
+
+      $("select[name='category']").change( function() {
+          var value = $(this).val().toLowerCase();
+          $(".itemRow").filter(function(){
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+      });
+
     </script>
   </body>
 </html>
+    
+    

@@ -1,0 +1,154 @@
+.body {
+  font-size: 0.9rem; 
+}
+
+.brand{
+  font-family: "Kameron", Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  color: #003d79;
+  padding-left: 10px; 
+}
+
+.vmcf-brand {
+  height: 2.3rem;
+}
+
+.contact  {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  color:#003d79 !important;  
+  font-size: 500 !important; 
+}
+
+
+/* BANNER IMAGE AND AUCTION CONTENT */
+.header-img {
+  background-size: cover;  
+  width: 100%; 
+  height: 80vh;
+}
+
+h1{
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  font-size: 2.8rem !important;
+  font-weight: 500 !important; 
+  margin: 0 auto; 
+  color: #fff!important;  
+  text-align: center;
+}
+
+.header-info {
+  color: #fff !important;  
+  font-size: 1rem; 
+  text-align: center; 
+  font-weight: 400; 
+}
+
+
+/* AUCTION CONTENT  */
+h2 {
+  font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
+  color: #003d79 !important;
+  font-weight: 500 !important; 
+  font-size: 2.2rem !important; 
+  margin: 0 auto; 
+  text-align: center; 
+  width: 85%;
+}
+
+.welcome-message {
+  font-size: 1rem;
+  font-weight: 700; 
+}
+
+.auction-description {
+  font-size: 0.9rem;
+  
+}
+
+.btn-div {
+  text-align: center;
+  display: block; 
+}
+
+
+/* Buttons */
+.btn-reg {
+  border: solid 2px#ff2719 !important;
+  background-color: #ff2719;
+  color:#fff !important;
+  font-size: 0.9rem !important; 
+  font-weight: 500 !important; 
+  width: 175px;
+  padding: 0.7rem !important; 
+}
+
+a.btn-reg:hover {
+  color: #fff !important;
+  font-weight: 500;
+  border: solid 2px #c30000 !important;
+  background-color: #c30000 !important;
+}
+
+.btn-centr{
+  margin: 0 auto; 
+  display: block;
+}
+
+
+/* FOOTER */
+.event-footer {
+  padding: 2.5rem 0;
+  text-align: center;
+  background-color: #edf1f8; 
+  border-top: .05rem solid #dbe2f0;
+}
+
+
+/* COUNTDOWN CLOCK */
+
+.clock-num {
+  /* color: #cce6ff; */
+  color: #fff; 
+  font-size: 2.4rem;
+  font-weight: 400; 
+  width: 5rem; 
+  height: 2.1rem;
+}
+
+.clock-letters {
+  /* color: #cce6ff; */
+  color: #fff; 
+  font-size: 0.8rem;
+  font-weight: 300; 
+  text-transform: uppercase;
+  width: 5rem; 
+  height: 2.7rem;
+  padding-top: 1.4rem; 
+}
+#event-start, #event-end {
+  display: none;  
+}
+
+#event-status {
+  color: #ff6746;
+  font-size: 1.2rem; 
+  text-align: center; 
+  text-transform: uppercase;
+  letter-spacing: 0.3rem; 
+}
+
+
+/* FEATURED PACKAGES(Only what differen than the style in packageStyle.css */
+
+.description {
+  font-weight: 300; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.value-display {
+	font-weight: 700; 
+  color: #003d79;
+}
+
+

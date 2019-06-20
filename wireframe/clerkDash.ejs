@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Clerk's Dashboard
+        </title>
+        <!-- pdfmake scripts -->
+        <script src='/pdfmake/pdfmake.js'></script>
+        <script src='/pdfmake/vfs_fonts.js'></script>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <!-- sockets -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/css/clerkDash.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+            crossorigin="anonymous">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+	    <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    </head>
+    <body>
+        <%- include('clerkHeader') -%>
+        <div id="buttons">
+            <div class="text-center mt-1">
+                <button type="button" id="checkinButton"  class="btn btn-add mb-4 show-modal" >
+                        Check in
+                        </button>
+                <button type="button" id="checkoutButton" class="btn btn-add mb-4 show-modal">
+                        Check out
+                        </button>
+            </div>    
+        </div>
+        <div id="resultCheckin">
+                
+        </div>
+        <script>
+            $(document).ready(function(){
+                var result = $('#resultCheckin');
+                var auction = '<%=auction%>'
+                $('#resultCheckin').hide();
+
+                //to load and show check in page
+                $('#checkinButton').click(function(){
+                    result.load('/'+auction+'/clerkCheckIn');
+                    result.show();
+                });
+                //to load ands how checkout page
+                $('#checkoutButton').click(function(){
+                    result.load('/'+auction+'/clerkCheckOut')
+                    result.show();
+                })
+            })
+        </script>
+    </body>
+</html>

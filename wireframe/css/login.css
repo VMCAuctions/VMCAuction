@@ -1,41 +1,48 @@
-body.login-body {
-   background-color: #e3eaf0;
-   color: #595959;
+.login-body {
+   background-color: #f8f9fa;
 }
-.container.login-container {
-   margin-top: 7%;
+
+.brand-login {
+	font-family: Kameron, serif; 
+	font-size: 1.2rem; 
 }
-.card.login-card {
-	padding: 80px 0px 80px 0px;
-	background-color: #f5f5f5;
-	box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
+
+.login-container {
+   margin-top: 8%;
+}
+
+.login-card {
+	padding: 35px 0px 30px 0px;
+	background-color: #fff;
+	border: 1px solid #c3ccd5; 
+	/* box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
 	-webkit-box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
-	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .5);
+	-moz-box-shadow: 2px 2px 5px rgba(0,0, 0, .5); */
 }
-img.signin-img {
+
+.signin-img {
 	padding: 0 2rem 2rem; 
+	width: 325px;
 	margin: auto; 
 	display: block;  
 
 }
-form.login-form {
-	max-width: 350px;
+.login-form {
+	max-width: 300px;
 	margin: auto;
 }
-label {
-	margin-bottom: 0.2rem;
-}
-button.login-btn {
+
+.login-btn {
 	color: #fff;
-	background-color: #719949;
+	background-color: #0080ff;
 	width: 100%;
 	margin: 1.2rem 0; 
+	font-size: 1.1rem; 
 }
 .question {
 	text-align: center;
 	margin: 1rem auto;
 	display: block;
+	font-size: 0.9rem; 
 }
-a {
-	color: #719949;
-}
+

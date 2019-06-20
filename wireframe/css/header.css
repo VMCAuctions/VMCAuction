@@ -1,0 +1,118 @@
+/* top nav bar 
+---------------------------------------------------------------*/
+#top-nav-supporter {
+    /* background-color: #003d79; */
+    /* background-image: linear-gradient(to bottom right, #003d79,  #0080ff); */
+    background-image: linear-gradient(to bottom right, #00184c, #003d79);
+    color: #fff;
+    color: #f9f8fa;
+    font-weight: 400 !important; 
+    
+}
+
+.brand-nav {
+    font-family: "Kameron", Georgia, "Times New Roman", serif;
+    color: #f9f8fa;
+    font-size: 0.9rem !important;
+    display: block; 
+    margin: 0 auto;
+    
+}
+.auction-nav {
+    font-family: Lato, sans-serif; 
+    color: #f9f8fa;
+    font-size: 0.75rem; 
+    font-weight: 300; 
+    text-transform: uppercase; 
+    letter-spacing: 0.1rem;
+    display: block; 
+    margin: 0 auto;
+}
+
+.user {
+    font-size: 0.8rem; 
+}
+
+.user-big {
+    font-size: 0.9rem; 
+} 
+
+a.log, a.user {
+    color: #99ccff; 
+}
+
+a.log:hover, a.log:active, a.user:hover, a.user:active {
+    color: #69afff; 
+}
+
+/* to display which page is active */
+.current {
+    color: #69afff !important; 
+    font-weight: 900 !important;
+}
+
+/* second nav bar with buttons
+---------------------------------------------------------------*/
+.nav-btn {
+    text-align: center;
+    text-transform: uppercase; 
+    color: #f9f8fa;
+    /* font-weight: 400;  */
+    font-weight: 300 !important;  
+    font-size: 0.72rem !important; 
+}
+
+.catalog {
+    background-color: #0080ff;
+}
+
+.featured {
+    background-color: #ff2719;
+    color: #f9f8fa;
+}
+
+.watch-list {
+    background-color: #a2b209;
+    
+}
+
+a.nav2-link {
+    color: #f9f8fa !important; 
+}
+
+a.nav2-link:hover {
+    color: #e6e1ea !important; 
+    font-weight: 700 !important; 
+}
+/* 
+.nav-btn {
+    text-align: center;
+    text-transform: uppercase; 
+    color: #f9f8fa;
+    font-weight: 400; 
+    font-size: 0.75rem; 
+      
+} */
+
+/* to show which page is active */
+.catalog .current {
+    color: #e6e1ea !important; 
+    font-weight: 700 !important;
+    border-bottom: 4px solid #0055cb; 
+    padding: 0 0 15px 0; 
+}
+
+.featured .current {
+    color: #e6e1ea !important; 
+    font-weight: 700 !important;
+    border-bottom: 4px solid #c30000; 
+    padding: 0 0 15px 0;  
+
+}
+
+.watch-list .current {
+    color: #e6e1ea !important; 
+    font-weight: 700 !important;
+    border-bottom: 4px solid #6f8300; 
+    padding: 0 0 15px 0;  
+}

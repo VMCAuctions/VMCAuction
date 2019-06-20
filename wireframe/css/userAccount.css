@@ -1,0 +1,23 @@
+h3 {
+	padding-left: 20px;
+}
+
+#hide1, #hide2, #hide3, #hide4 {
+	display: none;
+	font-size: 0.8rem;
+	color: #ff2719;
+	line-height: 1.5;
+	padding-top: 0.25rem;
+}
+
+#winning-info {
+	display: none;
+}
+
+.user-account th {
+	background-color: #003d79;
+}
+
+.narrow {
+	width: 15%;
+}

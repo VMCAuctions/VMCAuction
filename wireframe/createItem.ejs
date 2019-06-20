@@ -2,82 +2,130 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>create Item</title>
+    <title>Add Item</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    
+    <!-- Java Script -->
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/additional-methods.min.js"></script>
+            
+    <script>
+      $(document).ready(function() {
+        validator.resetForm();
+      });
+    </script>
+
   </head>
+
   <body>
     <%if(admin){%>
     <%- include('adminHeader') -%>
     <%}else{%>
       <%- include('header') -%>
     <%}%>
+    
     <div class="container mt-4">
-      <h3>Create Items</h3>
+      <h2>Add a New Item</h2>
+      <p class="err-info">The fields marked with (*) are required.</p>
+
       <form action="/<%=auction%>/items" id="itemsForm" method="post">
         <!-- Item input group -->
-        <div class="form-group">
-          <label for="itemName">Item Name*</label>
-          <input id="itemName" type="text" name="itemName" class="form-control" >
-        </div>
-        <!-- End Item Input -->
-
-        <!-- Donor Input Row -->
-        <label>Donor Information</label>
-        <div class="form-row">
+        <div class="form-row mt-3">
           <div class="form-group col-md-4">
-            <label for="donorFirst">First Name*</label>
-            <input type="text" name="donorFirst" class="form-control" id="donorFirst">
+            <label for="itemName" class="label-name">Item Name*</label>
+            <input id="itemName" type="text" name="itemName" class="form-control" >
           </div>
           <div class="form-group col-md-4">
-            <label for="donorLast">Last Name*</label>
-            <input type="text" name="donorLast" class="form-control" id="donorLast">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="donorDisplay">Display Donor (Defaults to Anonymous)</label>
-            <input placeholder="Anonymous" type="text" name="donorDisplay" class="form-control" id="donorDisplay">
-          </div>
-        </div>
-        <!-- End Donor Input -->
-
-        <!-- Categories and Fair Market Value Fields -->
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="category">Category</label>
+            <label for="category" class="label-name">Category*</label>
             <select id="category" class="custom-select" name="category">
               <% for (var c in categories){%>
                 <option selected value="<%=categories[c].name%>"><%=categories[c].name%></option>
               <%}%>
             </select>
           </div>
-          <div class="form-group col-md-6">
-            <label for="fairMarketValue">Fair Market Value*</label>
+          <div class="form-group col-md-4">
+            <label for="fairMarketValue" class="label-name">Fair Market Value*</label>
             <input id="fairMarketValue" type="text" name="fairMarketValue" class="form-control" >
           </div>
         </div>
-        <!-- End Categories and Fair Market Value Fields -->
+        <!-- End item input group -->
 
-        <div class="form-group">
-          <label for="itemDescription">Item Description*</label>
-          <textarea id="itemDescription" name="itemDescription" class="form-control" rows="3"></textarea>
+        <!-- Donor Input Group -->
+        <div id="donor" class="container">
+            <h5>Donor Information</h5> 
+            <p class="err-info"> Either donor's Last Name or Organization is required.</p>
+            <div class="form-row mt-3">
+              <div class="form-group col-md-2">
+                <label for="donorPrefix" class="label-name">Prefix</label>
+                <select name="donorPrefix" class="form-control" id="donorPrefix">
+                  <option></option>
+                  <option value="Mr.">Mr.</option>
+                  <option value="Ms.">Ms.</option>
+                  <option value="Mrs.">Mrs.</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Mr. and Mrs.">Mr. and Mrs.</option>
+                  <option value="Dr.">Dr.</option>
+                  <option value="Dr. and Mrs.">Dr. and Mrs.</option>
+                  <option value="Mr. and Dr.">Mr. and Dr.</option>
+                  <option value="Hon.">Hon.</option>
+                  <option value="Hon. and Mrs.">Hon. and Mrs.</option>
+                  <option value="Mr. and Hon">Mr. and Hon.</option>
+                  <option value="Col.">Col.</option>
+                  <option value="Col. and Mrs.">Col. and Mrs.</option>
+                  <option value="Lt.">Lt.</option>
+                  <option value="Lt. and Mrs.">Lt. and Mrs.</option>
+                  <option value="Lt. Col.">Lt. Col.</option>
+                  <option value="Lt. Col. and Mrs.">Lt. Col. and Mrs.</option>
+                  <option value="Capt.">Capt.</option>
+                  <option value="Capt. and Mrs.">Capt. and Mrs.</option>
+                </select>  
+              </div>
+              <div class="form-group col-md-3">
+                <label for="donorFirst" class="label-name">First Name</label>
+                <input type="text" name="donorFirst" class="form-control" id="donorFirst">
+              </div>
+              <div class="form-group col-md-3">
+                <label for="donorLast" class="label-name">Last Name</label>
+                <input type="text" name="donorLast" class="form-control" id="donorLast">
+              </div> 
+              <div class="form-group col-md-4">
+                <label for="donorOrg" class="label-name">Organization</label>
+                <input type="text" name="donorOrg" class="form-control" id="donorOrg">
+              </div> 
+              <div class="form-row mt-1">        
+                  <div class="form-check ml-2">
+                      <input type="checkbox" name="donorAnonymous" value="Anonymous" class="form-check-input custom-checkbox" id="donorDisplay"> &nbsp <span class="anonymous"> Display Donor as Anonymous</span>
+                  </div>
+              </div>    
+          </div>  
         </div>
+        <!-- End Donor Input -->
 
-        <div class="form-group">
-          <label for="itemRestriction">Item Restriction</label>
-          <textarea name="itemRestriction" class="form-control" rows="3"></textarea>
+        <!-- Item description and restrictions -->
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="itemDescription" class="label-name">Item Description*</label>
+            <textarea id="itemDescription" name="itemDescription" class="form-control" rows="4"></textarea>
+          </div>
         </div>
-
-        <input type="submit" name="" value="Submit" class="btn btn-primary">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="itemRestriction" class="label-name">Item Restrictions</label>
+            <textarea name="itemRestriction" class="form-control" rows="4"></textarea>
+          </div>
+        </div>
+         <!-- End Item description and restrictions -->
+         
+        <input type="submit" name="" value="Submit" class="btn btn-submit mt-1 mb-5">
       </form>
-      <div class="row">
-        <div class="col">
-          Fields marked with (*) are required.
-        </div>
-      </div>
-    </div>
-    <script>
+  </div>
 
+    <script>
     var validator = $("#itemsForm").validate({
       rules: {
         itemName: {
@@ -94,13 +142,30 @@
         itemDescription: {
           required: true,
           minlength: 4
+        },
+        donorLast: {
+          minlength: 2, 
+          required: false 
+        },  
+        donorOrg: {
+          minlength: 3, 
+          required: function() { return $('#donorLast').val().length == 0; }
+        }
+      },
+      messages: {
+        donorOrg: {
+          required: "If Last Name is empty, Organization is required!"
         }
       }
     });
+
     validator.form();
     if (window.location.search.substring(1) === 'true') {
-      alert('that was a success')
+      url = window.location.href;
+      window.location.replace(url.replace('?true', ''));
+      alert('Form submitted succesfully.');
     }
+    
     </script>
   </body>
 </html>
