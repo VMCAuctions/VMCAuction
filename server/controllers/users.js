@@ -137,22 +137,24 @@ function UsersController(){
 	this.login = function(req,res){
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
-		res.render('login', {
-			userName: req.session.userName,
-			admin: req.session.admin,
-			auction:req.session.auction
-		})
+		res.render('login');
+		// }
 	};
 
 
 	this.register = function(req,res){
-		Auction.find({}, function(err, auctions){
-			res.render('user', {
-				userName: req.session.userName,
-				admin: req.session.admin,
-				auctions: auctions,
-				auction:req.session.auction
-			})
+		Auction.findById(req.params.auctions, function(err, auction){
+			if (err) {
+				console.log(err);
+			} else { 	
+				res.render('userSignup', {
+					// userName: req.session.userName,
+					// admin: req.session.admin,
+					// auctions: auctions,
+					auctionDetails: auction, 
+					// auction:req.session.auction
+				})	
+			}
 		})
 	};
 
@@ -298,10 +300,10 @@ function UsersController(){
 								adminStatus = 0
 							}
 							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
-							var linkedAuction = req.body.auctionName
+							var linkedAuction = req.body.auctionId;
 							if (adminStatus){
 								// console.log("got in adminStatus")
-								linkedAuction = null
+								linkedAuction = null;
 							}
 
 							User.create({
@@ -328,19 +330,18 @@ function UsersController(){
 										console.log(err)
 										fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
 									}else{
-										// console.log("linkedAuction is", linkedAuction)
-										// console.log("req.session is", req.session)
-										// console.log("afterwards, req.session is", req.session)
-										
-										if (req.body.admin) {
+										if (req.body.admin === 2) {
 											res.redirect('/' + linkedAuction + '/users');
 										} else {
-											req.session.auction = linkedAuction
-											req.session.userName = user.userName
-											req.session.admin = user.admin
-											res.redirect('/' + linkedAuction + '/packages')
+											// req.session.auction = linkedAuction
+											// req.session.userName = user.userName
+											// req.session.admin = user.admin
+											// res.redirect('/' + linkedAuction + '/packages')
+											res.render('registrationThankyou', { 
+												auctionName: req.body.auctionName 
+											});
 										}
-										return;
+										// return;
 									}
 							});
 						}

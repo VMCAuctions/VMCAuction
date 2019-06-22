@@ -1,59 +1,112 @@
-body.regist-body {
+body {
 	background-color: #f8f9fa;
-	color: #404040;
-	font-family: Lato, sans-serif;
-	font-size: 0.9rem;
+	font-size: 0.85rem;
 }
-.container.regist-container {
+
+.brand-login {
+	font-family: Kameron, serif; 
+	font-size: 1.4rem; 
+}
+
+.regist-container {
    margin-top: 4%;
    margin-bottom: 4%;
+   max-width: 600px; 
 }
 .regist-card {
 	padding: 20px;
+	margin: 20px; 
 	background-color: #fff;
 	border: 1px solid #c3ccd5;
 }
-img.signin-img {
+
+.regist-img {
 	padding: 0 2rem 2rem; 
+	width: 275px;
 	margin: auto; 
 	display: block;  
 }
+
 h3 {
+	font-family: Kameron, serif; 
 	text-align: center;
-	color: #003d79;
+	color: #00184c;
+	font-weight: 700; 
+	line-height: 1rem; 
+	margin-top: 10px; 	
+	
+} 
+
+.sup  {
+	color: #00184c; 
+	font-size: 1rem;
+	font-weight: 500; 
+	text-align: center; 
 }
+
+input[type=text], input[type=email],  
+input[type=password], input[type=tel] {
+	height: 30px; 
+	font-size: 0.85rem; 
+	color: #808080; 
+}
+
 .star {
 	text-align: center;
 	margin: 0 auto 1.2rem auto;
 	display: block;
-	color: #003d79; 
-	font-size: 0.9rem;
+	color: #a2b209; 
+	font-size: 0.8rem;
 }
-form.reg-form {
-	max-width: 600px;
-	margin: auto;
-}
+
 label {
 	margin-bottom: 0.2rem;
 	line-height: 0.7rem;
+	color: #595959; 
 }
+
 label.error {
 	font-size: 0.8rem;
 	color: #ff2719;
 }
-button.regist-btn {
+
+
+.regist-btn {
 	color: #fff;
+	font-size: 1rem; 
 	background-color: #0080ff;
-	width: 55%;
-	margin: 1.4rem auto; 
-	display: block;
+	width: 51%;
+	height: 41px; 
+	margin: 1.2rem auto; 
+	display: block;	
 }
+
 .question {
 	text-align: center;
 	margin: 1rem auto;
 	display: block;
 }
 
-a {
-	color: #0080ff;
+/* Styles specific to the Thank You Page
+-------------------------------------------------------------- */
+.thanks-container {
+	height: 80vh; 
+	max-width: 700px; 
+	padding: 25px; 
+	display:flex; 
+	align-items: center; 
+	font-size: 1.2rem; 
+}
+
+
+.thanks {
+	font-size: 1.8rem; 
+}
+
+.donot {
+	color: #ff2719;
+}
+
+.happy {
+	color: #003d79;
 }
