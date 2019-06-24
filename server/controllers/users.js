@@ -330,7 +330,7 @@ function UsersController(){
 										console.log(err)
 										fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
 									}else{
-										if (req.body.admin === 2) {
+										if (req.body.admin) {
 											res.redirect('/' + linkedAuction + '/users');
 										} else {
 											// req.session.auction = linkedAuction
