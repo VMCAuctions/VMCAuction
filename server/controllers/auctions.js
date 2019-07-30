@@ -14,7 +14,6 @@ const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
         timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
     },
 fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
-const hi = "bidding-validation"
 
 function AuctionsController() {
   this.index = function(req, res) {
