@@ -35,6 +35,22 @@
   height: 75vh;
 }
 
+.slalom-clock {
+  position: relative;
+}
+
+.num-row {
+  position: absolute;
+  left: 700px;  
+  top: 60px; 
+}
+
+.letter-row {
+  position: absolute;
+  left: 700px;  
+  top: 90px; 
+}
+
 h1{
   font-family: "Kameron", Georgia, "Times New Roman", serif !important; 
   font-size: 2.8rem !important;
@@ -44,11 +60,18 @@ h1{
   text-align: center;
 }
 
+.slalom-loc  {
+  position: relative; 
+}
 .header-info {
-  color: #fff !important;  
-  font-size: 1rem; 
-  text-align: center; 
+  /* color: #fff !important;   */
+  color: #ffe7a3 !important;  
+  font-size: 1.2rem; 
+  text-align: left; 
   font-weight: 400; 
+  position : absolute;
+  left: 720px;  
+  top: 150px; 
 }
 
 
@@ -81,7 +104,7 @@ h2 {
 
 /* Buttons */
 .btn-reg {
-  border: solid 2px#ff2719 !important;
+  /* border: solid 2px#ff2719 !important; */
   background-color: #ff2719;
   color:#fff !important;
   font-size: 0.9rem !important; 
@@ -116,7 +139,8 @@ a.btn-reg:hover {
 
 .clock-num {
   /* color: #cce6ff; */
-  color: #fff; 
+  /* color: #fff;  */
+  color: #ffe7a3;
   font-size: 2.4rem;
   font-weight: 400; 
   width: 5rem; 
@@ -125,7 +149,8 @@ a.btn-reg:hover {
 
 .clock-letters {
   /* color: #cce6ff; */
-  color: #fff; 
+  /* color: #fff;  */
+  color: #ffe7a3;
   font-size: 0.8rem;
   font-weight: 300; 
   text-transform: uppercase;
