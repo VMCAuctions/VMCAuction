@@ -910,9 +910,9 @@ function UsersController(){
 	this.initialize = function(req, res) {
 		bcrypt.hash("password", null, null, function(err, hash) {
 			User.create({
-				userName: "Organizer",
-				firstName: "Julie",
-				lastName: "Ott",
+				userName: "Vanessa",
+				firstName: "Vanessa",
+				lastName: "",
 				phone: "555-555-5555",
 				email: "organizer@gmail.com",
 				streetAddress: "123 Main Street",
