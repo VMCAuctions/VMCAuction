@@ -342,14 +342,13 @@ module.exports = function(app) {
 	
 	// Supporters .csv spreadsheet template download
 	app.get('/:auctions/users/template', function(req, res){
-		// console.log("201 routes.js /:auc./users/template route")
-		res.download('./public/supporter-upload-template.csv', function (err) {
-			if (err) {
-				console.log("202 routes.js supporter csv template download error: ",err); 
-			}
-		})
-	})
-		
+		console.log("201 routes.js /:auc./users/template route")
+			res.download('./public/supporter-upload-template.csv', function (err) {
+				if (err) {
+					console.log("202 routes.js supporter csv template download error: ",err);
+				}
+			})
+	});
 
 	// actually adding supporters from csv - original
 	// app.post('/:auctions/users/usersImport', function(req, res){
@@ -365,7 +364,6 @@ module.exports = function(app) {
 		upload(req, res, function(err) {
 			// console.log("112 routes.js /:aucs/users/usersImport.  req.body = ",req.body);
 			// console.log("113 routes.js /:aucs/users/usersImport.  req.file = ",req.file);
-			
 			users.usersCsv(req, res)});
 
 	})
@@ -575,7 +573,6 @@ module.exports = function(app) {
 		console.log('501 routes.js /admin route');
 		auctions.admin(req,res)});
 
-		
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
 		// console.log('routes.js * route');

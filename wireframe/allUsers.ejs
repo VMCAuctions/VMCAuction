@@ -20,13 +20,25 @@
 	<!-- Data Tables  -->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+  <script type='text/javascript'>
+    $(document).ready(function () {
+      console.log(<%=admin%>)
+      if (<%=admin%> !== 2){
+        console.log(<%=admin%>)
+        $('.admin-btn-group').remove();
+      }
+    });
+  </script>
+  
+
 </head>
 <body>
   
   
  
   
-	<%if(admin == 1){%>
+	<%if(admin === 1){%>
 		<%- include('clerkHeader') -%>
 	<%}else  {%>
 		<%- include('adminHeader') -%>
@@ -50,13 +62,14 @@
 				<a href="/<%=auction%>/users/new">
 					<button class="btn btn-add">Add a Supporter</button>
 				</a>
-	
-				<a href="/<%=auction%>/users/csv">
-					<button type="button" class="btn btn-add ml-2">Import Supporters from CSV</button>
-				</a>
-				<a href="/<%=auction%>/users/template">
-					<button type="button" class="btn btn-add ml-2">Download Import Template</button>
-				</a>
+        <% if (admin === 2){ %>
+          <a href="/<%=auction%>/users/csv">
+            <button type="button" class="btn btn-add ml-2" >Import Supporters from CSV</button>
+          </a>
+          <a href="/<%=auction%>/users/template">
+            <button type="button" class="btn btn-add ml-2" >Download Import Template</button>
+          </a>
+        <%}%>
 			</div>
 		</div>
 	</div>

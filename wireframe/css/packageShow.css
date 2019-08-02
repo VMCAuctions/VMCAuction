@@ -119,6 +119,13 @@ input[type=number] {
   border-radius: 30px !important; 
 }
 
+.btn-bid:disabled,
+.btn-bid[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
 .btn-history:hover {
   color: white;
   background-color: #0055cb;
@@ -159,3 +166,5 @@ input[type=number] {
   width: 100%;
   height: auto
 }
+
+
