@@ -170,9 +170,6 @@ io.sockets.on('connection', function (socket) {
 							}
 							if (minutes < 10) {
 								minutes = '0' + minutes;
-							} 
-							else { 
-								minutes;
 							}
 							let strTime = hours + ':' + minutes + ' ' + ampm;
 							return strTime;
@@ -216,27 +213,29 @@ io.sockets.on('connection', function (socket) {
 								let bidIncrement = package.bidIncrement;
 								let = package
 								//if there are no bids on the package, we check if the userBid is greater than package amount
-								if (package.bids.length == 0 && userBid >= packageAmt) {
-									package.highBid = data.bid;
-									package.highBidder = data.userName;
-									package.bids.push({
-										bidAmount: userBid,
-										name: userName,
-										date: date,
-										bidTime: bidTime
-									});
+								if (userBid <= secret.maxBid){
+									if (package.bids.length == 0 && userBid >= packageAmt) {
+										package.highBid = data.bid;
+										package.highBidder = data.userName;
+										package.bids.push({
+											bidAmount: userBid,
+											name: userName,
+											date: date,
+											bidTime: bidTime
+										});
 
-								//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
-								} else if (userBid >= lastBid + bidIncrement) {
-									// console.log("ELSE IF");
-									package.highBid = data.bid;
-									package.highBidder = data.userName;
-									package.bids.push({
-										bidAmount: userBid,
-										name: userName,
-										date: date,
-										bidTime:bidTime
-									});
+									//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
+									} else if (userBid >= lastBid + bidIncrement) {
+										// console.log("ELSE IF");
+										package.highBid = data.bid;
+										package.highBidder = data.userName;
+										package.bids.push({
+											bidAmount: userBid,
+											name: userName,
+											date: date,
+											bidTime:bidTime
+										});
+									}
 								}
 							}
 							//save all stuff
@@ -258,6 +257,7 @@ io.sockets.on('connection', function (socket) {
 						})
 					}
 
+					var topBidder;
 					User.findOne({ userName: data.userName }).exec(function (err, user) {
 						if (err) {
 							console.log("error occured " + err);
@@ -280,7 +280,6 @@ io.sockets.on('connection', function (socket) {
 							}
 						}
 					})
-
 					// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
 					io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
 
@@ -290,13 +289,13 @@ io.sockets.on('connection', function (socket) {
 					if (data.bid >= secret.maxBid){
 						buttonStatus = "disabled"
 					}
-
+					console.log("******************topBidder**********",topBidder)
 					// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 					setTimeout(function () {
 						socket.broadcast.emit('buttonStateChannel', {
 							lastBidder: data.userName,
 							button: buttonStatus,
-							packId: data.packId
+							packId: data.packId,
 						});
 					}, 1000);
 
