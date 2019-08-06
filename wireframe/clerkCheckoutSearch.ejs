@@ -11,8 +11,8 @@
 					<label for "packageName" class="label-search">Search by Package Name</label>
 					<input class="form-control" type="search" id="packageName" placeholder="Package Name">
 				</div>
+				<!-- <%-JSON.stringify(cart,null,2) %>-->
 			</div>
-				
 			<!-- Search for Supporters-->
 			<div id="supporterTable">
 				<h3>Supporters</h3>
@@ -27,82 +27,93 @@
 							<th scope="col">Full Payment</th>
 							<th scope="col">Outstanding balance</th>
 							<th scope="col">Actions</th>
-							
-							
 						</tr>
 					</thead>
 					<tbody id="carts">
 						<% for (var u in users) {%>
+							<% var user = users[u]%>
+							<!-- <%-JSON.stringify(user,null,2)%>-->
 							<tr class="supporterRow">
-								<td><%= users[u].firstName %> <%=users[u].lastName%></td>
-								<td id="<%= users[u].userName + 'winning' %>">
+								<td><%= user.firstName %> <%=user.lastName%></td>
+								<td id="<%= user.userName + 'winning' %>">
 									<ul>
-										<% for (var p in cart[users[u].userName].packages) { %>
-											<li><%= cart[users[u].userName].packages[p]._id %>. <%= cart[users[u].userName].packages[p].name %>
-												($<%= cart[users[u].userName].packages[p].bids[cart[users[u].userName].packages[p].bids.length - 1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)</li>
+										<% for (var p in cart[user.userName].packages) { %>
+											<li><%= cart[user.userName].packages[p]._id %>. <%= cart[user.userName].packages[p].name %>
+												($<%= cart[user.userName].packages[p].bids[cart[user.userName].packages[p].bids.length - 1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)</li>
 										<% } %>
 									</ul>
 								</td>
-								<td id="<%= users[u].userName + 'total' %>">
-									$<%= cart[users[u].userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+								<td id="<%= user.userName + 'total' %>">
+									$<%= cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
+								</td>
+								<td>
+									<span class="font-weight-bold">$ </span><input class="col-10" type="number">
 								</td>
 								<td>
 									T1
 								</td>
 								<td>
-									T1
-								</td>
-								<td>
-									Yes / No
+									<select class="custom-select" id="full-payment-option">
+										<option selected>Choose...</option>
+										<option value="yes">Yes</option>
+										<option value="no">No</option>
+									</select>
 								</td>
 								<td>
 									T1
 							</td>
 							<td>
 								  <!-- Button trigger modal -->
-								<button type="button" class="btn btn-sm btn-add pdfBut" data-toggle="modal" data-target="#exampleModalCenter">Payment Details</button><br><br>
+								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
 							
 								<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 							</td>
-								
+
 							</tr>
 						<% } %>
 					</tbody>
 				</table>
 			</div>
 			<!-- Modal for payment details -->
-			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Payment Details</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div>
-							Test1
-						</div>
-						<div>
-								Test
-						</div>
-						<form>
-							<div class="form-group">
-								<label for="recipient-name" class="col-form-label">Recipient:</label>
-								<input type="text" class="form-control" id="recipient-name">
+			<div class="modal fade" id="bid-checkout-input" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered" style="width:90%" role="document">
+					<div class="modal-content">
+						<form  action = '' method="POST">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Payment Details</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
 							</div>
-							<div class="form-group">
-								<label for="message-text" class="col-form-label">Message:</label>
-								<textarea class="form-control" id="message-text"></textarea>
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-form-label">Name:</label>
+									<input id="bidder-name" class="form-control" value=""/>
+								</div>
+								<div class="form-group">
+									<label class="col-form-label"> Total Bid:</label>
+									<input id="total-amount" class="form-control"  value = "">
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Payment Amount:</label>
+									<input type="text" class="form-control" id="payment-amount">
+								</div>
+								<div class="form-group">
+									<label class="col-form-label">Full Payment Received?:</label>
+									<input type="checkbox" class="form-check-input" id="received-checkbox">
+								</div>
+								<div>
+									<p>Source</p>
+									<p>Conf #</p>
+									<p>Account last 4 digits:</p>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-sm btn-add">Submit</button>
 							</div>
 						</form>
 					</div>
-					<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-sm btn-add pdfBut">Submit</button>
-					</div>
-				</div>
 				</div>
 			</div>
 			<!-- for Package name -->
@@ -146,16 +157,18 @@
 				$("#packageTable").hide();
 				$("#lastName").on("keyup", function () {
 					var value = $(this).val().toLowerCase();
+
 					if (value == '') {
 						$("#supporterTable").hide();
 					} else {
 						$("#supporterTable").show();
+
 						$(".supporterRow").filter(function () {
 							$(this).toggle($(this).text().toLowerCase().indexOf(value) > 0);
 						});
 					};
 				});
-				
+
 				$("#packageName").on("keyup", function () {
 					var value = $(this).val().toLowerCase();
 					if (value == '') {
@@ -167,12 +180,24 @@
 						});
 					};
 				});
-            })
-            
-            
+			})
+			
+			$(document).on("click", '.btn-open-dialog', function () {
+				var name = $(this).data('winner-name')
+				var amount = $(this).data('bid-amount')
+				// var id =  $(this).data('id')
+				// $('form')[0].setAttribute('action', `#`);
+
+				$(".modal-body #bidder-name").val( name )
+				$(".modal-body #total-amount").val( amount )
+			});
+
+
+
 		</script>
 
 		<script type="text/javascript">
+
 			$(".pdfBut").click(function(){
 				let firstName = $(this).data('first')
 				let lastName = $(this).data('last')

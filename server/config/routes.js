@@ -532,7 +532,7 @@ module.exports = function(app) {
 	
 	//Clerk Check-in
 	app.get('/:auctions/clerkCheckIn', function(req, res){
-		auctions.clerkcheckin(req,res)});
+		auctions.clerkCheckIn(req,res)});
 
 	app.get('/:user/clerkUserUpdate', function(req, res){
 		auctions.clerkUserCheckIn(req,res)
@@ -542,7 +542,7 @@ module.exports = function(app) {
 	})
 	//end clerk check-in
 	app.get('/:auctions/clerkCheckOut', function(req, res){
-		auctions.clerkcheckout(req,res);
+		auctions.clerkCheckOut(req,res);
 	})
 
 	// Send SMS text link to supporter at auction checkin
