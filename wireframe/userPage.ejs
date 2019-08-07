@@ -12,8 +12,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="/css/style.css"> 
-  <link rel="stylesheet" type="text/css" href="/css/packageStyle.css"> 
-  
+  <link rel="stylesheet" type="text/css" href="/css/packageStyleWatchlist.css"> 
+
   <body>
     <%if(admin == 2){%>
     <%- include('adminHeader') -%>
@@ -36,7 +36,7 @@
       </div> -->
 
      
-      <div class="d-flex flex-row flex-wrap justify-content-start mt-2">
+      <!-- <div class="d-flex flex-row flex-wrap justify-content-start mt-2">
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">
           <input type="search" id="keyword" class="form-control search-pkg" placeholder="Search Packages">
         </div>
@@ -53,63 +53,88 @@
         <div class="col-lg-4 col-md-12 col-sm-12 mb-3">	
           <button class="form-control btn-no-bids" id="noBids" name="button">Packages with No Bids</button>
         </div>
-      </div> 
+      </div>  -->
 
       <div class="d-flex flex-row flex-wrap justify-content-start">
       <%for(let i =0; i<user._packages.length; i++){%>
+          <% console.log(user._packages[i]) %>
         
         <%if(user._packages[i].bids.length>0){%>
-          <div class="package bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
+          <div class="package bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= user._packages[i]._id %>">
         <%}else{%>
-          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 mt-3 mb-3" id="removeWatchList-<%= user._packages[i]._id %>">
+          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= user._packages[i]._id %>">
         <%}%>	
         
         <div id="<%=user._packages[i]._id %>" class="card pkg-card">	
           <div id="selection" class="card-body">
-              <div class="pkg-num">
-                  #<%=user._packages[i].id%>
-              </div>
-
-              <%if(user._packages[i].featured===true){%>
-              <div class="featured-box">
-                FEATURED
-              </div> 
-              <%}%>		
-
-              <div class="d-flex flex-row justify-content-start align-items-start card-top"> 
-                  <% if(user._packages[i]) {%>
-                  <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
-                  <div>
-                    <a class="pkg-title" href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
-                    <p class="category mt-1">Category: <%=user._packages[i]._category%></p>
+            <div class="row">
+              <div class="col-8">
+                  <div class="row">
+                      <div class="col-2">
+                          <span class="pkg-num">
+                              #<%=user._packages[i].id%>
+                          </span>
+                      </div>
+                      <div class="col-10">
+                        <h4><a class="pkg-title" href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
+                        </h4>
+                      </div>
+                    </div>
+                  <div class="row">
+                      <div class=" col-2">
+                          <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
+                      </div>
+                      <div class=" col-6">
+                          
+                          <ul class="mt-1">	
+                            <li>Value: <span class="opening-bid"> <%="$" + user._packages[i].value%></span> &nbsp;&nbsp;
+                            <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
+                              <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
+                              <span class="highest-bid">(by: <span id="highest-bidder-<%= user._packages[i]._id%>"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span>)</span></li>
+                              <%}else{%>
+                              <li class="no-bid">No bids yet! </li>
+                            <%}%>
+                            <li>Your Last Bid:</li>
+                            </ul>
+          
+                      </div>
                   </div>
               </div>
-              <hr>
-              <div class="row ml-1">
-                  <ul class="mt-1">	
-                    <li>Value: <span class="opening-bid"> <%="$" + user._packages[i].value%></span> &nbsp;|&nbsp;
-                    Opening Bid: <span class="opening-bid"> <%="$" + user._packages[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span></li> 
-                    <li class="category">Minimum Bid Increment: <span class="opening-bid"> <%="$" + user._packages[i].bidIncrement%></span></li> 
-                    <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
-                      <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
-                      <span class="highest-bid">(by: <span id="highest-bidder-<%= user._packages[i]._id%>"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span>)</span></li>
-                      <%}else{%>
-                      <li class="no-bid">No bids yet! </li>
-                    <%}%>
-                   </ul>
-              </div>
-              <hr>
-              <%}%>
-              <div class="d-flex flex-row justify-content-center align-items-center">
-                <!-- <a href="#"><button type="button" class="btn btn-set-max-bid mr-1" name="uninterested">SET MAX</button></a> -->
-                <input class="btn btn-remove-watchlist mr-1" onClick="change(<%= user._packages[i]._id %>)" type="button" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>"></input>
-                <a href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><button type="button" class="btn btn-bid ml-1" name="uninterested">Bid</button></a>
-              </div>
+              <div class="col-4">
+                  <form class="bidForm" id='submitButton' class="w-50" name="<%=i%>">
+                      <input type="hidden" name="highBid" value='<%=user._packages[i].highBid %>'>
+                      <input type="hidden" name="bidIncrement" value='<%=user._packages[i].bidIncrement %>'>
+  
+                      <input type="hidden" name="packageId" value='<%=user._packages[i].id %>'>
+                      <input type="hidden" name="packageName" value='<%=user._packages[i].name %>'>
+                      <input type="hidden" name="packageAmt" value='<%=user._packages[i].amount %>'>
+                      <input type="hidden" name="allBids" value='<%=user._packages[i].bids %>'>
+  
+                      <% if (user._packages[i].bids.length === 0){ %>
+                        <input class="bid-input-field" type="number" id='biduser.Amount-<%= user._packages[i]._id%>' name="bidAmount" type="number" min='<%= user._packages[i].amount %>' value='<%= user._packages[i].amount%>'>
+                      <% }else{ %>
+                        <input class="bid-input-field" type="number" id='bidAmount-<%= user._packages[i]._id%>' name="bidAmount" type="number" min='<%= user._packages[i].highBid + user._packages[i].bidIncrement %>' value='<%=  user._packages[i].highBid + user._packages[i].bidIncrement %>'>
+                      <% } %>
+                        <input id='hiddenBidAmt' type="hidden" value=''>
+                        <input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2'>
+                    </form>
+  
+                  <div>
+                    <button>
+                      <a onClick="change(<%= user._packages[i]._id %>)" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>">Remove from Watchlist</a></div>
+                    </button>
+                </div>
+
+            </div>
+
+
+
           </div>
         </div>
       </div>
     <%}%>
-    </div> <!-- End of container -->
+    </div> 
+  </div> <!-- End of container -->
 
     <script>
 
@@ -123,6 +148,66 @@
         
 
       $(document).ready(function(){
+        
+      $('.bidForm').submit(function (event) {
+      event.preventDefault();
+
+        // console.log($(this).serialize())
+      
+      let auction = "<%= auctionDetails._id %>";
+      let userName = "<%= user.firstName + ' ' + user.lastName %>";
+      // values(dictionary) maps all form inputs to values
+      var $inputs = $('.bidForm :input');
+      var values = {};
+      $.each($(this).serializeArray(), function(i, field) {
+    values[field.name] = field.value;
+});
+      // $inputs.each(function() {
+      //     values[this.name] = this.value
+      // });
+      console.log(values)
+      console.log('userPage.ejs ~~~~~~~~~')
+      let hasBids
+      if(values.allBids.length != 0){
+        hasBids = true
+      } else {
+        hasBids = false
+      }
+      let packageAmt = parseInt(values.packageAmt)
+			let sendBid;
+      let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
+      let bidAmt = parseInt(values.bidAmount)
+      let newBid = parseInt(values.bidIncrement) + parseInt(values.highBid)
+
+      //No input and no bids, "Place Bid" will place bid of current bid plus increment
+			if ( !bidAmt && hasBids === false ) {
+				sendBid = packageAmt;
+			//No input and has bids, "Place Bid" will place bid of current bid plus increment
+			} else if ( !bidAmt && hasBids === true ) {
+				//No hidden big amount use newBid from Controller else use the hidden bid amount from Server
+				if (!hiddenBidAmt) {
+					sendBid = newBid;
+				} else {
+					sendBid = hiddenBidAmt;
+				}
+			// no bids but with value entered in bid form field
+			} else if ( bidAmt >= packageAmt && hasBids === false ) {
+				sendBid = bidAmt;
+			// has bids and has value entered in bid form field
+			} else if ( bidAmt >= newBid && hasBids === true ) {
+				sendBid = bidAmt;
+      }
+
+      let msgSent = {
+        packId: values.packageId,
+        bid: sendBid,
+        userName: userName,
+        name: values.packageName,
+        auction:auction,
+      }
+      console.log(msgSent)
+			socket.emit('msgSent', msgSent)
+      });
 
         $("select[name='category']").change( function() {
           var value = $(this).val().toLowerCase();
@@ -153,12 +238,20 @@
 
          // Update highest bidder and bid amount
         socket.on("serverTalksBack", function (data) {
+          console.log('inside servertalkback', data)
           let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           let topBidder = data.userBidLast;
           $('#highest-bid-'+data.packId).text("$"+ currentBid);
           $('#highest-bidder-'+data.packId).text(data.userBidLast);
+          // NEED BID INCREMENT
+          $('#bidAmount-'+data.packId).val(data.lastBid+data.bidIncrement);
+          $('#bidAmount-'+data.packId).attr('min',data.lastBid+data.bidIncrement);
           }
+          // $('#bidAmount-'+data.packId).val()
         );
+
+
+        
 
       })
     </script>
@@ -180,10 +273,7 @@
             if(data.userName === userName){
               console.log("data.userName = ", data.userName)
               console.log("userName = ", userName)
-              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);
-              // $("highest-bid-#user._packages[j]._id").text("You dude!!!")
-            }
-            else{
+              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);cd 
               $("#<%=user._packages[j]._id%>").text(data.userName)
             }
           }
