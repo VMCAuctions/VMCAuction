@@ -76,36 +76,51 @@
 			</div>
 			<!-- Modal for payment details -->
 			<div class="modal fade" id="bid-checkout-input" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered" style="width:90%" role="document">
+				<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 					<div class="modal-content">
-						<form  action = '' method="POST">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLongTitle">Payment Details</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
+					
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">Payment Details</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<form class="form-horizontal justify-content-center" action = '' method="POST">
 							<div class="modal-body">
-								<div class="form-group">
-									<label class="col-form-label">Name:</label>
-									<input id="bidder-name" class="form-control" value=""/>
+						
+								<div class="form-group row">
+									<label class="control-label col-3 align-self-center">Name:</label>
+									<div class="col-8 align-self-center">
+										<input id="bidder-name" class="form-control" value=""/>
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-form-label"> Total Bid:</label>
-									<input id="total-amount" class="form-control"  value = "">
+								<div class="form-group row">
+									<label class="control-label col-3 align-self-center">Total Bid:</label>
+									<div class="col-8 align-self-center">
+										<input id="total-amount" class="form-control"  value = "">
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-form-label">Payment Amount:</label>
-									<input type="text" class="form-control" id="payment-amount">
+								<div class="form-group row">
+									<label class="col-form-label col-3 align-self-center">Payment Amount:</label>
+									<div class="col-8 align-self-center">
+										<input type="text" class="form-control" id="payment-amount">
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-form-label">Full Payment Received?:</label>
-									<input type="checkbox" class="form-check-input" id="received-checkbox">
+								<div class="form-group row">
+									<label class="form-check-label col-3"">Full Payment Received?:</label>
+									<div class="checkbox-inline">
+										<input type="checkbox" checked data-toggle="toggle"> Yes
+										<input type="checkbox" checked data-toggle="toggle"> No
+									</div>
 								</div>
-								<div>
-									<p>Source</p>
-									<p>Conf #</p>
-									<p>Account last 4 digits:</p>
+
+								<div class="form-group">
+									<label class="col-form-label col-3r">Payment Info:</label>
+									<div>
+										<p>Source</p>
+										<p>Conf #</p>
+										<p>Account last 4 digits:</p>
+									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
