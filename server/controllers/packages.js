@@ -4,8 +4,8 @@ var mongoose = require('mongoose'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js'),
-	globals = require('../controllers/globals.js')
-
+	globals = require('../controllers/globals.js'),
+	secret = require('../config/secret.json')
 	
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
@@ -621,7 +621,7 @@ function PackagesController() {
 											lastBid: parseInt(lastBid),
 											auction: req.params.auctions,
 											auctionDetails: auctionDetails,
-											
+											secret: secret
 										})
 									}
 								})

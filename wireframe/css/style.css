@@ -189,6 +189,14 @@ label.error {
 	color: #262626; 
 }
 
+.btn-add:disabled {
+	background-color: #4e5040; 
+	color:#fdfdfd;
+	border: none;
+	padding: 9px 15px; 
+	min-width: 155px;  
+} 
+
 .btn-back {
 	background-color: #a2b209; 
 	color: #000;

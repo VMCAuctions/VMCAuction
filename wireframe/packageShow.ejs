@@ -29,25 +29,30 @@
 			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
 			watchlistButton.value = "Remove from Watch List";
 		}
+
   }
   
 	function addBidToWatchlist() {
-  var watchlistButton = document.getElementById("watchlistButton");
-		if ( watchlistButton.value == "Add to Watch List" ) {
-			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
-			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
-			watchlistButton.value = "Remove from Watch List";
+    var watchlistButton = document.getElementById("watchlistButton");
+      if ( watchlistButton.value == "Add to Watch List" ) {
+        $.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
+        $('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
+        watchlistButton.value = "Remove from Watch List";
+    }
   }
-  }
+
 	$(document).ready(function () {
 		// console.log("xxx packageShow.ejs response = ",response);
 
 		let auctionEndTime = Date.parse("<%= auctionDetails.endClock %>");
 		var date = new Date();
-
-		if( date>auctionEndTime ){
+		
+		// TODO: need to compare user id instead of user firstname
+		if(date > auctionEndTime || "<%=package.highBidder%>" === "<%=user.firstName + " " + user.lastName%>"){
+			console.log("in if statement")
 			document.getElementById('submitButton2').disabled = true;
 		}
+
 
 		$("#hide").click(function(){
     		$("#notification").hide();
@@ -63,7 +68,7 @@
 			let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
 			let hasBids = <%= ourBids %>;
 			let userName = "<%= user.firstName + ' ' + user.lastName %>";
-			
+
 			//No input and no bids, "Place Bid" will place bid of current bid plus increment
 			if ( !bidAmt && hasBids === false ) {
 				sendBid = packageAmt;
@@ -82,16 +87,25 @@
 			} else if ( bidAmt >= newBid && hasBids === true ) {
 				sendBid = bidAmt;
 			}
-			socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>',auction:auction})
+			// TODO: add user._id to socket emit.
+			if(sendBid <= <%=secret.maxBid%>)
+				socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>',auction:auction})
+			else
+				document.location.reload()
 		});
 
 		// Updates packageShow page with bid price
 		socket.on("serverTalksBack", function (data) {
+			console.log(data.lastBid)
 			let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			let topBidder = data.userBidLast;
 			let newBid = parseInt(data.lastBid) + <%= package.bidIncrement %>;
 			let packageId = <%= package._id %>;
 			let packId = parseInt(data.packId);
+
+			if(newBid > <%=secret.maxBid%>){
+				newBid = <%=secret.maxBid%>;
+			}
 
 			if ( packId == packageId ) {
 				$('#currentBid').text("$" + currentBid);
@@ -103,15 +117,21 @@
 				$('#afterBidMessage').text('');
 				$('#history tr:first').after('<tr><td>'+ data.userBidLast+'</td><td>'+"$"+data.lastBid+'</td><td>'+data.bidTime+'</td></tr>');
 			}
+
+			if(newBid >= <%=secret.maxBid%>){
+				$('#minBid').text(`${topBidder} won this package`);
+			}
 		});
 
-		//Updates submit button only after bidding has been saved in database 
+		//Updates submit button only after bidding has been saved in database
 		socket.on('buttonStateChannel', function (data) {
 			if ( data.packId == <%= package._id %> ) {
-				if( data.button == 'disabled' ){
+				if( data.button === 'disabled'){
 					$('#submitButton2').attr('disabled','disabled')
 				} else {
-					$("#submitButton2").removeAttr('disabled');
+					if("<%= user.firstName + " " + user.lastName%>" !== data.lastBidder){
+						$("#submitButton2").removeAttr('disabled');
+					}
 				}
 			}
 		});
@@ -129,8 +149,6 @@
 	<% } %>
 	<% if(admin == 0){ %>
 		<%- include('footerNotifications') %>
-	<% } %>
-	<% if(admin == 0){ %>
 		<%- include('footerClock') -%>
 	<% } %>
 
@@ -144,7 +162,6 @@
 					<img class="pkg-img-show mt-3 mb-2" src="/<%= package.photo %>">
 					<a href="/<%= auction %>/packages/<%= nextPos %>"><button type="button" class="btn btn-next" name="interested"><i class="fas fa-angle-right fa-2x"></i></button></a>
 				</div>
-				
 				<%if(package.featured===true){%>
 					<div class="featured-box-show">
 						#<%= package.priority%> - FEATURED
@@ -187,16 +204,24 @@
 						<% if (package.bids.length === 0){ %>
 							<input type="number" id='bidAmount' type="number" min='<%= package.amount %>' value='<%= package.amount%>'>
 						<% }else{ %>
-							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value='<%= lastBid + package.bidIncrement %>'>
+							<% var recommendedBid = lastBid + package.bidIncrement %>
+							<% if (recommendedBid > secret.maxBid){ %>
+								<%recommendedBid = secret.maxBid%>
+							<%}%>
+							<input type="number" id='bidAmount' type="number" min='<%= recommendedBid %>' max = "<%= secret.maxBid %>" value='<%= recommendedBid %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
-              <input class="ml-1 btn-bid" type='submit' onclick="addBidToWatchlist(<%= package._id %>)" value ='Place Bid' id='submitButton2'>
+
+							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2' onclick = "addBidToWatchlist(<%=package._id%>)"
+							<% if (package.highBid >= secret.maxBid){ %> disabled <%}%>>
 
 					</form>
 				<% } %>
 
 				<% if (package.bids.length === 0){ %>
 					<p id = 'minBid' class="bid-more">Bid $<%= package.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more </p>
+				<% }else if (package.highBid >= secret.maxBid){ %>
+					<p id ='minBid' class="bid-more"><%= package.highBidder%> won the package</p>
 				<% }else{ %>
 					<p id ='minBid' class="bid-more" >Bid $<%= (package.bidIncrement + lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> or more (min bid increment is <%= "$" + package.bidIncrement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>)</p>
 				<% } %>

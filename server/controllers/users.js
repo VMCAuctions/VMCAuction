@@ -1,4 +1,3 @@
-
 var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('mongoose'),
 	User = require('../models/user.js'),
@@ -6,17 +5,17 @@ var mongoose = require('mongoose'),
 	Package = require('../models/package.js'),
 	Auction = require('../models/auction.js'),
 	globals = require('../controllers/globals.js')
-	secret = require('../config/secret.json')
-const csv=require('csvtojson')
+secret = require('../config/secret.json')
+const csv = require('csvtojson')
 
 
 
 const SimpleNodeLogger = require('../../node_modules/simple-node-logger'),
-    opts = {
-        logFilePath:'./public/vmcLogFile.log',
-        timestampFormat:'YYYY-MM-DD HH:mm:ss.SSS'
-    },
-fileLog = SimpleNodeLogger.createSimpleFileLogger( opts );
+	opts = {
+		logFilePath: './public/vmcLogFile.log',
+		timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS'
+	},
+	fileLog = SimpleNodeLogger.createSimpleFileLogger(opts);
 
 
 // Twilio SMS text code:
@@ -24,7 +23,7 @@ const accountSid = secret.accountSid;
 const authToken = secret.authToken;
 const client = require('twilio')(accountSid, authToken);
 
-function UsersController(){
+function UsersController() {
 
 	function registrationValidation(input) {
 		const validationArray = [
@@ -38,7 +37,7 @@ function UsersController(){
 			["password", 6, "password"]
 		];
 		let output = "";
-		for(let i = 0; i < validationArray.length; i++) {
+		for (let i = 0; i < validationArray.length; i++) {
 			// console.log(Date.now()," - 000 users.js registrationValidation.  validationArray[i] = ",validationArray[i]);
 			if (input[validationArray[i][0]].length < validationArray[i][1]) {
 				output += "Please insert a " + validationArray[i][2] + " that is at least " + validationArray[i][1] + " characters in length.\n";
@@ -48,93 +47,100 @@ function UsersController(){
 	}
 
 
-	this.index = function(req,res){
+	this.index = function (req, res) {
 		// console.log(Date.now()," - 010 users.js this.index.  UsersController index");
 		// console.log("011 users.js this.index.  req.session = ", req.session)
 		// console.log(globals.clerkValidation(req, res));
-		if (globals.clerkValidation(req, res)){
+		if (globals.clerkValidation(req, res)) {
 			var cart = {}
-			User.find({_auctions: req.params.auctions}, function(err, users ){
-			// User.find({}, function(err, users ){
-				if(err){
+			User.find({
+				_auctions: req.params.auctions
+			}, function (err, users) {
+				// User.find({}, function(err, users ){
+				if (err) {
 					console.log(err)
 					fileLog.info("000 users.js this.index User.find.  err = ", JSON.stringify(err, null, 2))
 					if (req.session.admin === 2) {
 						res.redirect('/users/adminError');
-					} 
+					}
 					if (req.session.admin === 1) {
 						res.redirect('/users/clerkError');
 					}
-				}else if(req.session.admin){
-						// console.log("012 users.js this.index User.find.  users = ",users);
-						Package.find({_auctions: req.params.auctions}, function(err, packages){
-							if (err){
-								console.log(err)
-								fileLog.info("001 users.js this.index Package.find.  err = ", JSON.stringify(err, null, 2))
-							}else{
-								for (var i = 0; i < users.length; i++) {
-									var packages = []
-									var total = 0
-									for (var j = 0; j < packages.length; j++) {
-										if (packages[j].bids[packages[j].bids.length-1]){
-											if(packages[j].bids[packages[j].bids.length-1].name===users[i].userName) {
-												packages.push(packages[j])
-												total +=packages[j].bids[packages[j].bids.length-1].bidAmount
-											}
+				} else if (req.session.admin) {
+					// console.log("012 users.js this.index User.find.  users = ",users);
+					Package.find({
+						_auctions: req.params.auctions
+					}, function (err, packages) {
+						if (err) {
+							console.log(err)
+							fileLog.info("001 users.js this.index Package.find.  err = ", JSON.stringify(err, null, 2))
+						} else {
+							for (var i = 0; i < users.length; i++) {
+								var packages = []
+								var total = 0
+								for (var j = 0; j < packages.length; j++) {
+									if (packages[j].bids[packages[j].bids.length - 1]) {
+										if (packages[j].bids[packages[j].bids.length - 1].name === users[i].userName) {
+											packages.push(packages[j])
+											total += packages[j].bids[packages[j].bids.length - 1].bidAmount
 										}
 									}
-									cart[users[i].userName]={'packages': packages, 'total': total };
 								}
-								//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
-								Auction.findById(req.params.auctions, function (err, auctionDetails) {
-									if (err) {
-										console.log(err)
-										fileLog.info("002 users.js this.index Auction.findById.  err = ", JSON.stringify(err, null, 2))
-									} else {	
-										//current is a flag showing which page is active
-										res.render('allUsers', {
-											current: 'supporters', 
-											users: users, 
-											cart: cart, 
-											packages: packages, 
-											userName: req.session.userName, 
-											admin: req.session.admin, 
-											auction: req.params.auctions,
-											auctionDetails: auctionDetails
-										})		
-									}
-								})
-							}	
-						})	
-				}else{
+								cart[users[i].userName] = {
+									'packages': packages,
+									'total': total
+								};
+							}
+							//Find Auction and render auction details is needed to display the name of the auction in the adminHeader, when adminHeader is displayed on this page
+							Auction.findById(req.params.auctions, function (err, auctionDetails) {
+								if (err) {
+									console.log(err)
+									fileLog.info("002 users.js this.index Auction.findById.  err = ", JSON.stringify(err, null, 2))
+								} else {
+									//current is a flag showing which page is active
+									res.render('allUsers', {
+										current: 'supporters',
+										users: users,
+										cart: cart,
+										packages: packages,
+										userName: req.session.userName,
+										admin: req.session.admin,
+										auction: req.params.auctions,
+										auctionDetails: auctionDetails
+									})
+								}
+							})
+						}
+					})
+				} else {
 					//If no admin ( or clerk), redirect to the Admin Error Page
 					// res.redirect('/' + req.params.auctions  + '/event');
 					res.redirect('/users/adminError')
 				}
-		  })
+			})
 		}
 	};
 
-	this.admin = function(req,res){
+	this.admin = function (req, res) {
 		// console.log("020 users.js this.admin  Admin change display");
-		User.find({}, function(err, users ){
-			if(err){
+		User.find({}, function (err, users) {
+			if (err) {
 				console.log(err)
 				fileLog.info("003 users.js this.admin User.find.  err = ", JSON.stringify(err, null, 2))
-			}else if(req.session.admin){
+			} else if (req.session.admin) {
 				res.render('admin', {
-					users :users,
+					users: users,
 					userName: req.session.userName,
 					admin: req.session.admin
 				})
-			}else{
+			} else {
 				res.redirect('/users/adminError')
 			}
 		})
 	};
 
 
-	this.login = function(req,res){
+	this.login = function (req, res) {
 		//The registration page will now hold a dropdown menu with all of the active auctions (starttime before today, endtime after today), so that they can select the auction they want to register for; this list of actions will be passed here from a mongo query
 		//Auction.find()
 		res.render('login');
@@ -142,49 +148,59 @@ function UsersController(){
 	};
 
 
-	this.register = function(req,res){
-		Auction.findById(req.params.auctions, function(err, auction){
+	this.register = function (req, res) {
+		Auction.findById(req.params.auctions, function (err, auction) {
 			if (err) {
 				console.log(err);
-			} else { 	
+			} else {
 				res.render('userSignup', {
 					// userName: req.session.userName,
 					// admin: req.session.admin,
 					// auctions: auctions,
-					auctionDetails: auction, 
+					auctionDetails: auction,
 					// auction:req.session.auction
-				})	
+				})
 			}
 		})
 	};
 
 	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
-	this.showAccount = function(req,res){
+	this.showAccount = function (req, res) {
 		var items = [];
 		var cart = {};
-		User.findOne({userName: req.params.userName}).exec( function(err, user){
-			if(err){
+		User.findOne({
+			userName: req.params.userName
+		}).exec(function (err, user) {
+			if (err) {
 				console.log(err)
 				fileLog.info("004 users.js this.showAccount User.findOne.  err = ", JSON.stringify(err, null, 2))
-			}else if(user.userName === req.session.userName || req.session.admin >= 1){
+			} else if (user.userName === req.session.userName || req.session.admin >= 1) {
 				// console.log("100 users.js this.showAccount User.findOne.  user = ",user)
 
-				Package.find({ _auctions: req.params.auctions })
+				Package.find({
+						_auctions: req.params.auctions
+					})
 					.populate("_items")
-					.sort({ _category: "ascending" })
-					.sort({ priority: "ascending" })
-					.sort({ _id: "descending" })
-					.exec(function(err, packages) {
+					.sort({
+						_category: "ascending"
+					})
+					.sort({
+						priority: "ascending"
+					})
+					.sort({
+						_id: "descending"
+					})
+					.exec(function (err, packages) {
 						if (err) {
 							console.log(err);
 						} else {
 							var packagesArr = [];
 							var total = 0;
 							for (var y = 0; y < packages.length; y++) {
-								if (packages[y].bids.length > 0){
-									if (packages[y].highBidder === user.firstName.charAt(0)+'. '+user.lastName || packages[y].highBidder === user.firstName+' '+user.lastName) {
+								if (packages[y].bids.length > 0) {
+									if (packages[y].highBidder === user.firstName.charAt(0) + '. ' + user.lastName || packages[y].highBidder === user.firstName + ' ' + user.lastName) {
 										packagesArr.push(packages[y]);
-										items.push.apply(items,packages[y]._items);
+										items.push.apply(items, packages[y]._items);
 										total += packages[y].bids[packages[y].bids.length - 1].bidAmount;
 									}
 								}
@@ -229,13 +245,13 @@ function UsersController(){
 							}
 						})
 					});
-			}else{
+			} else {
 				res.redirect('/users/supporterError')
 			}
 		})
 	};
 
-	this.new = function(req,res) {
+	this.new = function (req, res) {
 		//May need to add validation checks so that only admins can see
 		Auction.findById(req.params.auctions, function (err, auctionDetails) {
 			if (err) {
@@ -243,9 +259,9 @@ function UsersController(){
 				fileLog.info("005 users.js this.new Auction.findById.  err = ", JSON.stringify(err, null, 2))
 			} else {
 				res.render('userCreate', {
-					admin: req.session.admin, 
-					userName: req.session.userName, 
-					auction: req.params.auctions, 
+					admin: req.session.admin,
+					userName: req.session.userName,
+					auction: req.params.auctions,
 					auctionDetails: auctionDetails
 				})
 			}
@@ -256,13 +272,17 @@ function UsersController(){
 	this.duplicate = function (req, res) {
 		let user = req.query.userName;
 		// console.log(req.query)
-		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
-			if(err){
+		User.findOne({
+			userName: {
+				$regex: new RegExp(user, "i")
+			}
+		}, function (err, duplicate) {
+			if (err) {
 				console.log(err);
 				fileLog.info("006 users.js this.duplicate User.findOne  err = ", JSON.stringify(err, null, 2))
-			}else if (duplicate) {
+			} else if (duplicate) {
 				res.json('Username is taken')
-			}else {
+			} else {
 				res.json('true')
 			}
 		})
@@ -270,7 +290,7 @@ function UsersController(){
 
 
 	//Might want to restrict some usernames, such as "organizer/admin or clerk"
-	this.create = function(req,res){
+	this.create = function (req, res) {
 
 		//Write if statement to check if you are registering as "admin", in which case you should not have an _auctions
 
@@ -278,35 +298,38 @@ function UsersController(){
 		console.log("010 users.js this.create start.  req.body = ", req.body)
 		//we are looking for duplicates again incase frontend validation failed is here just in case
 		let user = req.body.userName;
-		User.findOne({userName: { $regex : new RegExp(user, "i") }}, function (err, duplicate) {
-			if(err){
+		User.findOne({
+			userName: {
+				$regex: new RegExp(user, "i")
+			}
+		}, function (err, duplicate) {
+			if (err) {
 				console.log(err)
 				fileLog.info("007 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
-			}
-			else if(duplicate){
+			} else if (duplicate) {
 				// console.log(duplicate);
-			}else{
+			} else {
 				//start actual registration
-				bcrypt.hash(req.body.password, null, null, function(err, hash) {
-						if(err){
-							console.log(err)
-							fileLog.info("008 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
-						}else{
-							var lowerUser = req.body.userName.toLowerCase();
-							//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
-							if (lowerUser === "organizer" || lowerUser === "admin"){
-								adminStatus = 2
-							}else{
-								adminStatus = 0
-							}
-							// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
-							var linkedAuction = req.body.auctionId;
-							if (adminStatus){
-								// console.log("got in adminStatus")
-								linkedAuction = null;
-							}
+				bcrypt.hash(req.body.password, null, null, function (err, hash) {
+					if (err) {
+						console.log(err)
+						fileLog.info("008 users.js this.create User.findOne  err = ", JSON.stringify(err, null, 2))
+					} else {
+						var lowerUser = req.body.userName.toLowerCase();
+						//In the final product, this will be organizer, but keeping admin for legacy testing.  Also, note that this code isn't being used right now, as admin has an individual create user function run in users.initialize below.
+						if (lowerUser === "organizer" || lowerUser === "admin") {
+							adminStatus = 2
+						} else {
+							adminStatus = 0
+						}
+						// var adminStatus = (lowerUser === "organizer" || lowerUser === "admin");
+						var linkedAuction = req.body.auctionId;
+						if (adminStatus) {
+							// console.log("got in adminStatus")
+							linkedAuction = null;
+						}
 
-							User.create({
+						User.create({
 								userName: req.body.userName,
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
@@ -325,79 +348,98 @@ function UsersController(){
 								// seats: req.body.seats,
 								userOrg: req.body.userOrg
 							},
-							function(err, user){
-									if(err){
-										console.log(err)
-										fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
-									}else{
-										if (req.body.admin) {
-											res.redirect('/' + linkedAuction + '/users');
-										} else {
-											// req.session.auction = linkedAuction
-											// req.session.userName = user.userName
-											// req.session.admin = user.admin
-											// res.redirect('/' + linkedAuction + '/packages')
-											res.render('registrationThankyou', { 
-												auctionName: req.body.auctionName 
-											});
-										}
-										// return;
+							function (err, user) {
+								if (err) {
+									console.log(err)
+									fileLog.info("009 users.js this.create User.create  err = ", JSON.stringify(err, null, 2))
+								} else {
+									if (req.body.admin) {
+										res.redirect('/' + linkedAuction + '/users');
+									} else {
+										// req.session.auction = linkedAuction
+										// req.session.userName = user.userName
+										// req.session.admin = user.admin
+										// res.redirect('/' + linkedAuction + '/packages')
+										res.render('registrationThankyou', {
+											auctionName: req.body.auctionName
+										});
 									}
+									// return;
+								}
 							});
-						}
+					}
 				});
 			}
 		})
 	};
 
 
-	this.checkLogin = function(req, res){
+	this.checkLogin = function (req, res) {
 		console.log("in check login");
 		var name = req.body.userName;
-		console.log("000 users.js checkLogin.  r.b.userName =",req.body.userName);
-		
-		User.findOne({userName: { $regex : new RegExp(name, "i") }}, function(err, user){
-				if(err){
-					fileLog.info("010 users.js checkLogin.  err = ",JSON.stringify(err, null, 2));
-					console.log("001 users.js checkLogin.  err = ",err);
-					res.json({match: false})
-				} else {
-					if(user){
-					console.log("004 users.js checkLogin.  user = ",user)
-					fileLog.info("010 users.js checkLogin.  user = ",JSON.stringify(user, null, 2));
+		console.log("000 users.js checkLogin.  r.b.userName =", req.body.userName);
+
+		User.findOne({
+			userName: {
+				$regex: new RegExp(name, "i")
+			}
+		}, function (err, user) {
+			if (err) {
+				fileLog.info("010 users.js checkLogin.  err = ", JSON.stringify(err, null, 2));
+				console.log("001 users.js checkLogin.  err = ", err);
+				res.json({
+					match: false
+				})
+			} else {
+				if (user) {
+					console.log("004 users.js checkLogin.  user = ", user)
+					fileLog.info("010 users.js checkLogin.  user = ", JSON.stringify(user, null, 2));
 					console.log("005 users.js checkLogin user._auctions = ", user._auctions)
 					req.session.auction = user._auctions
 					req.session.userName = user.userName
 					req.session.admin = user.admin
 					req.session.user = user
-					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ",JSON.stringify(req.session, null, 2));
-					res.json({match: true, auction: user._auctions, admin:user.admin, userId: user._id})
-					}else{
-						res.json({match: false})
-					}
+					fileLog.info("011 users.js checkLogin.  post session assign  req.session = ", JSON.stringify(req.session, null, 2));
+					res.json({
+						match: true,
+						auction: user._auctions,
+						admin: user.admin,
+						userId: user._id
+					})
+				} else {
+					res.json({
+						match: false
+					})
 				}
+			}
 		})
 	}
 
-	
+
 
 	// from app.get('/:auctions/users/account/:userName' - renders user watch list (userPage.ejs)
 	// user account information is handled by this.showAccount; 
-	this.show = function(req,res){
+	this.show = function (req, res) {
 		fileLog.info("100 users.js this.index start. req.session = ", JSON.stringify(req.session, null, 2));
 		fileLog.info("101 users.js this.index start. req.params = ", JSON.stringify(req.params, null, 2));
 		// console.log('UsersController show');
 		var cartArray = []
 		var cartTotal = 0
-		Package.find({_auctions: req.params.auctions}).sort({priority: 'ascending'}).sort({_id:'ascending'}).exec(function(err, result) {
-			if (err){
+		Package.find({
+			_auctions: req.params.auctions
+		}).sort({
+			priority: 'ascending'
+		}).sort({
+			_id: 'ascending'
+		}).exec(function (err, result) {
+			if (err) {
 				console.log(err)
 				fileLog.info("011 users.js this.show Package.find  err = ", JSON.stringify(err, null, 2))
-			}else{
-				for (var i = 0; i < result.length; i++){
-					if (result[i].bids.length > 0){
+			} else {
+				for (var i = 0; i < result.length; i++) {
+					if (result[i].bids.length > 0) {
 						// if (result[i].bids[result[i].bids.length - 1].name == req.params.userName){
-						if (result[i].bids[result[i].bids.length - 1].name == req.params.userId){
+						if (result[i].bids[result[i].bids.length - 1].name == req.params.userId) {
 							cartArray.push(result[i])
 							console.log(cartArray);
 							cartTotal += result[i].bids[result[i].bids.length - 1].bidAmount
@@ -405,27 +447,27 @@ function UsersController(){
 					}
 				}
 				// User.findOne({userName: req.params.userName}).populate("_packages").exec( function(err, user){
-				User.findOne({_id: req.params.userId}).populate("_packages").exec( function(err, user){
-					if(err){
+				User.findOne({
+					_id: req.params.userId
+				}).populate("_packages").exec(function (err, user) {
+					if (err) {
 						console.log(err)
 						fileLog.info("112 users.js this.show User.findOne  err = ", JSON.stringify(err, null, 2))
-					// } else if (user.userName === req.session.userName | req.session.admin === true){
-					} else if (user.userId === req.session.userId | req.session.admin === true){
+						// } else if (user.userName === req.session.userName | req.session.admin === true){
+					} else if (user.userId === req.session.userId | req.session.admin === true) {
 						Auction.findById(req.params.auctions, function (err, auctionDetails) {
 							if (err) {
 								console.log(err)
 								fileLog.info("113 users.js this.show Auction.findById  err = ", JSON.stringify(err, null, 2))
 							} else {
 								fileLog.info("114 users.js this.show Auction.findById  auctionDetails = ", JSON.stringify(auctionDetails, null, 2))
-								Category.find({}, function(err, categories){
-									if (err){
+								Category.find({}, function (err, categories) {
+									if (err) {
 										console.log(err)
-									}
-									else if (result.length === 0){
+									} else if (result.length === 0) {
 										console.log("running categoriesinitialize")
 										categories.initialize()
-									}
-									else{
+									} else {
 										// console.log("req.session is", req.session)
 										res.render('userPage', {
 											current: 'watch-list',
@@ -443,12 +485,12 @@ function UsersController(){
 										fileLog.info("014 users.js this.show res.render  user = ", JSON.stringify(user, null, 2))
 									}
 								})
-              }
-            })
-          }else{
-            res.redirect('/users/supporterError');
-          }
-        })
+							}
+						})
+					} else {
+						res.redirect('/users/supporterError');
+					}
+				})
 			}
 		})
 	};
@@ -456,12 +498,14 @@ function UsersController(){
 	//function to let organizer change her password. It works but can't login with new password for some reason. Apparently because her old password is hardcoded?
 	//3.2019 update - instead, using this for supporter to be able to edit their account.
 	//code for changing password is commented out.
-	this.update = function(req,res){
-		
+	this.update = function (req, res) {
+
 		console.log("380 users.js this.update.  req.body = ", req.body)
 		console.log("381 users.js this.update.  req.session = ", req.session)
 		console.log("382 users.js this.update.  req.params = ", req.params)
-		User.findOne({userName: req.body.userName}, function(err, user) {
+		User.findOne({
+			userName: req.body.userName
+		}, function (err, user) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -495,22 +539,33 @@ function UsersController(){
 		// 	});
 		// });
 	};
-	
-	this.supporterCsv = function(req, res){
+
+	this.supporterCsv = function (req, res) {
 		//May need to add validation checks so that only admins can see
 		// console.log("310 items.js this.populateCsv start")
-		Auction.findById(req.params.auctions, function (err, auctionDetails) {
-			if (err) {
-				console.log(err)
-			} else {
-				// console.log("311 items.js this.populateCsv.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
-				res.render('csvUpload-supporters', {admin: req.session.admin, userName: req.session.userName, auction: req.params.auctions, auctionDetails: auctionDetails, filename: req.body.supporterCsvUpload})
-			}
-		})
+		console.log("**************************************\n",req.session)
+		if (req.session.admin === 2) {
+			Auction.findById(req.params.auctions, function (err, auctionDetails) {
+				if (err) {
+					console.log(err)
+				} else {
+					// console.log("311 items.js this.populateCsv.  r.s.admin = ",req.session.admin," r.p.auctions = ",req.params.auctions)
+					res.render('csvUpload-supporters', {
+						admin: req.session.admin,
+						userName: req.session.userName,
+						auction: req.params.auctions,
+						auctionDetails: auctionDetails,
+						filename: req.body.supporterCsvUpload
+					})
+				}
+			})
+		}else{
+			res.redirect('/users/login')
+		}
 	};
 
 	// Import new users from .csv file (stored in /public)
-	this.usersCsv = function(req, res){
+	this.usersCsv = function (req, res) {
 		//May need to add validation checks so that only admins can see
 		// console.log("400 users.js this.usersCsv start")
 		// console.log("400 users.js this.usersCsv.  req.body = ", req.body)
@@ -518,62 +573,62 @@ function UsersController(){
 		// console.log("402 users.js this.usersCsv.  req.body.supporterCsvUpload = ", req.body.supporterCsvUpload)
 		// console.log("403 users.js this.usersCsv.  req.session = ", req.session)
 		// console.log("404 users.js this.usersCsv.  req.params = ", req.params)
-		
+
 		// NOTE: MUST CHANGE PATH TO YOUR PATH TO '/public' ON YOUR LOCAL DRIVE 
 		const path = "./public/";
 
-		const csvFilePath=(path + req.body.csvFileName);
-		
+		const csvFilePath = (path + req.body.csvFileName);
+
 		// console.log("402 users.js this.usersCsv.  csvFilePath = ",csvFilePath)
 
 		csv()
-		.fromFile(csvFilePath)
-		.then((jsonObj)=>{
-			
-			// console.log("403 users.js this.usersCsv.  jsonObj[0][User Name] = ", jsonObj[0]["User Name"])
-			// console.log("404 users.js this.usersCsv.  jsonObj[0] = ", jsonObj[0])
-			// console.log("405 users.js this.usersCsv.  jsonObj = ", jsonObj)
-			// console.log("405.1 users.js this.usersCsv.  jsonObj.length = ", jsonObj.length)
+			.fromFile(csvFilePath)
+			.then((jsonObj) => {
 
-			for (var i = 0; i < jsonObj.length; i++){
+				// console.log("403 users.js this.usersCsv.  jsonObj[0][User Name] = ", jsonObj[0]["User Name"])
+				// console.log("404 users.js this.usersCsv.  jsonObj[0] = ", jsonObj[0])
+				// console.log("405 users.js this.usersCsv.  jsonObj = ", jsonObj)
+				// console.log("405.1 users.js this.usersCsv.  jsonObj.length = ", jsonObj.length)
 
-				if (jsonObj[i]){
+				for (var i = 0; i < jsonObj.length; i++) {
 
-					console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ",jsonObj[i])
+					if (jsonObj[i]) {
 
-					User.create({
-						userName: jsonObj[i]["User Name"],
-						firstName: jsonObj[i]["First Name"],
-						lastName: jsonObj[i]["Last Name"],
-						phone: jsonObj[i]["Phone"],
-						userOrg: jsonObj[i]["Organization"],
-						streetAddress: jsonObj[i]["Street"],
-						city: jsonObj[i]["City"],
-						states: jsonObj[i]["State"],
-						zip: jsonObj[i]["Zip"],
-						admin: 0,
-						table: jsonObj[i]["Table"],
-						tableOwner: jsonObj[i]["Table Owner"],
-						tableOwnerName: jsonObj[i]["Table Owner Name"],
-						_auctions: req.params.auctions
-						
-						
-					}, function(err, user){
-						if(err){
-							console.log("406 users.js this.usersCsv User.create fail.  err = ",err)
-							
-						}else{
-							console.log("407 users.js this.usersCsv User.create success.  ")
-						}
-					});
+						console.log("405.5 users.js this.usersCsv pre User.create.  user in jsonObj[i] = ", jsonObj[i])
+
+						User.create({
+							userName: jsonObj[i]["User Name"],
+							firstName: jsonObj[i]["First Name"],
+							lastName: jsonObj[i]["Last Name"],
+							phone: jsonObj[i]["Phone"],
+							userOrg: jsonObj[i]["Organization"],
+							streetAddress: jsonObj[i]["Street"],
+							city: jsonObj[i]["City"],
+							states: jsonObj[i]["State"],
+							zip: jsonObj[i]["Zip"],
+							admin: 0,
+							table: jsonObj[i]["Table"],
+							tableOwner: jsonObj[i]["Table Owner"],
+							tableOwnerName: jsonObj[i]["Table Owner Name"],
+							_auctions: req.params.auctions
+
+
+						}, function (err, user) {
+							if (err) {
+								console.log("406 users.js this.usersCsv User.create fail.  err = ", err)
+
+							} else {
+								console.log("407 users.js this.usersCsv User.create success.  ")
+							}
+						});
+					}
 				}
-			}
-			
-		}).then(res.redirect('/' + req.params.auctions + '/users'));
+
+			}).then(res.redirect('/' + req.params.auctions + '/users'));
 	}
 
 	//This displays the user account information, as opposed to their watchlist information, which is handled by this.show
-	this.sendSMS = function(req,res){
+	this.sendSMS = function (req, res) {
 		console.log("400 users.js this.sendSMS start.  req.body = ", req.body)
 		console.log("401 users.js this.sendSMS start.  req.params = ", req.params)
 		let phone = req.body.phone;
@@ -584,12 +639,12 @@ function UsersController(){
 		console.log("401 users.js this.sendSMS msgBody = ", msgBody)
 
 		client.messages
-		.create({
-			body: msgBody,
-			from: '+14084098185',
-			to: '+1'+phone
-		})
-		.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ",message.sid));
+			.create({
+				body: msgBody,
+				from: '+14084098185',
+				to: '+1' + phone
+			})
+			.then(message => console.log("410 users.js this.sendSMS client.msgs.  msg.sid = ", message.sid));
 
 		console.log("410 users.js this.sendSMS.  End message send")
 		res.redirect('/' + req.body.auction + '/clerkDash')
@@ -606,39 +661,41 @@ function UsersController(){
 	// 	})
 	// };
 
-	this.adminNotFound = function(req,res){
+	this.adminNotFound = function (req, res) {
 		res.render('adminError', {})
 	};
 
-	this.clerkNotFound = function(req,res){
+	this.clerkNotFound = function (req, res) {
 		res.render('clerkError', {})
 	};
 
-	this.supporterNotFound = function(req,res){
+	this.supporterNotFound = function (req, res) {
 		res.render('supporterError', {})
 	};
 
-	this.adminChange = function(req,res){
-		if (globals.adminValidation(req, res)){
+	this.adminChange = function (req, res) {
+		if (globals.adminValidation(req, res)) {
 			// console.log('UsersController admin change')
 			//Could potentially update this using a foreach loop and such, although not sure if it would be asychronously correct
 			// console.log("req.body is", req.body)
 
 			// console.log("req.body.keys() is", Object.keys(req.body))
 
-			User.find({_id: Object.keys(req.body)}, function(err, users){
-				if (err){
+			User.find({
+				_id: Object.keys(req.body)
+			}, function (err, users) {
+				if (err) {
 					console.log(err)
-				}else{
-					for (user in users){
+				} else {
+					for (user in users) {
 						if (users[user].userName.toLowerCase() != 'admin') {
 							users[user].admin = req.body[users[user]._id]
-							if(req.body[users[user]._id] === "true"){
+							if (req.body[users[user]._id] === "true") {
 								// console.log("Got inside if statement")
 								users[user]._auctions = null
 							}
-							users[user].save(function(err, result){
-								if (err){
+							users[user].save(function (err, result) {
+								if (err) {
 									console.log(err)
 								}
 							})
@@ -651,20 +708,23 @@ function UsersController(){
 	};
 
 
-	this.logout = function(req,res){
+	this.logout = function (req, res) {
 		req.session.destroy();
-    res.redirect('/users/login')
+		console.log("**************req****logout************\n", (req.session === undefined));
+		res.redirect('/users/login')
 	};
 
 
-	this.interested = function(req, res) {
-		if (globals.notClerkValidation(req, res)){
+	this.interested = function (req, res) {
+		if (globals.notClerkValidation(req, res)) {
 			// console.log("Interested");
-			User.findOne({userName: req.session.userName}, function(err, user) {
+			User.findOne({
+				userName: req.session.userName
+			}, function (err, user) {
 				if (err) {
 					console.log(err);
 					fileLog.info("015 users.js this.interested User.findOne  err = ", JSON.stringify(err, null, 2))
-				}else {
+				} else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
 						if (user._packages[i] == req.params.id) {
@@ -674,31 +734,33 @@ function UsersController(){
 					}
 					if (flag === false) {
 						user._packages.push(req.params.id);
-						user.save(function(err, result) {
+						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
 							}
 						});
-					}else{
+					} else {
 						flag = false;
 					}
 				}
 
-				res.redirect('/' + req.params.auctions  + '/packages/#' +req.params.id)
+				res.redirect('/' + req.params.auctions + '/packages/#' + req.params.id)
 			})
 		}
 	};
 
-	this.uninterested= function(req,res) {
+	this.uninterested = function (req, res) {
 		// console.log("in uninterested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
+		User.findOne({
+			userName: req.session.userName
+		}, function (err, user) {
 			if (err) {
 				console.log(err);
 				fileLog.info("016 users.js this.uninterested User.findOne  err = ", JSON.stringify(err, null, 2))
-			}else{
+			} else {
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
-						user._packages.splice(i,1)
+						user._packages.splice(i, 1)
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
@@ -708,22 +770,24 @@ function UsersController(){
 					}
 				};
 
-	        //As of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-				res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
-				
+				//As of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
+				res.redirect('/' + req.params.auctions + '/packages/#' + req.params.id);
+
 
 			}
 		})
 	};
 
-	this.interestedInPackage = function(req, res) {
-		if (globals.notClerkValidation(req, res)){
+	this.interestedInPackage = function (req, res) {
+		if (globals.notClerkValidation(req, res)) {
 			// console.log("Interested");
-			User.findOne({userName: req.session.userName}, function(err, user) {
+			User.findOne({
+				userName: req.session.userName
+			}, function (err, user) {
 				if (err) {
 					console.log(err);
 					fileLog.info("017 users.js this.interestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
-				}else {
+				} else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
 						if (user._packages[i] == req.params.id) {
@@ -733,30 +797,32 @@ function UsersController(){
 					}
 					if (flag === false) {
 						user._packages.push(req.params.id);
-						user.save(function(err, result) {
+						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
 							}
 						});
-					}else{
+					} else {
 						flag = false;
 					}
 				}
-				res.redirect('/' + req.params.auctions  + '/packages/' +req.params.id)
+				res.redirect('/' + req.params.auctions + '/packages/' + req.params.id)
 			})
 		}
 	};
 
-	this.uninterestedInPackage = function(req,res) {
+	this.uninterestedInPackage = function (req, res) {
 		// console.log("in uninterested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
+		User.findOne({
+			userName: req.session.userName
+		}, function (err, user) {
 			if (err) {
 				console.log(err);
 				fileLog.info("018 users.js this.uninterestedInPackage User.findOne  err = ", JSON.stringify(err, null, 2))
-			}else{
+			} else {
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
-						user._packages.splice(i,1)
+						user._packages.splice(i, 1)
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
@@ -765,19 +831,21 @@ function UsersController(){
 						break
 					}
 				};
-				res.redirect('/' + req.params.auctions  + '/packages/' + req.params.id)
+				res.redirect('/' + req.params.auctions + '/packages/' + req.params.id)
 			}
 		})
 	};
 
-	this.interestedInFeatured = function(req, res) {
-		if (globals.notClerkValidation(req, res)){
+	this.interestedInFeatured = function (req, res) {
+		if (globals.notClerkValidation(req, res)) {
 			// console.log("Interested");
-			User.findOne({userName: req.session.userName}, function(err, user) {
+			User.findOne({
+				userName: req.session.userName
+			}, function (err, user) {
 				if (err) {
 					console.log(err);
 					fileLog.info("019 users.js this.interestedInFeatured User.findOne  err = ", JSON.stringify(err, null, 2))
-				}else {
+				} else {
 					let flag = false
 					for (var i = 0; i < user._packages.length; i++) {
 						if (user._packages[i] == req.params.id) {
@@ -787,32 +855,34 @@ function UsersController(){
 					}
 					if (flag === false) {
 						user._packages.push(req.params.id);
-						user.save(function(err, result) {
+						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
 								fileLog.info("020 users.js this.uninterestedInFeatured user.save  err = ", JSON.stringify(err, null, 2))
 							}
 						});
-					}else{
+					} else {
 						flag = false;
 					}
 				}
-				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
+				res.redirect('/' + req.params.auctions + '/featured-packages/#' + req.params.id);
 			})
 		}
 	};
 
 
-	this.uninterestedInFeatured = function(req,res) {
+	this.uninterestedInFeatured = function (req, res) {
 		// console.log("in uninterested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
+		User.findOne({
+			userName: req.session.userName
+		}, function (err, user) {
 			if (err) {
 				console.log(err);
 				fileLog.info("021 users.js this.uninterestedInFeatured User.findOne  err = ", err)
-			}else{
+			} else {
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
-						user._packages.splice(i,1)
+						user._packages.splice(i, 1)
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
@@ -826,22 +896,24 @@ function UsersController(){
 				// res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
-				res.redirect('/' + req.params.auctions  + '/featured-packages/#' + req.params.id);
-				
+				res.redirect('/' + req.params.auctions + '/featured-packages/#' + req.params.id);
+
 			}
 		})
 	};
 
-	this.uninterestedWatchList = function(req,res) {
+	this.uninterestedWatchList = function (req, res) {
 		// console.log("in uninterested");
-		User.findOne({userName: req.session.userName}, function(err, user) {
+		User.findOne({
+			userName: req.session.userName
+		}, function (err, user) {
 			if (err) {
 				console.log(err);
 				fileLog.info("023 users.js this.uninterestedInWatchList User.findOne  err = ", JSON.stringify(err, null, 2))
-			}else{
+			} else {
 				for (var i = 0; i < user._packages.length; i++) {
 					if (user._packages[i] == req.params.id) {
-						user._packages.splice(i,1)
+						user._packages.splice(i, 1)
 						user.save(function (err, result) {
 							if (err) {
 								console.log(err);
@@ -854,34 +926,34 @@ function UsersController(){
 
 				// 1-17 Bug Fix List Item 16 Set redirect back to user page instead of packages
 				// res.redirect('/' + req.params.auctions  + '/packages')
-				res.redirect('/' + req.params.auctions  + '/users/' + req.session.userName)
+				res.redirect('/' + req.params.auctions + '/users/' + req.session.userName)
 
 				//Das of April 2019, decision has been to allow the supporter to add to /remove from watch list  by remaining in the catalog page
 				// res.redirect('/' + req.params.auctions  + '/packages/#' + req.params.id);
-				
+
 
 			}
 		})
 	};
 
 
-	this.updateList = function(req,res){
-		if (globals.notClerkValidation(req, res)){
-			User.findById(req.params.userId,function(err,user){
-				if (err){
+	this.updateList = function (req, res) {
+		if (globals.notClerkValidation(req, res)) {
+			User.findById(req.params.userId, function (err, user) {
+				if (err) {
 					console.log(err)
 					fileLog.info("025 users.js this.updateList User.findById  err = ", JSON.stringify(err, null, 2))
-				}else{
+				} else {
 					var updatedList = req.params.result.split(',')
-					for(let i = 0; i < updatedList.length; i++){
+					for (let i = 0; i < updatedList.length; i++) {
 						updatedList[i] = parseInt(updatedList[i])
 					}
 					user._packages = updatedList
-					user.save(function(err,result){
-						if(err){
+					user.save(function (err, result) {
+						if (err) {
 							console.log(err)
 							fileLog.info("026 users.js this.updateLIst User.save  err = ", JSON.stringify(err, null, 2))
-						}else{
+						} else {
 							console.log(result)
 						}
 					})
@@ -891,24 +963,25 @@ function UsersController(){
 	}
 
 	//I don't think this has been implemented yet
-	this.delete = function(req, res){
-		if (globals.adminValidation(req, res)){
+	this.delete = function (req, res) {
+		if (globals.adminValidation(req, res)) {
 			// console.log("600 users.js this.delete.  req.params.id = ",req.params.id)
 			// console.log("601 users.js this.delete.  req.params = ",req.params)
-			User.remove({_id: req.params.id}, function(err, result){
-				if (err){
+			User.remove({
+				_id: req.params.id
+			}, function (err, result) {
+				if (err) {
 					console.log(err)
-				}
-				else{
+				} else {
 					// console.log("602 users.js this.delete.  result = ",result)
-					res.redirect('/' + req.params.auction  + '/users')
+					res.redirect('/' + req.params.auction + '/users')
 				}
 			})
 		}
 	}
 
-	this.initialize = function(req, res) {
-		bcrypt.hash("password", null, null, function(err, hash) {
+	this.initialize = function (req, res) {
+		bcrypt.hash("password", null, null, function (err, hash) {
 			User.create({
 				userName: "Organizer",
 				firstName: "Julie",
