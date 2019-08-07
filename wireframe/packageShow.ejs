@@ -38,7 +38,7 @@
 		let auctionEndTime = Date.parse("<%= auctionDetails.endClock %>");
 		var date = new Date();
 		
-
+		// TODO: need to compare user id instead of user firstname
 		if(date > auctionEndTime || "<%=package.highBidder%>" === "<%=user.firstName + " " + user.lastName%>"){
 			console.log("in if statement")
 			document.getElementById('submitButton2').disabled = true;
@@ -78,6 +78,7 @@
 			} else if ( bidAmt >= newBid && hasBids === true ) {
 				sendBid = bidAmt;
 			}
+			// TODO: add user._id to socket emit.
 			if(sendBid <= <%=secret.maxBid%>)
 				socket.emit('msgSent', { packId: '<%= package._id %>', bid: sendBid , userName: userName, name: '<%= package.name %>',auction:auction})
 			else
@@ -201,7 +202,8 @@
 							<input type="number" id='bidAmount' type="number" min='<%= recommendedBid %>' max = "<%= secret.maxBid %>" value='<%= recommendedBid %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
-							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2' <% if (package.highBid >= secret.maxBid){ %> disabled <%}%>>
+							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2' onclick = "addBidToWatchlist(<%=package._id%>)"
+							<% if (package.highBid >= secret.maxBid){ %> disabled <%}%>>
 					</form>
 				<% } %>
 

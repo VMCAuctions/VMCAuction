@@ -229,6 +229,7 @@ io.sockets.on('connection', function (socket) {
 										// console.log("ELSE IF");
 										package.highBid = data.bid;
 										package.highBidder = data.userName;
+										// TODO: add user id to the package.bids
 										package.bids.push({
 											bidAmount: userBid,
 											name: userName,
