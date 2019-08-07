@@ -29,8 +29,16 @@
 			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
 			watchlistButton.value = "Remove from Watch List";
 		}
-	}
-
+  }
+  
+	function addBidToWatchlist() {
+  var watchlistButton = document.getElementById("watchlistButton");
+		if ( watchlistButton.value == "Add to Watch List" ) {
+			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
+			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
+			watchlistButton.value = "Remove from Watch List";
+  }
+  }
 	$(document).ready(function () {
 		// console.log("xxx packageShow.ejs response = ",response);
 
@@ -182,7 +190,8 @@
 							<input type="number" id='bidAmount' type="number" min='<%= lastBid + package.bidIncrement %>' value='<%= lastBid + package.bidIncrement %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
-							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2'>
+              <input class="ml-1 btn-bid" type='submit' onclick="addBidToWatchlist(<%= package._id %>)" value ='Place Bid' id='submitButton2'>
+
 					</form>
 				<% } %>
 

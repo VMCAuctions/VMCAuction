@@ -48,12 +48,8 @@ h2.supporter-view {
 .card-middle {
 	height: 5rem; 
 }
-.stevens-border{
-  border:1px solid black;
-}
-.stevens-input{
-  width:100%;
-}
+
+
 .pkg-img {
   /* border:1px solid black; */
   /* width: 45px;
@@ -63,11 +59,9 @@ h2.supporter-view {
 	display: block; 
 	margin: 0px; 
 }
-.stevens-title{
-  text-align:center;
-  /* border:1px solid black; */
-  display: inline-block;
-  vertical-align: top;
+
+.bid-input-field{
+  width:90%;
 }
 
 .pkg-num {
@@ -138,7 +132,10 @@ h2.supporter-view {
 
 .pkg-title { 
 	font-size: 0.95rem; 
-	font-weight: 700; 
+  font-weight: 700; 
+  text-align:center;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .category {

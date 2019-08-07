@@ -215,7 +215,9 @@ io.sockets.on('connection', function (socket) {
 								
 								// let lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount) || package.amount;
 								let packageAmt = package.amount;
-								let bidIncrement = package.bidIncrement;
+                let bidIncrement = package.bidIncrement;
+                io.emit("serverTalksBack", { packId: data.packId, bidIncrement: bidIncrement, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+
 								let = package
 								
 								//if there are no bids on the package, we check if the userBid is greater than package amount
@@ -286,7 +288,7 @@ io.sockets.on('connection', function (socket) {
 					})
 
 					// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
-					io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+					// io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
 
 					// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 					setTimeout(function () {
