@@ -292,7 +292,7 @@ io.sockets.on('connection', function (socket) {
 					if (data.bid >= secret.maxBid){
 						buttonStatus = "disabled"
 					}
-					console.log("******************topBidder**********",topBidder)
+
 					// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 					setTimeout(function () {
 						socket.broadcast.emit('buttonStateChannel', {
