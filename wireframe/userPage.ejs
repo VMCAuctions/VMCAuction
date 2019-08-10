@@ -87,11 +87,13 @@
                       <div class=" col-6">
                           <ul class="mt-1">	
                             <li>Value: <span class="opening-bid"> <%="$" + currentPackage.value%></span> &nbsp;&nbsp;
+                            <% let lastBid = currentPackage.bids[currentPackage.bids.length-1]%>
                             <%if(currentPackage.bids.length === 0){%>
-                              <li class="no-bid">No bids yet! </li>
+                              <li  id='topBidder-<%= currentPackage._id%>'><span class="no-bid"> No one yet! </span></li>
                             <%}else{%>
-                              <li>Highest Bid: <span id="highest-bid-<%= currentPackage._id%>" class="highest-bid"><%="$" + currentPackage.bids[currentPackage.bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
-                              <span class="highest-bid">(by: <span id="highest-bidder-<%= currentPackage._id%>"> <%= currentPackage.bids[currentPackage.bids.length-1].name%></span>)</span>
+                              <li id='topBidder-<%= currentPackage._id%>'>Highest Bid:
+                                <span class= "highest-bid">$<%=lastBid.bidAmount.toString().replace(/\B(?=(\d {3})+(?!\d))/g, ",")%> (by: <%=lastBid.name%>) 
+                                </span>
                               </li>
                             <%}%>
                             <li>Your Last Bid:</li>
@@ -172,11 +174,7 @@
           console.log(values)
           console.log('userPage.ejs ~~~~~~~~~')
           let hasBids = (values.allBids.length > 0)
-          // if(values.allBids.length != 0){
-          //   hasBids = true
-          // } else {
-          //   hasBids = false
-          // }
+
 
           let packageAmt = parseInt(values.packageAmt)
           let sendBid;
@@ -243,22 +241,18 @@
 
          // Update highest bidder and bid amount
         socket.on("serverTalksBack", function (data) {
-          // FIXME: it doesn't update the first bid from no bids yet to highest bid
-          // console.log('inside servertalkback', data)
+
           let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           let topBidder = data.userBidLast;
           let newBid = data.lastBid + data.bidIncrement
-
-          $(`#highest-bid-${data.packId}`).text("$"+ currentBid);
-          $(`#highest-bidder-${data.packId}`).text(data.userBidLast);
+          $(`#topBidder-${data.packId}`).html(`Highest Bid:<span class= 'highest-bid'>$${currentBid} (by: ${topBidder})</span>`)
           // NEED BID INCREMENT
           let bidAmountInput = $(`#bidAmount-${data.packId}`)
           bidAmountInput.val(newBid);
-          bidAmountInput.attr('min',data.lastBid+data.bidIncrement);
+          bidAmountInput.attr('min', newBid);
           }
-          // $('#bidAmount-'+data.packId).val()
-        );
 
+        );
         		//Updates submit button only after bidding has been saved in database
         socket.on('buttonStateChannel', function (data) {
             let btn = $(`#bid-btn-${data.packId}`);
