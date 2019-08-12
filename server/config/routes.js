@@ -155,7 +155,6 @@ module.exports = function(app) {
 	})
 
 
-
 	
 	// existing methods
 	//adding items from csv page
@@ -573,6 +572,13 @@ module.exports = function(app) {
 		console.log('501 routes.js /admin route');
 		auctions.admin(req,res)});
 
+  app.post('/submitPayment', function(req,res){
+    // console.log('routes: submitPayment', req.body)
+    users.foo(req,res)
+    // res.redirect('/users/login')
+  })
+
+		
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
 		// console.log('routes.js * route');

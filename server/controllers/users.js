@@ -44,8 +44,11 @@ function UsersController() {
 			}
 		}
 		return output
-	}
-
+  }
+  
+  this.foo = function(req,res){
+    console.log('inside users controller ~~', req.params.foo)
+  }
 
 	this.index = function (req, res) {
 		// console.log(Date.now()," - 010 users.js this.index.  UsersController index");

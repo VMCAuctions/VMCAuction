@@ -46,26 +46,28 @@
 								<td id="<%= user.userName + 'total' %>">
 									$<%= cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
 								</td>
-								<td>
-									<span class="font-weight-bold">$ </span><input class="col-10" type="number">
+								<td class="full-payment-field font-weight-bold">
+									$ T2
 								</td>
 								<td>
 									T1
 								</td>
-								<td>
-									<select class="custom-select" id="full-payment-option">
-										<option selected value="yes">Yes</option>
-										<option value="no">No</option>
-									</select>
+								<td class="full-payment-field">
 								</td>
 								<td>
 									T1
 							</td>
 							<td>
 								  <!-- Button trigger modal -->
+<<<<<<< HEAD
 								<button type="button" class="btn btn-sm btn-add pdfBut" data-toggle="modal" data-target="#exampleModalCenter">Payment Details</button><br><br>
 
 								<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
+=======
+								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
+							
+								<button type="button" class="btn btn-sm btn-add pdfBut"  data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
+>>>>>>> changed input fields on modal to text
 							</td>
 
 							</tr>
@@ -84,19 +86,20 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<form class="form-horizontal justify-content-center" action = '' method="POST">
+            <form class="form-horizontal justify-content-center" action = '/submitPayment' method="POST">
+              <input type="text" id="foo" name="foo">
 							<div class="modal-body">
 						
 								<div class="form-group row">
 									<label class="control-label col-3 align-self-center">Name:</label>
 									<div class="col-8 align-self-center">
-										<input id="bidder-name" class="form-control" value=""/>
+										<span id="bidder-name"></span>
 									</div>
 								</div>
 								<div class="form-group row">
 									<label class="control-label col-3 align-self-center">Total Bid:</label>
 									<div class="col-8 align-self-center">
-										<input id="total-amount" class="form-control"  value = "">
+                    <span id="total-amount"></span>
 									</div>
 								</div>
 								<div class="form-group row">
@@ -108,17 +111,14 @@
 								<div class="form-group row">
 									<label class="form-check-label col-3"">Full Payment Received?:</label>
 									<div class="checkbox-inline">
-										<input type="checkbox" checked data-toggle="toggle"> Yes
-										<input type="checkbox" checked data-toggle="toggle"> No
+										<input type="checkbox"  data-toggle="toggle"> 
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-form-label font-weight-bold">Payment Info:</label>
 									<div>
-										<p>Source</p>
-										<p>Conf #</p>
-										<p>Account last 4 digits:</p>
+                    <textarea id="paymentInfo" cols="60" rows="8" placeholder="Source / Conf # / Account's Last 4 Digits"></textarea>
 									</div>
 								</div>
 							</div>
@@ -202,9 +202,10 @@
 				// var id =  $(this).data('id')
 				// $('form')[0].setAttribute('action', `#`);
 
-				$(".modal-body #bidder-name").val( name )
-				$(".modal-body #total-amount").val( amount )
-			});
+				$(".modal-body #bidder-name").html( name )
+				$(".modal-body #total-amount").html( amount )
+      });
+
 
 
 

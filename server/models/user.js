@@ -23,7 +23,11 @@ var userSchema = new Schema(
 	tableOwner: { type: String },
 	tableOwnerName: { type: String },
 	// seats: { type: Number },
-	userOrg: { type: String }
+  userOrg: { type: String },
+  wonPackages: {type: Boolean, default: false},
+  totalPayment: Number,
+  fullyPaid: {type: Boolean, default: false},
+  paymentInfo: String,
 	},
 	{ timestamps: true, usePushEach: true }
 
