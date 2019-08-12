@@ -33,13 +33,13 @@
   }
   
 	function addBidToWatchlist() {
-    var watchlistButton = document.getElementById("watchlistButton");
-      if ( watchlistButton.value == "Add to Watch List" ) {
-        $.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
-        $('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
-        watchlistButton.value = "Remove from Watch List";
-    }
-  }
+		var watchlistButton = document.getElementById("watchlistButton");
+		if ( watchlistButton.value == "Add to Watch List" ) {
+			$.get("/<%= auction %>/users/interested-in-package/<%= package._id %>");
+			$('#watchlistButton').attr("class","btn btn-remove-watchlist mr-1");
+			watchlistButton.value = "Remove from Watch List";
+		}
+  	}
 
 	$(document).ready(function () {
 		// console.log("xxx packageShow.ejs response = ",response);
@@ -48,11 +48,12 @@
 		var date = new Date();
 		
 		// TODO: need to compare user id instead of user firstname
-		if(date > auctionEndTime || "<%=package.highBidder%>" === "<%=user.firstName + " " + user.lastName%>"){
-			console.log("in if statement")
+		if(date > auctionEndTime || "<%=package.highBidder%>" === "<%=user.firstName + " " + user.lastName%>"|| <%=package.highBid%> >= <%=secret.maxBid%> ){
 			document.getElementById('submitButton2').disabled = true;
+			if(<%=package.highBid%> >= <%=secret.maxBid%>){
+				document.getElementById('bidAmount').disabled = true;
+			}
 		}
-
 
 		$("#hide").click(function(){
     		$("#notification").hide();
@@ -120,6 +121,8 @@
 
 			if(newBid >= <%=secret.maxBid%>){
 				$('#minBid').text(`${topBidder} won this package`);
+				$("#bidAmount").prop('disabled', true);
+
 			}
 		});
 
@@ -211,10 +214,7 @@
 							<input type="number" id='bidAmount' type="number" min='<%= recommendedBid %>' max = "<%= secret.maxBid %>" value='<%= recommendedBid %>'>
 						<% } %>
 							<input id='hiddenBidAmt' type="hidden" value=''>
-
-							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2' onclick = "addBidToWatchlist(<%=package._id%>)"
-							<% if (package.highBid >= secret.maxBid){ %> disabled <%}%>>
-
+							<input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2' onclick = "addBidToWatchlist(<%=package._id%>)">
 					</form>
 				<% } %>
 
