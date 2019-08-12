@@ -96,7 +96,7 @@
                                 </span>
                               </li>
                             <%}%>
-                            <li>Your Last Bid:</li>
+                             <!--<li>Your Last Bid:</li>-->
                             </ul>
                       </div>
                   </div>
@@ -127,7 +127,8 @@
       </div>
     <%}%>
     </div> 
-  </div> <!-- End of container -->
+  </div> 
+  <!-- End of container -->
 
     <script>
 
@@ -149,9 +150,11 @@
           let packages = <%-JSON.stringify(user._packages) %>;
           $.each(packages, function( index, p ) {
             let lastBid = p.bids[p.bids.length-1]
-            
             if ("<%=user.firstName + ' ' + user.lastName%>" === p.highBidder || p.highBid >= <%=secret.maxBid%>){
-              $(`#bid-btn-${p._id}`).attr("disabled", "disabled")
+              $(`#bid-btn-${p._id}`).prop("disabled", true);
+              if(p.highBid >= <%=secret.maxBid%>){
+                $(`#bidAmount-${p._id}`).prop("disabled", true);
+              }
             }
           });
         }
@@ -174,8 +177,6 @@
           console.log(values)
           console.log('userPage.ejs ~~~~~~~~~')
           let hasBids = (values.allBids.length > 0)
-
-
           let packageAmt = parseInt(values.packageAmt)
           let sendBid;
           let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
@@ -208,8 +209,12 @@
               name: values.packageName,
               auction:auction,
             }
-            console.log("userPage.ejs********************msgSent***************\n" +msgSent)
-            socket.emit('msgSent', msgSent)
+            if(sendBid <= <%=secret.maxBid%>){
+              console.log("userPage.ejs********************msgSent***************\n" +msgSent)
+              socket.emit('msgSent', msgSent)
+            }else{
+              // TODO: reload the page
+            }
           });
 
         $("select[name='category']").change( function() {
@@ -248,9 +253,14 @@
           $(`#topBidder-${data.packId}`).html(`Highest Bid:<span class= 'highest-bid'>$${currentBid} (by: ${topBidder})</span>`)
           // NEED BID INCREMENT
           let bidAmountInput = $(`#bidAmount-${data.packId}`)
+          if(newBid > <%=secret.maxBid%>){
+            newBid = <%=secret.maxBid%>;
+            $(`#bid-btn-${data.packId}`).prop("disabled", true);
+            $(`#bidAmount-${data.packId}`).prop("disabled", true);
+			    }
           bidAmountInput.val(newBid);
           bidAmountInput.attr('min', newBid);
-          }
+        }
 
         );
         		//Updates submit button only after bidding has been saved in database
@@ -264,8 +274,6 @@
               }
             }
         });
-
-        
 
       })
     </script>
@@ -285,9 +293,9 @@
           if(<%=user._packages[j]._id%> == data.packId){
             // if(data.userName === "<%=userName%>"){
             if(data.userName === userName){
-              console.log("data.userName = ", data.userName)
-              console.log("userName = ", userName)
-              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);cd 
+              // console.log("data.userName = ", data.userName)
+              // console.log("userName = ", userName)
+              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);
               $("#<%=user._packages[j]._id%>").text(data.userName)
             }
           }
