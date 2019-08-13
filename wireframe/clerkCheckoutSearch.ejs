@@ -65,7 +65,6 @@
 								<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 =======
 								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
-							
 								<button type="button" class="btn btn-sm btn-add pdfBut"  data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 >>>>>>> changed input fields on modal to text
 							</td>
@@ -79,7 +78,6 @@
 			<div class="modal fade" id="bid-checkout-input" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 					<div class="modal-content">
-					
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLongTitle">Payment Details</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -118,7 +116,7 @@
 								<div class="form-group">
 									<label class="col-form-label font-weight-bold">Payment Info:</label>
 									<div>
-                    <textarea id="paymentInfo" cols="60" rows="8" placeholder="Source / Conf # / Account's Last 4 Digits"></textarea>
+                    					<textarea id="paymentInfo" cols="60" rows="8" placeholder="Source / Conf # / Account's Last 4 Digits"></textarea>
 									</div>
 								</div>
 							</div>
