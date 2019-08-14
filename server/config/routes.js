@@ -578,7 +578,6 @@ module.exports = function(app) {
     // res.redirect('/users/login')
   })
 
-		
 	//Added temporary redirect if no other routes are hit, which goes to login
 	app.get('*', function (req, res) {
 		// console.log('routes.js * route');

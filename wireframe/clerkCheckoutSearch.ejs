@@ -59,14 +59,10 @@
 							</td>
 							<td>
 								  <!-- Button trigger modal -->
-<<<<<<< HEAD
-								<button type="button" class="btn btn-sm btn-add pdfBut" data-toggle="modal" data-target="#exampleModalCenter">Payment Details</button><br><br>
 
-								<button type="button" class="btn btn-sm btn-add pdfBut" data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
-=======
+
 								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
 								<button type="button" class="btn btn-sm btn-add pdfBut"  data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
->>>>>>> changed input fields on modal to text
 							</td>
 
 							</tr>
