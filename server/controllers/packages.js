@@ -4,8 +4,8 @@ var mongoose = require('mongoose'),
 	Category = require('../models/category.js'),
 	User = require('../models/user.js'),
 	Auction = require('../models/auction.js'),
-	globals = require('../controllers/globals.js')
-
+	globals = require('../controllers/globals.js'),
+	secret = require('../config/secret.json')
 	
 var ObjectId = require('mongodb').ObjectId;
 var multer = require('multer')
@@ -411,7 +411,7 @@ function PackagesController() {
 		console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
 		if (globals.adminValidation(req, res)){
 			var total = 0;
-			var itemsArray = [];
+ 			var itemsArray = [];
 			Item.find({_auctions: req.params.auctions}, function(err, items) {
 
 					if(err) {
@@ -621,7 +621,7 @@ function PackagesController() {
 											lastBid: parseInt(lastBid),
 											auction: req.params.auctions,
 											auctionDetails: auctionDetails,
-											
+											secret: secret
 										})
 									}
 								})

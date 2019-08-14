@@ -153,7 +153,6 @@ io.sockets.on('connection', function (socket) {
 						button: 'disabled',
 						packId: data.packId
 					});
-
 					//function to calculate time ex: '7:30 PM'
 					function formatAMPM(date) {
 							let hours = date.getHours();
@@ -171,18 +170,14 @@ io.sockets.on('connection', function (socket) {
 							}
 							if (minutes < 10) {
 								minutes = '0' + minutes;
-							} else {
-								minutes;
 							}
 							let strTime = hours + ':' + minutes + ' ' + ampm;
 							return strTime;
 						}
 					let bidTime = formatAMPM(date);
-					
 					if (allBidsBigObj[data.packId] == undefined) {
 						allBidsBigObj[data.packId] = [];
-					}  
-					
+					}
 					if(packagesButtonStates[data.packId] == undefined){
 						packagesButtonStates[data.packId] = {buttonstate: "true"};
 					}
@@ -212,35 +207,38 @@ io.sockets.on('connection', function (socket) {
 								} else {
 									lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount);
 								}
-								
+
 								// let lastBid = parseInt(package.bids[package.bids.length - 1].bidAmount) || package.amount;
 								let packageAmt = package.amount;
-								let bidIncrement = package.bidIncrement;
+                let bidIncrement = package.bidIncrement;
+                io.emit("serverTalksBack", { packId: data.packId, bidIncrement: bidIncrement, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+
 								let = package
-								
 								//if there are no bids on the package, we check if the userBid is greater than package amount
-								if (package.bids.length == 0 && userBid >= packageAmt) {
-									package.highBid = data.bid;
-									package.highBidder = data.userName;
-									package.bids.push({
-										bidAmount: userBid,
-										name: userName,
-										date: date,
-										bidTime: bidTime
-									});
+								if (userBid <= secret.maxBid){
+									if (package.bids.length == 0 && userBid >= packageAmt) {
+										package.highBid = data.bid;
+										package.highBidder = data.userName;
+										package.bids.push({
+											bidAmount: userBid,
+											name: userName,
+											date: date,
+											bidTime: bidTime
+										});
 
-								//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
-								} else if (userBid >= lastBid + bidIncrement) {
-									// console.log("ELSE IF");
-									package.highBid = data.bid;
-									package.highBidder = data.userName;
-
-									package.bids.push({
-										bidAmount: userBid,
-										name: userName,
-										date: date,
-										bidTime:bidTime
-									});
+									//else if there are bids, we check if the userBid is greater than the lastbid plus the increment 
+									} else if (userBid >= lastBid + bidIncrement) {
+										// console.log("ELSE IF");
+										package.highBid = data.bid;
+										package.highBidder = data.userName;
+										// TODO: add user id to the package.bids
+										package.bids.push({
+											bidAmount: userBid,
+											name: userName,
+											date: date,
+											bidTime:bidTime
+										});
+									}
 								}
 							}
 							//save all stuff
@@ -262,6 +260,7 @@ io.sockets.on('connection', function (socket) {
 						})
 					}
 
+					var topBidder;
 					User.findOne({ userName: data.userName }).exec(function (err, user) {
 						if (err) {
 							console.log("error occured " + err);
@@ -284,21 +283,27 @@ io.sockets.on('connection', function (socket) {
 							}
 						}
 					})
-
 					// EMITTING MESSAGE WITH LATEST BID AMOUNT AND BIDDER NAME
-					io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+					// io.emit("serverTalksBack", { packId: data.packId, lastBid: data.bid, userBidLast: data.userName, name: data.name, date: date, bidTime: bidTime})
+
+
+					buttonStatus = "enabled";
+
+					if (data.bid >= secret.maxBid){
+						buttonStatus = "disabled"
+					}
 
 					// NOW WE ENABLING ALL BUTTONS ON THIS PACKAGE TO ALLOW MAKE BIDS FOR OTHERS
 					setTimeout(function () {
-						io.emit('buttonStateChannel', {
-							button: 'enabled',
-							packId: data.packId
+						socket.broadcast.emit('buttonStateChannel', {
+							lastBidder: data.userName,
+							button: buttonStatus,
+							packId: data.packId,
 						});
 					}, 1000);
 
 					// NOW SOMEBODY ELSE CAN PLACE A BID ON THIS PACKAGE AGAIN
 					packagesButtonStates[data.packId].buttonstate = true;
-
 				}
 			}
 		})
