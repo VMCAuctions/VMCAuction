@@ -411,7 +411,7 @@ function PackagesController() {
 		console.log(Date.now() + " - 000 packages.js this.new start.  req.params = ",req.params);
 		if (globals.adminValidation(req, res)){
 			var total = 0;
-			var itemsArray = [];
+ 			var itemsArray = [];
 			Item.find({_auctions: req.params.auctions}, function(err, items) {
 
 					if(err) {

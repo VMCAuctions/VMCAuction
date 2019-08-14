@@ -22,8 +22,6 @@
   <%}%>
   <% if(admin == 0){ %>
 		<%- include('footerNotifications') %>
-	<% } %>
-	<%if(admin == 0){%>
 		<%- include('footerClock') -%>
 	<%}%>
     <div class="container margin-tofooter">
@@ -57,84 +55,80 @@
 
       <div class="d-flex flex-row flex-wrap justify-content-start">
       <%for(let i =0; i<user._packages.length; i++){%>
-          <% console.log(user._packages[i]) %>
+        <% let currentPackage = user._packages[i] %>
         
-        <%if(user._packages[i].bids.length>0){%>
-          <div class="package bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= user._packages[i]._id %>">
+        <% console.log("userPage.ejs***********currentPackage)\n" +currentPackage) %>
+        
+        <%if(currentPackage.bids.length>0){%>
+          <div class="package bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= currentPackage._id %>">
         <%}else{%>
-          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= user._packages[i]._id %>">
-        <%}%>	
-        
-        <div id="<%=user._packages[i]._id %>" class="card pkg-card">	
+          <div class="package no-bids col-lg-4 col-md-12 col-sm-12 " id="removeWatchList-<%= currentPackage._id %>">
+        <%}%>
+
+        <div id="<%=currentPackage._id %>" class="card pkg-card">	
           <div id="selection" class="card-body">
             <div class="row">
               <div class="col-8">
                   <div class="row">
                       <div class="col-2">
                           <span class="pkg-num">
-                              #<%=user._packages[i].id%>
+                              #<%=currentPackage.id%>
                           </span>
                       </div>
                       <div class="col-10">
-                        <h4><a class="pkg-title" href="/<%=auction%>/packages/<%=user._packages[i]._id%>"><%=user._packages[i].name%></a>
+                        <h4><a class="pkg-title" href="/<%=auction%>/packages/<%=currentPackage._id%>"><%=currentPackage.name%></a>
                         </h4>
                       </div>
                     </div>
                   <div class="row">
                       <div class=" col-2">
-                          <img class="pkg-img mr-3" src="/<%=user._packages[i].photo %>">
+                          <img class="pkg-img mr-3" src="/<%=currentPackage.photo %>">
                       </div>
                       <div class=" col-6">
-                          
                           <ul class="mt-1">	
-                            <li>Value: <span class="opening-bid"> <%="$" + user._packages[i].value%></span> &nbsp;&nbsp;
-                            <%if(user._packages[i].bids[user._packages[i].bids.length-1]){%>
-                              <li>Highest Bid: <span id="highest-bid-<%= user._packages[i]._id%>" class="highest-bid"><%="$" + user._packages[i].bids[user._packages[i].bids.length-1].bidAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%></span>
-                              <span class="highest-bid">(by: <span id="highest-bidder-<%= user._packages[i]._id%>"> <%= user._packages[i].bids[user._packages[i].bids.length-1].name%></span>)</span></li>
-                              <%}else{%>
-                              <li class="no-bid">No bids yet! </li>
+                            <li>Value: <span class="opening-bid"> <%="$" + currentPackage.value%></span> &nbsp;&nbsp;
+                            <% let lastBid = currentPackage.bids[currentPackage.bids.length-1]%>
+                            <%if(currentPackage.bids.length === 0){%>
+                              <li  id='topBidder-<%= currentPackage._id%>'><span class="no-bid"> No one yet! </span></li>
+                            <%}else{%>
+                              <li id='topBidder-<%= currentPackage._id%>'>Highest Bid:
+                                <span class= "highest-bid">$<%=lastBid.bidAmount.toString().replace(/\B(?=(\d {3})+(?!\d))/g, ",")%> (by: <%=lastBid.name%>) 
+                                </span>
+                              </li>
                             <%}%>
-                            <li>Your Last Bid:</li>
+                             <!--<li>Your Last Bid:</li>-->
                             </ul>
-          
                       </div>
                   </div>
               </div>
               <div class="col-4">
                   <form class="bidForm" id='submitButton' class="w-50" name="<%=i%>">
-                      <input type="hidden" name="highBid" value='<%=user._packages[i].highBid %>'>
-                      <input type="hidden" name="bidIncrement" value='<%=user._packages[i].bidIncrement %>'>
-  
-                      <input type="hidden" name="packageId" value='<%=user._packages[i].id %>'>
-                      <input type="hidden" name="packageName" value='<%=user._packages[i].name %>'>
-                      <input type="hidden" name="packageAmt" value='<%=user._packages[i].amount %>'>
-                      <input type="hidden" name="allBids" value='<%=user._packages[i].bids %>'>
-  
-                      <% if (user._packages[i].bids.length === 0){ %>
-                        <input class="bid-input-field" type="number" id='biduser.Amount-<%= user._packages[i]._id%>' name="bidAmount" type="number" min='<%= user._packages[i].amount %>' value='<%= user._packages[i].amount%>'>
-                      <% }else{ %>
-                        <input class="bid-input-field" type="number" id='bidAmount-<%= user._packages[i]._id%>' name="bidAmount" type="number" min='<%= user._packages[i].highBid + user._packages[i].bidIncrement %>' value='<%=  user._packages[i].highBid + user._packages[i].bidIncrement %>'>
-                      <% } %>
-                        <input id='hiddenBidAmt' type="hidden" value=''>
-                        <input class="ml-1 btn-bid" type='submit' value='Place Bid' id='submitButton2'>
-                    </form>
-  
+                      <input type="hidden" name="highBid" value='<%=currentPackage.highBid %>'>
+                      <input type="hidden" name="bidIncrement" value='<%=currentPackage.bidIncrement %>'>
+                      <input type="hidden" name="packageId" value='<%=currentPackage.id %>'>
+                      <input type="hidden" name="packageName" value='<%=currentPackage.name %>'>
+                      <input type="hidden" name="packageAmt" value='<%=currentPackage.amount %>'>
+                      <input type="hidden" name="allBids" value='<%=currentPackage.bids %>'>
+
+                      <% let recommendedBid = (currentPackage.bids.length > 0) ? currentPackage.highBid + currentPackage.bidIncrement : currentPackage.amount%>
+                      <input class="bid-input-field" type="number" id='bidAmount-<%= currentPackage._id%>' name="bidAmount" type="number" min='<%= recommendedBid %>' value='<%= recommendedBid%>' max='<%=secret.maxBid%>'>
+                      <input id='hiddenBidAmt' type="hidden" value=''>
+                      <input class="ml-1 btn-bid" type='submit' value='Place Bid' id='bid-btn-<%=currentPackage.id%>'>
+                  </form>
                   <div>
                     <button>
-                      <a onClick="change(<%= user._packages[i]._id %>)" value="Remove from Watch List" id="watchlistButton-<%=user._packages[i]._id%>">Remove from Watchlist</a></div>
+                      <a onClick="change(<%= currentPackage._id %>)" value="Remove from Watch List" id="watchlistButton-<%=currentPackage._id%>">Remove from Watchlist</a></div>
                     </button>
                 </div>
 
             </div>
-
-
-
           </div>
         </div>
       </div>
     <%}%>
     </div> 
-  </div> <!-- End of container -->
+  </div> 
+  <!-- End of container -->
 
     <script>
 
@@ -144,70 +138,84 @@
         var x = document.getElementById("removeWatchList-"+packageId);
         x.style.display = "none";
         $.get("/<%= auction %>/users/uninterested-in-package/"+packageId);
-          }
+      }
         
 
       $(document).ready(function(){
+        let auctionEndTime = Date.parse("<%= auctionDetails.endClock %>");
+		    var date = new Date();
+        if(date > auctionEndTime){
+          $(".bid-btn").attr("disabled", "disabled")
+        }else{
+          let packages = <%-JSON.stringify(user._packages) %>;
+          $.each(packages, function( index, p ) {
+            let lastBid = p.bids[p.bids.length-1]
+            if ("<%=user.firstName + ' ' + user.lastName%>" === p.highBidder || p.highBid >= <%=secret.maxBid%>){
+              $(`#bid-btn-${p._id}`).prop("disabled", true);
+              if(p.highBid >= <%=secret.maxBid%>){
+                $(`#bidAmount-${p._id}`).prop("disabled", true);
+              }
+            }
+          });
+        }
         
-      $('.bidForm').submit(function (event) {
-      event.preventDefault();
+        $('.bidForm').submit(function (event) {
+          event.preventDefault();
+          // console.log($(this).serialize())
+          let auction = "<%= auctionDetails._id %>";
+          let userName = "<%= user.firstName + ' ' + user.lastName %>";
+          // values(dictionary) maps all form inputs to values
+          var $inputs = $('.bidForm :input');
+          var values = {};
+          $.each($(this).serializeArray(), function(i, field) {
+            values[field.name] = field.value;
+          });
+          // $inputs.each(function() {
+          //     values[this.name] = this.value
+          // });
 
-        // console.log($(this).serialize())
-      
-      let auction = "<%= auctionDetails._id %>";
-      let userName = "<%= user.firstName + ' ' + user.lastName %>";
-      // values(dictionary) maps all form inputs to values
-      var $inputs = $('.bidForm :input');
-      var values = {};
-      $.each($(this).serializeArray(), function(i, field) {
-    values[field.name] = field.value;
-});
-      // $inputs.each(function() {
-      //     values[this.name] = this.value
-      // });
-      console.log(values)
-      console.log('userPage.ejs ~~~~~~~~~')
-      let hasBids
-      if(values.allBids.length != 0){
-        hasBids = true
-      } else {
-        hasBids = false
-      }
-      let packageAmt = parseInt(values.packageAmt)
-			let sendBid;
-      let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
-      let bidAmt = parseInt(values.bidAmount)
-      let newBid = parseInt(values.bidIncrement) + parseInt(values.highBid)
+          console.log(values)
+          console.log('userPage.ejs ~~~~~~~~~')
+          let hasBids = (values.allBids.length > 0)
+          let packageAmt = parseInt(values.packageAmt)
+          let sendBid;
+          let hiddenBidAmt = parseInt($("#hiddenBidAmt").val());
+          let bidAmt = parseInt(values.bidAmount)
+          let newBid = parseInt(values.bidIncrement) + parseInt(values.highBid)
 
-      //No input and no bids, "Place Bid" will place bid of current bid plus increment
-			if ( !bidAmt && hasBids === false ) {
-				sendBid = packageAmt;
-			//No input and has bids, "Place Bid" will place bid of current bid plus increment
-			} else if ( !bidAmt && hasBids === true ) {
-				//No hidden big amount use newBid from Controller else use the hidden bid amount from Server
-				if (!hiddenBidAmt) {
-					sendBid = newBid;
-				} else {
-					sendBid = hiddenBidAmt;
-				}
-			// no bids but with value entered in bid form field
-			} else if ( bidAmt >= packageAmt && hasBids === false ) {
-				sendBid = bidAmt;
-			// has bids and has value entered in bid form field
-			} else if ( bidAmt >= newBid && hasBids === true ) {
-				sendBid = bidAmt;
-      }
+          //No input and no bids, "Place Bid" will place bid of current bid plus increment
+          if ( !bidAmt && hasBids === false ) {
+            sendBid = packageAmt;
+          //No input and has bids, "Place Bid" will place bid of current bid plus increment
+          } else if ( !bidAmt && hasBids === true ) {
+            //No hidden big amount use newBid from Controller else use the hidden bid amount from Server
+            if (!hiddenBidAmt) {
+              sendBid = newBid;
+            } else {
+              sendBid = hiddenBidAmt;
+            }
+          // no bids but with value entered in bid form field
+          } else if ( bidAmt >= packageAmt && hasBids === false ) {
+            sendBid = bidAmt;
+          // has bids and has value entered in bid form field
+          } else if ( bidAmt >= newBid && hasBids === true ) {
+            sendBid = bidAmt;
+          }
 
-      let msgSent = {
-        packId: values.packageId,
-        bid: sendBid,
-        userName: userName,
-        name: values.packageName,
-        auction:auction,
-      }
-      console.log(msgSent)
-			socket.emit('msgSent', msgSent)
-      });
+            let msgSent = {
+              packId: values.packageId,
+              bid: sendBid,
+              userName: userName,
+              name: values.packageName,
+              auction:auction,
+            }
+            if(sendBid <= <%=secret.maxBid%>){
+              console.log("userPage.ejs********************msgSent***************\n" +msgSent)
+              socket.emit('msgSent', msgSent)
+            }else{
+              // TODO: reload the page
+            }
+          });
 
         $("select[name='category']").change( function() {
           var value = $(this).val().toLowerCase();
@@ -238,20 +246,34 @@
 
          // Update highest bidder and bid amount
         socket.on("serverTalksBack", function (data) {
-          console.log('inside servertalkback', data)
+
           let currentBid = (data.lastBid).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           let topBidder = data.userBidLast;
-          $('#highest-bid-'+data.packId).text("$"+ currentBid);
-          $('#highest-bidder-'+data.packId).text(data.userBidLast);
+          let newBid = data.lastBid + data.bidIncrement
+          $(`#topBidder-${data.packId}`).html(`Highest Bid:<span class= 'highest-bid'>$${currentBid} (by: ${topBidder})</span>`)
           // NEED BID INCREMENT
-          $('#bidAmount-'+data.packId).val(data.lastBid+data.bidIncrement);
-          $('#bidAmount-'+data.packId).attr('min',data.lastBid+data.bidIncrement);
-          }
-          // $('#bidAmount-'+data.packId).val()
+          let bidAmountInput = $(`#bidAmount-${data.packId}`)
+          if(newBid > <%=secret.maxBid%>){
+            newBid = <%=secret.maxBid%>;
+            $(`#bid-btn-${data.packId}`).prop("disabled", true);
+            $(`#bidAmount-${data.packId}`).prop("disabled", true);
+			    }
+          bidAmountInput.val(newBid);
+          bidAmountInput.attr('min', newBid);
+        }
+
         );
-
-
-        
+        		//Updates submit button only after bidding has been saved in database
+        socket.on('buttonStateChannel', function (data) {
+            let btn = $(`#bid-btn-${data.packId}`);
+            if( data.button === 'disabled'){
+              btn.attr('disabled','disabled')
+            } else {
+              if("<%= user.firstName + " " + user.lastName%>" !== data.lastBidder){
+                btn.removeAttr('disabled');
+              }
+            }
+        });
 
       })
     </script>
@@ -271,9 +293,9 @@
           if(<%=user._packages[j]._id%> == data.packId){
             // if(data.userName === "<%=userName%>"){
             if(data.userName === userName){
-              console.log("data.userName = ", data.userName)
-              console.log("userName = ", userName)
-              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);cd 
+              // console.log("data.userName = ", data.userName)
+              // console.log("userName = ", userName)
+              $("#highest-bid-<%=user._packages[j]._id%>").text("$"+currentBid);
               $("#<%=user._packages[j]._id%>").text(data.userName)
             }
           }

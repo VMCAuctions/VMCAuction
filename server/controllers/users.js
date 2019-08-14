@@ -471,6 +471,7 @@ function UsersController() {
 										// console.log("req.session is", req.session)
 										res.render('userPage', {
 											current: 'watch-list',
+											secret:secret,
 											userName: req.session.userName,
 											userId: req.session.userId,
 											admin: req.session.admin,
