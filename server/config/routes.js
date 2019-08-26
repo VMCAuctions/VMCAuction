@@ -574,7 +574,7 @@ module.exports = function(app) {
 
   app.post('/submitPayment', function(req,res){
     // console.log('routes: submitPayment', req.body)
-    users.foo(req,res)
+    users.updatePayment(req,res)
     // res.redirect('/users/login')
   })
 

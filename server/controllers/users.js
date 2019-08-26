@@ -46,7 +46,9 @@ function UsersController() {
 		return output
   }
   
-  this.foo = function(req,res){
+  this.updatePayment = function(req,res){
+
+	// TODO: update the payment here
     console.log('inside users controller ~~', req.params.foo)
   }
 

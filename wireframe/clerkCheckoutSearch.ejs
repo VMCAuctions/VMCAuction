@@ -11,11 +11,12 @@
 					<label for "packageName" class="label-search">Search by Package Name</label>
 					<input class="form-control" type="search" id="packageName" placeholder="Package Name">
 				</div>
-				<!-- <%-JSON.stringify(cart,null,2) %>-->
 			</div>
 			<!-- Search for Supporters-->
 			<div id="supporterTable">
 				<h3>Supporters</h3>
+				<!--<%-JSON.stringify(cart,null,2)%>-->
+
 				<table class="table table-striped table-bordered package-table">
 					<thead>
 						<tr>
@@ -32,7 +33,6 @@
 					<tbody id="carts">
 						<% for (var u in users) {%>
 							<% var user = users[u]%>
-							<!-- <%-JSON.stringify(user,null,2)%>-->
 							<tr class="supporterRow">
 								<td><%= user.firstName %> <%=user.lastName%></td>
 								<td id="<%= user.userName + 'winning' %>">
@@ -47,21 +47,22 @@
 									$<%= cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
 								</td>
 								<td class="full-payment-field font-weight-bold">
-									$ T2
+									$ <span id ="paid-amount-<%=user._id%>">0.0</span>
 								</td>
-								<td>
-									T1
+								<td id ="payment-info-<%=user._id%>">
 								</td>
 								<td class="full-payment-field">
+									<select class="custom-select" id="full-payment-option">
+										<option selected value="yes">Yes</option>
+										<option value="no">No</option>
+									</select>
 								</td>
 								<td>
 									T1
 							</td>
 							<td>
 								  <!-- Button trigger modal -->
-
-
-								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
+								<button type="button" class="btn btn-sm btn-add btn-open-dialog" data-toggle="modal" data-target="#bid-checkout-input" data-id="<%=user._id%>" data-winner-name="<%=user.firstName%> <%=user.lastName%>" data-bid-amount = '<%=cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>'>Payment Details</button><br><br>
 								<button type="button" class="btn btn-sm btn-add pdfBut"  data-first="<%- users[u].firstName %>" data-last="<%- users[u].lastName %>" data-user="<%- users[u].userName %>" data-total="<%- cart[users[u].userName].total %>">Invoice</button>
 							</td>
 
@@ -80,9 +81,9 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-            <form class="form-horizontal justify-content-center" action = '/submitPayment' method="POST">
+            			<form class="form-horizontal justify-content-center" >
 							<div class="modal-body">
-						
+								<input type = "hidden" id="modal-id">
 								<div class="form-group row">
 									<label class="control-label col-3 align-self-center">Name:</label>
 									<div class="col-8 align-self-center">
@@ -92,32 +93,32 @@
 								<div class="form-group row">
 									<label class="control-label col-3 align-self-center">Total Bid:</label>
 									<div class="col-8 align-self-center">
-                    <span id="total-amount"></span>
+                    				<span id="modal-total-amount"></span>
 									</div>
 								</div>
 								<div class="form-group row">
 									<label class="col-form-label col-3 align-self-center">Payment Amount:</label>
 									<div class="col-8 align-self-center">
-										<input type="text" class="form-control" id="payment-amount">
+										<input type="text" class="form-control" id="modal-paid-amount">
 									</div>
 								</div>
 								<div class="form-group row">
-									<label class="form-check-label col-3"">Full Payment Received?:</label>
+									<label class="form-check-label col-3">Full Payment Received?:</label>
 									<div class="checkbox-inline">
-										<input type="checkbox"  data-toggle="toggle"> 
+										<input id ="modal-checkbox-payment" type="checkbox" data-toggle="toggle">YES
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-form-label font-weight-bold">Payment Info:</label>
 									<div>
-                    					<textarea class = "col-12" id="paymentInfo" cols="60" rows="8" placeholder="Source / Conf # / Account's Last 4 Digits"></textarea>
+                    					<textarea class = "col-12" id="modal-payment-info" cols="60" rows="8" placeholder="Source / Conf # / Account's Last 4 Digits"></textarea>
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-								<button type="submit" class="btn btn-sm btn-add">Submit</button>
+								<button id = "submit-modal-btn" class="btn btn-sm btn-add" data-dismiss="modal">Submit</button>
 							</div>
 						</form>
 					</div>
@@ -188,23 +189,43 @@
 					};
 				});
 			})
-			
+
 			$(document).on("click", '.btn-open-dialog', function () {
-				var name = $(this).data('winner-name')
-				var amount = $(this).data('bid-amount')
-				// var id =  $(this).data('id')
+				let name = $(this).data('winner-name')
+				let amount = $(this).data('bid-amount')
+				let id = $(this).data('id')
 				// $('form')[0].setAttribute('action', `#`);
-
 				$(".modal-body #bidder-name").html( name )
-				$(".modal-body #total-amount").html( amount )
-      });
+				$(".modal-body #modal-total-amount").html( amount )
+				$(".modal-body #modal-id").val( id )
 
+				$('#modal-checkbox-payment'). click(function(){
+					if($(this).prop("checked") && !verifyFullyPaid()){
+						alert("The amount isn't fully paid. Please check the payment again!");
+						$("#modal-checkbox-payment").prop("checked", false);
+					}
+				});
+      		});
 
+			function verifyFullyPaid(){
+				let paid = parseFloat($("#modal-paid-amount").val());
+				let total =parseFloat($("#modal-total-amount").html().replace(/,/g,''));
+				let dif = total - paid;
+				return dif === 0;
+			}
 
+			$("#submit-modal-btn").click(function(){
+				let paymentAmt = $("#modal-paid-amount").val();
+				let paymentInfo = $("#modal-payment-info").val();
+				let bidderId = $("#modal-id").val();
+				let fullAmout = $("#modal-checkbox-payment").prop("checked");
+				console.log("paymentAmt", paymentAmt);
+				$(`#paid-amount-${bidderId}`).html(paymentAmt);
+				$(`#payment-info-${bidderId}`).html(paymentInfo);
+				//TODO: need to update info to table if receivefull payment or not
+				//TODD: do ajax call to update the database
+			});
 
-		</script>
-
-		<script type="text/javascript">
 
 			$(".pdfBut").click(function(){
 				let firstName = $(this).data('first')
