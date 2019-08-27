@@ -52,9 +52,10 @@
 								<td id ="payment-info-<%=user._id%>">
 								</td>
 								<td class="full-payment-field">
-									<select class="custom-select" id="full-payment-option">
-										<option selected value="yes">Yes</option>
-										<option value="no">No</option>
+									<select class="custom-select" id="checkbox-option-<%=user._id%>">
+										<option value="-1" selected>Choose</option>
+										<option value="1">Yes</option>
+										<option value="0">No</option>
 									</select>
 								</td>
 								<td>
@@ -160,6 +161,7 @@
 		</script>
 		<!-- search box scripts -->
 		<script type="text/javascript">
+			var auction = <%-JSON.stringify(auction)%>;
 			$(document).ready(function () {
 				$("#supporterTable").hide();
 				$("#packageTable").hide();
@@ -203,6 +205,7 @@
 					if($(this).prop("checked") && !verifyFullyPaid()){
 						alert("The amount isn't fully paid. Please check the payment again!");
 						$("#modal-checkbox-payment").prop("checked", false);
+						$('#modal-checkbox-payment').focus();
 					}
 				});
       		});
@@ -218,11 +221,34 @@
 				let paymentAmt = $("#modal-paid-amount").val();
 				let paymentInfo = $("#modal-payment-info").val();
 				let bidderId = $("#modal-id").val();
-				let fullAmout = $("#modal-checkbox-payment").prop("checked");
-				console.log("paymentAmt", paymentAmt);
+				let fullAmount = $("#modal-checkbox-payment").prop("checked");
+				//console.log("paymentAmt", paymentAmt);
 				$(`#paid-amount-${bidderId}`).html(paymentAmt);
 				$(`#payment-info-${bidderId}`).html(paymentInfo);
-				//TODO: need to update info to table if receivefull payment or not
+				if(fullAmount){
+					$(`#checkbox-option-${bidderId}`).val(1);
+				}else{
+					$(`#checkbox-option-${bidderId}`).val(0);
+				}
+				$.ajax({
+					contentType: 'application/json',
+					data: JSON.stringify({
+						"userId": bidderId,
+						"fullyPaid":fullAmount,
+						"paymentInfo":paymentInfo,
+						"auction":auction
+					}),
+					dataType: 'json',
+					success: function(data){
+						app.log("control succeeded");
+					},
+					error: function(){
+						app.log("control failed");
+					},
+					processData: false,
+					type: 'POST',
+					url: `/${auction}/clerkCheckOut/updatePayment`
+				});
 				//TODD: do ajax call to update the database
 			});
 

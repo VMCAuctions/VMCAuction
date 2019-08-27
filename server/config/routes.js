@@ -541,6 +541,9 @@ module.exports = function(app) {
 	app.get('/:auctions/clerkCheckOut', function(req, res){
 		auctions.clerkCheckOut(req,res);
 	})
+	app.post('/:auctions/clerkCheckOut/updatePayment', function(req,res){
+		users.updatePayment(req,res)
+	});
 
 	// Send SMS text link to supporter at auction checkin
 	app.post('/users/sendSMS', function(req,res) {

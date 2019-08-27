@@ -45,11 +45,28 @@ function UsersController() {
 		}
 		return output
   }
-  
-  this.updatePayment = function(req,res){
 
+  this.updatePayment = function(req,res){
 	// TODO: update the payment here
-    console.log('inside users controller ~~', req.params.foo)
+	console.log("updatePayment", req.body);
+	User.findOne({
+		_id: req.body.userId
+	}, function (err, user) {
+		if (err) {
+			console.log(err)
+			fileLog.info("000 users.js this.updatePayment User.find.  err = ", JSON.stringify(err, null, 2))
+			if (req.session.admin === 2) {
+				res.redirect('/users/adminError');
+			}
+			if (req.session.admin === 1) {
+				res.redirect('/users/clerkError');
+			}
+		}else{
+			if(req.body.auction)
+				console.log("updatePayment else\n", user);
+		}
+	})
+    // console.log('inside users controller ~~', req.params.foo)
   }
 
 	this.index = function (req, res) {
@@ -716,7 +733,6 @@ function UsersController() {
 
 	this.logout = function (req, res) {
 		req.session.destroy();
-		console.log("**************req****logout************\n", (req.session === undefined));
 		res.redirect('/users/login')
 	};
 
