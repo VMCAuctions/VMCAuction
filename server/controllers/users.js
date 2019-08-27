@@ -44,30 +44,40 @@ function UsersController() {
 			}
 		}
 		return output
-  }
+	}
 
-  this.updatePayment = function(req,res){
-	// TODO: update the payment here
-	console.log("updatePayment", req.body);
-	User.findOne({
-		_id: req.body.userId
-	}, function (err, user) {
-		if (err) {
-			console.log(err)
-			fileLog.info("000 users.js this.updatePayment User.find.  err = ", JSON.stringify(err, null, 2))
-			if (req.session.admin === 2) {
-				res.redirect('/users/adminError');
+	this.updatePayment = function (req, res) {
+		// TODO: update the payment here
+		console.log("updatePayment", req.body);
+		User.updateOne({
+			_id: req.body.userId
+		}, {
+			$set: {
+				"paymentInfo": req.body.paymentInfo,
+				"fullyPaid": req.body.fullyPaid,
+				"totalPayment":req.body.totalPayment,
+				"paidAmount":req.body.paidAmount,
 			}
-			if (req.session.admin === 1) {
-				res.redirect('/users/clerkError');
+		}, {
+			upsert: false,
+			multi: false
+		}, function (err, user) {
+			if (err) {
+				console.log(err)
+				fileLog.info("000 users.js this.updatePayment User.find.  err = ", JSON.stringify(err, null, 2))
+				if (req.session.admin === 2) {
+					res.redirect('/users/adminError');
+				}
+				if (req.session.admin === 1) {
+					res.redirect('/users/clerkError');
+				}
+			} else {
+				if (req.body.auction)
+					console.log("updatePayment else\n", user);
 			}
-		}else{
-			if(req.body.auction)
-				console.log("updatePayment else\n", user);
-		}
-	})
-    // console.log('inside users controller ~~', req.params.foo)
-  }
+		})
+		// console.log('inside users controller ~~', req.params.foo)
+	}
 
 	this.index = function (req, res) {
 		// console.log(Date.now()," - 010 users.js this.index.  UsersController index");
@@ -493,7 +503,7 @@ function UsersController() {
 										// console.log("req.session is", req.session)
 										res.render('userPage', {
 											current: 'watch-list',
-											secret:secret,
+											secret: secret,
 											userName: req.session.userName,
 											userId: req.session.userId,
 											admin: req.session.admin,
@@ -566,7 +576,7 @@ function UsersController() {
 	this.supporterCsv = function (req, res) {
 		//May need to add validation checks so that only admins can see
 		// console.log("310 items.js this.populateCsv start")
-		console.log("**************************************\n",req.session)
+		console.log("**************************************\n", req.session)
 		if (req.session.admin === 2) {
 			Auction.findById(req.params.auctions, function (err, auctionDetails) {
 				if (err) {
@@ -582,7 +592,7 @@ function UsersController() {
 					})
 				}
 			})
-		}else{
+		} else {
 			res.redirect('/users/login')
 		}
 	};

@@ -25,9 +25,10 @@ var userSchema = new Schema(
 	// seats: { type: Number },
 	userOrg: { type: String },
 	wonPackages: {type: Boolean, default: false},
-	totalPayment: Number,
+	totalPayment: {type: Number, default: 0},
+	paidAmount: {type: Number, default: 0},
 	fullyPaid: {type: Boolean, default: false},
-	paymentInfo: String,
+	paymentInfo: { type: String }
 	},
 	{ timestamps: true, usePushEach: true }
 

@@ -47,9 +47,9 @@
 									$<%= cart[user.userName].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %>
 								</td>
 								<td class="full-payment-field font-weight-bold">
-									$ <span id ="paid-amount-<%=user._id%>">0.0</span>
+									$ <span id ="paid-amount-<%=user._id%>"><%=user.paidAmount%></span>
 								</td>
-								<td id ="payment-info-<%=user._id%>">
+								<td id ="payment-info-<%=user._id%>"><%=user.paymentInfo%>
 								</td>
 								<td class="full-payment-field">
 									<select class="custom-select" id="checkbox-option-<%=user._id%>">
@@ -218,12 +218,14 @@
 			}
 
 			$("#submit-modal-btn").click(function(){
-				let paymentAmt = $("#modal-paid-amount").val();
+				let paidAmount = $("#modal-paid-amount").val();
 				let paymentInfo = $("#modal-payment-info").val();
 				let bidderId = $("#modal-id").val();
 				let fullAmount = $("#modal-checkbox-payment").prop("checked");
-				//console.log("paymentAmt", paymentAmt);
-				$(`#paid-amount-${bidderId}`).html(paymentAmt);
+				let totalPayment =parseFloat($("#modal-total-amount").html().replace(/,/g,''));
+
+				//console.log("paidAmount", paidAmount);
+				$(`#paid-amount-${bidderId}`).html(paidAmount);
 				$(`#payment-info-${bidderId}`).html(paymentInfo);
 				if(fullAmount){
 					$(`#checkbox-option-${bidderId}`).val(1);
@@ -236,11 +238,13 @@
 						"userId": bidderId,
 						"fullyPaid":fullAmount,
 						"paymentInfo":paymentInfo,
-						"auction":auction
+						"auction":auction,
+						"paidAmount":paidAmount,
+						"totalPayment":totalPayment
 					}),
 					dataType: 'json',
 					success: function(data){
-						app.log("control succeeded");
+						app.log("control succeeded"); 
 					},
 					error: function(){
 						app.log("control failed");
