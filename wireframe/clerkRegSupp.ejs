@@ -48,8 +48,8 @@
 				<div class="form-group col-md-4">
 					<label for="tableOwner" class="label-name" id="supporterName">Is Supporter a Table Owner?</label>
 					<select name="tableOwner" id="tableOwner" class="form-control" onchange="tableOwnerChange()">
-					  <option value="false">No</option>
-					  <option value="true">Yes</option>
+						<option value="yes">Yes</option>
+						<option value="no">No</option>
 					</select>
 				</div>
 				<div class="form-group col-md-6">
@@ -109,7 +109,7 @@
 			var firstName = document.getElementById("firstName").value;
 			var lastName = document.getElementById("lastName").value;
 			
-			if (value === "true") {
+			if (value === "yes") {
 				document.getElementById("tableOwnerName").value = `${firstName} ${lastName}`;
 			} else {
 				document.getElementById("tableOwnerName").value = "";

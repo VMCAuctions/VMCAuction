@@ -307,10 +307,12 @@ module.exports = function(app) {
 	// get the index page of all users
 	app.get('/:auctions/users', function(req,res){
 		users.index(req,res)});
-	// displaying the create user page
-	app.get('/users/register', function(req,res) {
+
+	// displaying the user registration form
+	app.get('/:auctions/users/register', function(req,res) {
 		console.log('routes.js users/register');
 		users.register(req,res)});
+
 	// get the login form
 	app.get('/users/login', function(req,res){
 		// console.log('routes.js users/login');
@@ -327,6 +329,10 @@ module.exports = function(app) {
 	// post the new user form and create that new user (Registration)
 	app.post('/users/create', function(req,res){
 		users.create(req,res)});
+
+	// app.get('/:users/registration-thankyou', function(req,res){
+	// 	res('registration-thankyou'); 
+	// })		
 
 	// Supporters .csv import
 	//displays add supporters from csv html page

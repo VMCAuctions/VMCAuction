@@ -10,6 +10,7 @@
 
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/css/style.css">    
 		<link rel="stylesheet" href="/css/login.css">
 
 		<!-- JavaScript -->
@@ -19,14 +20,19 @@
 
   	</head>
 
-	<body class="login-body">
+	<body>
+
+		<div class="container-fluid mini-nav">
+			<p class="mini-header brand-login text-center">Welcome to elizabid Bidding Platform </p>
+		</div>  
+	
+
 		<div class="container login-container">
 			<div class="row">
-				<div class="col"></div>  <!-- this column is for equal space on the margins -->
-				<div class="col-sm-12 col-md-6">  <!-- the column where all our content will go; for medium and larger use size 6; for mobile (small), use the full screen (size 12); -->
-					<div class="card login-card">
+				<div class="col-12">  
+					<div class="card login-card mt-4">
 						<div class="card-body">
-							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid signin-img" alt="Responsive logo">
+							<img src="/VMCF_Logo_Blue_rgb.png" class="img-fluid login-img" alt="Responsive logo">
 							<form class="login-form">
 									<div class="form-group">
 										<label for="pin">Auction Pin</label>
@@ -35,12 +41,11 @@
 									<button type="submit" id="submit" class="btn login-btn btn-lg">Log In</button>
 							</form>
 							<div class="question">
-								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> | <a href="/users/register">Create a new account</a><br><a href="/users/login">Login for bidding account</a>
-							</div>
+								<a href="mailto: Julie.Ott@hhs.sccgov.org">Need help?</a> 
+							</div>	
 						</div>
 					</div>
 				</div>
-				<div class="col"></div> <!-- this column is for equal space on the margins -->
 			</div> <!-- end row -->
 		</div> <!-- end container -->
 

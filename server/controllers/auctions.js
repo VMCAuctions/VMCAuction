@@ -246,7 +246,7 @@ function AuctionsController() {
           if (err) {
             console.log(err);
           } else {
-			// console.log("230 auctions.js this.event Package.find packages = ",packages);
+      // console.log("230 auctions.js this.event Package.find packages = ",packages);
             res.render("event", {
               auctionDetails: auction,
               auction: req.params.auctions,
