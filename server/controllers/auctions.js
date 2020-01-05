@@ -103,7 +103,10 @@ function AuctionsController() {
 							welcomeMessage: req.body.welcomeMessage,
 							description: req.body.description,
 							venue: req.body.venue,
-							headerImage: req.body.imgFileName,
+              headerImage: req.body.imgFileName,
+              organization: req.body.organization,
+              taxID: req.body.taxID,
+              businessAddress: req.body.businessAddress
 							}, function(err, result) {
 								if (err) {
 									console.log(err);
@@ -178,7 +181,10 @@ function AuctionsController() {
         endDate: endDate,
         endClock: endClock,
         pin: auction.pin,
-		    headerImage: auction.headerImage
+        headerImage: auction.headerImage,
+        organization: auction.organization,
+        taxID: auction.taxID,
+        businessAddress: auction.businessAddress
       });
     });
   };
@@ -204,6 +210,9 @@ function AuctionsController() {
         auction.subtitle = req.body.subtitle;
         auction.venue = req.body.venue;
         auction.description = req.body.description;
+        auction.organization = req.body.organization;
+        auction.taxID = req.body.taxID;
+        auction.businessAddress = req.body.businessAddress;
         auction.welcomeMessage = req.body.welcomeMessage;
         if(req.body.imgFileName){
           auction.headerImage = req.body.imgFileName

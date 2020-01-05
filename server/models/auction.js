@@ -21,6 +21,9 @@ var auctionSchema = new Schema({
 	headerImage: {type: String},
 	//in case a logo or symbol image is used for an auction
 	auctionlogo: {type: String},
+	organization: {type: String},
+	taxID: {type: String},
+	businessAddress: {type: String},
 	pin: {type: String},
   _packages: [{type: Number, ref: 'Package'}],
   _items: [{type: Number, ref: 'Item'}],
