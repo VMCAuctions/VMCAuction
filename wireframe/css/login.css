@@ -24,7 +24,9 @@ body {
 
 .login-img {
 	padding: 0 2rem 2rem; 
-	width: 275px;
+	/* for VMCF logo use 275px width
+	width: 275px; */
+	width: 210px;
 	margin: auto; 
 	display: block;  
 
