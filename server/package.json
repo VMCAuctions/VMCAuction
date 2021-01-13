@@ -20,7 +20,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "http": "0.0.0",
-    "jquery-validation": "^1.17.0",
+    "jquery-validation": "^1.19.3",
     "jsdom-global": "^3.0.2",
     "merge-descriptors": "^1.0.1",
     "mongodb": "^3.0.1",
