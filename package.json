@@ -17,7 +17,7 @@
     "csvtojson": "^2.0.6",
     "dateformat": "^3.0.3",
     "ejs": "^2.5.6",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "express-session": "^1.16.1",
     "html2canvas": "^1.0.0-rc.1",
     "http": "0.0.0",
